@@ -19,12 +19,16 @@ and this project adheres to
 - Comprehensive project structure with TypeScript compilation
 - Enhanced Dependabot configuration with npm ecosystem support and grouped
   development dependencies
+- Module icons in multiple resolutions (128x128, 256x256, 2048x2048) for better
+  display across different contexts
 
 ### Changed
 
 - Updated module manifest to use compiled TypeScript output from `dist/`
   directory
 - Configured build pipeline to compile TypeScript from `scripts/` to `dist/`
+- Configured module.json relationships to declare Root TTRPG system
+  compatibility and PbtA system dependency
 
 ### Deprecated
 

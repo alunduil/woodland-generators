@@ -1,7 +1,7 @@
 {
-  "id": "module",
-  "title": "New Module",
-  "description": "",
+  "id": "woodland-generators",
+  "title": "Woodland Generators",
+  "description": "A random character, NPC, and clearing generator for the Root: The RPG.",
   "version": "#{VERSION}#",
   "library": "false",
   "manifestPlusVersion": "1.2.0",
@@ -12,14 +12,30 @@
   },
   "authors": [
     {
-      "name": "The League of Extraordinary FVTT Developers",
-      "url": "https://github.com/League-of-Foundry-Developers",
-      "discord": "discordID#0001"
+      "name": "alunduil",
+      "url": "https://github.com/alunduil",
+      "discord": "alunduil"
     }
   ],
   "relationships": {
-    "systems": [],
-    "requires": []
+    "systems": [
+      {
+        "id": "root",
+        "type": "system",
+        "compatibility": {
+          "verified": "1.0.0"
+        }
+      }
+    ],
+    "requires": [
+      {
+        "id": "pbta",
+        "type": "system",
+        "compatibility": {
+          "minimum": "0.9.0"
+        }
+      }
+    ]
   },
   "esmodules": ["dist/module.js"],
   "scripts": ["dist/lib/lib.js"],
@@ -39,7 +55,7 @@
   "media": [
     {
       "type": "icon",
-      "url": "https://avatars2.githubusercontent.com/u/71292812?s=400&u=ccdb4eeb7abf551ca8f314e5a9bfd0479a4d3d41&v=4"
+      "url": "https://github.com/alunduil/woodland-generators/raw/master/assets/icon.png"
     }
   ]
 }
