@@ -24,6 +24,17 @@ and this project adheres to
 - Documentation structure following Diátaxis framework
 - How-to guide for creating and managing GitHub releases
 - How-to guide for submitting modules to FoundryVTT package repository
+- Pre-commit hooks integration with comprehensive code quality checks:
+  - Code formatting with Prettier
+  - TypeScript/JavaScript linting with ESLint
+  - TypeScript compilation and type checking
+  - Markdown linting with markdownlint
+  - YAML validation and linting
+  - JSON formatting and validation
+  - Shell script linting with ShellCheck
+  - Git hooks for trailing whitespace, end-of-file fixes, and merge conflicts
+  - Large file detection and case conflict prevention
+- Pre-commit configuration files for markdown and YAML linting customization
 
 ### Changed
 

@@ -38,6 +38,9 @@ coverage/
 .nyc_output/
 .c8_output/
 
+# Pre-commit cache
+.pre-commit-cache/
+
 # Test outputs
 test-results/
 playwright-report/

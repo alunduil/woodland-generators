@@ -19,6 +19,7 @@ clearings specifically designed for Root: The RPG.
   - [System Requirements](#system-requirements)
   - [Usage](#usage)
   - [Development](#development)
+  - [Code Quality](#code-quality)
   - [Contributing](#contributing)
   - [Support](#support)
   - [Roadmap](#roadmap)
@@ -102,6 +103,13 @@ npm test
 # Validate everything (formatting, linting, building, testing)
 npm run validate
 ```
+
+## Code Quality
+
+This project uses pre-commit hooks to maintain code quality. They are
+automatically installed in the dev container. To install manually:
+`npm run pre-commit:install`. See [pre-commit.com](https://pre-commit.com/) for
+more information.
 
 For detailed development information, see the [documentation](docs/), which
 includes:

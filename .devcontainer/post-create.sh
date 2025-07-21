@@ -3,6 +3,10 @@ set -e
 
 echo "🚀 Setting up Woodland Generators development environment..."
 
+# Update npm to latest version
+echo "📦 Updating npm to latest version..."
+npm install -g npm@latest
+
 # Install global npm packages
 echo "📦 Installing global npm packages..."
 npm install -g \
@@ -16,6 +20,10 @@ npm install -g \
 # Configure git safe directory
 echo "🔧 Configuring git safe directory..."
 git config --global --add safe.directory /workspace
+
+# Set up pre-commit hooks
+echo "🪝 Setting up pre-commit hooks..."
+pre-commit install
 
 echo "✅ Development environment setup complete!"
 echo "🎯 You can now start developing your FoundryVTT module."

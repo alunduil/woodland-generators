@@ -1,0 +1,90 @@
+# Pre-commit configuration for Woodland Generators
+# This configuration runs various checks and formatters before each commit
+# to maintain code quality and consistency.
+#
+# To install: pre-commit install
+# To run manually: pre-commit run --all-files
+# To update hooks: pre-commit autoupdate
+
+repos:
+  # Standard pre-commit hooks for common file issues
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      # Git-related checks
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=1024"] # Prevent files larger than 1MB
+      - id: check-case-conflict
+
+      # File formatting
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
+
+      # JSON/YAML validation
+      - id: check-json
+        exclude: '\.devcontainer/.*\.json$' # DevContainer files use JSONC (JSON with comments)
+      - id: check-yaml
+        exclude: '^\.github/workflows/' # GitHub Actions YAML can have some special syntax
+
+      # Other useful checks
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+
+  # Prettier for code formatting
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+        name: Format with Prettier
+        types_or: [javascript, jsx, ts, tsx, json, yaml, markdown, css, scss]
+        exclude: |
+          (?x)^(
+            package-lock\.json|
+            \.vscode/.*\.json|
+            dist/.*|
+            node_modules/.*
+          )$
+
+  # ESLint for JavaScript/TypeScript linting
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v9.31.0
+    hooks:
+      - id: eslint
+        name: Lint TypeScript/JavaScript
+        files: \.(js|jsx|ts|tsx)$
+        types: [file]
+        additional_dependencies:
+          - "@typescript-eslint/eslint-plugin@^7.0.0"
+          - "@typescript-eslint/parser@^7.0.0"
+          - "eslint@^8.56.0"
+          - "typescript@^5.4.0"
+        args: ["--fix", "--max-warnings=0"]
+
+  # Markdown linting
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.45.0
+    hooks:
+      - id: markdownlint
+        name: Lint Markdown files
+        args: ["--fix"]
+
+  # Shell script linting
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+        name: Check shell scripts
+        args: ["--severity=warning"]
+
+  # YAML linting
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.37.1
+    hooks:
+      - id: yamllint
+        name: Lint YAML files
+        args: ["-d", "relaxed"]
+        exclude: '^\.github/workflows/' # Skip GitHub Actions workflows

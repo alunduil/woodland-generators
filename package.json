@@ -1,32 +1,6 @@
 {
-  "name": "woodland-generators",
-  "version": "0.1.0",
+  "author": "The League of Extraordinary FVTT Developers",
   "description": "A FoundryVTT module for woodland generators",
-  "type": "module",
-  "main": "dist/module.js",
-  "files": [
-    "dist/",
-    "styles/",
-    "languages/",
-    "module.json",
-    "README.md",
-    "LICENSE"
-  ],
-  "scripts": {
-    "build": "tsc",
-    "build:watch": "tsc --watch",
-    "clean": "rm -rf dist/",
-    "lint": "eslint scripts/**/*.{js,ts}",
-    "lint:fix": "eslint scripts/**/*.{js,ts} --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "check": "npm run format:check && npm run lint && npm run build",
-    "test": "node --test dist/**/*.test.js",
-    "test:coverage": "c8 npm test",
-    "typecheck": "tsc --noEmit",
-    "validate": "npm run format:check && npm run lint && npm run typecheck && npm run build && npm test",
-    "prepare": "npm run build"
-  },
   "devDependencies": {
     "@league-of-foundry-developers/foundry-vtt-types": "^13.345.1",
     "@types/node": "^20.0.0",
@@ -41,6 +15,14 @@
     "node": ">=16.0.0",
     "npm": ">=8.0.0"
   },
+  "files": [
+    "dist/",
+    "styles/",
+    "languages/",
+    "module.json",
+    "README.md",
+    "LICENSE"
+  ],
   "keywords": [
     "foundry-vtt",
     "fvtt",
@@ -48,6 +30,27 @@
     "woodland",
     "generators"
   ],
-  "author": "The League of Extraordinary FVTT Developers",
-  "license": "MIT"
+  "license": "MIT",
+  "main": "dist/module.js",
+  "name": "woodland-generators",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "check": "npm run format:check && npm run lint && npm run build",
+    "clean": "rm -rf dist/",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint scripts/**/*.{js,ts}",
+    "lint:fix": "eslint scripts/**/*.{js,ts} --fix",
+    "pre-commit": "pre-commit run --all-files",
+    "pre-commit:install": "pre-commit install",
+    "pre-commit:update": "pre-commit autoupdate",
+    "prepare": "npm run build",
+    "test": "node --test dist/**/*.test.js",
+    "test:coverage": "c8 npm test",
+    "typecheck": "tsc --noEmit",
+    "validate": "npm run format:check && npm run lint && npm run typecheck && npm run build && npm test"
+  },
+  "type": "module",
+  "version": "0.1.0"
 }
