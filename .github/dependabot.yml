@@ -9,3 +9,31 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  # npm dependencies (JavaScript/TypeScript ecosystem)
+  - package-ecosystem: "npm"
+    open-pull-requests-limit: 10
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "dependencies"
+      - "javascript"
+    # Group development dependencies together
+    groups:
+      dev-dependencies:
+        patterns:
+          - "@types/*"
+          - "typescript"
+          - "eslint*"
+          - "prettier"
+          - "@typescript-eslint/*"
+          - "jest"
+          - "vitest"
+          - "@vitejs/*"
+        update-types:
+          - "minor"
+          - "patch"
