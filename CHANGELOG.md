@@ -21,6 +21,9 @@ and this project adheres to
   development dependencies
 - Module icons in multiple resolutions (128x128, 256x256, 2048x2048) for better
   display across different contexts
+- Documentation structure following Diátaxis framework
+- How-to guide for creating and managing GitHub releases
+- How-to guide for submitting modules to FoundryVTT package repository
 
 ### Changed
 
@@ -29,6 +32,9 @@ and this project adheres to
 - Configured build pipeline to compile TypeScript from `scripts/` to `dist/`
 - Configured module.json relationships to declare Root TTRPG system
   compatibility and PbtA system dependency
+- Complete rewrite of README.md from template placeholder to professional
+  project documentation with proper description, installation methods, roadmap,
+  and badges
 
 ### Deprecated
 
