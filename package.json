@@ -1,0 +1,53 @@
+{
+  "name": "woodland-generators",
+  "version": "0.1.0",
+  "description": "A FoundryVTT module for woodland generators",
+  "type": "module",
+  "main": "dist/module.js",
+  "files": [
+    "dist/",
+    "styles/",
+    "languages/",
+    "module.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "clean": "rm -rf dist/",
+    "lint": "eslint scripts/**/*.{js,ts}",
+    "lint:fix": "eslint scripts/**/*.{js,ts} --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run format:check && npm run lint && npm run build",
+    "test": "node --test dist/**/*.test.js",
+    "test:coverage": "c8 npm test",
+    "typecheck": "tsc --noEmit",
+    "validate": "npm run format:check && npm run lint && npm run typecheck && npm run build && npm test",
+    "prepare": "npm run build"
+  },
+  "devDependencies": {
+    "@league-of-foundry-developers/foundry-vtt-types": "^13.345.1",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "c8": "^9.0.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "keywords": [
+    "foundry-vtt",
+    "fvtt",
+    "module",
+    "woodland",
+    "generators"
+  ],
+  "author": "The League of Extraordinary FVTT Developers",
+  "license": "MIT"
+}

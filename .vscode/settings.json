@@ -1,0 +1,36 @@
+{
+  "typescript.suggest.autoImports": true,
+  "typescript.preferences.quoteStyle": "double",
+  "editor.formatOnSave": true,
+  "prettier.requireConfig": true,
+  "eslint.validate": ["javascript", "typescript"],
+  "files.associations": {
+    "*.json": "jsonc"
+  },
+  "markdown.preview.doubleClickToSwitchToEditor": false,
+  "markdown.extension.toc.updateOnSave": true,
+  "cSpell.words": [
+    "bierner",
+    "buildx",
+    "bullseye",
+    "davidanson",
+    "dbaeumer",
+    "dependabot",
+    "devcontainers",
+    "eamodio",
+    "esbenp",
+    "foundry",
+    "foundryvtt",
+    "foxundermoon",
+    "fvtt",
+    "gruntfuggly",
+    "hartmann",
+    "moby",
+    "shellcheck",
+    "timonwong",
+    "woodland",
+    "yzhang"
+  ],
+  "git.autofetch": true,
+  "terminal.integrated.defaultProfile.linux": "bash"
+}

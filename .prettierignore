@@ -1,0 +1,9 @@
+# Additional files to exclude from Prettier formatting
+# (Prettier automatically uses .gitignore as base)
+
+# Minified files (may not be in git but shouldn't be formatted)
+*.min.js
+*.min.css
+
+# FoundryVTT generated packs (if committed)
+packs/

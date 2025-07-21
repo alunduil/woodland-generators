@@ -1,0 +1,56 @@
+{
+  "name": "Woodland Generators Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bookworm",
+  // Features to install
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "moby": false,
+      "installDockerBuildx": true
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers-extra/features/shellcheck:1": {}
+  },
+  // Configure tool-specific properties
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // TypeScript/JavaScript
+        "ms-vscode.vscode-typescript-next",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        // Git & GitHub
+        "github.vscode-pull-request-github",
+        "eamodio.gitlens",
+        // Markdown
+        "yzhang.markdown-all-in-one",
+        "davidanson.vscode-markdownlint",
+        "shd101wyy.markdown-preview-enhanced",
+        "bierner.markdown-mermaid",
+        // Documentation & Writing
+        "streetsidesoftware.code-spell-checker",
+        // Docker & DevOps
+        "ms-azuretools.vscode-docker",
+        "github.vscode-github-actions",
+        // JSON/YAML/Config
+        "redhat.vscode-yaml",
+        "ms-vscode.vscode-json",
+        // Shell Script Development
+        "timonwong.shellcheck",
+        "foxundermoon.shell-format",
+        "mads-hartmann.bash-ide-vscode",
+        // Development Quality
+        "aaron-bond.better-comments",
+        "gruntfuggly.todo-tree"
+      ]
+    }
+  },
+  // Use 'postCreateCommand' to run commands after the container is created
+  "postCreateCommand": ".devcontainer/post-create.sh",
+  // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root
+  "remoteUser": "node",
+  // Mount docker socket for docker-outside-of-docker
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind"
+  ]
+}
