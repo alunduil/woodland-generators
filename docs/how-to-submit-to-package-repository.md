@@ -52,15 +52,15 @@ can manage your package.
 To release a new version:
 
 1. Navigate to your module's admin page
-2. Scroll to the bottom to find the "Package Versions" section
-3. Fill in the new version information:
+1. Scroll to the bottom to find the "Package Versions" section
+1. Fill in the new version information:
    - **Version**: The version number (must match your release tag)
    - **Manifest URL**: The manifest URL for **that specific version** (not the
      `/latest/` URL)
 
 ![Version management interface](https://user-images.githubusercontent.com/36359784/120664346-c4b63480-c482-11eb-9d8b-731b50d70939.png)
 
-4. Click "Save" to publish the new version
+1. Click "Save" to publish the new version
 
 ### Important Notes About Manifest URLs
 

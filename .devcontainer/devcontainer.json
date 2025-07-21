@@ -9,7 +9,8 @@
     },
     "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/devcontainers-extra/features/shellcheck:1": {}
+    "ghcr.io/devcontainers-extra/features/shellcheck:1": {},
+    "ghcr.io/devcontainers-extra/features/pre-commit:2": {}
   },
   // Configure tool-specific properties
   "customizations": {
@@ -50,7 +51,5 @@
   // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root
   "remoteUser": "node",
   // Mount docker socket for docker-outside-of-docker
-  "mounts": [
-    "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind"
-  ]
+  "mounts": ["source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind"]
 }
