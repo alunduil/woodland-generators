@@ -1,0 +1,38 @@
+{
+  "recommendations": [
+    // TypeScript/JavaScript
+    "ms-vscode.vscode-typescript-next",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+
+    // Git & GitHub
+    "github.vscode-pull-request-github",
+    "eamodio.gitlens",
+
+    // Markdown
+    "yzhang.markdown-all-in-one",
+    "davidanson.vscode-markdownlint",
+    "shd101wyy.markdown-preview-enhanced",
+    "bierner.markdown-mermaid",
+
+    // Documentation & Writing
+    "streetsidesoftware.code-spell-checker",
+
+    // Docker & DevOps
+    "ms-azuretools.vscode-docker",
+    "github.vscode-github-actions",
+
+    // JSON/YAML/Config
+    "redhat.vscode-yaml",
+    "ms-vscode.vscode-json",
+
+    // Shell Script Development
+    "timonwong.shellcheck",
+    "foxundermoon.shell-format",
+    "mads-hartmann.bash-ide-vscode",
+
+    // Development Quality
+    "aaron-bond.better-comments",
+    "gruntfuggly.todo-tree"
+  ]
+}
