@@ -26,7 +26,7 @@ repos:
 
       # JSON/YAML validation
       - id: check-json
-        exclude: '\.devcontainer/.*\.json$' # DevContainer files use JSONC (JSON with comments)
+        exclude: '(\.devcontainer/.*\.json$|\.vscode/.*\.json$)' # DevContainer and VS Code files use JSONC (JSON with comments)
       - id: check-yaml
         exclude: '^\.github/workflows/' # GitHub Actions YAML can have some special syntax
 

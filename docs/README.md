@@ -12,8 +12,8 @@ Step-by-step guides for accomplishing specific tasks:
 
 - **[How to Create Releases](how-to-create-releases.md)** - Create and publish
   module releases on GitHub
-- **[How to Submit to Package Repository](how-to-submit-to-package-repository.md)** -
-  List your module in the official FoundryVTT package repository
+- **[How to Submit to Package Repository](how-to-submit-to-package-repository.md)**
+  \- List your module in the official FoundryVTT package repository
 
 ## 🚀 Quick Start
 
