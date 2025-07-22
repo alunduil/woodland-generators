@@ -1,54 +1,71 @@
 # Documentation
 
-Welcome to the Woodland Generators documentation. This documentation is
-organized following the [Diátaxis framework](https://diataxis.fr/) to help you
-find the right information for your needs.
+Welcome to the Woodland Generators documentation. Everything you need to know
+about developing, testing, and contributing to this FoundryVTT module.
 
-## 📚 Documentation Types
+## New to contributing?
 
-### How-to Guides (Problem-solving)
+**Start here:** [Contributing Guidelines](../CONTRIBUTING.md) - Get oriented and
+set up your development environment quickly.
 
-Step-by-step guides for accomplishing specific tasks:
+## Quick Navigation
 
-- **[How to Create Releases](how-to-create-releases.md)** - Create and publish
-  module releases on GitHub
-- **[How to Submit to Package Repository](how-to-submit-to-package-repository.md)**
-  \- List your module in the official FoundryVTT package repository
+### I want to
 
-## 🚀 Quick Start
+- **🚀 Start contributing** → [Contributing Guidelines](../CONTRIBUTING.md)
+- **🔧 Set up my development environment** →
+  [Local Development Setup](how-to-set-up-local-development.md)
+- **🧪 Test my changes in FoundryVTT** →
+  [GitHub URL Testing](how-to-test-with-github-urls.md)
+- **📝 Submit a pull request** → [Submit Changes](how-to-submit-changes.md)
+- **👁️ Review someone's PR** →
+  [Review Pull Requests](how-to-review-pull-requests.md)
+- **🏷️ Create a release** → [Create Releases](how-to-create-releases.md)
 
-If you're new to this project:
+## For Contributors
 
-1. Read the main [README](../README.md) for a project overview
-2. Examine the project structure and configuration files directly
-3. Check `package.json` for available development scripts
+- [How to Set Up Local Development](how-to-set-up-local-development.md) - Get
+  your development environment running
+- [How to Test with GitHub URLs](how-to-test-with-github-urls.md) - Test your
+  changes in real FoundryVTT environments
+- [How to Submit Changes](how-to-submit-changes.md) - Create pull requests and
+  get your changes merged
 
-## 🔧 For Maintainers
+## For Maintainers
 
-If you're maintaining this module:
+- [How to Review Pull Requests](how-to-review-pull-requests.md) - Review and
+  test contributions effectively
+- [How to Create Releases](how-to-create-releases.md) - Version and publish new
+  releases
+- [How to Submit to Package Repository](how-to-submit-to-package-repository.md) -
+  List updates in FoundryVTT's official repository
 
-1. Follow [How to Create Releases](how-to-create-releases.md) for publishing new
-   versions
-2. Use
-   [How to Submit to Package Repository](how-to-submit-to-package-repository.md)
-   for listing updates
+## Reference Materials
 
-## 📝 Contributing to Documentation
+- **Code Documentation**: See inline TypeScript documentation in source files
+- **Project Structure**: Examine `package.json`, `tsconfig.json`, and
+  configuration files
+- **Source Code**: TypeScript source files in `scripts/` directory
+- **Build Configuration**: Check `tsconfig.json`, npm scripts, and compilation
+  settings
 
-This documentation follows the [Diátaxis framework](https://diataxis.fr/):
+## Getting Help
 
-- **Tutorials**: Learning-oriented step-by-step lessons (none yet - add as
-  needed)
-- **How-to guides**: Problem-solving oriented practical steps
-- **Technical reference**: Information-oriented complete reference material (use
-  inline code documentation instead)
-- **Explanation**: Understanding-oriented background and context (add as
-  concepts emerge)
+- **Questions about contributing?** Open an issue with the `question` label
+- **Found a bug?** Use our bug report template
+- **Have a feature idea?** Use our feature request template
+- **Need clarification on documentation?** Comment on the relevant guide or open
+  an issue
 
-When adding documentation:
+## About This Documentation
 
-1. Identify which quadrant your content fits into
-2. Prefer inline code documentation for technical details
-3. Use this docs directory for procedural guides and conceptual explanations
-4. Update this index if needed
-5. Follow markdown best practices and consistent formatting
+This documentation follows the [Diátaxis framework](https://diataxis.fr/) for
+systematic technical documentation:
+
+- **How-to guides**: Practical step-by-step guides for specific tasks
+- **Reference**: Technical specifications and API details
+- **Tutorials**: Learning-oriented lessons (coming soon)
+- **Conceptual guides**: Understanding-oriented explanations (coming soon)
+
+Each type serves a specific purpose and user need, helping you find exactly what
+you're looking for.

@@ -18,8 +18,6 @@ clearings specifically designed for Root: The RPG.
     - [Method 3: Direct Download](#method-3-direct-download)
   - [System Requirements](#system-requirements)
   - [Usage](#usage)
-  - [Development](#development)
-  - [Code Quality](#code-quality)
   - [Contributing](#contributing)
   - [Support](#support)
   - [Roadmap](#roadmap)
@@ -67,7 +65,7 @@ character creation.
 
 ## System Requirements
 
-- **FoundryVTT**: Version 10 or higher (tested up to v11)
+- **FoundryVTT**: Version 10 or higher
 - **Game System**: Root: The RPG
 - **Dependencies**: PbtA System (v0.9.0+)
 
@@ -83,9 +81,12 @@ After installation and activation:
 
 _Note: Detailed usage instructions will be added as features are implemented._
 
-## Development
+## Contributing
 
-This project uses TypeScript and modern development practices:
+Contributions are welcome! This project uses TypeScript, modern development
+practices, and automated testing workflows.
+
+### Quick Start for Contributors
 
 ```bash
 # Install dependencies
@@ -94,44 +95,20 @@ npm install
 # Build the module
 npm run build
 
-# Run in watch mode during development
-npm run build:watch
-
-# Run tests
-npm test
-
-# Validate everything (formatting, linting, building, testing)
+# Run tests and validation
 npm run validate
 ```
 
-## Code Quality
+### Testing Your Changes
 
-This project uses pre-commit hooks to maintain code quality. They are
-automatically installed in the dev container. To install manually:
-`npm run pre-commit:install`. See [pre-commit.com](https://pre-commit.com/) for
-more information.
+Create a pull request - our automated workflow will provide testing instructions
+and URLs to test your changes directly in FoundryVTT.
 
-For detailed development information, see the [documentation](docs/), which
-includes:
+### Complete Development Guide
 
-- **How-to guides**: Step-by-step instructions for creating releases and
-  submitting to the FoundryVTT package repository
-- **Development practices**: TypeScript setup, testing approach, and code
-  quality tools
-
-## Contributing
-
-Contributions are welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add or update tests as needed
-5. Ensure all checks pass with `npm run validate`
-6. Submit a pull request
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) if available, or open an issue to discuss
-proposed changes.
+For detailed setup, development practices, code quality standards, and
+contribution workflows, see our [Contributing Guide](CONTRIBUTING.md) and
+[documentation](docs/).
 
 ## Support
 
