@@ -6,6 +6,11 @@
 # To run manually: pre-commit run --all-files
 # To update hooks: pre-commit autoupdate
 
+# Pre-commit.ci configuration
+ci:
+  # Skip hooks that require special installation not available in pre-commit.ci
+  skip: [lychee]
+
 # Global exclusions - applied to all hooks unless overridden
 exclude: |
   (?x)^(
