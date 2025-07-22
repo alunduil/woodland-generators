@@ -35,7 +35,7 @@
   "name": "woodland-generators",
   "scripts": {
     "build": "tsc",
-    "build:watch": "tsc --watch",
+    "build:watch": "tsc --watch --preserveWatchOutput",
     "check": "npm run format:check && npm run lint && npm run build",
     "clean": "rm -rf dist/",
     "format": "prettier --write .",
