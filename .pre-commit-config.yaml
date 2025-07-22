@@ -110,6 +110,7 @@ repos:
         name: Format TOML with taplo
       - id: taplo-lint
         name: Lint TOML with taplo
+        args: ["--no-schema"]
 
   # Prose linting with Vale
   - repo: https://github.com/errata-ai/vale
