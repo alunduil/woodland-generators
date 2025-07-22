@@ -6,7 +6,8 @@
     "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers-extra/features/shellcheck:1": {},
-    "ghcr.io/devcontainers-extra/features/pre-commit:2": {}
+    "ghcr.io/devcontainers-extra/features/pre-commit:2": {},
+    "ghcr.io/shinepukur/devcontainer-features/vale:1": {}
   },
   // Configure tool-specific properties
   "customizations": {
@@ -26,6 +27,7 @@
         "bierner.markdown-mermaid",
         // Documentation & Writing
         "streetsidesoftware.code-spell-checker",
+        "chrischinchilla.vale-vscode",
         // JSON/YAML/Config
         "redhat.vscode-yaml",
         "ms-vscode.vscode-json",

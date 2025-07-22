@@ -7,25 +7,25 @@
 A FoundryVTT module that provides random generators for characters, NPCs, and
 clearings specifically designed for Root: The RPG.
 
-## Table of Contents
+## Table of contents
 
 - [Woodland Generators](#woodland-generators)
-  - [Table of Contents](#table-of-contents)
-  - [What does this module do?](#what-does-this-module-do)
+  - [Table of contents](#table-of-contents)
+  - [What this module does](#what-this-module-does)
   - [Installation](#installation)
-    - [Method 1: FoundryVTT Module Browser (Recommended)](#method-1-foundryvtt-module-browser-recommended)
-    - [Method 2: Manual Installation](#method-2-manual-installation)
-    - [Method 3: Direct Download](#method-3-direct-download)
-  - [System Requirements](#system-requirements)
+    - [Method 1: FoundryVTT module browser (recommended)](#method-1-foundryvtt-module-browser-recommended)
+    - [Method 2: Manual installation](#method-2-manual-installation)
+    - [Method 3: Direct download](#method-3-direct-download)
+  - [System requirements](#system-requirements)
   - [Usage](#usage)
   - [Contributing](#contributing)
   - [Support](#support)
   - [Roadmap](#roadmap)
   - [License](#license)
   - [Acknowledgments](#acknowledgments)
-  - [Changelog](#changelog)
+  - [CHANGELOG](#changelog)
 
-## What does this module do?
+## What this module does
 
 Woodland Generators enhances your Root: The RPG sessions by providing:
 
@@ -35,20 +35,19 @@ Woodland Generators enhances your Root: The RPG sessions by providing:
 - **Clearing Generator**: Create diverse clearings with unique features,
   inhabitants, and conflicts
 
-Perfect for Game Masters who want to quickly populate their woodland with
-interesting characters and locations, or for players seeking inspiration for
-character creation.
+Perfect for GMs who want to populate their woodland with interesting characters
+and locations, or for players seeking inspiration for character creation.
 
 ## Installation
 
-### Method 1: FoundryVTT Module Browser (Recommended)
+### Method 1: FoundryVTT module browser (recommended)
 
 1. Open FoundryVTT and navigate to the "Add-on Modules" tab
 2. Click "Install Module"
 3. Search for "Woodland Generators"
 4. Click "Install" next to the module
 
-### Method 2: Manual Installation
+### Method 2: Manual installation
 
 1. Copy this manifest URL:
    `https://github.com/alunduil/woodland-generators/releases/latest/download/module.json`
@@ -56,14 +55,14 @@ character creation.
 3. Paste the URL in the "Manifest URL" field
 4. Click "Install"
 
-### Method 3: Direct Download
+### Method 3: Direct download
 
 1. Download the latest release from
    [GitHub Releases](https://github.com/alunduil/woodland-generators/releases)
 2. Extract the zip file to your FoundryVTT modules directory
 3. Restart FoundryVTT
 
-## System Requirements
+## System requirements
 
 - **FoundryVTT**: Version 10 or higher
 - **Game System**: Root: The RPG
@@ -76,17 +75,17 @@ After installation and activation:
 1. The module will automatically integrate with your Root: The RPG game
 2. Access generators through the module's interface (specific UI details coming
    soon)
-3. Generated content will be compatible with Root: The RPG character sheets and
-   mechanics
+3. Generated content works with Root: The RPG character sheets and mechanics
 
-_Note: Detailed usage instructions will be added as features are implemented._
+_Note: The development team will add detailed usage instructions as features get
+implemented._
 
 ## Contributing
 
-Contributions are welcome! This project uses TypeScript, modern development
+This project welcomes contributions! It uses TypeScript, modern development
 practices, and automated testing workflows.
 
-### Quick Start for Contributors
+### Quick start for contributors
 
 ```bash
 # Install dependencies
@@ -99,15 +98,15 @@ npm run build
 npm run validate
 ```
 
-### Testing Your Changes
+### Testing your changes
 
-Create a pull request - our automated workflow will provide testing instructions
+Create a pull request - the automated workflow will provide testing instructions
 and URLs to test your changes directly in FoundryVTT.
 
-### Complete Development Guide
+### Complete development guide
 
 For detailed setup, development practices, code quality standards, and
-contribution workflows, see our [Contributing Guide](CONTRIBUTING.md) and
+contribution workflows, see the [Contributing Guide](CONTRIBUTING.md) and
 [documentation](docs/).
 
 ## Support
@@ -116,7 +115,7 @@ contribution workflows, see our [Contributing Guide](CONTRIBUTING.md) and
   [GitHub Issues](https://github.com/alunduil/woodland-generators/issues)
 - **Discussions**: Ask questions in
   [GitHub Discussions](https://github.com/alunduil/woodland-generators/discussions)
-- **Discord**: Find me as `alunduil` on the FoundryVTT Discord server
+- **Discord**: Contact `alunduil` on the FoundryVTT Discord server
 
 ## Roadmap
 
@@ -136,8 +135,7 @@ detailed feature tracking.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
-for details.
+This project uses the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
@@ -147,6 +145,6 @@ for details.
 - Inspired by the rich world and mechanics of Root: The RPG by Leder Games
 - Thanks to the FoundryVTT community for their development resources and support
 
-## Changelog
+## CHANGELOG
 
 See [CHANGELOG.md](CHANGELOG.md) for a detailed history of changes and releases.

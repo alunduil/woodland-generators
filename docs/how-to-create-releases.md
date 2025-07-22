@@ -1,4 +1,4 @@
-# How to Create Releases
+# How to create releases
 
 This guide explains how to create and publish releases for the Woodland
 Generators module.
@@ -6,19 +6,19 @@ Generators module.
 ## Prerequisites
 
 - You have maintainer access to the GitHub repository
-- The module has been tested and is ready for release
+- You have tested the module and the module works correctly for release
 - You have updated the version number in `module.json` and `package.json`
 
-## Creating a GitHub Release
+## Creating a GitHub release
 
-### Step 1: Open the Releases Page
+### Step 1: Open the releases page
 
 Navigate to your repository's releases page by clicking the "Releases" section
 in the right sidebar of your GitHub repository.
 
 ![Where to click to open repository releases.](https://user-images.githubusercontent.com/7644614/93409301-9fd25080-f864-11ea-9e0c-bdd09e4418e4.png)
 
-### Step 2: Draft a New Release
+### Step 2: Draft a new release
 
 Click the "Draft a new release" button.
 
@@ -28,7 +28,7 @@ Click the "Draft a new release" button.
 
 Fill out the release form:
 
-- **Tag name**: Use semantic versioning (e.g., `v1.0.0`)
+- **Tag name**: Use semantic versioning (for example, `v1.0.0`)
 - **Release title**: Descriptive title for the release
 - **Description**: Add release notes describing changes
 
@@ -46,7 +46,7 @@ A GitHub Action will automatically:
 - Create a `module.zip` file
 - Make the release available for distribution
 
-Monitor the progress in the "Actions" tab of your repository.
+Watch the progress in the "Actions" tab of your repository.
 
 ![Actions Tab](https://user-images.githubusercontent.com/7644614/93409820-c1800780-f865-11ea-8c6b-c3792e35e0c8.png)
 
@@ -69,5 +69,5 @@ point to the newest release.
 ## Troubleshooting
 
 - If the GitHub Action fails, check the Actions tab for error logs
-- Ensure all required files are present in the repository
-- Verify that the version numbers are valid semantic versions
+- Check that all required files exist in the repository
+- Verify that the version numbers use valid semantic versions

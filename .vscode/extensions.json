@@ -17,6 +17,7 @@
 
     // Documentation & Writing
     "streetsidesoftware.code-spell-checker",
+    "chrischinchilla.vale-vscode",
 
     // Docker & DevOps
     "ms-azuretools.vscode-docker",
