@@ -16,15 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Rust toolchain (for lychee)
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          profile: minimal
-          override: true
-
       - name: Install lychee
-        run: cargo install lychee --locked
+        run: ./tools/install-lychee.sh
 
       - uses: actions/setup-python@v5
         with:

@@ -18,16 +18,7 @@ npm install -g \
   @foundryvtt/foundryvtt-cli
 
 # Install lychee for link checking
-echo "🔗 Installing lychee link checker..."
-LYCHEE_VERSION="v0.15.1"
-LYCHEE_ARCHIVE="lychee-${LYCHEE_VERSION}-x86_64-unknown-linux-gnu.tar.gz"
-LYCHEE_URL="https://github.com/lycheeverse/lychee/releases/download/${LYCHEE_VERSION}/${LYCHEE_ARCHIVE}"
-
-# Download and extract lychee
-curl -sSfL "${LYCHEE_URL}" -o "/tmp/${LYCHEE_ARCHIVE}"
-tar -xzf "/tmp/${LYCHEE_ARCHIVE}" -C /tmp
-sudo mv /tmp/lychee /usr/local/bin/
-rm -f "/tmp/${LYCHEE_ARCHIVE}"
+"$(dirname "${BASH_SOURCE[0]}")/../tools/install-lychee.sh"
 
 # Configure git safe directory
 echo "🔧 Configuring git safe directory..."
