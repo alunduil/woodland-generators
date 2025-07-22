@@ -28,9 +28,11 @@
         // Documentation & Writing
         "streetsidesoftware.code-spell-checker",
         "chrischinchilla.vale-vscode",
+        "blackmist.linkcheckmd",
         // JSON/YAML/Config
         "redhat.vscode-yaml",
         "ms-vscode.vscode-json",
+        "tamasfe.even-better-toml",
         // GitHub Actions
         "github.vscode-github-actions",
         // Shell Script Development

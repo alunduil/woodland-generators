@@ -37,5 +37,16 @@
       "source.fixAll.markdownlint": "explicit"
     },
     "editor.formatOnSave": true
-  }
+  },
+  "[toml]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
+  "evenBetterToml.formatter.alignEntries": true,
+  "evenBetterToml.formatter.alignComments": true,
+  "evenBetterToml.formatter.reorderKeys": false,
+  "linkcheckmd.showAllMessages": true,
+  "linkcheckmd.showGutterIconOnError": true,
+  "linkcheckmd.decorateLinks": true,
+  "linkcheckmd.enabled": true
 }
