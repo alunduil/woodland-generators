@@ -18,8 +18,7 @@
     // Documentation & Writing
     "streetsidesoftware.code-spell-checker",
 
-    // Docker & DevOps
-    "ms-azuretools.vscode-docker",
+    // GitHub Actions
     "github.vscode-github-actions",
 
     // JSON/YAML/Config
