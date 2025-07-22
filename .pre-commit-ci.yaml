@@ -1,0 +1,10 @@
+# Pre-commit CI configuration
+# This file configures how pre-commit.ci behaves
+
+# Disable automatic pre-commit.ci runs (we'll use our own GitHub Actions)
+ci:
+  autofix_prs: false
+  skip: []
+
+# Still allow pre-commit.ci to create PRs for hook updates
+autoupdate_commit_msg: "Update pre-commit hook versions"
