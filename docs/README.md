@@ -3,44 +3,44 @@
 Welcome to the Woodland Generators documentation. Everything you need to know
 about developing, testing, and contributing to this FoundryVTT module.
 
-## New to contributing?
+## New to contributing
 
 **Start here:** [Contributing Guidelines](../CONTRIBUTING.md) - Get oriented and
-set up your development environment quickly.
+set up your development environment.
 
-## Quick Navigation
+## Quick navigation
 
-### I want to
+### Tasks to complete
 
 - **🚀 Start contributing** → [Contributing Guidelines](../CONTRIBUTING.md)
-- **🔧 Set up my development environment** →
+- **🔧 Set up development environment** →
   [Local Development Setup](how-to-set-up-local-development.md)
-- **🧪 Test my changes in FoundryVTT** →
+- **🧪 Test changes in FoundryVTT** →
   [GitHub URL Testing](how-to-test-with-github-urls.md)
 - **📝 Submit a pull request** → [Submit Changes](how-to-submit-changes.md)
 - **👁️ Review someone's PR** →
   [Review Pull Requests](how-to-review-pull-requests.md)
 - **🏷️ Create a release** → [Create Releases](how-to-create-releases.md)
 
-## For Contributors
+## For contributors
 
 - [How to Set Up Local Development](how-to-set-up-local-development.md) - Get
   your development environment running
-- [How to Test with GitHub URLs](how-to-test-with-github-urls.md) - Test your
+- [How to Test with GitHub URLs](how-to-test-with-github-urls.md) - Test
   changes in real FoundryVTT environments
 - [How to Submit Changes](how-to-submit-changes.md) - Create pull requests and
-  get your changes merged
+  get changes merged
 
-## For Maintainers
+## For maintainers
 
 - [How to Review Pull Requests](how-to-review-pull-requests.md) - Review and
-  test contributions effectively
+  test contributions
 - [How to Create Releases](how-to-create-releases.md) - Version and publish new
   releases
 - [How to Submit to Package Repository](how-to-submit-to-package-repository.md) -
   List updates in FoundryVTT's official repository
 
-## Reference Materials
+## Reference materials
 
 - **Code Documentation**: See inline TypeScript documentation in source files
 - **Project Structure**: Examine `package.json`, `tsconfig.json`, and
@@ -49,15 +49,15 @@ set up your development environment quickly.
 - **Build Configuration**: Check `tsconfig.json`, npm scripts, and compilation
   settings
 
-## Getting Help
+## Getting help
 
 - **Questions about contributing?** Open an issue with the `question` label
-- **Found a bug?** Use our bug report template
-- **Have a feature idea?** Use our feature request template
+- **Found a bug?** Use the bug report template
+- **Have a feature idea?** Use the feature request template
 - **Need clarification on documentation?** Comment on the relevant guide or open
   an issue
 
-## About This Documentation
+## About this documentation
 
 This documentation follows the [Diátaxis framework](https://diataxis.fr/) for
 systematic technical documentation:
@@ -67,5 +67,5 @@ systematic technical documentation:
 - **Tutorials**: Learning-oriented lessons (coming soon)
 - **Conceptual guides**: Understanding-oriented explanations (coming soon)
 
-Each type serves a specific purpose and user need, helping you find exactly what
-you're looking for.
+Each type serves a specific purpose and user need, helping locate exactly what
+you need.

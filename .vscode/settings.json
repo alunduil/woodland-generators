@@ -30,5 +30,23 @@
     "yzhang"
   ],
   "git.autofetch": true,
-  "terminal.integrated.defaultProfile.linux": "bash"
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "[markdown]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.vale": "explicit",
+      "source.fixAll.markdownlint": "explicit"
+    },
+    "editor.formatOnSave": true
+  },
+  "[toml]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
+  "evenBetterToml.formatter.alignEntries": true,
+  "evenBetterToml.formatter.alignComments": true,
+  "evenBetterToml.formatter.reorderKeys": false,
+  "linkcheckmd.showAllMessages": true,
+  "linkcheckmd.showGutterIconOnError": true,
+  "linkcheckmd.decorateLinks": true,
+  "linkcheckmd.enabled": true
 }

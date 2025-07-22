@@ -41,6 +41,9 @@ coverage/
 # Pre-commit cache
 .pre-commit-cache/
 
+# Link checker cache
+.lycheecache
+
 # Test outputs
 test-results/
 playwright-report/

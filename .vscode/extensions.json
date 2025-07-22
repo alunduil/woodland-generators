@@ -17,6 +17,8 @@
 
     // Documentation & Writing
     "streetsidesoftware.code-spell-checker",
+    "chrischinchilla.vale-vscode",
+    "blackmist.linkcheckmd",
 
     // Docker & DevOps
     "ms-azuretools.vscode-docker",
@@ -25,6 +27,7 @@
     // JSON/YAML/Config
     "redhat.vscode-yaml",
     "ms-vscode.vscode-json",
+    "tamasfe.even-better-toml",
 
     // Shell Script Development
     "timonwong.shellcheck",

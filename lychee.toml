@@ -1,0 +1,44 @@
+# Lychee Link Checker Configuration
+# Documentation: https://lychee.cli.rs/
+
+# Accept status codes as valid (default: ["200", "429"])
+accept = [
+  200, # OK
+  204, # No Content
+  206, # Partial Content
+  300, # Multiple Choices
+  301, # Moved Permanently
+  302, # Found
+  303, # See Other
+  307, # Temporary Redirect
+  308, # Permanent Redirect
+  403, # Forbidden (some sites block crawlers)
+  429, # Too Many Requests (rate limiting)
+]
+# Enable caching for faster repeated runs (default: false)
+cache = true
+# Exclude patterns (files/URLs to skip)
+exclude = [
+  # Local development URLs (false positives)
+  "https?://localhost.*",
+  "https?://127\\.0\\.0\\.1.*",
+  # Common placeholder URLs (false positives)
+  "https?://example\\.com.*",
+  "https?://example/.*",
+  "mailto:.*",
+  # GitHub URLs that require authentication (false positives)
+  "https://github\\.com/.*/settings/.*",
+  "https://github\\.com/settings/.*",
+  # GitHub releases that don't exist yet (temporary exclusion)
+  "https://github\\.com/alunduil/woodland-generators/releases.*",
+  # Shell variables in URLs (can't be validated) - matches URL-encoded shell variables like ${VARIABLE} encoded as %7BVARIABLE%7D
+  ".*\\$%7B.*%7D.*",
+]
+# Check links inside code blocks and verbatim text (default: false)
+include_verbatim = true
+# Maximum number of concurrent requests (default: 14)
+max_concurrency = 8
+# Check both HTTP and HTTPS schemes (default: ["https"])
+scheme = ["https", "http"]
+# Request timeout in seconds (default: 20)
+timeout = 30

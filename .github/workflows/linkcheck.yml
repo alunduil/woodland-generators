@@ -1,0 +1,23 @@
+name: Link Check
+
+# This workflow runs lychee link checking with proper environment setup
+# since lychee isn't available in pre-commit.ci
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  lychee:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install lychee
+        run: ./tools/install-lychee.sh
+
+      - name: Check links with lychee
+        run: lychee --config=lychee.toml --no-progress .

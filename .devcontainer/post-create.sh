@@ -17,6 +17,9 @@ npm install -g \
   eslint \
   @foundryvtt/foundryvtt-cli
 
+# Install lychee for link checking
+"$(dirname "${BASH_SOURCE[0]}")/../tools/install-lychee.sh"
+
 # Configure git safe directory
 echo "🔧 Configuring git safe directory..."
 git config --global --add safe.directory /workspace

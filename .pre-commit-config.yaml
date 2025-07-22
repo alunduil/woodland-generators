@@ -6,6 +6,21 @@
 # To run manually: pre-commit run --all-files
 # To update hooks: pre-commit autoupdate
 
+# Pre-commit.ci configuration
+ci:
+  # Skip hooks that require special installation not available in pre-commit.ci
+  skip: [lychee]
+
+# Global exclusions - applied to all hooks unless overridden
+exclude: |
+  (?x)^(
+    node_modules/.*|
+    dist/.*|
+    build/.*|
+    \.git/.*|
+    \.vale/.*
+  )$
+
 repos:
   # Standard pre-commit hooks for common file issues
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -44,9 +59,7 @@ repos:
         exclude: |
           (?x)^(
             package-lock\.json|
-            \.vscode/.*\.json|
-            dist/.*|
-            node_modules/.*
+            \.vscode/.*\.json
           )$
 
   # ESLint for JavaScript/TypeScript linting
@@ -88,3 +101,39 @@ repos:
         name: Lint YAML files
         args: ["-d", "relaxed"]
         exclude: '^\.github/workflows/' # Skip GitHub Actions workflows
+
+  # TOML formatting and linting with taplo
+  - repo: https://github.com/ComPWA/taplo-pre-commit
+    rev: v0.9.3
+    hooks:
+      - id: taplo-format
+        name: Format TOML with taplo
+      - id: taplo-lint
+        name: Lint TOML with taplo
+        args: ["--no-schema"]
+
+  # Prose linting with Vale
+  - repo: https://github.com/errata-ai/vale
+    rev: v3.9.2
+    hooks:
+      - id: vale
+        name: Vale prose linting
+        files: \.(md|rst|txt)$
+        types_or: [markdown, rst, plain-text]
+        additional_dependencies: []
+        args: ["--config=.vale.ini"]
+
+  # Link checking with lychee
+  - repo: https://github.com/lycheeverse/lychee
+    rev: v0.15.1
+    hooks:
+      - id: lychee
+        name: Check links with lychee
+        args: ["--config=lychee.toml", "--no-progress"]
+        exclude: |
+          (?x)^(
+            \.github/workflows/.*\.yml$|
+            \.github/workflows/.*\.yaml$|
+            package-lock\.json$|
+            lychee\.toml$
+          )$

@@ -1,0 +1,19 @@
+# Vale ignore patterns
+# https://vale.sh/docs/topics/scoping/#ignoring-files
+
+# Ignore generated files
+dist/
+node_modules/
+*.min.js
+*.bundle.js
+
+# Ignore certain documentation that might have technical jargon
+package-lock.json
+
+# Ignore certain markdown files that are auto-generated
+# or contain mostly code/technical content
+**/tsconfig*.json
+**/*.d.ts
+
+# Patterns to ignore in any file
+# License headers, code blocks, etc. are handled in .vale.ini
