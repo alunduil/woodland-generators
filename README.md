@@ -19,6 +19,9 @@ clearings specifically designed for Root: The RPG.
   - [System requirements](#system-requirements)
   - [Usage](#usage)
   - [Contributing](#contributing)
+    - [Quick start for contributors](#quick-start-for-contributors)
+    - [Testing your changes](#testing-your-changes)
+    - [Complete development guide](#complete-development-guide)
   - [Support](#support)
   - [Roadmap](#roadmap)
   - [License](#license)
@@ -77,7 +80,7 @@ After installation and activation:
    soon)
 3. Generated content works with Root: The RPG character sheets and mechanics
 
-_Note: The development team will add detailed usage instructions as features get
+_Note: The development team will add detailed usage instructions as features are
 implemented._
 
 ## Contributing

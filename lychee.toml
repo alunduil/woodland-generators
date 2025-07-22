@@ -31,7 +31,7 @@ exclude = [
   "https://github\\.com/settings/.*",
   # GitHub releases that don't exist yet (temporary exclusion)
   "https://github\\.com/alunduil/woodland-generators/releases.*",
-  # Shell variables in URLs (can't be validated) - URL-encoded format
+  # Shell variables in URLs (can't be validated) - matches URL-encoded shell variables like ${VARIABLE} encoded as %7BVARIABLE%7D
   ".*\\$%7B.*%7D.*",
 ]
 # Check links inside code blocks and verbatim text (default: false)
