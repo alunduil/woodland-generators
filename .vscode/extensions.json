@@ -20,8 +20,7 @@
     "chrischinchilla.vale-vscode",
     "blackmist.linkcheckmd",
 
-    // Docker & DevOps
-    "ms-azuretools.vscode-docker",
+    // GitHub Actions
     "github.vscode-github-actions",
 
     // JSON/YAML/Config
