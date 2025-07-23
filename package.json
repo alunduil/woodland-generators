@@ -3,7 +3,7 @@
   "description": "A FoundryVTT module for woodland generators",
   "devDependencies": {
     "@league-of-foundry-developers/foundry-vtt-types": "^13.345.1",
-    "@types/node": "^20.0.0",
+    "@types/node": "^24.1.0",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
     "c8": "^10.1.3",
