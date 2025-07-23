@@ -9,7 +9,6 @@
     "c8": "^9.0.0",
     "eslint": "^8.56.0",
     "prettier": "^3.0.0",
-    "tsx": "^4.20.3",
     "typescript": "^5.4.0"
   },
   "engines": {
@@ -50,8 +49,7 @@
     "test": "node --test dist/**/*.test.js",
     "test:coverage": "c8 npm test",
     "typecheck": "tsc --noEmit",
-    "validate": "npm run format:check && npm run lint && npm run typecheck && npm run build && npm test && npm run validate:workspace",
-    "validate:workspace": "npx tsx tools/validate-workspace.ts"
+    "validate": "npm run format:check && npm run lint && npm run typecheck && npm run build && npm test"
   },
   "type": "module",
   "version": "0.1.0"

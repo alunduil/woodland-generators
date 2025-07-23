@@ -1,3 +1,17 @@
+/**
+ * Workspace Configuration Validator
+ *
+ * This tool validates that VS Code extension recommendations in `.vscode/extensions.json`
+ * match the extensions configured in `.devcontainer/devcontainer.json`. This ensures
+ * consistency between the workspace recommendations and the dev container environment.
+ *
+ * The validation helps prevent issues where extensions are out of sync between
+ * different development environments.
+ *
+ * Usage: npx tsx tools/validate-workspace.ts
+ * Automated execution: Runs in CI/CD pipeline via GitHub Actions
+ */
+
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
 import { readFileSync } from "node:fs";

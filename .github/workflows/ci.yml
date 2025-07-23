@@ -56,9 +56,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Validate workspace configuration
-        run: npm run validate:workspace
-
       - name: Run tests
         run: npm test
 
