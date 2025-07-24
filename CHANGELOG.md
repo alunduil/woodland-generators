@@ -10,13 +10,13 @@ this project adheres to
 
 ### Added
 
-- Module icons in various resolutions for better display across different
-  contexts
+- CLI tool for generating Root: The Tabletop RPG resources (`woodland-gen`
+  command)
+- Character generation with `character` sub-command (alias: `char`)
+- Output format support for JSON via `--format` option
+- Global installation support via npm
 
 ### Changed
-
-- Configured `module.json` to declare Root: The RPG system compatibility and
-  PbtA system dependency
 
 ### Deprecated
 

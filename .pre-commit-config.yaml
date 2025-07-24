@@ -48,6 +48,7 @@ repos:
       # Other useful checks
       - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
+        exclude: '^src/.*\.ts$' # TypeScript source files with shebangs are compiled, not directly executed
 
   # Prettier for code formatting
   - repo: https://github.com/pre-commit/mirrors-prettier

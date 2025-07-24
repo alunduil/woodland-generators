@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["ES2022", "DOM"],
-    "module": "ESNext",
+    "lib": ["ES2022"],
+    "module": "commonjs",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -12,15 +12,18 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-    "declaration": true,
-    "declarationMap": true,
+    "noEmitOnError": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "rootDir": "./scripts",
+    "rootDir": "./src",
     "resolveJsonModule": true,
     "skipLibCheck": true,
+    "removeComments": true,
+    "newLine": "lf",
     "types": ["node"]
   },
-  "include": ["scripts/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }
