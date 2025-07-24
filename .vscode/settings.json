@@ -44,9 +44,5 @@
   },
   "evenBetterToml.formatter.alignEntries": true,
   "evenBetterToml.formatter.alignComments": true,
-  "evenBetterToml.formatter.reorderKeys": false,
-  "linkcheckmd.showAllMessages": true,
-  "linkcheckmd.showGutterIconOnError": true,
-  "linkcheckmd.decorateLinks": true,
-  "linkcheckmd.enabled": true
+  "evenBetterToml.formatter.reorderKeys": false
 }

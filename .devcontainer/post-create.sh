@@ -3,19 +3,9 @@ set -e
 
 echo "🚀 Setting up Woodland Generators development environment..."
 
-# Update npm to latest version
-echo "📦 Updating npm to latest version..."
-npm install -g npm@latest
-
-# Install global npm packages
-echo "📦 Installing global npm packages..."
-npm install -g \
-  typescript \
-  @typescript-eslint/parser \
-  @typescript-eslint/eslint-plugin \
-  prettier \
-  eslint \
-  @foundryvtt/foundryvtt-cli
+# Install project dependencies
+echo "📦 Installing project dependencies..."
+npm install
 
 # Install lychee for link checking
 "$(dirname "${BASH_SOURCE[0]}")/../tools/install-lychee.sh"
@@ -29,4 +19,4 @@ echo "🪝 Setting up pre-commit hooks..."
 pre-commit install
 
 echo "✅ Development environment setup complete!"
-echo "🎯 You can now start developing your FoundryVTT module."
+echo "🎯 You can now start developing your CLI tool."

@@ -1,68 +1,84 @@
-# Contributing to woodland generators
+# Contributing to Woodland Generators
 
-Thank you for your interest in contributing! This guide covers everything you
-need to know about developing and testing this FoundryVTT module.
+Thank you for your interest in contributing! This CLI tool generates resources
+for Root: The Tabletop RPG.
 
-**New to open source?** Check out these friendly resources:  
-[How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)  
-and [First Timers Only](http://www.firsttimersonly.com/)
+These guidelines help maintainers review your work. Following them shows respect
+for their time.
 
-**Security Issues:** If you find a security vulnerability, please email  
-the maintainer directly instead of opening a public issue.
+## What you can contribute
+
+The project welcomes help that improves the tool's usefulness for Root RPG
+players:
+
+- **New generators** (NPCs, settlements, adventures)
+- **Output format improvements** (better PDF files, new formats)
+- **Bug fixes** and **performance improvements**
+- **Doc updates** and **examples**
+
+## Ground rules
+
+- **TypeScript with strict typing** - Type safety stays important
+- **Run checks** before submitting: `npm run check:all`
+- **Test your changes** with `npm run cli`
+- **Keep PRs focused** - one feature or fix per PR
+- **Stay patient** - reviews may take a few days
 
 ## Quick start
 
-1. **Fork and clone** the repository
-2. **Set up development environment**: `npm install`
-3. **Make your changes** with live compilation: `npm run build:watch`
-4. **Test your changes**: Create a pull request - the automated workflow will  
-   provide testing instructions and URLs for FoundryVTT
-5. **Submit a pull request** following the issue templates
+1. **Install dependencies**:
 
-## Development workflow
+   ```bash
+   npm install
+   ```
 
-### For maintainers
+2. **Test the CLI**:
 
-- [How to Create Releases](docs/how-to-create-releases.md)
-- [How to Submit to Package Repository](docs/how-to-submit-to-package-repository.md)
+   ```bash
+   npm run cli -- character --help
+   ```
 
-## Code standards
+3. **Development workflow**:
 
-This project maintains high code quality through automated tools:
+   ```bash
+   npm run build:watch    # Watch mode dev
+   npm run check:all      # Check everything
+   npm run fix:lint       # Auto-fix code issues
+   npm run fix:format     # Auto-format code
+   ```
 
-- **TypeScript**: Compile-time type checking
-- **ESLint**: Code linting and style enforcement
-- **Prettier**: Consistent code formatting
-- **Vale**: Prose linting for documentation quality
-- **Pre-commit hooks**: Automatic validation before commits
+## How to submit changes
 
-Run `npm run validate` to check everything locally.
+### For big changes
 
-### Writing documentation
+1. **Open an issue first** to discuss the approach
+2. Fork the repository and create a feature branch
+3. Make your changes following the code standards
+4. Run `npm run check:all` to check everything works
+5. Submit a pull request with a clear description
 
-For prose linting, Vale automatically checks documentation. To add
-project-specific terms (like "FoundryVTT," "woodland," etc.), add them to
-`.vale/styles/config/vocabularies/Custom/accept.txt`.
+### For small fixes (typos, formatting)
 
-You can also disable Vale for specific content using markup comments:
+- Feel free to submit directly without opening an issue first
 
-```markdown
-<!-- vale off -->
+## How to report bugs or suggest features
 
-Technical content that should skip prose linting.
+- **Bugs**: Use the [bug report template][bug-template] and include what command
+  you ran, what you expected, what happened, and your OS/Node.js version
+- **Feature ideas**: Use the [feature request template][feature-template] and
+  tell what you want to build, why users need it, and how it works
+- **Questions and chat**: Use [GitHub Discussions][discussions] for general
+  questions, ideas, or community chat
 
-<!-- vale on -->
-```
+## Code review process
 
-## Getting help
+- The project team reviews PRs on a regular basis, typically within a week
+- Reviewers provide feedback through GitHub review comments
+- Maintainers may request changes before merging
+- Once approved, maintainers will merge your PR
 
-- **Questions?** Use the [Question template][question-template]
-- **Bug reports?** Use the [Bug Report template][bug-template]
-- **Feature requests?** Use the [Feature Request template][feature-template]
-
-[question-template]:
-  https://github.com/alunduil/woodland-generators/issues/new?template=question.yml
 [bug-template]:
   https://github.com/alunduil/woodland-generators/issues/new?template=bug_report.yml
 [feature-template]:
   https://github.com/alunduil/woodland-generators/issues/new?template=feature_request.yml
+[discussions]: https://github.com/alunduil/woodland-generators/discussions

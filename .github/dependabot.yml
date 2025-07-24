@@ -25,15 +25,7 @@ updates:
     # Group development dependencies together
     groups:
       dev-dependencies:
-        patterns:
-          - "@types/*"
-          - "typescript"
-          - "eslint*"
-          - "prettier"
-          - "@typescript-eslint/*"
-          - "jest"
-          - "vitest"
-          - "@vitejs/*"
+        dependency-type: "development"
         update-types:
           - "minor"
           - "patch"

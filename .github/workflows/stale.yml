@@ -1,0 +1,59 @@
+name: Mark stale issues and pull requests
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Run daily at midnight UTC
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          # Issues
+          stale-issue-message: |
+            This issue has been automatically marked as stale because it has not had
+            recent activity. It will be closed in 14 days if no further activity occurs.
+
+            If this issue is still relevant, please add a comment to keep it open.
+            Thank you for your contributions!
+          close-issue-message: |
+            This issue has been automatically closed due to inactivity.
+
+            If this issue is still relevant, please feel free to reopen it or create
+            a new issue with updated information.
+          days-before-issue-stale: 7
+          days-before-issue-close: 14
+
+          # Pull Requests
+          stale-pr-message: |
+            This pull request has been automatically marked as stale because it has not
+            had recent activity. It will be closed in 14 days if no further activity occurs.
+
+            If you're still working on this, please add a comment or push new commits
+            to keep it open. Thank you for your contribution!
+          close-pr-message: |
+            This pull request has been automatically closed due to inactivity.
+
+            If you're still interested in merging this, please feel free to reopen it
+            and address any feedback.
+          days-before-pr-stale: 7
+          days-before-pr-close: 14
+
+          # Labels
+          stale-issue-label: "stale"
+          stale-pr-label: "stale"
+
+          # Exemptions
+          exempt-issue-labels: "pinned,security,help wanted,good first issue"
+          exempt-pr-labels: "pinned,security,work in progress,wip"
+
+          # Only process a limited number per run to avoid rate limits
+          operations-per-run: 30
+
+          # Don't mark issues/PRs as stale if they have recent comments
+          exempt-all-milestones: true

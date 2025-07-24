@@ -12,7 +12,7 @@ body:
     id: what-happened
     attributes:
       label: What happened?
-      description: A clear and concise description of what the bug is. Screenshots are helpful for UI issues!
+      description: A clear and concise description of what the bug is. Include any error messages or unexpected output.
       placeholder: Tell us what you see!
     validations:
       required: true
@@ -30,43 +30,37 @@ body:
     id: reproduce
     attributes:
       label: Steps to Reproduce
-      description: Steps to reproduce the behavior. Screenshots can be very helpful here!
+      description: Steps to reproduce the behavior. Include the exact commands you ran.
       placeholder: |
-        1. Go to '...'
-        2. Click on '....'
-        3. Scroll down to '....'
-        4. See error
+        1. Run command `woodland-gen character --faction bird`
+        2. Select option '...'
+        3. See error
     validations:
       required: true
 
   - type: input
-    id: foundry-version
+    id: cli-version
     attributes:
-      label: FoundryVTT Version
-      description: What version of FoundryVTT are you running?
-      placeholder: e.g., v11.315
+      label: CLI Version
+      description: What version of Woodland Generators CLI are you using? (Run `woodland-gen --version` to check)
+      placeholder: e.g., v0.1.0
     validations:
       required: true
 
   - type: input
-    id: module-version
+    id: node-version
     attributes:
-      label: Module Version
-      description: What version of Woodland Generators are you using?
-      placeholder: e.g., v1.0.0
+      label: Node.js Version
+      description: What version of Node.js are you running? (Run `node --version` to check)
+      placeholder: e.g., v18.17.0
     validations:
       required: true
 
-  - type: textarea
-    id: console-errors
+  - type: input
+    id: os-info
     attributes:
-      label: Console Errors
-      description: |
-        Open browser Developer Tools (F12 or right-click → Inspect), go to Console tab.
-        Look for red error messages when the issue occurs. Include the full error with stack trace if available.
-        Tip: You can right-click on error messages to "Copy" the full details.
-      placeholder: |
-        Example:
-        Error: Cannot read property 'generate' of undefined
-            at Object.generateCharacter (module.js:42:15)
-            at HTMLButtonElement.onclick (index.html:123:5)
+      label: Operating System
+      description: What operating system are you using?
+      placeholder: e.g., Windows 11, macOS 13.4, Ubuntu 22.04
+    validations:
+      required: true
