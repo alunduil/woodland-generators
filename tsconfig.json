@@ -22,7 +22,7 @@
     "skipLibCheck": true,
     "removeComments": true,
     "newLine": "lf",
-    "types": ["node"]
+    "types": ["node", "jest"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

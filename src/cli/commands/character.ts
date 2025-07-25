@@ -1,37 +1,38 @@
-import { Command, Option } from "commander";
-import * as Formatters from "../../formatters";
+import { Command } from "commander";
+import { generateCharacter, generatePlaybook } from "../../generators";
 
 export function createCharacterCommand(): Command {
   return new Command("character")
     .alias("char")
     .description("Generate woodland characters for Root: The RPG")
-    .option("-c, --count <number>", "Number of characters to generate", "1")
-    .option("-o, --output <file>", "Output file (default: stdout)")
-    .addOption(
-      new Option("-f, --format <format>", "Output format")
-        .choices([...Formatters.FORMATS]) // Spread to convert readonly array
-        .default(Formatters.DEFAULT),
+    .argument("<playbook-path>", "filepath to playbook PDF")
+    .option("-s, --seed <seed>", "seed for reproducible character generation")
+    .option(
+      "-a, --archetype <archetype>",
+      'specific archetype to select (e.g., "The Ranger", "The Thief")',
     )
-    .action((options) => {
-      // Commander handles validation, no need for Format.validate()!
+    .option("-n, --name <name>", "custom name for the character")
+    .action(async (path, options) => {
+      // Ensure we always have a seed for consistent, testable behavior
+      const seed = options.seed || Math.random().toString(36).substring(2, 15);
 
-      // TODO Implement the character creation process:
-      // Choose playbook
-      // Choose name, species, and details
-      // Choose where to add +1 to stats; cannot raise above +2
-      // Choose your background; prestige and notoriety
-      // Choose your nature
-      // Choose your drives
-      // Choose your moves
-      // Choose your roguish feats
-      // Choose your weapon skills
-      // Spend starting value on equipment; burdened and max loads
+      console.log(`Using seed: ${seed}`);
 
-      const mockCharacters = [{ name: "Brave Squirrel", faction: "Woodland Alliance" }];
+      // First generate/load the playbook
+      const playbook = await generatePlaybook({
+        path,
+        seed,
+        ...(options.archetype !== undefined && { archetype: options.archetype }),
+      });
 
-      // options.format is already validated by Commander
-      const formattedOutput = Formatters.run(options.format, mockCharacters);
+      // Then generate character using the playbook object
+      const character = await generateCharacter({
+        playbook,
+        name: options.name,
+        seed: seed,
+      });
 
-      console.log(formattedOutput);
+      // Output the character
+      console.log(JSON.stringify(character, null, 2));
     });
 }

@@ -13,10 +13,24 @@ this project adheres to
 - CLI tool for generating Root: The Tabletop RPG resources (`woodland-gen`
   command)
 - Character generation with `character` sub-command (alias: `char`)
-- Output format support for JSON via `--format` option
+- PDF playbook parsing support for Root RPG playbook files
+- Comprehensive character generation from playbook PDF files including:
+  - Species generation with traits and details
+  - Name generation for woodland creatures
+  - Background, feat, and move generation
+  - Playbook-specific archetype selection
+- Reproducible character generation via `--seed` option
+- Custom name override via `--name` option
+- Specific archetype selection via `--archetype` option
+- Multi-source playbook support (PDF and JSON formats)
 - Global installation support via npm
 
 ### Changed
+
+- Character command now requires a playbook PDF path as an argument
+- Character generation output is now structured JSON format
+- Removed generic `--format` and `--count` options in favor of PDF-specific
+  functionality
 
 ### Deprecated
 
