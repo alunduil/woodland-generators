@@ -38,6 +38,9 @@ coverage/
 .nyc_output/
 .c8_output/
 
+# Jest cache
+.jest/
+
 # Pre-commit cache
 .pre-commit-cache/
 
@@ -61,6 +64,8 @@ yarn.lock
 *.zip
 packs/
 *.db
+
+# Local development data (includes copyrighted PDFs and FoundryVTT data)
 data/
 
 # Documentation generation

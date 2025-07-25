@@ -13,7 +13,7 @@
   },
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "quotes": ["error", "double"],
+    "quotes": ["error", "double", { "avoidEscape": true }],
     "semi": ["error", "always"],
     "@typescript-eslint/no-unused-vars": [
       "error",
@@ -32,6 +32,12 @@
     {
       "files": ["*.js"],
       "extends": ["eslint:recommended"]
+    },
+    {
+      "files": ["test/**/*.ts"],
+      "parserOptions": {
+        "project": "./tsconfig.test.json"
+      }
     }
   ],
   "ignorePatterns": ["dist/", "node_modules/", "*.min.js"]
