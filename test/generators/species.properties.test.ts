@@ -213,7 +213,7 @@ describe("generateSpecies", () => {
             const choices = includeOther ? [...baseChoices, "other"] : baseChoices;
 
             // Should work if user species is in base choices OR if "other" is present
-            const shouldWork = baseChoices.includes(userSpecies) || includeOther;
+            const shouldWork = Boolean(baseChoices.includes(userSpecies)) || includeOther;
 
             if (shouldWork) {
               const result = generateSpecies({ seed, choices, species: userSpecies });
