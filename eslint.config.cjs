@@ -1,7 +1,7 @@
-import eslintJs from "@eslint/js";
+const eslintJs = require("@eslint/js");
 const { configs: eslintConfigs } = eslintJs;
-import tseslint from "@typescript-eslint/eslint-plugin";
-import tsparser from "@typescript-eslint/parser";
+const tseslint = require("@typescript-eslint/eslint-plugin");
+const tsparser = require("@typescript-eslint/parser");
 
 // Common configuration shared between source and test files
 const commonNodeGlobals = {
@@ -45,7 +45,7 @@ const commonRules = {
   "@typescript-eslint/no-unnecessary-condition": "warn",
 };
 
-export default [
+module.exports = [
   // Base ESLint recommended rules
   eslintConfigs.recommended,
 
