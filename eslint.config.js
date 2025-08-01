@@ -1,4 +1,5 @@
-import eslint from "@eslint/js";
+import eslintJs from "@eslint/js";
+const { configs: eslintConfigs } = eslintJs;
 import tseslint from "@typescript-eslint/eslint-plugin";
 import tsparser from "@typescript-eslint/parser";
 
@@ -46,7 +47,25 @@ const commonRules = {
 
 export default [
   // Base ESLint recommended rules
-  eslint.configs.recommended,
+  eslintConfigs.recommended,
+
+  // TypeScript configuration for tools
+  {
+    files: ["tools/**/*.ts"],
+    languageOptions: {
+      ...commonLanguageOptions,
+      parserOptions: {
+        ...commonLanguageOptions.parserOptions,
+        project: "./tsconfig.tools.json",
+      },
+      globals: commonNodeGlobals,
+    },
+    plugins: commonPlugins,
+    rules: {
+      ...commonRules,
+      "@typescript-eslint/explicit-function-return-type": "warn",
+    },
+  },
 
   // TypeScript configuration for main source files
   {
