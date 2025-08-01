@@ -1,7 +1,7 @@
 import { readFileSync } from "fs";
 import pdfParse, { Result as PDFResult } from "pdf-parse";
 import { Playbook } from "../types";
-import { PlaybookSource } from "./index";
+import { PlaybookSource } from "./types";
 
 /**
  * Configuration constants for PDF parsing
@@ -16,14 +16,8 @@ const PDF_PARSE_CONFIG = {
 /**
  * PDF-specific implementation for parsing Root RPG playbook PDFs
  */
-export class PDFPlaybookSource implements PlaybookSource {
-  private path: string;
+export class PDFPlaybookSource extends PlaybookSource {
   private data: PDFResult | null = null;
-  private playbooks: Playbook[] = [];
-
-  constructor(path: string) {
-    this.path = path;
-  }
 
   /**
    * Load PDF data if not already cached
@@ -61,27 +55,6 @@ export class PDFPlaybookSource implements PlaybookSource {
     console.log(`Extracted ${data.text.length} characters of text`);
 
     this.parsePlaybooks();
-  }
-
-  /**
-   * Get a specific playbook by archetype name
-   */
-  async getPlaybook(archetype: string): Promise<Playbook | null> {
-    return this.playbooks.find((p) => p.archetype === archetype) ?? null;
-  }
-
-  /**
-   * Get a random playbook from available options using a seed
-   */
-  async getRandomPlaybook(seed: string): Promise<Playbook | null> {
-    if (this.playbooks.length === 0) {
-      return null;
-    }
-
-    // Simple seeded random: convert seed to number and use modulo
-    const seedNum = seed.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    const randomIndex = seedNum % this.playbooks.length;
-    return this.playbooks[randomIndex] ?? null;
   }
 
   /**

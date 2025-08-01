@@ -3,22 +3,9 @@
  */
 
 import { Playbook } from "../types";
+import { PlaybookSource } from "./types";
 import { PDFPlaybookSource } from "./pdf";
 import { JSONPlaybookSource } from "./json";
-
-/**
- * Interface that all playbook sources must implement
- */
-export interface PlaybookSource {
-  /** Get a specific playbook by archetype name */
-  getPlaybook(archetype: string): Promise<Playbook | null>;
-  /** Get a random playbook using a seed for reproducible selection */
-  getRandomPlaybook(seed: string): Promise<Playbook | null>;
-  /** Load the source data */
-  load(): Promise<void>;
-  /** Check if this source's file is valid and can be processed */
-  isValid(): Promise<boolean>;
-}
 
 /**
  * Helper function to find and use an appropriate source for a given path
@@ -36,7 +23,7 @@ async function withValidSource(
         await source.load();
         return await operation(source);
       }
-    } catch (error) {
+    } catch {
       // Continue to next source type
       continue;
     }
@@ -50,11 +37,7 @@ async function withValidSource(
  */
 export async function fromPath(path: string, seed: string): Promise<Playbook> {
   return await withValidSource(path, async (source) => {
-    const playbook = await source.getRandomPlaybook(seed);
-    if (!playbook) {
-      throw new Error(`No playbook found in file: ${path}`);
-    }
-    return playbook;
+    return await source.getRandomPlaybook(seed);
   });
 }
 
