@@ -14,7 +14,7 @@ export function createCharacterCommand(): Command {
     .option("-n, --name <name>", "custom name for the character")
     .action(async (path, options) => {
       // Ensure we always have a seed for consistent, testable behavior
-      const seed = options.seed || Math.random().toString(36).substring(2, 15);
+      const seed = options.seed ?? Math.random().toString(36).substring(2, 15);
 
       console.log(`Using seed: ${seed}`);
 

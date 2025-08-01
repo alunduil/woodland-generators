@@ -24,6 +24,8 @@ this project adheres to
 - Specific archetype selection via `--archetype` option
 - Multi-source playbook support (PDF and JSON formats)
 - Global installation support via npm
+- Extended woodland species catalog (100+ species) for enhanced character
+  diversity when playbooks include "other" species option
 
 ### Changed
 
@@ -31,6 +33,13 @@ this project adheres to
 - Character generation output is now structured JSON format
 - Removed generic `--format` and `--count` options in favor of PDF-specific
   functionality
+- Improved deterministic random generation for more consistent character
+  creation across multiple runs with the same seed
+- Enhanced species generation reliability with improved random selection
+  algorithm for more consistent results
+- When playbooks specify "other" as a species option, characters now receive
+  species from an extensive Root-appropriate woodland creatures list instead of
+  literally being assigned "other" as their species
 
 ### Deprecated
 

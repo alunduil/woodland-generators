@@ -1,4 +1,5 @@
 import { GeneratorOptions } from "./index";
+import SeededRandomUtilities from "seeded-random-utilities";
 
 /**
  * Available character names for generation
@@ -53,16 +54,9 @@ export function generateName(options: NameGeneratorOptions): string {
     return options.name;
   }
 
-  // Use seed for reproducible selection
-  const seed = options.seed
-    .split("")
-    .reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0);
-  const index = seed % CHARACTER_NAMES.length;
-  const name = CHARACTER_NAMES[index];
-
-  if (!name) {
-    throw new Error("Failed to generate name");
-  }
+  // Create seeded random generator for reproducible selection
+  const rng = new SeededRandomUtilities(options.seed);
+  const name = rng.selectRandomElement([...CHARACTER_NAMES]);
 
   return name;
 }

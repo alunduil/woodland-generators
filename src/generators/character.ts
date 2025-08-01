@@ -1,6 +1,6 @@
-import { GeneratorOptions } from "./index";
 import { generateSpecies } from "./species";
 import { generateName } from "./name";
+import { GeneratorOptions } from "./index";
 import { Character } from "../character";
 import { Playbook } from "../playbook";
 
@@ -22,7 +22,7 @@ export interface CharacterGeneratorOptions extends GeneratorOptions {
 export async function generateCharacter(options: CharacterGeneratorOptions): Promise<Character> {
   console.log(`Generating character from playbook: ${options.playbook.archetype}`);
 
-  // Generate character components using functional approach
+  // Generate character components using functional approach with seeds
   const species = generateSpecies({
     seed: options.seed,
     choices: options.playbook.species,

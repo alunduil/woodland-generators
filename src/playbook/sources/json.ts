@@ -1,18 +1,12 @@
 import { readFileSync } from "fs";
 import { Playbook } from "../types";
-import { PlaybookSource } from "./index";
+import { PlaybookSource } from "./types";
 
 /**
  * JSON-based playbook source for structured playbook data
  */
-export class JSONPlaybookSource implements PlaybookSource {
-  private path: string;
+export class JSONPlaybookSource extends PlaybookSource {
   private data: unknown | null = null;
-  private playbooks: Playbook[] = [];
-
-  constructor(path: string) {
-    this.path = path;
-  }
 
   /**
    * Load JSON data if not already cached
@@ -25,27 +19,6 @@ export class JSONPlaybookSource implements PlaybookSource {
     const fileContent = readFileSync(this.path, "utf-8");
     this.data = JSON.parse(fileContent);
     return this.data;
-  }
-
-  /**
-   * Get a specific playbook by archetype name
-   */
-  async getPlaybook(archetype: string): Promise<Playbook | null> {
-    return this.playbooks.find((p) => p.archetype === archetype) ?? null;
-  }
-
-  /**
-   * Get a random playbook from available options using a seed
-   */
-  async getRandomPlaybook(seed: string): Promise<Playbook | null> {
-    if (this.playbooks.length === 0) {
-      return null;
-    }
-
-    // Simple seeded random: convert seed to number and use modulo
-    const seedNum = seed.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    const randomIndex = seedNum % this.playbooks.length;
-    return this.playbooks[randomIndex] ?? null;
   }
 
   /**
