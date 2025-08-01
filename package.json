@@ -2,7 +2,6 @@
   "name": "woodland-generators",
   "version": "0.1.0",
   "description": "CLI tool for generating resources for Root: The Tabletop RPG",
-  "type": "module",
   "main": "dist/index.js",
   "bin": {
     "woodland-gen": "dist/cli.js"
