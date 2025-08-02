@@ -2,6 +2,8 @@ import { readFileSync } from "fs";
 import pdfParse, { Result as PDFResult } from "pdf-parse";
 import { Playbook } from "../types";
 import { PlaybookSource } from "./types";
+import { createTextPreview, createPositionHighlight } from "./debug";
+import { summary } from "../../stats";
 
 /**
  * Configuration constants for PDF parsing
@@ -24,11 +26,20 @@ export class PDFPlaybookSource extends PlaybookSource {
    */
   private async loadPDFData(): Promise<PDFResult> {
     if (this.data) {
+      this.logger.debug("Using cached PDF data");
       return this.data;
     }
 
+    this.logger.debug({ msg: "Loading PDF from file", path: this.path });
     const buffer = readFileSync(this.path);
+    this.logger.debug({ msg: "PDF file read", size: buffer.length });
+
     this.data = await pdfParse(buffer);
+    this.logger.debug({
+      msg: "PDF extraction completed",
+      pageCount: this.data.numpages,
+      characterCount: this.data.text.length,
+    });
     return this.data;
   }
 
@@ -38,8 +49,14 @@ export class PDFPlaybookSource extends PlaybookSource {
   async isValid(): Promise<boolean> {
     try {
       await this.loadPDFData();
+      this.logger.debug("PDF validation successful");
       return true;
-    } catch {
+    } catch (error) {
+      this.logger.warn({
+        msg: "PDF validation failed",
+        path: this.path,
+        error: error instanceof Error ? error.message : String(error),
+      });
       return false;
     }
   }
@@ -48,12 +65,7 @@ export class PDFPlaybookSource extends PlaybookSource {
    * Load and parse the PDF content
    */
   async load(): Promise<void> {
-    const data = await this.loadPDFData();
-
-    console.log(`Processing playbook from: ${this.path}`);
-    console.log(`PDF has ${data.numpages} page(s)`);
-    console.log(`Extracted ${data.text.length} characters of text`);
-
+    await this.loadPDFData();
     this.parsePlaybooks();
   }
 
@@ -73,13 +85,22 @@ export class PDFPlaybookSource extends PlaybookSource {
       }
     }
 
-    console.log(`Found ${this.playbooks.length} playbook(s) in the PDF`);
+    this.logger.info({
+      msg: "Playbook parsing completed",
+      playbooksFound: this.playbooks.length,
+      sectionsProcessed: sections.length,
+    });
   }
 
   /**
    * Split the extracted text into potential playbook sections
    */
   private splitIntoPlaybookSections(text: string): string[] {
+    this.logger.debug({
+      msg: "Splitting text into playbook sections",
+      totalCharacterCount: text.length,
+    });
+
     // Look for "Choose Your Nature" at the beginning of lines, which typically marks new playbooks
     const splitPositions: number[] = [0];
 
@@ -94,12 +115,28 @@ export class PDFPlaybookSource extends PlaybookSource {
         const threshold = PDF_PARSE_CONFIG.splitPositionThreshold;
         if (!splitPositions.some((existing) => Math.abs(existing - currentPos) < threshold)) {
           splitPositions.push(currentPos);
+
+          // Create visual highlight showing the position in context
+          const highlight = createPositionHighlight(text, currentPos, "Choose Your Nature");
+
+          this.logger.trace({
+            msg: "Found playbook delimiter",
+            position: currentPos,
+            line: trimmedLine,
+            context: highlight,
+          });
         }
       }
       currentPos += line.length + 1; // +1 for the newline character
     }
 
     splitPositions.sort((a, b) => a - b);
+    this.logger.debug({
+      msg: "Delimiter scanning completed - ready to extract sections",
+      delimitersFound: splitPositions.length,
+      splitPositions: splitPositions,
+      hint: "Use trace level to see delimiter contexts",
+    });
 
     const sections: string[] = [];
     const minLength = PDF_PARSE_CONFIG.minSectionLength;
@@ -111,9 +148,34 @@ export class PDFPlaybookSource extends PlaybookSource {
         const section = text.substring(start, end).trim();
         if (section.length > minLength) {
           sections.push(section);
+
+          this.logger.trace({
+            msg: "Playbook section extracted - meets minimum length",
+            sectionIndex: i,
+            startPosition: start,
+            endPosition: end,
+            characterCount: section.length,
+            requirement: `${section.length} >= ${minLength}`,
+            textPreview: createTextPreview(section),
+          });
+        } else {
+          this.logger.trace({
+            msg: "Section rejected - too short",
+            sectionIndex: i,
+            startPosition: start,
+            endPosition: end,
+            characterCount: section.length,
+            requirement: `${section.length} < ${minLength}`,
+          });
         }
       }
     }
+
+    this.logger.debug({
+      msg: "Section extraction completed",
+      sectionsCreated: sections.length,
+      lengthStats: summary(sections.map((s) => s.length)),
+    });
 
     return sections;
   }
@@ -122,28 +184,50 @@ export class PDFPlaybookSource extends PlaybookSource {
    * Parse a single playbook section
    */
   private parsePlaybookSection(text: string, sectionIndex: number): Playbook | null {
+    this.logger.trace({
+      msg: "Parsing playbook section",
+      sectionIndex,
+      characterCount: text.length,
+      textPreview: createTextPreview(text, 100),
+    });
+
     // Try to extract playbook archetype from common patterns
     const archetypePatterns = [
       // Look for "The [Name]" pattern at the beginning of sections (preserve "The")
-      /^[^\w]*(The\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/m,
+      {
+        regex: /^[^\w]*(The\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/m,
+        description: "The [Name] at section start",
+      },
       // Look for patterns near "Choose Your Nature" (preserve "The")
-      /(The\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)[^\w]*Choose Your Nature/i,
+      {
+        regex: /(The\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)[^\w]*Choose Your Nature/i,
+        description: "The [Name] near Choose Your Nature",
+      },
       // Look for title-style headers (all caps or title case)
-      /^[^\w]*([A-Z][A-Z\s]+[A-Z])\s*$/m,
+      { regex: /^[^\w]*([A-Z][A-Z\s]+[A-Z])\s*$/m, description: "ALL CAPS title header" },
       // Fallback: single word archetype names
-      /^[^\w]*([A-Z][a-z]+)[^\w]*Choose Your Nature/i,
+      {
+        regex: /^[^\w]*([A-Z][a-z]+)[^\w]*Choose Your Nature/i,
+        description: "Single word before Choose Your Nature",
+      },
     ];
 
     let archetypeName = "Unknown";
 
     // Try each pattern to extract the archetype name
-    for (const pattern of archetypePatterns) {
-      const match = text.match(pattern);
+    for (const { regex, description } of archetypePatterns) {
+      const match = text.match(regex);
       if (match?.[1]) {
         archetypeName = match[1].trim();
         // Clean up common artifacts
         archetypeName = archetypeName.replace(/\s+/g, " ").trim();
         if (archetypeName.length > 3 && archetypeName.length < 50) {
+          this.logger.debug({
+            msg: "Archetype extracted",
+            sectionIndex,
+            archetype: archetypeName,
+            extractionMethod: description,
+          });
           break;
         }
       }
@@ -157,8 +241,29 @@ export class PDFPlaybookSource extends PlaybookSource {
         (text.includes("Where do you call home") || text.includes("Why are you a vagabond")));
 
     if (archetypeName === "Unknown" && !hasPlaybookIndicators) {
+      this.logger.debug({
+        msg: "Section rejected - no archetype or playbook indicators",
+        sectionIndex,
+        characterCount: text.length,
+        textPreview: createTextPreview(text),
+      });
       return null;
     }
+
+    if (archetypeName === "Unknown") {
+      this.logger.warn({
+        msg: "Playbook found but archetype extraction failed",
+        sectionIndex,
+        hasIndicators: hasPlaybookIndicators,
+        textPreview: createTextPreview(text, 200),
+      });
+    }
+
+    this.logger.debug({
+      msg: "Playbook section parsed successfully",
+      sectionIndex,
+      archetype: archetypeName,
+    });
 
     return {
       archetype: archetypeName,

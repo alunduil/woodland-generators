@@ -26,20 +26,13 @@ this project adheres to
 - Global installation support via npm
 - Extended woodland species catalog (100+ species) for enhanced character
   diversity when playbooks include "other" species option
+- `--log-level` option for controlling diagnostic output verbosity with support
+  for standard log levels (trace, debug, info, warn, error, fatal)
+- `--species` option for character command to override species selection
+- Structured logging throughout generation pipeline for debugging generation
+  failures
 
 ### Changed
-
-- Character command now requires a playbook PDF path as an argument
-- Character generation output is now structured JSON format
-- Removed generic `--format` and `--count` options in favor of PDF-specific
-  functionality
-- Improved deterministic random generation for more consistent character
-  creation across multiple runs with the same seed
-- Enhanced species generation reliability with improved random selection
-  algorithm for more consistent results
-- When playbooks specify "other" as a species option, characters now receive
-  species from an extensive Root-appropriate woodland creatures list instead of
-  literally being assigned "other" as their species
 
 ### Deprecated
 

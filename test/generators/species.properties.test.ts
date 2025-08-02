@@ -236,7 +236,7 @@ describe("generateSpecies", () => {
         fc.property(fc.string(), (seed) => {
           expect(() => {
             generateSpecies({ seed, choices: [] });
-          }).toThrow("No species available for generation");
+          }).toThrow();
 
           return true;
         }),

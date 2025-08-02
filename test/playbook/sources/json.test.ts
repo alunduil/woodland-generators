@@ -8,25 +8,25 @@ describe("JSONPlaybookSource", () => {
 
   describe("isValid", () => {
     it("should return false for non-existent files", async () => {
-      const source = new JSONPlaybookSource(nonExistentPath);
+      const source = new JSONPlaybookSource(nonExistentPath, "json");
       const result = await source.isValid();
       expect(result).toBe(false);
     });
 
     it("should return false for files that cannot be parsed as JSON", async () => {
-      const source = new JSONPlaybookSource(invalidJsonPath);
+      const source = new JSONPlaybookSource(invalidJsonPath, "json");
       const result = await source.isValid();
       expect(result).toBe(false);
     });
 
     it("should return false for directories", async () => {
-      const source = new JSONPlaybookSource(testFixturesDir);
+      const source = new JSONPlaybookSource(testFixturesDir, "json");
       const result = await source.isValid();
       expect(result).toBe(false);
     });
 
     it("should return false for empty path", async () => {
-      const source = new JSONPlaybookSource("");
+      const source = new JSONPlaybookSource("", "json");
       const result = await source.isValid();
       expect(result).toBe(false);
     });

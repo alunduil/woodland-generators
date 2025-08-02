@@ -3,6 +3,7 @@ import { generateName } from "./name";
 import { GeneratorOptions } from "./index";
 import { Character } from "../character";
 import { Playbook } from "../playbook";
+import { root } from "../logging";
 
 /**
  * Options for character generation from a playbook source
@@ -20,7 +21,17 @@ export interface CharacterGeneratorOptions extends GeneratorOptions {
  * Generate a complete character from a playbook object
  */
 export async function generateCharacter(options: CharacterGeneratorOptions): Promise<Character> {
-  console.log(`Generating character from playbook: ${options.playbook.archetype}`);
+  const logger = root.child({
+    generator: "character",
+  });
+
+  logger.info({
+    msg: "Starting character generation",
+    playbook: options.playbook.archetype,
+    seed: options.seed,
+    characterName: options.name,
+    species: options.species,
+  });
 
   // Generate character components using functional approach with seeds
   const species = generateSpecies({
@@ -34,9 +45,19 @@ export async function generateCharacter(options: CharacterGeneratorOptions): Pro
     ...(options.name !== undefined && { name: options.name }),
   });
 
-  return {
+  const character = {
     name,
     playbook: options.playbook.archetype,
     species,
   };
+
+  logger.info({
+    msg: "Character generation completed",
+    playbook: options.playbook.archetype,
+    seed: options.seed,
+    characterName: name,
+    species: species,
+  });
+
+  return character;
 }

@@ -1,6 +1,7 @@
 import { Playbook } from "../playbook/types";
 import { fromPath, fromPathWithArchetype } from "../playbook/sources";
 import { GeneratorOptions } from "./index";
+import { root } from "../logging";
 
 /**
  * Options for playbook generation
@@ -18,12 +19,28 @@ export interface PlaybookGeneratorOptions extends GeneratorOptions {
 export async function generatePlaybook(options: PlaybookGeneratorOptions): Promise<Playbook> {
   const { path, seed, archetype } = options;
 
-  console.log(`Processing playbook from: ${path}`);
+  const logger = root.child({
+    generator: "playbook",
+  });
+
+  logger.info({
+    msg: "Starting playbook generation",
+    path,
+    seed,
+    archetype,
+  });
 
   const playbook = archetype
     ? await fromPathWithArchetype(path, archetype)
     : await fromPath(path, seed);
 
-  console.log(`Selected playbook: ${playbook.archetype}`);
+  logger.info({
+    msg: "Playbook generation completed",
+    path,
+    seed,
+    archetype: playbook.archetype,
+    pageNumber: playbook.pageNumber,
+  });
+
   return playbook;
 }

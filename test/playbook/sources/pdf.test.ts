@@ -9,25 +9,25 @@ describe("PDFPlaybookSource", () => {
 
   describe("isValid", () => {
     it("should return false for non-existent files", async () => {
-      const source = new PDFPlaybookSource(nonExistentPath);
+      const source = new PDFPlaybookSource(nonExistentPath, "pdf");
       const result = await source.isValid();
       expect(result).toBe(false);
     });
 
     it("should return false for invalid PDF files", async () => {
-      const source = new PDFPlaybookSource(invalidPdfPath);
+      const source = new PDFPlaybookSource(invalidPdfPath, "pdf");
       const result = await source.isValid();
       expect(result).toBe(false);
     });
 
     it("should return false for directories", async () => {
-      const source = new PDFPlaybookSource(testFixturesDir);
+      const source = new PDFPlaybookSource(testFixturesDir, "pdf");
       const result = await source.isValid();
       expect(result).toBe(false);
     });
 
     it("should return false for empty path", async () => {
-      const source = new PDFPlaybookSource("");
+      const source = new PDFPlaybookSource("", "pdf");
       const result = await source.isValid();
       expect(result).toBe(false);
     });
@@ -36,7 +36,7 @@ describe("PDFPlaybookSource", () => {
     // so we can't test the positive case with current fixtures.
     // This test is intentionally skipped until we have a valid test PDF.
     it.skip("should return true for valid PDF files", async () => {
-      const source = new PDFPlaybookSource(validPdfPath);
+      const source = new PDFPlaybookSource(validPdfPath, "pdf");
       const result = await source.isValid();
       expect(result).toBe(true);
     });

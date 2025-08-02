@@ -67,6 +67,27 @@ module.exports = [
     },
   },
 
+  // JavaScript configuration for main source files
+  {
+    files: ["src/**/*.js"],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: "commonjs",
+      globals: commonNodeGlobals,
+    },
+    rules: {
+      quotes: ["error", "double", { avoidEscape: true }],
+      semi: ["error", "always"],
+      "no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
+    },
+  },
+
   // TypeScript configuration for main source files
   {
     files: ["src/**/*.ts"],

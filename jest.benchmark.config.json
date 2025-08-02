@@ -1,0 +1,24 @@
+{
+  "displayName": "Benchmarks",
+  "testEnvironment": "jest-bench/environment",
+  "testEnvironmentOptions": {
+    "testEnvironment": "jest-environment-node"
+  },
+  "reporters": [
+    "default",
+    ["jest-bench/reporter", { "withOpsPerSecond": true }]
+  ],
+  "testRegex": "(/__benchmarks__/.*|\\.bench)\\.ts$",
+  "preset": "ts-jest",
+  "collectCoverage": false,
+  "silent": false,
+  "verbose": true,
+  "transform": {
+    "^.+\\.ts$": [
+      "ts-jest",
+      {
+        "tsconfig": "tsconfig.test.json"
+      }
+    ]
+  }
+}

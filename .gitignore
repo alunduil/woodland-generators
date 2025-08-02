@@ -51,6 +51,9 @@ coverage/
 test-results/
 playwright-report/
 
+# Benchmark outputs
+benchmarks/
+
 # Temporary files
 *.tmp
 *.temp

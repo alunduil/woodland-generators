@@ -1,5 +1,6 @@
 import { GeneratorOptions } from "./index";
 import SeededRandomUtilities from "seeded-random-utilities";
+import { root } from "../logging";
 
 /**
  * Available character names for generation
@@ -49,14 +50,32 @@ export interface NameGeneratorOptions extends GeneratorOptions {
  * Generate a random character name using functional approach
  */
 export function generateName(options: NameGeneratorOptions): string {
+  const logger = root.child({
+    generator: "name",
+  });
+
+  logger.info({
+    msg: "Starting name generation",
+    seed: options.seed,
+    characterName: options.name,
+  });
+
+  let result: string;
+
   // If user provided a name, use it directly
   if (options.name) {
-    return options.name;
+    result = options.name;
+  } else {
+    // Create seeded random generator for reproducible selection
+    const rng = new SeededRandomUtilities(options.seed);
+    result = rng.selectRandomElement([...CHARACTER_NAMES]);
   }
 
-  // Create seeded random generator for reproducible selection
-  const rng = new SeededRandomUtilities(options.seed);
-  const name = rng.selectRandomElement([...CHARACTER_NAMES]);
+  logger.info({
+    msg: "Name generation completed",
+    seed: options.seed,
+    characterName: result,
+  });
 
-  return name;
+  return result;
 }
