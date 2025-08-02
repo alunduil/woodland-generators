@@ -4,6 +4,8 @@
 
 import { Playbook } from "../types";
 import SeededRandomUtilities from "seeded-random-utilities";
+import { root } from "../../logging";
+import pino from "pino";
 
 /**
  * Abstract base class that all playbook sources must extend
@@ -21,9 +23,12 @@ export abstract class PlaybookSource {
   protected playbooks: Playbook[] = [];
   /** Path to the source file */
   protected path: string;
+  /** Logger with source-specific context */
+  protected logger: pino.Logger;
 
-  constructor(path: string) {
+  constructor(path: string, sourceType: string) {
     this.path = path;
+    this.logger = root.child({ source: sourceType, path: this.path });
   }
 
   /** Get a specific playbook by archetype name */

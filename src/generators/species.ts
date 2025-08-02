@@ -1,5 +1,6 @@
 import { GeneratorOptions } from "./index";
 import SeededRandomUtilities from "seeded-random-utilities";
+import { root } from "../logging";
 
 /**
  * Extended list of woodland animals compatible with Root's ecosystem
@@ -162,37 +163,77 @@ export interface SpeciesGeneratorOptions extends GeneratorOptions {
  * Generate a random character species using functional approach
  */
 export function generateSpecies(options: SpeciesGeneratorOptions): string {
+  const logger = root.child({
+    generator: "species",
+  });
+
+  logger.info({
+    msg: "Starting species generation",
+    seed: options.seed,
+    choices: options.choices,
+    species: options.species,
+  });
+
   if (options.choices.length === 0) {
-    throw new Error("No species available for generation");
+    logger.error({
+      msg: "No species choices available",
+      seed: options.seed,
+      choices: options.choices,
+    });
+    throw new Error("No species choices available");
   }
+
+  let result: string;
 
   // Handle user-provided species
   if (options.species) {
     if (!options.choices.includes("other") && !options.choices.includes(options.species)) {
+      logger.error({
+        msg: "Invalid species",
+        seed: options.seed,
+        species: options.species,
+        choices: options.choices,
+      });
       throw new Error(
-        `Species "${options.species}" is not available in this playbook. Available choices: ${options.choices.join(", ")}`,
+        `Species "${options.species}" is not available in choices: ${options.choices.join(", ")}`,
       );
     }
-    return options.species;
+    result = options.species;
+  } else {
+    // Generate random selection
+    const rng = new SeededRandomUtilities(options.seed);
+    let selected = rng.selectRandomElement(options.choices);
+
+    if (!selected) {
+      logger.error({
+        msg: "Failed to select species from choices",
+        seed: options.seed,
+        choices: options.choices,
+      });
+      throw new Error("Failed to select species from choices");
+    }
+
+    if (selected === "other") {
+      // Handle "other" selection - reassign to extended species
+      selected = rng.selectRandomElement([...EXTENDED_WOODLAND_SPECIES]);
+      if (!selected) {
+        logger.error({
+          msg: "Failed to select from extended species list",
+          seed: options.seed,
+        });
+        throw new Error("Failed to select from extended species list");
+      }
+    }
+
+    result = selected;
   }
 
-  // Generate random selection
-  const rng = new SeededRandomUtilities(options.seed);
-  let selected = rng.selectRandomElement(options.choices);
+  logger.info({
+    msg: "Species generation completed",
+    seed: options.seed,
+    choices: options.choices,
+    species: result,
+  });
 
-  if (!selected) {
-    throw new Error("Failed to generate species");
-  }
-
-  if (selected !== "other") {
-    return selected;
-  }
-
-  // Handle "other" selection - reassign to extended species
-  selected = rng.selectRandomElement([...EXTENDED_WOODLAND_SPECIES]);
-  if (!selected) {
-    throw new Error("Failed to generate extended species");
-  }
-
-  return selected;
+  return result;
 }

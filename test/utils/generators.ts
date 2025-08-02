@@ -2,6 +2,7 @@ import fc from "fast-check";
 
 /**
  * Helper function to create a generator for unique pairs
+ * Generates an array of unique combinations (pairs) from a set of unique values
  * Useful for property-based testing when you need pairs of different values
  */
 export function uniquePairs<T>(

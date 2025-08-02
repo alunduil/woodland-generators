@@ -15,7 +15,7 @@ async function withValidSource(
   operation: (source: PlaybookSource) => Promise<Playbook>,
 ): Promise<Playbook> {
   // Try each source type to see which can handle this file
-  const sources = [new PDFPlaybookSource(path), new JSONPlaybookSource(path)];
+  const sources = [new PDFPlaybookSource(path, "pdf"), new JSONPlaybookSource(path, "json")];
 
   for (const source of sources) {
     try {
