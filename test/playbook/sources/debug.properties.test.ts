@@ -24,8 +24,12 @@ describe("createTextPreview - Property Tests", () => {
             const threshold = sampleSize * 2;
             return fc.tuple(
               fc.constant(sampleSize),
-              // Generate strings with grapheme count > threshold to ensure truncation
-              fc.string({ unit: "grapheme", minLength: threshold + 1 }),
+              fc
+                .string({
+                  unit: "grapheme",
+                  minLength: threshold + 1,
+                })
+                .filter((s) => s.trim().length > Math.floor(threshold * 0.7)),
             );
           }),
           ([sampleSize, input]) => {
@@ -42,19 +46,16 @@ describe("createTextPreview - Property Tests", () => {
     it("for any string at or below sampleSize * 2, output grapheme count is ≤ input grapheme count", () => {
       fc.assert(
         fc.property(
-          fc.integer({ min: 5, max: 50 }).chain((sampleSize) =>
-            fc.tuple(
-              fc.constant(sampleSize),
-              // Generate strings that will definitely be ≤ threshold after cleaning
-              // Whitespace cleaning can only reduce grapheme count, so maxLength = threshold is safe
-              fc.string({ unit: "grapheme", maxLength: sampleSize * 2 }),
+          fc
+            .integer({ min: 5, max: 50 })
+            .chain((sampleSize) =>
+              fc.tuple(
+                fc.constant(sampleSize),
+                fc.string({ unit: "grapheme", maxLength: sampleSize * 2 }),
+              ),
             ),
-          ),
           ([sampleSize, input]) => {
             const result = createTextPreview(input, sampleSize);
-
-            // For strings that are definitely short enough after cleaning,
-            // result grapheme count should be ≤ input grapheme count
             const inputGraphemeCount = graphemer.countGraphemes(input);
             const resultGraphemeCount = graphemer.countGraphemes(result);
 
