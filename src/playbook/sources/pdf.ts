@@ -75,6 +75,9 @@ export class PDFPlaybookSource extends PlaybookSource {
   private parsePlaybooks(): void {
     const text = this.data?.text ?? "";
 
+    // Clear any existing playbooks to ensure idempotent behavior
+    this.playbooks = [];
+
     // Split text by pages or by clear playbook delimiters
     const sections = this.splitIntoPlaybookSections(text);
 

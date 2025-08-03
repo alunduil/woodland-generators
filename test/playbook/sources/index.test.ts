@@ -1,10 +1,15 @@
 import { fromPath, fromPathWithArchetype } from "../../../src/playbook/sources";
+import { root } from "../../../src/logging";
 import path from "path";
 
 describe("playbook sources orchestration", () => {
   const testFixturesDir = path.join(__dirname, "../../fixtures");
   const nonExistentPath = path.join(testFixturesDir, "non-existent.pdf");
-  const invalidPdfPath = path.join(testFixturesDir, "invalid.pdf");
+  const invalidPdfPath = path.join(testFixturesDir, "playbooks-pdf/invalid/invalid.pdf");
+
+  beforeEach(() => {
+    root.level = "silent";
+  });
 
   describe("fromPath", () => {
     it("should throw error when no source can handle the file", async () => {

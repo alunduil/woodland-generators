@@ -1,0 +1,83 @@
+[
+  {
+    "name": "Lorem Primary Playbook",
+    "source": "multiple-playbooks.json",
+    "archetype": "The Ranger",
+    "species": ["Wolf", "Bear", "Hawk", "Deer", "Badger"],
+    "demeanor": ["Fierce", "Protective", "Watchful", "Patient", "Loyal"],
+    "moves": [
+      {
+        "name": "Forest Lorem",
+        "description": "Lorem ipsum dolor sit amet in the wilderness, consectetur adipiscing elit among the trees."
+      }
+    ],
+    "background": {
+      "homeOptions": [
+        "Deep in the lorem ipsum forest",
+        "A hidden dolor sit amet grove",
+        "The edge of consectetur territory",
+        "A sacred adipiscing shrine"
+      ],
+      "motivationOptions": [
+        "To protect the elit sed do",
+        "Seeking the eiusmod tempor wisdom",
+        "Driven by incididunt ut labore",
+        "Following the dolore magna calling"
+      ]
+    }
+  },
+  {
+    "name": "Lorem Secondary Playbook",
+    "source": "multiple-playbooks.json",
+    "archetype": "The Thief",
+    "species": ["Rat", "Weasel", "Crow", "Cat", "Squirrel"],
+    "demeanor": ["Sneaky", "Quick", "Clever", "Opportunistic", "Nimble"],
+    "moves": [
+      {
+        "name": "Shadow Lorem",
+        "description": "Ut enim ad minim veniam in the shadows, quis nostrud exercitation through locked doors."
+      }
+    ],
+    "background": {
+      "homeOptions": [
+        "The ullamco laboris sewers",
+        "A nisi ut aliquip hideout",
+        "The rooftops of ex ea commodo",
+        "An underground consequat network"
+      ],
+      "motivationOptions": [
+        "You need the duis aute treasure",
+        "Escaping from irure in reprehenderit",
+        "Seeking voluptate velit revenge",
+        "The esse cillum called you"
+      ]
+    }
+  },
+  {
+    "name": "Lorem Tertiary Playbook",
+    "source": "multiple-playbooks.json",
+    "archetype": "The Tinker",
+    "species": ["Otter", "Beaver", "Mole", "Hedgehog", "Porcupine"],
+    "demeanor": ["Inventive", "Practical", "Focused", "Resourceful", "Determined"],
+    "moves": [
+      {
+        "name": "Craft Lorem",
+        "description": "Fugiat nulla pariatur with tools and gadgets, excepteur sint occaecat through innovation."
+      }
+    ],
+    "background": {
+      "homeOptions": [
+        "A well-equipped cupidatat workshop",
+        "The non proident markets",
+        "A traveling sunt in culpa",
+        "The qui officia guild"
+      ],
+      "motivationOptions": [
+        "To build the deserunt mollit",
+        "Proving your anim id worth",
+        "Seeking est laborum knowledge",
+        "The lorem ipsum called"
+      ]
+    }
+  }
+]

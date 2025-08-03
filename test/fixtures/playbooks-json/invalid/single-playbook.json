@@ -1,0 +1,31 @@
+{
+  "name": "Lorem Ipsum Playbook",
+  "source": "single-playbook.json",
+  "archetype": "The Adventurer",
+  "species": ["Ferret", "Rabbit", "Raccoon", "Fox", "Mouse", "Opossum"],
+  "demeanor": ["Curious", "Helpful", "Brave", "Stubborn", "Clever", "Wild"],
+  "moves": [
+    {
+      "name": "Lorem Ipsum Move",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+      "name": "Dolor Sit Amet",
+      "description": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    }
+  ],
+  "background": {
+    "homeOptions": [
+      "A quiet forest glade where lorem ipsum dolor sits",
+      "An abandoned burrow filled with consectetur adipiscing",
+      "A bustling marketplace where elit sed do eiusmod",
+      "The ruins of tempor incididunt ut labore settlement"
+    ],
+    "motivationOptions": [
+      "You seek the lost dolore magna aliqua treasure",
+      "A family member was taken by ut enim ad minim forces",
+      "You witnessed veniam quis nostrud injustice",
+      "The exercitation ullamco called to your heart"
+    ]
+  }
+}

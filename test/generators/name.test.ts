@@ -1,4 +1,4 @@
-import { generateName, getNameChoices } from "../../src/generators/name";
+import { generateName, CHARACTER_NAMES } from "../../src/generators/name";
 import { getCollisionThreshold, uniquePairs } from "../utils";
 import fc from "fast-check";
 
@@ -20,7 +20,7 @@ describe("generateName", () => {
           uniquePairs(fc.string(), { minLength: 5, maxLength: 15 }), // Ensure enough pairs for meaningful statistics
           (seedPairs) => {
             // Calculate threshold based on actual number of name choices
-            const nameChoices = getNameChoices();
+            const nameChoices = CHARACTER_NAMES;
             const targetSuccessRate = getCollisionThreshold(nameChoices.length);
             const targetCount = Math.ceil(seedPairs.length * targetSuccessRate);
 
@@ -66,12 +66,12 @@ describe("generateName", () => {
 
   describe("property: valid name selection", () => {
     it("should always return a name from the valid set", () => {
-      const validNames = getNameChoices();
+      const validNames = [...CHARACTER_NAMES];
 
       fc.assert(
         fc.property(fc.string(), (seed) => {
           const result = generateName({ seed });
-          return validNames.includes(result);
+          return (validNames as readonly string[]).includes(result);
         }),
       );
     });
