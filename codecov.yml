@@ -5,29 +5,30 @@ coverage:
         target: 50%
         threshold: 5%
         if_not_found: success
+      generators:
+        target: 70%
+        threshold: 3%
+        paths:
+          - src/generators/
+        if_not_found: success
     patch:
       default:
         target: 60%
         threshold: 5%
         if_not_found: success
 
+flags:
+  unittests:
+    paths:
+      - src/
+    carryforward: false
+
 comment:
-  layout: "reach,diff,flags,tree"
+  layout: "header,diff,flags,components,tree,footer"
   behavior: default
   require_changes: false
-
-test_analytics:
-  # Enable test analytics notifications for PR visibility
-  notifications:
-    - type: github_status
-      context: "codecov/test-analytics"
-    - type: github_check
-      name: "Codecov Test Analytics"
-
-  # Configure flaky test detection
-  flaky_detection:
-    enabled: true
-    threshold: 0.1 # Mark tests as flaky if they fail 10% of the time
+  require_base: no
+  require_head: yes
 
 ignore:
   - "dist/"
@@ -35,5 +36,12 @@ ignore:
   - "benchmarks/"
   - "tools/"
   - "test/"
+  - "test-results/"
   - "**/*.d.ts"
+  - "**/*.test.ts"
+  - "**/*.bench.ts"
   - "src/cli.ts"
+  - "src/logging/pino-pretty-transport.js"
+
+github_checks:
+  annotations: true
