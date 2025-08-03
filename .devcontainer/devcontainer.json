@@ -41,7 +41,9 @@
         "mads-hartmann.bash-ide-vscode",
         // Development Quality
         "aaron-bond.better-comments",
-        "gruntfuggly.todo-tree"
+        "gruntfuggly.todo-tree",
+        // Code Coverage
+        "codecov.codecov"
       ]
     }
   },
