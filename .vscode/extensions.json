@@ -36,6 +36,9 @@
 
     // Development Quality
     "aaron-bond.better-comments",
-    "gruntfuggly.todo-tree"
+    "gruntfuggly.todo-tree",
+
+    // Code Coverage
+    "codecov.codecov"
   ]
 }
