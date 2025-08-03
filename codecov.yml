@@ -1,0 +1,26 @@
+coverage:
+  status:
+    project:
+      default:
+        target: 80%
+        threshold: 1%
+        if_not_found: success
+    patch:
+      default:
+        target: 80%
+        threshold: 1%
+        if_not_found: success
+
+comment:
+  layout: "reach,diff,flags,tree"
+  behavior: default
+  require_changes: false
+
+ignore:
+  - "dist/"
+  - "coverage/"
+  - "benchmarks/"
+  - "tools/"
+  - "test/"
+  - "**/*.d.ts"
+  - "src/cli.ts"
