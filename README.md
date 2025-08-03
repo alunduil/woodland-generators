@@ -2,6 +2,7 @@
 
 [![GitHub release](https://img.shields.io/github/release/alunduil/woodland-generators)](https://github.com/alunduil/woodland-generators/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![codecov](https://codecov.io/github/alunduil/woodland-generators/graph/badge.svg?token=WR4ZQLMJMB)](https://codecov.io/github/alunduil/woodland-generators)
 
 A CLI tool for generating resources for Root: The Tabletop RPG.
 
