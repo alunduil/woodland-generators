@@ -16,6 +16,19 @@ comment:
   behavior: default
   require_changes: false
 
+test_analytics:
+  # Enable test analytics notifications for PR visibility
+  notifications:
+    - type: github_status
+      context: "codecov/test-analytics"
+    - type: github_check
+      name: "Codecov Test Analytics"
+
+  # Configure flaky test detection
+  flaky_detection:
+    enabled: true
+    threshold: 0.1 # Mark tests as flaky if they fail 10% of the time
+
 ignore:
   - "dist/"
   - "coverage/"
