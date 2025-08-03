@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "CLI tool for generating resources for Root: The Tabletop RPG",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
     "woodland-gen": "dist/cli.js"
   },
