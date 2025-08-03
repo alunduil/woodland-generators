@@ -25,6 +25,7 @@ webpack
 npm
 Node.js
 nodejs
+codecov
 
 # Common abbreviations
 API
