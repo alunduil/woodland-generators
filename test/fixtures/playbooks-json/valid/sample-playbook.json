@@ -1,0 +1,23 @@
+{
+  "archetype": "Test Playbook",
+  "background": {
+    "homeOptions": ["Forest", "City"],
+    "motivationOptions": ["Adventure", "Knowledge"]
+  },
+  "nature": {
+    "drives": ["Curiosity"],
+    "connections": ["Nature"]
+  },
+  "moves": [
+    {
+      "name": "Test Move",
+      "description": "A test move"
+    }
+  ],
+  "equipment": {
+    "weapons": [],
+    "gear": []
+  },
+  "feats": [],
+  "weaponSkills": []
+}

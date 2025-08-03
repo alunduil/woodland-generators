@@ -31,14 +31,6 @@ export const CHARACTER_NAMES = [
 ] as const;
 
 /**
- * Get the available character name choices
- * @returns Array of available character names
- */
-export function getNameChoices(): readonly string[] {
-  return CHARACTER_NAMES;
-}
-
-/**
  * Options for functional name generation
  */
 export interface NameGeneratorOptions extends GeneratorOptions {

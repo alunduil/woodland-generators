@@ -44,6 +44,12 @@ export abstract class PlaybookSource {
     return rng.selectRandomElement(this.playbooks);
   }
 
+  /** Get all loaded playbooks - primarily for testing purposes */
+  getPlaybooks(): Playbook[] {
+    this.ensureLoaded();
+    return [...this.playbooks]; // Return a copy to prevent external modification
+  }
+
   /**
    * Ensure that playbooks have been loaded
    * @throws Error if playbooks array is empty, indicating load() wasn't called or failed

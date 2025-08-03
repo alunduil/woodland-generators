@@ -1,0 +1,9 @@
+{
+  "invalid": "json",
+  "missing": ["required", "fields"],
+  "malformed": {
+    "structure": true,
+    "no_archetype": null,
+    "background": "not an object"
+  }
+}
