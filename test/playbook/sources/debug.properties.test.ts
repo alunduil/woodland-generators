@@ -7,6 +7,7 @@ import Graphemer from "graphemer";
 import {
   createTextPreview,
   createPositionHighlight,
+  normalizeWhitespace,
   DEFAULT_WINDOW_RADIUS,
 } from "../../../src/playbook/sources/debug";
 
@@ -14,6 +15,83 @@ import {
 const graphemer = new Graphemer();
 
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
+
+describe("normalizeWhitespace - Property Tests", () => {
+  it("never contains multiple consecutive spaces", () => {
+    fc.assert(
+      fc.property(fc.string({ unit: "grapheme" }), (input) => {
+        const result = normalizeWhitespace(input);
+        expect(result).not.toMatch(/  +/);
+      }),
+      {
+        examples: [
+          // Include the problematic Unicode string with many consecutive spaces
+          [
+            "                                                         ᚁ 𑂚  𐀀     𐀀𝅘𝅥𝅮𐀀𐀀 𐀀  𐀀 𐀀   𑂚  𐀀𝅘𝅥𝅮   𐀀𐀀𐀀𐀀 𐀀 ",
+          ],
+        ],
+      },
+    );
+  });
+
+  it("contains only regular spaces (no other whitespace characters)", () => {
+    fc.assert(
+      fc.property(fc.string({ unit: "grapheme" }), (input) => {
+        const result = normalizeWhitespace(input);
+        // Test that result contains no whitespace except single spaces
+        // This matches the implementation which uses /\s+/g (all Unicode whitespace)
+        expect(result).not.toMatch(/[^\S ]/); // No whitespace except regular spaces
+      }),
+      {
+        examples: [
+          // Include the problematic Unicode string with various whitespace types
+          [
+            "                                                         ᚁ 𑂚  𐀀     𐀀𝅘𝅥𝅮𐀀𐀀 𐀀  𐀀 𐀀   𑂚  𐀀𝅘𝅥𝅮   𐀀𐀀𐀀𐀀 𐀀 ",
+          ],
+        ],
+      },
+    );
+  });
+
+  it("preserves Unicode word boundaries and letter/number content", () => {
+    fc.assert(
+      fc.property(fc.string({ unit: "grapheme" }), (input) => {
+        const result = normalizeWhitespace(input);
+        // Use Unicode-aware word matching instead of ASCII-only [a-zA-Z0-9]
+        const inputWords = input.match(/[\p{L}\p{N}]+/gu) || [];
+        const resultWords = result.match(/[\p{L}\p{N}]+/gu) || [];
+        expect(resultWords).toEqual(inputWords);
+      }),
+      {
+        examples: [
+          // Include the problematic Unicode string from the original failure
+          [
+            "                                                         ᚁ 𑂚  𐀀     𐀀𝅘𝅥𝅮𐀀𐀀 𐀀  𐀀 𐀀   𑂚  𐀀𝅘𝅥𝅮   𐀀𐀀𐀀𐀀 𐀀 ",
+          ],
+        ],
+      },
+    );
+  });
+
+  it("result grapheme count is always <= input grapheme count", () => {
+    fc.assert(
+      fc.property(fc.string({ unit: "grapheme" }), (input) => {
+        const result = normalizeWhitespace(input);
+        const inputGraphemes = graphemer.countGraphemes(input);
+        const resultGraphemes = graphemer.countGraphemes(result);
+        expect(resultGraphemes).toBeLessThanOrEqual(inputGraphemes);
+      }),
+      {
+        examples: [
+          // Include the problematic Unicode string that demonstrates dramatic length reduction
+          [
+            "                                                         ᚁ 𑂚  𐀀     𐀀𝅘𝅥𝅮𐀀𐀀 𐀀  𐀀 𐀀   𑂚  𐀀𝅘𝅥𝅮   𐀀𐀀𐀀𐀀 𐀀 ",
+          ],
+        ],
+      },
+    );
+  });
+});
 
 describe("createTextPreview - Property Tests", () => {
   describe("Length guarantee property", () => {
@@ -29,7 +107,7 @@ describe("createTextPreview - Property Tests", () => {
                   unit: "grapheme",
                   minLength: threshold + 1,
                 })
-                .filter((s) => s.trim().length > Math.floor(threshold * 0.7)),
+                .filter((s) => graphemer.countGraphemes(normalizeWhitespace(s)) > threshold),
             );
           }),
           ([sampleSize, input]) => {
@@ -134,41 +212,6 @@ describe("createTextPreview - Property Tests", () => {
             expect(resultEnd).toBe(cleanedEnd);
           },
         ),
-      );
-    });
-  });
-
-  describe("Whitespace normalization property", () => {
-    it("never contains multiple consecutive spaces", () => {
-      fc.assert(
-        fc.property(fc.string({ unit: "grapheme" }), (input) => {
-          const result = createTextPreview(input);
-
-          expect(result).not.toMatch(/  +/);
-        }),
-      );
-    });
-
-    it("never contains tabs, newlines, or other whitespace characters", () => {
-      fc.assert(
-        fc.property(fc.string({ unit: "grapheme" }), (input) => {
-          const result = createTextPreview(input);
-
-          expect(result).not.toMatch(/[\t\n\r\f\v]/);
-        }),
-      );
-    });
-
-    it("preserves word boundaries and non-whitespace content", () => {
-      fc.assert(
-        fc.property(fc.string({ unit: "grapheme" }), (input) => {
-          const result = createTextPreview(input);
-
-          const inputWords = input.match(/[a-zA-Z0-9]+/g) || [];
-          const resultWords = result.match(/[a-zA-Z0-9]+/g) || [];
-
-          expect(resultWords).toEqual(inputWords);
-        }),
       );
     });
   });
