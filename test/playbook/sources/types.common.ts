@@ -35,6 +35,11 @@ export const mockPlaybooks: Playbook[] = [
     feats: ["Feat 1"],
     weaponSkills: ["Skill 1"],
     species: ["Species 1"],
+    details: {
+      pronouns: ["they"],
+      appearance: ["simple"],
+      accessories: ["trinket"],
+    },
     rawText: "Test raw text 1",
     pageNumber: 1,
   },
@@ -50,6 +55,11 @@ export const mockPlaybooks: Playbook[] = [
     feats: ["Feat 2"],
     weaponSkills: ["Skill 2"],
     species: ["Species 2"],
+    details: {
+      pronouns: ["he", "she"],
+      appearance: ["formal", "casual"],
+      accessories: ["badge", "pendant"],
+    },
     rawText: "Test raw text 2",
     pageNumber: 2,
   },

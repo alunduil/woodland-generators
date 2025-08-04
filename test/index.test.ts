@@ -7,6 +7,7 @@ import type {
   NameGeneratorOptions,
   SpeciesGeneratorOptions,
   PlaybookGeneratorOptions,
+  DetailsGeneratorOptions,
 } from "../src/index";
 
 describe("Root module exports", () => {
@@ -20,6 +21,11 @@ describe("Root module exports", () => {
         name: "Test Character",
         playbook: "Test Playbook",
         species: "Test Species",
+        details: {
+          pronouns: ["they"],
+          appearance: ["simple"],
+          accessories: ["trinket"],
+        },
       };
 
       const _options: Partial<CharacterGeneratorOptions> = {
@@ -52,6 +58,22 @@ describe("Root module exports", () => {
         seed: "test-seed",
         choices: ["Mouse", "Rabbit", "Fox"],
         species: "Optional Species",
+      };
+    });
+  });
+
+  describe("Details generation", () => {
+    it("should export generateDetails function with proper types", () => {
+      expect(rootExports).toHaveProperty("generateDetails");
+      expect(typeof rootExports.generateDetails).toBe("function");
+
+      const _options: DetailsGeneratorOptions = {
+        seed: "test-seed",
+        choices: {
+          pronouns: ["they", "he", "she"],
+          appearance: ["simple", "formal"],
+          accessories: ["trinket", "badge"],
+        },
       };
     });
   });

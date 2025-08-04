@@ -1,7 +1,9 @@
 import { generateSpecies } from "./species";
 import { generateName } from "./name";
+import { generateDetails } from "./details";
 import { GeneratorOptions } from "./index";
 import { Character } from "../character";
+import { Details } from "../details";
 import { Playbook } from "../playbook";
 import { root } from "../logging";
 
@@ -15,6 +17,8 @@ export interface CharacterGeneratorOptions extends GeneratorOptions {
   name?: string;
   /** User-provided species (if provided, this will be used instead of generating) */
   species?: string;
+  /** User-provided details (if provided, these will be used instead of generating) */
+  details?: Partial<Details>;
 }
 
 /**
@@ -31,6 +35,7 @@ export async function generateCharacter(options: CharacterGeneratorOptions): Pro
     seed: options.seed,
     characterName: options.name,
     species: options.species,
+    details: options.details,
   });
 
   // Generate character components using functional approach with seeds
@@ -45,10 +50,17 @@ export async function generateCharacter(options: CharacterGeneratorOptions): Pro
     ...(options.name !== undefined && { name: options.name }),
   });
 
+  const details = generateDetails({
+    seed: options.seed,
+    choices: options.playbook.details,
+    ...(options.details !== undefined && { details: options.details }),
+  });
+
   const character = {
     name,
     playbook: options.playbook.archetype,
     species,
+    details,
   };
 
   logger.info({
@@ -57,6 +69,7 @@ export async function generateCharacter(options: CharacterGeneratorOptions): Pro
     seed: options.seed,
     characterName: name,
     species: species,
+    details: details,
   });
 
   return character;

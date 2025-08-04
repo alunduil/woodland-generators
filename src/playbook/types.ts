@@ -20,6 +20,11 @@ export interface Playbook {
   feats: string[];
   weaponSkills: string[];
   species: string[];
+  details: {
+    pronouns: string[];
+    appearance: string[];
+    accessories: string[];
+  };
   rawText: string;
   pageNumber: number;
 }
