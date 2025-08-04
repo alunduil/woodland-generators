@@ -83,6 +83,7 @@
     "check:deps": "depcheck",
     "check:audit": "npm audit",
     "check:outdated": "npm outdated",
+    "check:workspace": "npx tsx scripts/validate-workspace.ts",
     "fix:lint": "eslint src/ --fix",
     "fix:format": "prettier --write src/**/*.ts",
     "update:deps": "ncu",
