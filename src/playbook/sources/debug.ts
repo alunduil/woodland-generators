@@ -16,12 +16,20 @@ const graphemer = new Graphemer();
 export const DEFAULT_WINDOW_RADIUS = 50;
 
 /**
+ * Normalize whitespace in text for consistent processing
+ * Replaces all whitespace sequences with single spaces and trims leading/trailing whitespace
+ */
+export function normalizeWhitespace(text: string): string {
+  return text.replace(/\s+/g, " ").trim();
+}
+
+/**
  * Create a debug-friendly text preview showing start and end of content
  * For short text, returns the full content. For long text, returns first and last
  * portions separated by "..." with total grapheme count of (sampleSize * 2 + 3).
  */
 export function createTextPreview(text: string, sampleSize = 50): string {
-  const clean = text.replace(/\s+/g, " ").trim();
+  const clean = normalizeWhitespace(text);
 
   // If text is short enough, return it in full (using visual grapheme count)
   if (graphemer.countGraphemes(clean) <= sampleSize * 2) {
