@@ -6,13 +6,13 @@ on:
       - ".vscode/extensions.json"
       - ".devcontainer/devcontainer.json"
       - ".github/workflows/environment.yml"
-      - "tools/validate-workspace.ts"
+      - "scripts/validate-workspace.ts"
   pull_request:
     paths:
       - ".vscode/extensions.json"
       - ".devcontainer/devcontainer.json"
       - ".github/workflows/environment.yml"
-      - "tools/validate-workspace.ts"
+      - "scripts/validate-workspace.ts"
 
 jobs:
   validate-environment:
@@ -27,8 +27,8 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install tsx for TypeScript execution
-        run: npm install -g tsx
+      - name: Install dependencies
+        run: npm ci
 
       - name: Validate workspace configuration
-        run: npx tsx tools/validate-workspace.ts
+        run: npm run check:workspace

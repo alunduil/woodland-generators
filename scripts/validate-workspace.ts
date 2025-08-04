@@ -57,7 +57,7 @@ describe("Workspace Configuration", () => {
     const devContainerJson: DevContainerJson = JSON.parse(cleanedDevContainerJson);
 
     // Extract extensions lists
-    const extensionsRecommendations = extensionsJson.recommendations ?? [];
+    const extensionsRecommendations = extensionsJson.recommendations;
     const devContainerExtensions = devContainerJson.customizations?.vscode?.extensions ?? [];
 
     // Sort both arrays for comparison
