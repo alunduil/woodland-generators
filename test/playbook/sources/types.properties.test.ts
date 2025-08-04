@@ -11,7 +11,10 @@ describe("PlaybookSource properties", () => {
     it("should vary selection across different seeds when multiple playbooks exist", async () => {
       await fc.assert(
         fc.asyncProperty(
-          fc.array(fc.string({ minLength: 1, maxLength: 20 }), { minLength: 10, maxLength: 20 }),
+          fc.uniqueArray(fc.string({ minLength: 1, maxLength: 20 }), {
+            minLength: 10,
+            maxLength: 20,
+          }),
           async (seeds) => {
             const source = new TestPlaybookSource(mockPlaybooks);
             const playbooks = await Promise.all(
