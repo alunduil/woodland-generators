@@ -106,38 +106,6 @@ module.exports = [
     },
   },
 
-  // JavaScript configuration for test files
-  {
-    files: ["test/**/*.js"],
-    languageOptions: {
-      ecmaVersion: 2022,
-      sourceType: "commonjs",
-      globals: {
-        ...commonNodeGlobals,
-        // Jest globals
-        describe: "readonly",
-        it: "readonly",
-        expect: "readonly",
-        beforeEach: "readonly",
-        afterEach: "readonly",
-        beforeAll: "readonly",
-        afterAll: "readonly",
-        jest: "readonly",
-      },
-    },
-    rules: {
-      quotes: ["error", "double", { avoidEscape: true }],
-      semi: ["error", "always"],
-      "no-unused-vars": [
-        "error",
-        {
-          argsIgnorePattern: "^_",
-          varsIgnorePattern: "^_",
-        },
-      ],
-    },
-  },
-
   // TypeScript configuration for test files
   {
     files: ["test/**/*.ts"],
