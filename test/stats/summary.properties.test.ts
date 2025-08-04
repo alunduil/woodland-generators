@@ -18,6 +18,12 @@ describe("summary properties", () => {
             expect(result.q3).toBeLessThanOrEqual(result.max);
           },
         ),
+        {
+          examples: [
+            [[0, -0]], // Edge case: positive and negative zero
+            [[-0, 0]], // Edge case: negative and positive zero (different order)
+          ],
+        },
       );
     });
   });
@@ -35,6 +41,11 @@ describe("summary properties", () => {
             expect(result.count).toBe(numbers.length);
           },
         ),
+        {
+          examples: [
+            [[0, -0]], // Edge case: positive and negative zero
+          ],
+        },
       );
     });
   });
@@ -51,9 +62,21 @@ describe("summary properties", () => {
             const original = summary(numbers);
             const shuffled = summary([...numbers].sort(() => Math.random() - 0.5));
 
-            expect(shuffled).toEqual(original);
+            // Check mathematical equality (handles 0/-0 distinction naturally)
+            expect(original.min === shuffled.min).toBe(true);
+            expect(original.q1).toBe(shuffled.q1);
+            expect(original.median).toBe(shuffled.median);
+            expect(original.q3).toBe(shuffled.q3);
+            expect(original.max === shuffled.max).toBe(true);
+            expect(original.count).toBe(shuffled.count);
           },
         ),
+        {
+          examples: [
+            [[0, -0]], // Edge case: demonstrates 0/-0 behavior
+            [[-0, 0]], // Edge case: different order of 0/-0
+          ],
+        },
       );
     });
 
@@ -73,6 +96,12 @@ describe("summary properties", () => {
             expect(result.count).toBe(1);
           },
         ),
+        {
+          examples: [
+            [0], // Edge case: positive zero
+            [-0], // Edge case: negative zero
+          ],
+        },
       );
     });
   });
