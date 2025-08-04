@@ -26,5 +26,9 @@
         "tsconfig": "tsconfig.test.json"
       }
     ]
+  },
+  "transformIgnorePatterns": ["/node_modules/"],
+  "moduleNameMapper": {
+    "^chalk$": "<rootDir>/test/mocks/chalk.js"
   }
 }
