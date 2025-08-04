@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Sync pre-commit additional_dependencies with package.json versions
- * Usage: npx tsx tools/sync-precommit-deps.ts
+ * Usage: npx tsx scripts/sync-precommit-deps.ts
  */
 
 import fs from "fs";

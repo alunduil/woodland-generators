@@ -49,14 +49,14 @@ module.exports = [
   // Base ESLint recommended rules
   eslintConfigs.recommended,
 
-  // TypeScript configuration for tools
+  // TypeScript configuration for scripts
   {
-    files: ["tools/**/*.ts"],
+    files: ["scripts/**/*.ts"],
     languageOptions: {
       ...commonLanguageOptions,
       parserOptions: {
         ...commonLanguageOptions.parserOptions,
-        project: "./tsconfig.tools.json",
+        project: "./tsconfig.scripts.json",
       },
       globals: commonNodeGlobals,
     },

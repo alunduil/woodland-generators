@@ -107,8 +107,8 @@ jobs:
         uses: benchmark-action/github-action-benchmark@v1
         with:
           name: "Woodland Generators Performance"
-          tool: "customSmallerIsBetter"
-          output-file-path: benchmarks/result.txt
+          tool: "benchmarkjs"
+          output-file-path: benchmarks/result-benchmarkjs.txt
           external-data-json-path: ./cache/benchmark-data.json
           github-token: ${{ secrets.GITHUB_TOKEN }}
           alert-threshold: "150%"

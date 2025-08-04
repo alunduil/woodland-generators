@@ -34,7 +34,7 @@ ignore:
   - "dist/"
   - "coverage/"
   - "benchmarks/"
-  - "tools/"
+  - "scripts/"
   - "test/"
   - "test-results/"
   - "**/*.d.ts"

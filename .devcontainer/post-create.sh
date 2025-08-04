@@ -8,7 +8,7 @@ echo "📦 Installing project dependencies..."
 npm install
 
 # Install lychee for link checking
-"$(dirname "${BASH_SOURCE[0]}")/../tools/install-lychee.sh"
+"$(dirname "${BASH_SOURCE[0]}")/../scripts/install-lychee.sh"
 
 # Configure git safe directory
 echo "🔧 Configuring git safe directory..."
