@@ -22,25 +22,25 @@ updates:
     labels:
       - "dependencies"
       - "javascript"
-    # Group related dependencies together
     groups:
-      # Group ESLint and TypeScript ESLint dependencies to avoid peer dependency conflicts
+      # Group ESLint, TypeScript, and TypeScript ESLint dependencies to avoid peer dependency conflicts
       eslint:
         patterns:
           - "eslint"
           - "eslint-*"
           - "@typescript-eslint/*"
+          - "typescript"
         update-types:
           - "major"
           - "minor"
           - "patch"
-      # Group other development dependencies together
       dev-dependencies:
         dependency-type: "development"
         exclude-patterns:
           - "eslint"
           - "eslint-*"
           - "@typescript-eslint/*"
+          - "typescript"
         update-types:
           - "minor"
           - "patch"
