@@ -13,6 +13,7 @@
   "collectCoverage": false,
   "silent": false,
   "verbose": true,
+  "maxWorkers": 1,
   "transform": {
     "^.+\\.ts$": [
       "ts-jest",

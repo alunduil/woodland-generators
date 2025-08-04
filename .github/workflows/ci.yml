@@ -94,5 +94,26 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Download previous benchmark data
+        uses: actions/cache@v4
+        with:
+          path: ./cache
+          key: ${{ runner.os }}-benchmark
+
       - name: Run benchmarks
         run: npm run bench
+
+      - name: Store benchmark result
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          name: "Woodland Generators Performance"
+          tool: "benchmarkjs"
+          output-file-path: benchmarks/result-benchmarkjs.txt
+          external-data-json-path: ./cache/benchmark-data.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          alert-threshold: "150%"
+          comment-on-alert: true
+          fail-on-alert: true
+          alert-comment-cc-users: "@alunduil"
+          summary-always: true
+          max-items-in-chart: 100

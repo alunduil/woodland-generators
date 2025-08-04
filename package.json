@@ -71,7 +71,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "bench": "jest --config jest.benchmark.config.json",
+    "bench": "jest --config jest.benchmark.config.json && npx tsx scripts/process-benchmarks.ts",
     "prepare": "npm run build",
     "prepublishOnly": "npm run check:all",
     "prepack": "npm run clean && npm run build",
@@ -86,6 +86,6 @@
     "fix:lint": "eslint src/ --fix",
     "fix:format": "prettier --write src/**/*.ts",
     "update:deps": "ncu",
-    "sync:deps": "npx tsx tools/sync-precommit-deps.ts"
+    "sync:deps": "npx tsx scripts/sync-precommit-deps.ts"
   }
 }

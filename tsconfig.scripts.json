@@ -6,6 +6,6 @@
     "outDir": "./dist/tools",
     "rootDir": "."
   },
-  "include": ["tools/**/*"],
+  "include": ["scripts/**/*"],
   "exclude": ["node_modules", "dist", "src", "test"]
 }
