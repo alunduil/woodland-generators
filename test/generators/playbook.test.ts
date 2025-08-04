@@ -33,6 +33,11 @@ describe("generatePlaybook", () => {
     },
     feats: ["Warrior", "Scout"],
     weaponSkills: ["Bow"],
+    details: {
+      pronouns: [],
+      appearance: [],
+      accessories: [],
+    },
     rawText: "Test playbook content",
     pageNumber: 1,
   };

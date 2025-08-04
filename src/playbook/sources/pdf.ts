@@ -2,7 +2,7 @@ import { readFileSync } from "fs";
 import pdfParse, { Result as PDFResult } from "pdf-parse";
 import { Playbook } from "../types";
 import { PlaybookSource } from "./types";
-import { createTextPreview, createPositionHighlight } from "./debug";
+import { createTextPreview, createPositionHighlight, normalizeWhitespace } from "./debug";
 import { summary } from "../../stats";
 
 /**
@@ -277,6 +277,7 @@ export class PDFPlaybookSource extends PlaybookSource {
       feats: this.parseFeats(text),
       weaponSkills: this.parseWeaponSkills(text),
       species: this.parseSpecies(text),
+      details: this.parseDetails(text),
       rawText: text,
       pageNumber: sectionIndex,
     };
@@ -457,5 +458,53 @@ export class PDFPlaybookSource extends PlaybookSource {
     }
 
     return species;
+  }
+
+  /**
+   * Parse details from text
+   */
+  private parseDetails(text: string): {
+    pronouns: string[];
+    appearance: string[];
+    accessories: string[];
+  } {
+    const pronouns: string[] = [];
+    const appearance: string[] = [];
+    const accessories: string[] = [];
+
+    // Look for the details section between "Details" and "Demeanor"
+    const detailsMatch = text.match(/Details([\s\S]*?)Demeanor/i);
+    if (detailsMatch?.[1]) {
+      const detailsText = detailsMatch[1];
+
+      // Split by bullet points and clean up each line
+      const lines = detailsText.split(/\n\s*•/).filter((line) => line.trim().length > 0);
+
+      lines.forEach((line, index) => {
+        // Clean up the line
+        const cleanLine = line.replace(/^[•\s]+/, "").trim();
+        if (!cleanLine) return;
+
+        // Split by comma and clean up each item
+        const items = cleanLine
+          .split(",")
+          .map((item) => normalizeWhitespace(item))
+          .filter((item) => item.length > 0);
+
+        // Assign to appropriate category based on position
+        if (index === 0) {
+          // First line: pronouns
+          pronouns.push(...items);
+        } else if (index === 1) {
+          // Second line: appearance/style
+          appearance.push(...items);
+        } else if (index === 2) {
+          // Third line: accessories/items
+          accessories.push(...items);
+        }
+      });
+    }
+
+    return { pronouns, appearance, accessories };
   }
 }

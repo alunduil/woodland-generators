@@ -268,6 +268,12 @@ export class JSONPlaybookSource extends PlaybookSource {
     if (!Array.isArray(playbook.weaponSkills)) {
       return `weaponSkills: expected array, got ${typeof playbook.weaponSkills}`;
     }
+    if (!Array.isArray(playbook.species)) {
+      return `species: expected array, got ${typeof playbook.species}`;
+    }
+    if (typeof playbook.details !== "object") {
+      return `details: expected object, got ${typeof playbook.details}`;
+    }
 
     return "unknown validation failure";
   }
