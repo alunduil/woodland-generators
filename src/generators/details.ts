@@ -48,9 +48,9 @@ export function generateDetails(options: DetailsGeneratorOptions): Details {
   );
 
   const result: Details = {
-    pronouns: generated.pronouns ?? [],
-    appearance: generated.appearance ?? [],
-    accessories: generated.accessories ?? [],
+    pronouns: generated.pronouns,
+    appearance: generated.appearance,
+    accessories: generated.accessories,
   };
 
   logger.info({

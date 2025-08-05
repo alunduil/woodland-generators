@@ -54,15 +54,15 @@ export function generateSubsetFromChoices<T extends string>(
  * Generate multiple categories of random selections from available choices
  * Validates all user selections before using them
  */
-export function generateMultipleFromChoices<T extends string>(
-  selections: Record<string, T[] | undefined>,
-  choices: Record<string, T[]>,
+export function generateMultipleFromChoices<T extends string, K extends string>(
+  selections: Record<K, T[] | undefined>,
+  choices: Record<K, T[]>,
   rng: SeededRandomUtilities,
   logger: Logger,
-): Record<string, T[]> {
-  const result: Record<string, T[]> = {};
+): Record<K, T[]> {
+  const result = {} as Record<K, T[]>;
 
-  for (const [category, categoryChoices] of Object.entries(choices)) {
+  for (const [category, categoryChoices] of Object.entries(choices) as [K, T[]][]) {
     const selection = selections[category];
     result[category] = generateSubsetFromChoices(category, selection, categoryChoices, rng, logger);
   }
