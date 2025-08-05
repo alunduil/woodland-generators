@@ -25,6 +25,7 @@ export interface Playbook {
     appearance: string[];
     accessories: string[];
   };
+  demeanor: string[];
   rawText: string;
   pageNumber: number;
 }

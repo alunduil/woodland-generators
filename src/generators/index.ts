@@ -16,3 +16,4 @@ export { generatePlaybook, type PlaybookGeneratorOptions } from "./playbook";
 export { generateName, type NameGeneratorOptions } from "./name";
 export { generateSpecies, type SpeciesGeneratorOptions } from "./species";
 export { generateDetails, type DetailsGeneratorOptions } from "./details";
+export { generateDemeanor, type DemeanorGeneratorOptions } from "./demeanor";

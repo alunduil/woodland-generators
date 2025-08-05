@@ -1,6 +1,7 @@
 import { GeneratorOptions } from "./index";
 import SeededRandomUtilities from "seeded-random-utilities";
 import { root } from "../logging";
+import { generateSingleFromChoices } from "./core";
 
 /**
  * Extended list of woodland animals compatible with Root's ecosystem
@@ -169,71 +170,37 @@ export function generateSpecies(options: SpeciesGeneratorOptions): string {
 
   logger.info({
     msg: "Starting species generation",
-    seed: options.seed,
     choices: options.choices,
     species: options.species,
   });
 
-  if (options.choices.length === 0) {
-    logger.error({
-      msg: "No species choices available",
-      seed: options.seed,
-      choices: options.choices,
-    });
-    throw new Error("No species choices available");
-  }
+  const rng = new SeededRandomUtilities(options.seed);
 
-  let result: string;
+  // Use core function for validation and initial selection
+  let selected = generateSingleFromChoices(
+    "species",
+    options.species,
+    options.choices,
+    rng,
+    logger,
+  );
 
-  // Handle user-provided species
-  if (options.species) {
-    if (!options.choices.includes("other") && !options.choices.includes(options.species)) {
-      logger.error({
-        msg: "Invalid species",
-        seed: options.seed,
-        species: options.species,
-        choices: options.choices,
-      });
-      throw new Error(
-        `Species "${options.species}" is not available in choices: ${options.choices.join(", ")}`,
-      );
-    }
-    result = options.species;
-  } else {
-    // Generate random selection
-    const rng = new SeededRandomUtilities(options.seed);
-    let selected = rng.selectRandomElement(options.choices);
-
-    if (!selected) {
-      logger.error({
-        msg: "Failed to select species from choices",
-        seed: options.seed,
-        choices: options.choices,
-      });
-      throw new Error("Failed to select species from choices");
-    }
-
-    if (selected === "other") {
-      // Handle "other" selection - reassign to extended species
-      selected = rng.selectRandomElement([...EXTENDED_WOODLAND_SPECIES]);
-      if (!selected) {
-        logger.error({
-          msg: "Failed to select from extended species list",
-          seed: options.seed,
-        });
-        throw new Error("Failed to select from extended species list");
-      }
-    }
-
-    result = selected;
+  // Handle "other" selection - expand to extended species
+  if (selected === "other") {
+    selected = generateSingleFromChoices(
+      "extended species",
+      undefined,
+      [...EXTENDED_WOODLAND_SPECIES],
+      rng,
+      logger,
+    );
   }
 
   logger.info({
     msg: "Species generation completed",
-    seed: options.seed,
     choices: options.choices,
-    species: result,
+    species: selected,
   });
 
-  return result;
+  return selected;
 }

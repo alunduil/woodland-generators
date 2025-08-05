@@ -278,6 +278,7 @@ export class PDFPlaybookSource extends PlaybookSource {
       weaponSkills: this.parseWeaponSkills(text),
       species: this.parseSpecies(text),
       details: this.parseDetails(text),
+      demeanor: this.parseDemeanor(text),
       rawText: text,
       pageNumber: sectionIndex,
     };
@@ -506,5 +507,34 @@ export class PDFPlaybookSource extends PlaybookSource {
     }
 
     return { pronouns, appearance, accessories };
+  }
+
+  /**
+   * Parse demeanor options from text
+   */
+  private parseDemeanor(text: string): string[] {
+    const demeanor: string[] = [];
+
+    // Look for "Demeanor" followed by a simple list - usually just one line with comma-separated traits
+    // Stop at the next playbook title (like "The Ranger") or major section
+    const demeanorMatch = text.match(
+      /Demeanor\s*([^\n]*?)(?:\s+The\s+\w+|\s+You\s+are|\s+Your\s+Connections|$)/i,
+    );
+    if (demeanorMatch?.[1]) {
+      const demeanorText = demeanorMatch[1].trim();
+
+      if (demeanorText) {
+        // Split by comma and clean up each item
+        const items = demeanorText
+          .split(",")
+          .map((item) => normalizeWhitespace(item))
+          .map((item) => item.replace(/^[•\s]+/, "").trim()) // Remove bullet points and leading whitespace
+          .filter((item) => item.length > 0 && item.length < 50); // Filter out overly long items
+
+        demeanor.push(...items);
+      }
+    }
+
+    return demeanor;
   }
 }
