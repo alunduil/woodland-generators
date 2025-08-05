@@ -62,9 +62,9 @@ describe("generateSpecies", () => {
           (seed, [baseChoices, userSpecies]) => {
             const choices = [...baseChoices, "other"];
 
-            // When "other" is present, ANY user species (even non-choices) should be accepted and expanded
+            // When "other" is present, ANY user species should be accepted and returned as-is
             const result = generateSpecies({ seed, choices, species: userSpecies });
-            return (EXTENDED_WOODLAND_SPECIES as readonly string[]).includes(result);
+            return result === userSpecies;
           },
         ),
       );

@@ -176,14 +176,15 @@ export function generateSpecies(options: SpeciesGeneratorOptions): string {
 
   const rng = new SeededRandomUtilities(options.seed);
 
-  // Use core function for validation and initial selection
-  let selected = generateSingleFromChoices(
-    "species",
-    options.species,
-    options.choices,
-    rng,
-    logger,
-  );
+  let selected: string;
+
+  // Handle carte blanche case first
+  if (options.species && options.choices.includes("other")) {
+    selected = options.species;
+  } else {
+    // Standard validation/generation logic
+    selected = generateSingleFromChoices("species", options.species, options.choices, rng, logger);
+  }
 
   // Handle "other" selection - expand to extended species
   if (selected === "other") {
