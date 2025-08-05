@@ -33,7 +33,7 @@
     "npm": ">=9.0.0"
   },
   "dependencies": {
-    "chalk": "^4.1.2",
+    "chalk": "^5.4.1",
     "commander": "^14.0.0",
     "graphemer": "^1.4.0",
     "just-percentile": "^4.2.0",
