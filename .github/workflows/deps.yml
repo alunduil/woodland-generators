@@ -94,4 +94,4 @@ jobs:
           git config --local user.name "woodland-generators[bot]"
           git add .pre-commit-config.yaml
           git commit -m "[woodland-generators[bot]] sync dependencies with package.json"
-          git push
+          git push origin HEAD:${{ github.head_ref }}
