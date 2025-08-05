@@ -34,6 +34,17 @@ updates:
           - "major"
           - "minor"
           - "patch"
+      # Group Jest-related dependencies to maintain compatibility
+      jest:
+        patterns:
+          - "jest"
+          - "jest-*"
+          - "@types/jest"
+          - "ts-jest"
+        update-types:
+          - "major"
+          - "minor"
+          - "patch"
       dev-dependencies:
         dependency-type: "development"
         exclude-patterns:
@@ -41,6 +52,10 @@ updates:
           - "eslint-*"
           - "@typescript-eslint/*"
           - "typescript"
+          - "jest"
+          - "jest-*"
+          - "@types/jest"
+          - "ts-jest"
         update-types:
           - "minor"
           - "patch"
