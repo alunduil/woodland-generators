@@ -26,6 +26,7 @@ describe("Root module exports", () => {
           appearance: ["simple"],
           accessories: ["trinket"],
         },
+        demeanor: ["Curious", "Helpful"],
       };
 
       const _options: Partial<CharacterGeneratorOptions> = {

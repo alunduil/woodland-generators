@@ -2,6 +2,7 @@ import { generateCharacter } from "../../src/generators/character";
 import { generateSpecies } from "../../src/generators/species";
 import { generateName } from "../../src/generators/name";
 import { generateDetails } from "../../src/generators/details";
+import { generateDemeanor } from "../../src/generators/demeanor";
 import { root } from "../../src/logging";
 import { Playbook } from "../../src/playbook";
 
@@ -26,9 +27,14 @@ jest.mock("../../src/generators/details", () => ({
   generateDetails: jest.fn(),
 }));
 
+jest.mock("../../src/generators/demeanor", () => ({
+  generateDemeanor: jest.fn(),
+}));
+
 const mockGenerateSpecies = generateSpecies as jest.MockedFunction<typeof generateSpecies>;
 const mockGenerateName = generateName as jest.MockedFunction<typeof generateName>;
 const mockGenerateDetails = generateDetails as jest.MockedFunction<typeof generateDetails>;
+const mockGenerateDemeanor = generateDemeanor as jest.MockedFunction<typeof generateDemeanor>;
 
 // Helper function to create mock playbooks
 function createMockPlaybook(archetype: string, species: string[] = []): Playbook {
@@ -55,6 +61,7 @@ function createMockPlaybook(archetype: string, species: string[] = []): Playbook
       appearance: ["simple"],
       accessories: ["personal trinket"],
     },
+    demeanor: ["Curious", "Helpful"],
     rawText: "",
     pageNumber: 1,
   };
@@ -71,6 +78,7 @@ describe("generateCharacter", () => {
       appearance: ["simple"],
       accessories: ["personal trinket"],
     });
+    mockGenerateDemeanor.mockReturnValue(["Curious", "Helpful"]);
   });
 
   it("should coordinate generation and assemble character object", async () => {
@@ -91,11 +99,13 @@ describe("generateCharacter", () => {
         appearance: ["simple"],
         accessories: ["personal trinket"],
       },
+      demeanor: ["Curious", "Helpful"],
     });
 
     expect(mockGenerateSpecies).toHaveBeenCalledTimes(1);
     expect(mockGenerateName).toHaveBeenCalledTimes(1);
     expect(mockGenerateDetails).toHaveBeenCalledTimes(1);
+    expect(mockGenerateDemeanor).toHaveBeenCalledTimes(1);
   });
 
   it("should delegate parameters correctly to generators", async () => {
@@ -124,6 +134,11 @@ describe("generateCharacter", () => {
         accessories: ["personal trinket"],
       },
     });
+
+    expect(mockGenerateDemeanor).toHaveBeenCalledWith({
+      seed: "param-test",
+      choices: ["Curious", "Helpful"],
+    });
   });
 
   it("should pass user overrides only when defined", async () => {
@@ -139,6 +154,7 @@ describe("generateCharacter", () => {
         appearance: ["custom"],
         accessories: ["custom item"],
       },
+      demeanor: ["Custom", "Demeanor"],
     });
 
     // Verifies conditional parameter passing - only includes overrides when defined
@@ -165,6 +181,12 @@ describe("generateCharacter", () => {
         appearance: ["custom"],
         accessories: ["custom item"],
       },
+    });
+
+    expect(mockGenerateDemeanor).toHaveBeenCalledWith({
+      seed: "override-test",
+      choices: ["Curious", "Helpful"],
+      demeanor: ["Custom", "Demeanor"],
     });
   });
 });

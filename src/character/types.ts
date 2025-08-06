@@ -12,5 +12,6 @@ export interface Character {
   playbook: string;
   species: string;
   details: Details;
+  demeanor: string[];
   // Add more character properties as needed
 }

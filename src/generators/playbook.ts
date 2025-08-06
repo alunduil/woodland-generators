@@ -21,12 +21,12 @@ export async function generatePlaybook(options: PlaybookGeneratorOptions): Promi
 
   const logger = root.child({
     generator: "playbook",
+    seed,
   });
 
   logger.info({
     msg: "Starting playbook generation",
     path,
-    seed,
     archetype,
   });
 
@@ -37,7 +37,6 @@ export async function generatePlaybook(options: PlaybookGeneratorOptions): Promi
   logger.info({
     msg: "Playbook generation completed",
     path,
-    seed,
     archetype: playbook.archetype,
     pageNumber: playbook.pageNumber,
   });

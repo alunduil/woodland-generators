@@ -38,6 +38,7 @@ describe("generatePlaybook", () => {
       appearance: [],
       accessories: [],
     },
+    demeanor: ["Watchful", "Patient"],
     rawText: "Test playbook content",
     pageNumber: 1,
   };

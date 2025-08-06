@@ -8,6 +8,7 @@ jest.mock("../../../src/generators", (): typeof import("../../../src/generators"
   generateName: jest.fn(),
   generateSpecies: jest.fn(),
   generateDetails: jest.fn(),
+  generateDemeanor: jest.fn(),
 }));
 
 let mockProcessExit: jest.SpyInstance;

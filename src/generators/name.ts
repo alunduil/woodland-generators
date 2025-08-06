@@ -44,17 +44,17 @@ export interface NameGeneratorOptions extends GeneratorOptions {
 export function generateName(options: NameGeneratorOptions): string {
   const logger = root.child({
     generator: "name",
+    seed: options.seed,
   });
 
   logger.info({
     msg: "Starting name generation",
-    seed: options.seed,
     characterName: options.name,
   });
 
   let result: string;
 
-  // If user provided a name, use it directly
+  // If user provided a name, use it directly (no validation needed for names)
   if (options.name) {
     result = options.name;
   } else {
@@ -65,7 +65,6 @@ export function generateName(options: NameGeneratorOptions): string {
 
   logger.info({
     msg: "Name generation completed",
-    seed: options.seed,
     characterName: result,
   });
 
