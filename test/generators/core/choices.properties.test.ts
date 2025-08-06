@@ -393,8 +393,6 @@ describe("generateMultipleFromChoices", () => {
           const result = generateMultipleFromChoices(userSelections, choices, rng, root);
 
           return (
-            result.category1 !== undefined &&
-            result.category2 !== undefined &&
             result.category1.length > 0 &&
             result.category2.length > 0 &&
             result.category1.every((item) => choices.category1.includes(item)) &&
