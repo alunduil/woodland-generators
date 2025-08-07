@@ -3,7 +3,7 @@ import pdfParse, { Result as PDFResult } from "pdf-parse";
 import { Playbook } from "../types";
 import { PlaybookSource } from "./types";
 import { createTextPreview, createPositionHighlight, normalizeWhitespace } from "./debug";
-import { summary } from "../../stats";
+import { summary } from "../../maths";
 
 /**
  * Configuration constants for PDF parsing

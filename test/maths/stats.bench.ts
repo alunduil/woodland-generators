@@ -4,7 +4,7 @@
  */
 
 import { benchmarkSuite } from "jest-bench";
-import { summary } from "../../src/stats/summary";
+import { summary } from "../../src/maths/stats";
 
 benchmarkSuite("summary - Array size scaling", {
   ["100 elements"]: () => {
