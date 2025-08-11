@@ -1,5 +1,5 @@
 import fc from "fast-check";
-import { summary } from "../../src/stats/summary";
+import { summary } from "../../src/maths/stats";
 
 describe("summary properties", () => {
   describe("ordering properties", () => {
