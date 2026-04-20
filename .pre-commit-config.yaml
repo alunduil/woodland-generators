@@ -24,7 +24,7 @@ exclude: |
 repos:
   # Standard pre-commit hooks for common file issues
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       # Git-related checks
       - id: check-merge-conflict
@@ -65,7 +65,7 @@ repos:
 
   # ESLint for JavaScript/TypeScript linting
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v9.32.0
+    rev: v10.2.1
     hooks:
       - id: eslint
         name: Lint TypeScript/JavaScript
@@ -81,7 +81,7 @@ repos:
 
   # Markdown linting
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.45.0
+    rev: v0.48.0
     hooks:
       - id: markdownlint
         name: Lint Markdown files
@@ -89,7 +89,7 @@ repos:
 
   # Shell script linting
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.10.0.1
+    rev: v0.11.0.1
     hooks:
       - id: shellcheck
         name: Check shell scripts
@@ -97,7 +97,7 @@ repos:
 
   # YAML linting
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.37.1
+    rev: v1.38.0
     hooks:
       - id: yamllint
         name: Lint YAML files
@@ -116,7 +116,7 @@ repos:
 
   # Prose linting with Vale
   - repo: https://github.com/errata-ai/vale
-    rev: v3.12.0
+    rev: v3.14.1
     hooks:
       - id: vale
         name: Vale prose linting
