@@ -24,7 +24,7 @@ exclude: |
 repos:
   # Standard pre-commit hooks for common file issues
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       # Git-related checks
       - id: check-merge-conflict
