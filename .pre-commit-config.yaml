@@ -116,7 +116,7 @@ repos:
 
   # Prose linting with Vale
   - repo: https://github.com/errata-ai/vale
-    rev: v3.12.0
+    rev: v3.14.1
     hooks:
       - id: vale
         name: Vale prose linting
