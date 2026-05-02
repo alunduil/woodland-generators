@@ -6,11 +6,6 @@
 # To run manually: pre-commit run --all-files
 # To update hooks: pre-commit autoupdate
 
-# Pre-commit.ci configuration
-ci:
-  # Skip hooks that require special installation not available in pre-commit.ci
-  skip: [lychee]
-
 # Global exclusions - applied to all hooks unless overridden
 exclude: |
   (?x)^(
@@ -124,3 +119,25 @@ repos:
         types_or: [markdown, rst, plain-text]
         additional_dependencies: []
         args: ["--config=.vale.ini"]
+
+  # Project-local hooks (require `npm ci` and lychee on PATH)
+  - repo: local
+    hooks:
+      - id: typecheck
+        name: TypeScript type check
+        entry: npm run check:types
+        language: system
+        pass_filenames: false
+        types: [ts]
+      - id: depcheck
+        name: Unused dependencies check
+        entry: npm run check:deps
+        language: system
+        pass_filenames: false
+        files: ^(package\.json|package-lock\.json)$
+      - id: lychee
+        name: Check links with lychee
+        entry: lychee --config=lychee.toml --no-progress .
+        language: system
+        pass_filenames: false
+        types_or: [markdown, rst, plain-text]
