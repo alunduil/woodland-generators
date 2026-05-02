@@ -33,13 +33,4 @@ this project adheres to
 - `--species` option for character command to override species selection
 - Structured logging throughout generation pipeline for debugging generation
   failures
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
+- Requires Node.js 20.0.0 or later
