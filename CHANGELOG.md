@@ -34,6 +34,9 @@ this project adheres to
 
 ### Changed
 
+- Minimum supported Node.js version bumped from 18 to 20 (Node 18 reached
+  end-of-life in April 2025)
+
 ### Deprecated
 
 ### Removed
