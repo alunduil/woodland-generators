@@ -31,16 +31,4 @@ this project adheres to
 - `--species` option for character command to override species selection
 - Structured logging throughout generation pipeline for debugging generation
   failures
-
-### Changed
-
-- Minimum supported Node.js version bumped from 18 to 20 (Node 18 reached
-  end-of-life in April 2025)
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
+- Requires Node.js 20.0.0 or later
