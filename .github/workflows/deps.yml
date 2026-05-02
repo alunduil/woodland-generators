@@ -12,12 +12,17 @@ on:
       - ".github/workflows/deps.yml"
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
 
 jobs:
   unused:
     name: Check unused
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout code
@@ -38,6 +43,9 @@ jobs:
   sync-precommit:
     name: Sync pre-commit dependencies
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
     if: >
       github.event_name == 'pull_request' &&
       !contains(github.event.head_commit.author.name, 'woodland-generators[bot]')

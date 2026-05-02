@@ -5,12 +5,19 @@ on:
     - cron: "0 0 * * *" # Run daily at midnight UTC
 
 permissions:
-  issues: write
-  pull-requests: write
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
 
 jobs:
   stale:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      issues: write
+      pull-requests: write
     steps:
       - uses: actions/stale@v9
         with:
