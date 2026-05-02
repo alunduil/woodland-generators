@@ -6,9 +6,17 @@ on:
   pull_request:
     branches: [master]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+
 jobs:
   pre-commit:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     name: Run pre-commit hooks
 
     steps:
