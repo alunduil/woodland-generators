@@ -68,7 +68,8 @@ export class JSONPlaybookSource extends PlaybookSource {
         validationDetails = `unsupported data type: ${typeof jsonData}`;
       }
 
-      this.logger.debug(isValidData ? "JSON validation successful" : "JSON validation failed", {
+      this.logger.debug({
+        msg: isValidData ? "JSON validation successful" : "JSON validation failed",
         path: this.path,
         validationDetails,
         isValid: isValidData,
