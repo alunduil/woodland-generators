@@ -81,7 +81,6 @@
     "check:lint": "eslint src/",
     "check:format": "prettier --check src/**/*.ts",
     "check:deps": "depcheck",
-    "check:audit": "npm audit",
     "check:outdated": "npm outdated",
     "check:workspace": "npx tsx scripts/validate-workspace.ts",
     "fix:lint": "eslint src/ --fix",

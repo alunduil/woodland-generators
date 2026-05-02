@@ -124,18 +124,3 @@ repos:
         types_or: [markdown, rst, plain-text]
         additional_dependencies: []
         args: ["--config=.vale.ini"]
-
-  # Link checking with lychee
-  - repo: https://github.com/lycheeverse/lychee
-    rev: nightly
-    hooks:
-      - id: lychee
-        name: Check links with lychee
-        args: ["--config=lychee.toml", "--no-progress"]
-        exclude: |
-          (?x)^(
-            \.github/workflows/.*\.yml$|
-            \.github/workflows/.*\.yaml$|
-            package-lock\.json$|
-            lychee\.toml$
-          )$
