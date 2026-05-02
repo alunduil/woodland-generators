@@ -69,7 +69,7 @@ export class JSONPlaybookSource extends PlaybookSource {
       }
 
       this.logger.debug({
-        msg: isValidData ? "JSON validation successful" : "JSON validation failed",
+        msg: "JSON validation complete",
         path: this.path,
         validationDetails,
         isValid: isValidData,
