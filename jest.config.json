@@ -3,6 +3,14 @@
   "testEnvironment": "node",
   "clearMocks": true,
   "collectCoverageFrom": ["src/**/*.ts", "!src/**/*.d.ts", "!src/cli.ts"],
+  "coverageThreshold": {
+    "global": {
+      "lines": 75,
+      "branches": 56,
+      "functions": 76,
+      "statements": 74
+    }
+  },
   "testPathIgnorePatterns": ["/node_modules/", "/dist/", ".*\\.bench\\.ts$"],
   "coverageReporters": ["text", "lcov", "html"],
   "reporters": [
