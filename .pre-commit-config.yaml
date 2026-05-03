@@ -114,19 +114,21 @@ repos:
         files: \.(js|jsx|ts|tsx)$
       - id: typecheck
         name: typecheck
-        entry: npm run check:types
+        entry: npx tsc --noEmit
         language: system
         pass_filenames: false
         types: [ts]
       - id: depcheck
+        # depcheck only sees devDeps referenced via package.json scripts; the
+        # hook invocation here doesn't count, so depcheck would flag itself.
         name: depcheck
-        entry: npm run check:deps
+        entry: npx depcheck --ignores=depcheck
         language: system
         pass_filenames: false
         files: ^(package\.json|package-lock\.json)$
       - id: workspace
         name: workspace
-        entry: npm run check:workspace
+        entry: npx tsx scripts/validate-workspace.ts
         language: system
         pass_filenames: false
         files: ^(\.vscode/extensions\.json|\.devcontainer/devcontainer\.json|scripts/validate-workspace\.ts)$
