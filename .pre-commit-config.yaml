@@ -9,7 +9,7 @@
 # Pre-commit.ci configuration
 ci:
   # Skip hooks that require special installation not available in pre-commit.ci
-  skip: [lychee, workspace]
+  skip: [lychee]
 
 # Global exclusions - applied to all hooks unless overridden
 exclude: |
