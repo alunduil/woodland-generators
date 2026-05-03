@@ -14,13 +14,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version:
-          # renovate: datasource=node-version depName=node
-          - "22"
-          # renovate: datasource=node-version depName=node
-          - "24"
+        # Active+Maintenance LTS pair. Rotate when 22 EOLs (2027-04-30).
+        # `coverage: true` on the lowest gates the Codecov upload steps.
+        node-version: ["22", "24"]
         include:
-          # renovate: datasource=node-version depName=node
           - node-version: "22"
             coverage: true
 
