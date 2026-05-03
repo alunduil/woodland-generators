@@ -109,7 +109,7 @@ repos:
     hooks:
       - id: prettier
         name: prettier
-        entry: npx prettier --check
+        entry: npx prettier --write
         language: system
         types_or: [javascript, jsx, ts, tsx, json, yaml, markdown, css, scss]
         exclude: |
@@ -119,24 +119,28 @@ repos:
           )$
       - id: eslint
         name: eslint
-        entry: npx eslint --max-warnings=0
+        entry: npx eslint --max-warnings=0 --fix
         language: system
         files: \.(js|jsx|ts|tsx)$
       - id: typecheck
         name: typecheck
-        entry: npm run check:types
+        entry: npx tsc --noEmit
         language: system
         pass_filenames: false
         types: [ts]
       - id: depcheck
+        # depcheck only sees devDeps referenced via package.json scripts. The
+        # hook invocations here don't count, so depcheck would flag itself.
+        # prettier is referenced from .prettierrc, which depcheck's prettier
+        # special only checks for the `prettier` field in package.json.
         name: depcheck
-        entry: npm run check:deps
+        entry: npx depcheck --ignores=depcheck,prettier
         language: system
         pass_filenames: false
         files: ^(package\.json|package-lock\.json)$
       - id: workspace
         name: workspace
-        entry: npm run check:workspace
+        entry: npx tsx scripts/validate-workspace.ts
         language: system
         pass_filenames: false
         files: ^(\.vscode/extensions\.json|\.devcontainer/devcontainer\.json|scripts/validate-workspace\.ts)$

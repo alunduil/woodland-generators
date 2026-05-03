@@ -19,7 +19,7 @@ players:
 ## Ground rules
 
 - **TypeScript with strict typing** - Type safety stays important
-- **Run checks** before submitting: `npm run check:all`
+- **Run checks** before submitting: `pre-commit run --all-files`
 - **Test your changes** with `npm run cli`
 - **Keep PRs focused** - one feature or fix per PR
 - **Stay patient** - reviews may take a few days
@@ -68,10 +68,8 @@ chore(deps): bump typescript to 5.9.3
 3. **Development workflow**:
 
    ```bash
-   npm run build:watch    # Watch mode dev
-   npm run check:all      # Check everything
-   npm run fix:lint       # Auto-fix code issues
-   npm run fix:format     # Auto-format code
+   npm run build:watch          # Watch mode dev
+   pre-commit run --all-files   # Check everything (auto-fixes)
    ```
 
 ## How to submit changes
@@ -81,7 +79,7 @@ chore(deps): bump typescript to 5.9.3
 1. **Open an issue first** to discuss the approach
 2. Fork the repository and create a feature branch
 3. Make your changes following the code standards
-4. Run `npm run check:all` to check everything works
+4. Run `pre-commit run --all-files` to check everything works
 5. Submit a pull request with a clear description
 
 ### For small fixes (typos, formatting)
