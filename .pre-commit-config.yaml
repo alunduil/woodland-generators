@@ -90,6 +90,7 @@ repos:
     hooks:
       - id: lychee
         args: ["--config=lychee.toml", "--no-progress"]
+        types: [markdown]
 
   # Project-local hooks. Versions live in package.json devDependencies, so
   # there is nothing for Renovate's pre-commit manager to track here. These
