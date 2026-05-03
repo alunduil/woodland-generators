@@ -13,6 +13,17 @@
     "enabled": true,
     "schedule": ["before 6pm on friday"]
   },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Bump Node versions inside GitHub Actions matrices via inline `# renovate:` anchors",
+      "fileMatch": ["^\\.github/workflows/[^/]+\\.ya?ml$"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)(?: versioning=(?<versioning>\\S+))?\\s*\\n\\s*-\\s+(?:node-version:\\s+)?[\"'](?<currentValue>[^\"']+)[\"']"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}node{{/if}}"
+    }
+  ],
   "packageRules": [
     {
       "description": "Group all npm dependencies in a single PR",
@@ -23,7 +34,8 @@
     },
     {
       "description": "Group all GitHub Actions updates in a single PR",
-      "matchManagers": ["github-actions"],
+      "matchManagers": ["github-actions", "custom.regex"],
+      "matchFileNames": [".github/workflows/**"],
       "groupName": "github actions",
       "groupSlug": "github-actions",
       "addLabels": ["actions"]
