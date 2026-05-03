@@ -24,6 +24,33 @@ players:
 - **Keep PRs focused** - one feature or fix per PR
 - **Stay patient** - reviews may take a few days
 
+## Commit messages
+
+This repository follows [Conventional Commits][conventional-commits]. Commit
+prefixes drive the automated `CHANGELOG.md` entries and version bumps managed by
+[release-please][release-please].
+
+Common prefixes:
+
+- `feat:` - new user-facing feature (minor version bump)
+- `fix:` - bug fix (patch version bump)
+- `docs:` - documentation only
+- `refactor:` - code change that neither fixes a bug nor adds a feature
+- `perf:` - performance improvement
+- `chore:` - tooling, build, or maintenance work
+
+Append `!` after the type (for example, `feat!:`) or include a
+`BREAKING CHANGE:` footer for changes that bump the major version (or minor,
+while pre-1.0).
+
+Examples:
+
+```text
+feat: add character demeanor generation
+fix(cli): respect --seed flag in name generation
+chore(deps): bump typescript to 5.9.3
+```
+
 ## Quick start
 
 1. **Install dependencies**:
@@ -79,6 +106,8 @@ players:
 
 [bug-template]:
   https://github.com/alunduil/woodland-generators/issues/new?template=bug_report.yml
+[conventional-commits]: https://www.conventionalcommits.org/en/v1.0.0/
+[discussions]: https://github.com/alunduil/woodland-generators/discussions
 [feature-template]:
   https://github.com/alunduil/woodland-generators/issues/new?template=feature_request.yml
-[discussions]: https://github.com/alunduil/woodland-generators/discussions
+[release-please]: https://github.com/googleapis/release-please

@@ -2,7 +2,7 @@
 # This configuration runs various checks and formatters before each commit
 # to maintain code quality and consistency.
 #
-# To install: pre-commit install
+# To install: pre-commit install --hook-type pre-commit --hook-type commit-msg
 # To run manually: pre-commit run --all-files
 # To update hooks: pre-commit autoupdate
 
@@ -91,6 +91,16 @@ repos:
       - id: lychee
         args: ["--config=lychee.toml", "--no-progress"]
         types: [markdown]
+
+  # Conventional Commits validation - runs at the commit-msg stage to keep
+  # release-please's changelog generation honest by rejecting non-conventional
+  # commit subjects. Requires `--hook-type commit-msg` at install time.
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.4.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: []
 
   # Project-local hooks. Versions live in package.json devDependencies, so
   # there is nothing for Renovate's pre-commit manager to track here. These
