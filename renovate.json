@@ -15,10 +15,17 @@
   },
   "packageRules": [
     {
-      "description": "Group all npm dependencies in a single PR",
+      "description": "Group non-major npm updates in a single PR; majors land individually for review",
       "matchManagers": ["npm"],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
       "groupName": "npm dependencies",
       "groupSlug": "npm",
+      "addLabels": ["npm"]
+    },
+    {
+      "description": "Label major npm updates so they are easy to spot",
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["major"],
       "addLabels": ["npm"]
     },
     {

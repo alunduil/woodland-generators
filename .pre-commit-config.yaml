@@ -51,7 +51,8 @@ repos:
         exclude: '^src/.*\.ts$' # TypeScript source files with shebangs are compiled, not directly executed
 
   # Prettier for code formatting (local hook — pre-commit/mirrors-prettier
-  # was archived 2024-04-11. Pin via package.json + scripts/sync-precommit-deps.ts.)
+  # was archived 2024-04-11. Renovate's pre-commit manager keeps the
+  # additional_dependencies pin in lockstep with package.json.)
   - repo: local
     hooks:
       - id: prettier
@@ -69,18 +70,18 @@ repos:
 
   # ESLint for JavaScript/TypeScript linting
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v9.32.0
+    rev: v10.3.0
     hooks:
       - id: eslint
         name: Lint TypeScript/JavaScript
         files: \.(js|jsx|ts|tsx)$
         types: [file]
         additional_dependencies:
-          - "@eslint/js@^9.32.0"
-          - "@typescript-eslint/eslint-plugin@^8.39.0"
-          - "@typescript-eslint/parser@^8.38.0"
-          - "eslint@^9.32.0"
-          - "typescript@^5.9.2"
+          - "@eslint/js@9.39.4"
+          - "@typescript-eslint/eslint-plugin@8.59.1"
+          - "@typescript-eslint/parser@8.59.1"
+          - "eslint@9.39.4"
+          - "typescript@5.9.3"
         args: ["--fix", "--max-warnings=0"]
 
   # Markdown linting
