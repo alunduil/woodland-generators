@@ -9,7 +9,7 @@
 # Pre-commit.ci configuration
 ci:
   # Skip hooks that require special installation not available in pre-commit.ci
-  skip: [lychee]
+  skip: [lychee, workspace]
 
 # Global exclusions - applied to all hooks unless overridden
 exclude: |
@@ -124,3 +124,13 @@ repos:
         types_or: [markdown, rst, plain-text]
         additional_dependencies: []
         args: ["--config=.vale.ini"]
+
+  # Project-local hooks (require `npm ci`)
+  - repo: local
+    hooks:
+      - id: workspace
+        name: Workspace configuration validation
+        entry: npm run check:workspace
+        language: system
+        pass_filenames: false
+        files: ^(\.vscode/extensions\.json|\.devcontainer/devcontainer\.json|scripts/validate-workspace\.ts)$
