@@ -17,6 +17,10 @@ accept = [
 ]
 # Enable caching for faster repeated runs (default: false)
 cache = true
+# Exclude paths from scanning. The regex patterns inside this file would
+# otherwise be misread as malformed URLs when lychee is invoked with the
+# whole working tree (e.g. via the pre-commit hook).
+exclude_path = ["^lychee\\.toml$"]
 # Exclude patterns (files/URLs to skip)
 exclude = [
   # Local development URLs (false positives)
