@@ -52,7 +52,7 @@ body:
     attributes:
       label: Node.js Version
       description: What version of Node.js are you running? (Run `node --version` to check)
-      placeholder: e.g., v18.17.0
+      placeholder: e.g., v20.18.0
     validations:
       required: true
 

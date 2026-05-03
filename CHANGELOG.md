@@ -2,7 +2,7 @@
 
 All notable changes to this project appear in this file.
 
-The format follows [Keep a CHANGELOG](https://keepachangelog.com/en/1.0.0/), and
+The format follows [Keep a CHANGELOG](https://keepachangelog.com/en/1.1.0/), and
 this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
@@ -19,6 +19,8 @@ this project adheres to
   - Name generation for woodland creatures
   - Background, feat, and move generation
   - Playbook-specific archetype selection
+  - Character details generation (pronouns, appearance, accessories)
+  - Demeanor traits drawn from playbook personality options
 - Reproducible character generation via `--seed` option
 - Custom name override via `--name` option
 - Specific archetype selection via `--archetype` option
@@ -31,13 +33,4 @@ this project adheres to
 - `--species` option for character command to override species selection
 - Structured logging throughout generation pipeline for debugging generation
   failures
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
+- Requires Node.js 20.0.0 or later
