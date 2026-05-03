@@ -10,19 +10,16 @@ A CLI tool for generating resources for Root: The Tabletop RPG.
 
 ## What this tool does
 
-Woodland Generators helps your Root RPG games by giving you:
+Woodland Generators currently ships one capability:
 
-- **Character Generator**: Make random animal characters with traits and
-  backgrounds that fit their group
-- **NPC Generator**: Create non-player characters for your woodland games
-- **Clearing Generator**: Build unique clearings with different features,
-  people, power struggles, and conflicts
-- **Export Options**: Save to PDF for printing, JSON for data sharing, Markdown
-  for editing, or HTML for web viewing
+- **Character generator**: Build a Root character from a playbook PDF (or
+  pre-parsed JSON playbook), with optional seed, archetype, name, and species
+  overrides. Writes JSON to standard output, ready to redirect to a file or pipe
+  into another tool.
 
-Great for GMs who want to fill their woodland with fun characters and places.
-Also good for players who need ideas for making characters. Works with any
-online tool or tabletop game.
+Other generators (NPC, clearing, adventure plot) and additional export formats
+(Markdown, HTML, PDF) are planned but not yet implemented. Track progress on the
+[milestones page](https://github.com/alunduil/woodland-generators/milestones).
 
 ## Installation
 
@@ -40,19 +37,26 @@ run the file.
 
 ## Requirements
 
-- Node.js 18.0.0 or later (for npm installation)
+- Node.js 20.0.0 or later (for npm installation)
 
 ## Usage
 
 ### Quick start
 
 ```bash
-# Generate a single character (simplest usage)
-woodland-gen character
+# Generate a character from a Root playbook PDF
+woodland-gen character path/to/playbook.pdf
+
+# Reproduce the same character later via seed
+woodland-gen character path/to/playbook.pdf --seed abc123
 
 # Get help for any command
 woodland-gen --help
+woodland-gen character --help
 ```
+
+The generated character prints as JSON. Redirect to a file or pipe into another
+tool as needed.
 
 ## Contributing
 
@@ -92,23 +96,6 @@ Need help using Woodland Generators? Get help from:
   forums
 
 Please search existing issues and discussions before making new ones.
-
-## Roadmap
-
-Current status: **Early Development**
-
-Planned features:
-
-- [ ] Character maker with group-based traits and backgrounds
-- [ ] NPC maker with Root-specific goals
-- [ ] Clearing maker with power struggles and conflicts
-- [ ] Adventure plot maker with group-driven plots
-- [ ] Export formats (PDF, JSON, Markdown, HTML)
-- [ ] Custom settings
-- [ ] Template system for custom makers
-
-See [Issues](https://github.com/alunduil/woodland-generators/issues) for
-detailed feature tracking.
 
 ## License
 

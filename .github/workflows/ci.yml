@@ -6,10 +6,18 @@ on:
   pull_request:
     branches: [master]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+
 jobs:
   test:
     runs-on: ubuntu-latest
     name: Test (Node ${{ matrix.node-version }})
+    timeout-minutes: 15
 
     strategy:
       fail-fast: false
@@ -23,10 +31,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
@@ -39,7 +47,7 @@ jobs:
 
       - name: Upload coverage to Codecov
         if: matrix.coverage
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6
         with:
           files: ./coverage/lcov.info
           flags: unittests
@@ -50,7 +58,7 @@ jobs:
 
       - name: Upload test results to Codecov
         if: always() && matrix.coverage
-        uses: codecov/test-results-action@v1
+        uses: codecov/test-results-action@0fa95f0e1eeaafde2c782583b36b28ad0d8c77d3 # v1
         with:
           files: ./test-results/junit.xml
           flags: unittests
@@ -62,13 +70,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     name: Build
+    timeout-minutes: 15
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: "24"
           cache: "npm"
@@ -81,50 +90,8 @@ jobs:
 
       - name: Upload build artifacts
         if: github.event_name == 'push'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: dist
           path: dist/
           retention-days: 7
-
-  bench:
-    runs-on: ubuntu-latest
-    needs: test
-    name: Performance Benchmarks
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "24"
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Download previous benchmark data
-        uses: actions/cache@v4
-        with:
-          path: ./cache
-          key: ${{ runner.os }}-benchmark
-
-      - name: Run benchmarks
-        run: npm run bench
-
-      - name: Store benchmark result
-        uses: benchmark-action/github-action-benchmark@v1
-        with:
-          name: "Woodland Generators Performance"
-          tool: "benchmarkjs"
-          output-file-path: benchmarks/result-benchmarkjs.txt
-          external-data-json-path: ./cache/benchmark-data.json
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          alert-threshold: "150%"
-          comment-on-alert: true
-          fail-on-alert: true
-          alert-comment-cc-users: "@alunduil"
-          summary-always: true
-          max-items-in-chart: 100

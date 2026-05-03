@@ -6,11 +6,6 @@
 # To run manually: pre-commit run --all-files
 # To update hooks: pre-commit autoupdate
 
-# Pre-commit.ci configuration
-ci:
-  # Skip hooks that require special installation not available in pre-commit.ci
-  skip: [lychee]
-
 # Global exclusions - applied to all hooks unless overridden
 exclude: |
   (?x)^(
@@ -24,7 +19,7 @@ exclude: |
 repos:
   # Standard pre-commit hooks for common file issues
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       # Git-related checks
       - id: check-merge-conflict
@@ -50,9 +45,10 @@ repos:
       - id: check-shebang-scripts-are-executable
         exclude: '^src/.*\.ts$' # TypeScript source files with shebangs are compiled, not directly executed
 
-  # Prettier for code formatting
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v4.0.0-alpha.8
+  # Prettier for code formatting (rbubley/mirrors-prettier is the maintained
+  # community successor to pre-commit/mirrors-prettier, archived 2024-04-11.)
+  - repo: https://github.com/rbubley/mirrors-prettier
+    rev: v3.8.3
     hooks:
       - id: prettier
         name: Format with Prettier
@@ -65,23 +61,23 @@ repos:
 
   # ESLint for JavaScript/TypeScript linting
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v9.32.0
+    rev: v10.3.0
     hooks:
       - id: eslint
         name: Lint TypeScript/JavaScript
         files: \.(js|jsx|ts|tsx)$
         types: [file]
         additional_dependencies:
-          - "@eslint/js@^9.32.0"
-          - "@typescript-eslint/eslint-plugin@^8.39.0"
-          - "@typescript-eslint/parser@^8.38.0"
-          - "eslint@^9.32.0"
-          - "typescript@^5.9.2"
+          - "@eslint/js@9.39.4"
+          - "@typescript-eslint/eslint-plugin@8.59.1"
+          - "@typescript-eslint/parser@8.59.1"
+          - "eslint@9.39.4"
+          - "typescript@5.9.3"
         args: ["--fix", "--max-warnings=0"]
 
   # Markdown linting
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.45.0
+    rev: v0.48.0
     hooks:
       - id: markdownlint
         name: Lint Markdown files
@@ -89,7 +85,7 @@ repos:
 
   # Shell script linting
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.10.0.1
+    rev: v0.11.0.1
     hooks:
       - id: shellcheck
         name: Check shell scripts
@@ -97,7 +93,7 @@ repos:
 
   # YAML linting
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.37.1
+    rev: v1.38.0
     hooks:
       - id: yamllint
         name: Lint YAML files
@@ -116,7 +112,7 @@ repos:
 
   # Prose linting with Vale
   - repo: https://github.com/errata-ai/vale
-    rev: v3.12.0
+    rev: v3.14.1
     hooks:
       - id: vale
         name: Vale prose linting
@@ -124,3 +120,13 @@ repos:
         types_or: [markdown, rst, plain-text]
         additional_dependencies: []
         args: ["--config=.vale.ini"]
+
+  # Project-local hooks (require `npm ci`)
+  - repo: local
+    hooks:
+      - id: workspace
+        name: Workspace configuration validation
+        entry: npm run check:workspace
+        language: system
+        pass_filenames: false
+        files: ^(\.vscode/extensions\.json|\.devcontainer/devcontainer\.json|scripts/validate-workspace\.ts)$
