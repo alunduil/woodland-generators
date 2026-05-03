@@ -17,6 +17,8 @@ accept = [
 ]
 # Enable caching for faster repeated runs (default: false)
 cache = true
+# Filesystem paths to skip
+exclude_path = ["node_modules", "dist", "build"]
 # Exclude patterns (files/URLs to skip)
 exclude = [
   # Local development URLs (false positives)

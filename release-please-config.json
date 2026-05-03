@@ -5,7 +5,7 @@
       "release-type": "node",
       "package-name": "woodland-generators",
       "changelog-path": "CHANGELOG.md",
-      "bootstrap-sha": "4735efc8c6c668dde6d61ce1dc9b31b55d8b8d6a",
+      "bootstrap-sha": "37dbd86bebdefca7f9d15490ad0bff5d79d49916",
       "bump-minor-pre-major": true,
       "bump-patch-for-minor-pre-major": false,
       "draft": false,
