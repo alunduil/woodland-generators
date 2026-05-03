@@ -10,19 +10,15 @@ A CLI tool for generating resources for Root: The Tabletop RPG.
 
 ## What this tool does
 
-Woodland Generators helps your Root RPG games by giving you:
+Woodland Generators currently ships one capability:
 
-- **Character Generator**: Make random animal characters with traits and
-  backgrounds that fit their group
-- **NPC Generator**: Create non-player characters for your woodland games
-- **Clearing Generator**: Build unique clearings with different features,
-  people, power struggles, and conflicts
-- **Export Options**: Save to PDF for printing, JSON for data sharing, Markdown
-  for editing, or HTML for web viewing
+- **Character generator**: Build a Root character from a playbook PDF (or
+  pre-parsed JSON playbook), with optional seed, archetype, name, and species
+  overrides. Writes JSON to standard output, ready to redirect to a file or pipe
+  into another tool.
 
-Great for GMs who want to fill their woodland with fun characters and places.
-Also good for players who need ideas for making characters. Works with any
-online tool or tabletop game.
+See the [Roadmap](#roadmap) for the remaining generators and export formats.
+Each item there links to the milestone tracking it; none of them ship today.
 
 ## Installation
 
@@ -47,12 +43,19 @@ run the file.
 ### Quick start
 
 ```bash
-# Generate a single character (simplest usage)
-woodland-gen character
+# Generate a character from a Root playbook PDF
+woodland-gen character path/to/playbook.pdf
+
+# Reproduce the same character later via seed
+woodland-gen character path/to/playbook.pdf --seed abc123
 
 # Get help for any command
 woodland-gen --help
+woodland-gen character --help
 ```
+
+The generated character prints as JSON. Redirect to a file or pipe into another
+tool as needed.
 
 ## Contributing
 
@@ -95,17 +98,18 @@ Please search existing issues and discussions before making new ones.
 
 ## Roadmap
 
-Current status: **Early Development**
+Current status: **Early Development**. The character generator with JSON output
+is the only shipped capability. Everything below is planned but not yet
+implemented; each item links to the milestone tracking it:
 
-Planned features:
-
-- [ ] Character maker with group-based traits and backgrounds
-- [ ] NPC maker with Root-specific goals
-- [ ] Clearing maker with power struggles and conflicts
-- [ ] Adventure plot maker with group-driven plots
-- [ ] Export formats (PDF, JSON, Markdown, HTML)
-- [ ] Custom settings
-- [ ] Template system for custom makers
+- [ ] [NPC generator (v1.1.0)](https://github.com/alunduil/woodland-generators/milestone/4)
+- [ ] [Clearing generator (v1.2.0)](https://github.com/alunduil/woodland-generators/milestone/5)
+- [ ] [Adventure plot generator (v1.3.0)](https://github.com/alunduil/woodland-generators/milestone/6)
+- [ ] [Markdown export (v1.4.0)](https://github.com/alunduil/woodland-generators/milestone/7)
+- [ ] [HTML export (v1.5.0)](https://github.com/alunduil/woodland-generators/milestone/8)
+- [ ] [PDF export (v1.6.0)](https://github.com/alunduil/woodland-generators/milestone/9)
+- [ ] [Custom settings (v1.7.0)](https://github.com/alunduil/woodland-generators/milestone/10)
+- [ ] [Template system for custom generators (v1.8.0)](https://github.com/alunduil/woodland-generators/milestone/11)
 
 See [Issues](https://github.com/alunduil/woodland-generators/issues) for
 detailed feature tracking.
