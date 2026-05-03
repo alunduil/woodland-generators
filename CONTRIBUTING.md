@@ -42,9 +42,7 @@ players:
 
    ```bash
    npm run build:watch          # Watch mode dev
-   pre-commit run --all-files   # Check everything
-   npm run fix:lint             # Auto-fix code issues
-   npm run fix:format           # Auto-format code
+   pre-commit run --all-files   # Check everything (auto-fixes)
    ```
 
 ## How to submit changes

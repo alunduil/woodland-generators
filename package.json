@@ -76,8 +76,6 @@
     "prepack": "npm run clean && npm run build",
     "postversion": "git push && git push --tags",
     "check:outdated": "npm outdated",
-    "fix:lint": "eslint src/ --fix",
-    "fix:format": "prettier --write src/**/*.ts",
     "update:deps": "ncu"
   }
 }
