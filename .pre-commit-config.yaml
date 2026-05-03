@@ -45,42 +45,11 @@ repos:
       - id: check-shebang-scripts-are-executable
         exclude: '^src/.*\.ts$' # TypeScript source files with shebangs are compiled, not directly executed
 
-  # Prettier for code formatting (rbubley/mirrors-prettier is the maintained
-  # community successor to pre-commit/mirrors-prettier, archived 2024-04-11.)
-  - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.8.3
-    hooks:
-      - id: prettier
-        name: Format with Prettier
-        types_or: [javascript, jsx, ts, tsx, json, yaml, markdown, css, scss]
-        exclude: |
-          (?x)^(
-            package-lock\.json|
-            \.vscode/.*\.json
-          )$
-
-  # ESLint for JavaScript/TypeScript linting
-  - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v10.3.0
-    hooks:
-      - id: eslint
-        name: Lint TypeScript/JavaScript
-        files: \.(js|jsx|ts|tsx)$
-        types: [file]
-        additional_dependencies:
-          - "@eslint/js@9.39.4"
-          - "@typescript-eslint/eslint-plugin@8.59.1"
-          - "@typescript-eslint/parser@8.59.1"
-          - "eslint@9.39.4"
-          - "typescript@5.9.3"
-        args: ["--fix", "--max-warnings=0"]
-
   # Markdown linting
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.48.0
     hooks:
       - id: markdownlint
-        name: Lint Markdown files
         args: ["--fix"]
 
   # Shell script linting
@@ -88,7 +57,6 @@ repos:
     rev: v0.11.0.1
     hooks:
       - id: shellcheck
-        name: Check shell scripts
         args: ["--severity=warning"]
 
   # YAML linting
@@ -96,7 +64,6 @@ repos:
     rev: v1.38.0
     hooks:
       - id: yamllint
-        name: Lint YAML files
         args: ["-d", "relaxed"]
         exclude: '^\.github/workflows/' # Skip GitHub Actions workflows
 
@@ -105,9 +72,7 @@ repos:
     rev: v0.9.3
     hooks:
       - id: taplo-format
-        name: Format TOML with taplo
       - id: taplo-lint
-        name: Lint TOML with taplo
         args: ["--no-schema"]
 
   # Prose linting with Vale
@@ -115,17 +80,52 @@ repos:
     rev: v3.14.1
     hooks:
       - id: vale
-        name: Vale prose linting
         files: \.(md|rst|txt)$
         types_or: [markdown, rst, plain-text]
-        additional_dependencies: []
         args: ["--config=.vale.ini"]
 
-  # Project-local hooks (require `npm ci`)
+  # Lychee link checker (auto-installs the binary)
+  - repo: https://github.com/lycheeverse/lychee
+    rev: lychee-v0.24.2
+    hooks:
+      - id: lychee
+        args: ["--config=lychee.toml", "--no-progress"]
+        types: [markdown]
+
+  # Project-local hooks. Versions live in package.json devDependencies, so
+  # there is nothing for Renovate's pre-commit manager to track here. These
+  # require `npm ci` to have populated node_modules/.
   - repo: local
     hooks:
+      - id: prettier
+        name: prettier
+        entry: npx prettier --check
+        language: system
+        types_or: [javascript, jsx, ts, tsx, json, yaml, markdown, css, scss]
+        exclude: |
+          (?x)^(
+            package-lock\.json|
+            \.vscode/.*\.json
+          )$
+      - id: eslint
+        name: eslint
+        entry: npx eslint --max-warnings=0
+        language: system
+        files: \.(js|jsx|ts|tsx)$
+      - id: typecheck
+        name: typecheck
+        entry: npm run check:types
+        language: system
+        pass_filenames: false
+        types: [ts]
+      - id: depcheck
+        name: depcheck
+        entry: npm run check:deps
+        language: system
+        pass_filenames: false
+        files: ^(package\.json|package-lock\.json)$
       - id: workspace
-        name: Workspace configuration validation
+        name: workspace
         entry: npm run check:workspace
         language: system
         pass_filenames: false
