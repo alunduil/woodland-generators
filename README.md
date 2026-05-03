@@ -40,7 +40,7 @@ run the file.
 
 ## Requirements
 
-- Node.js 18.0.0 or later (for npm installation)
+- Node.js 20.0.0 or later (for npm installation)
 
 ## Usage
 
