@@ -21,6 +21,7 @@ const SYNC_DEPENDENCIES = [
   "@typescript-eslint/eslint-plugin",
   "@typescript-eslint/parser",
   "eslint",
+  "prettier",
   "typescript",
 ] as const;
 
