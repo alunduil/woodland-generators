@@ -17,8 +17,9 @@ Woodland Generators currently ships one capability:
   overrides. Writes JSON to standard output, ready to redirect to a file or pipe
   into another tool.
 
-See the [Roadmap](#roadmap) for the remaining generators and export formats.
-Each item there links to the milestone tracking it; none of them ship today.
+Other generators (NPC, clearing, adventure plot) and additional export formats
+(Markdown, HTML, PDF) are planned but not yet implemented. Track progress on the
+[milestones page](https://github.com/alunduil/woodland-generators/milestones).
 
 ## Installation
 
@@ -95,24 +96,6 @@ Need help using Woodland Generators? Get help from:
   forums
 
 Please search existing issues and discussions before making new ones.
-
-## Roadmap
-
-Current status: **Early Development**. The character generator with JSON output
-is the only shipped capability. Everything below is planned but not yet
-implemented; each item links to the milestone tracking it:
-
-- [ ] [NPC generator (v1.1.0)](https://github.com/alunduil/woodland-generators/milestone/4)
-- [ ] [Clearing generator (v1.2.0)](https://github.com/alunduil/woodland-generators/milestone/5)
-- [ ] [Adventure plot generator (v1.3.0)](https://github.com/alunduil/woodland-generators/milestone/6)
-- [ ] [Markdown export (v1.4.0)](https://github.com/alunduil/woodland-generators/milestone/7)
-- [ ] [HTML export (v1.5.0)](https://github.com/alunduil/woodland-generators/milestone/8)
-- [ ] [PDF export (v1.6.0)](https://github.com/alunduil/woodland-generators/milestone/9)
-- [ ] [Custom settings (v1.7.0)](https://github.com/alunduil/woodland-generators/milestone/10)
-- [ ] [Template system for custom generators (v1.8.0)](https://github.com/alunduil/woodland-generators/milestone/11)
-
-See [Issues](https://github.com/alunduil/woodland-generators/issues) for
-detailed feature tracking.
 
 ## License
 
