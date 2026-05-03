@@ -2,7 +2,7 @@
 # This configuration runs various checks and formatters before each commit
 # to maintain code quality and consistency.
 #
-# To install: pre-commit install
+# To install: pre-commit install --hook-type pre-commit --hook-type commit-msg
 # To run manually: pre-commit run --all-files
 # To update hooks: pre-commit autoupdate
 
@@ -124,3 +124,13 @@ repos:
         types_or: [markdown, rst, plain-text]
         additional_dependencies: []
         args: ["--config=.vale.ini"]
+
+  # Conventional Commits validation - keeps release-please's changelog
+  # generation honest by rejecting non-conventional commit subjects.
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.4.0
+    hooks:
+      - id: conventional-pre-commit
+        name: Validate Conventional Commits
+        stages: [commit-msg]
+        args: []

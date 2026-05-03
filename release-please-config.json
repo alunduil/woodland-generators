@@ -18,7 +18,6 @@
         { "type": "refactor", "section": "Changed" },
         { "type": "revert", "section": "Removed" },
         { "type": "docs", "section": "Documentation" },
-        { "type": "deps", "section": "Maintenance" },
         { "type": "chore", "section": "Maintenance" },
         { "type": "ci", "section": "Maintenance", "hidden": true },
         { "type": "build", "section": "Maintenance", "hidden": true },
