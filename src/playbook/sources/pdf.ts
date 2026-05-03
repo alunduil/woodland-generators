@@ -3,6 +3,7 @@ import pdfParse, { Result as PDFResult } from "pdf-parse";
 import { Playbook } from "../types";
 import { PlaybookSource } from "./types";
 import { createTextPreview, createPositionHighlight, normalizeWhitespace } from "./debug";
+import { asPdfParseError, PdfParseError } from "./errors";
 import { summary } from "../../maths";
 
 /**
@@ -31,10 +32,19 @@ export class PDFPlaybookSource extends PlaybookSource {
     }
 
     this.logger.debug({ msg: "Loading PDF from file", path: this.path });
-    const buffer = readFileSync(this.path);
+    let buffer: Buffer;
+    try {
+      buffer = readFileSync(this.path);
+    } catch (error) {
+      throw asPdfParseError("read", this.path, error);
+    }
     this.logger.debug({ msg: "PDF file read", size: buffer.length });
 
-    this.data = await pdfParse(buffer);
+    try {
+      this.data = await pdfParse(buffer);
+    } catch (error) {
+      throw asPdfParseError("parse", this.path, error);
+    }
     this.logger.debug({
       msg: "PDF extraction completed",
       pageCount: this.data.numpages,
@@ -44,21 +54,34 @@ export class PDFPlaybookSource extends PlaybookSource {
   }
 
   /**
-   * Check if this source's file is valid and can be processed
+   * Check if this source's file is a PDF.
+   *
+   * Reports compatibility based on the `%PDF-` magic bytes only — the heavy
+   * parse work happens in `load()` so its failures can surface as typed
+   * `PdfParseError`s with their stage tags rather than collapsing into a
+   * single boolean signal.
    */
   async isValid(): Promise<boolean> {
+    let buffer: Buffer;
     try {
-      await this.loadPDFData();
-      this.logger.debug("PDF validation successful");
-      return true;
+      buffer = readFileSync(this.path);
     } catch (error) {
-      this.logger.warn({
-        msg: "PDF validation failed",
+      this.logger.debug({
+        msg: "PDF validation skipped - file unreadable",
         path: this.path,
         error: error instanceof Error ? error.message : String(error),
       });
       return false;
     }
+
+    const looksLikePdf = buffer.subarray(0, 5).toString("latin1") === "%PDF-";
+    if (!looksLikePdf) {
+      this.logger.debug({ msg: "PDF validation: no %PDF- header", path: this.path });
+      return false;
+    }
+
+    this.logger.debug({ msg: "PDF validation: %PDF- header present", path: this.path });
+    return true;
   }
 
   /**
@@ -78,14 +101,39 @@ export class PDFPlaybookSource extends PlaybookSource {
     // Clear any existing playbooks to ensure idempotent behavior
     this.playbooks = [];
 
-    // Split text by pages or by clear playbook delimiters
-    const sections = this.splitIntoPlaybookSections(text);
+    let sections: string[];
+    try {
+      sections = this.splitIntoPlaybookSections(text);
+    } catch (error) {
+      throw asPdfParseError("split", this.path, error);
+    }
+
+    if (sections.length === 0) {
+      throw new PdfParseError(
+        "split",
+        this.path,
+        "no playbook sections were found in the extracted PDF text",
+      );
+    }
 
     for (const [sectionIndex, section] of sections.entries()) {
-      const playbook = this.parsePlaybookSection(section, sectionIndex);
+      let playbook: Playbook | null;
+      try {
+        playbook = this.parsePlaybookSection(section, sectionIndex);
+      } catch (error) {
+        throw asPdfParseError("section-parse", this.path, error, `section ${sectionIndex}`);
+      }
       if (playbook) {
         this.playbooks.push(playbook);
       }
+    }
+
+    if (this.playbooks.length === 0) {
+      throw new PdfParseError(
+        "section-parse",
+        this.path,
+        `no valid playbooks parsed from ${sections.length} candidate section(s)`,
+      );
     }
 
     this.logger.info({
@@ -194,46 +242,11 @@ export class PDFPlaybookSource extends PlaybookSource {
       textPreview: createTextPreview(text, 100),
     });
 
-    // Try to extract playbook archetype from common patterns
-    const archetypePatterns = [
-      // Look for "The [Name]" pattern at the beginning of sections (preserve "The")
-      {
-        regex: /^[^\w]*(The\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/m,
-        description: "The [Name] at section start",
-      },
-      // Look for patterns near "Choose Your Nature" (preserve "The")
-      {
-        regex: /(The\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)[^\w]*Choose Your Nature/i,
-        description: "The [Name] near Choose Your Nature",
-      },
-      // Look for title-style headers (all caps or title case)
-      { regex: /^[^\w]*([A-Z][A-Z\s]+[A-Z])\s*$/m, description: "ALL CAPS title header" },
-      // Fallback: single word archetype names
-      {
-        regex: /^[^\w]*([A-Z][a-z]+)[^\w]*Choose Your Nature/i,
-        description: "Single word before Choose Your Nature",
-      },
-    ];
-
-    let archetypeName = "Unknown";
-
-    // Try each pattern to extract the archetype name
-    for (const { regex, description } of archetypePatterns) {
-      const match = text.match(regex);
-      if (match?.[1]) {
-        archetypeName = match[1].trim();
-        // Clean up common artifacts
-        archetypeName = archetypeName.replace(/\s+/g, " ").trim();
-        if (archetypeName.length > 3 && archetypeName.length < 50) {
-          this.logger.debug({
-            msg: "Archetype extracted",
-            sectionIndex,
-            archetype: archetypeName,
-            extractionMethod: description,
-          });
-          break;
-        }
-      }
+    let archetypeName: string;
+    try {
+      archetypeName = this.extractArchetype(text, sectionIndex);
+    } catch (error) {
+      throw asPdfParseError("archetype-extract", this.path, error, `section ${sectionIndex}`);
     }
 
     // If no archetype found but has playbook indicators, this might still be a valid playbook
@@ -282,6 +295,53 @@ export class PDFPlaybookSource extends PlaybookSource {
       rawText: text,
       pageNumber: sectionIndex,
     };
+  }
+
+  /**
+   * Extract the archetype name from a playbook section by trying patterns in order.
+   * Returns "Unknown" when no pattern matches; callers decide whether that is fatal.
+   */
+  private extractArchetype(text: string, sectionIndex: number): string {
+    const archetypePatterns = [
+      // Look for "The [Name]" pattern at the beginning of sections (preserve "The")
+      {
+        regex: /^[^\w]*(The\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/m,
+        description: "The [Name] at section start",
+      },
+      // Look for patterns near "Choose Your Nature" (preserve "The")
+      {
+        regex: /(The\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)[^\w]*Choose Your Nature/i,
+        description: "The [Name] near Choose Your Nature",
+      },
+      // Look for title-style headers (all caps or title case)
+      { regex: /^[^\w]*([A-Z][A-Z\s]+[A-Z])\s*$/m, description: "ALL CAPS title header" },
+      // Fallback: single word archetype names
+      {
+        regex: /^[^\w]*([A-Z][a-z]+)[^\w]*Choose Your Nature/i,
+        description: "Single word before Choose Your Nature",
+      },
+    ];
+
+    let archetypeName = "Unknown";
+
+    for (const { regex, description } of archetypePatterns) {
+      const match = text.match(regex);
+      if (match?.[1]) {
+        const candidate = match[1].trim().replace(/\s+/g, " ").trim();
+        if (candidate.length > 3 && candidate.length < 50) {
+          archetypeName = candidate;
+          this.logger.debug({
+            msg: "Archetype extracted",
+            sectionIndex,
+            archetype: archetypeName,
+            extractionMethod: description,
+          });
+          break;
+        }
+      }
+    }
+
+    return archetypeName;
   }
 
   /**

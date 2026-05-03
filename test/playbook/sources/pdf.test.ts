@@ -1,4 +1,5 @@
 import { PDFPlaybookSource } from "../../../src/playbook/sources/pdf";
+import { PdfParseError, PDF_PARSE_STAGES } from "../../../src/playbook/sources/errors";
 import { root } from "../../../src/logging";
 import path from "path";
 import { glob } from "glob";
@@ -145,6 +146,43 @@ describe("PDFPlaybookSource - PlaybookSource interface implementation", () => {
       const afterSecondLoad = source.getPlaybooks();
 
       expect(afterSecondLoad).toEqual(initialPlaybooks);
+    });
+  });
+
+  describe("typed PdfParseError", () => {
+    const skippedFixtures = new Set(["invalid-compression.pdf", "bad-xref-entry.pdf"]);
+
+    const failingFixtures = [
+      ...glob
+        .sync("playbooks-*/valid/*", { cwd: fixturesDir })
+        .filter((file) => !file.includes("playbooks-pdf")),
+      ...glob.sync("playbooks-pdf/invalid/*", { cwd: fixturesDir }),
+    ].filter((file) => !skippedFixtures.has(path.basename(file)));
+
+    it("should throw PdfParseError with stage 'read' for non-existent files", async () => {
+      const source = new PDFPlaybookSource(path.join(tmpdir(), "does-not-exist.pdf"), "pdf");
+      await expect(source.load()).rejects.toBeInstanceOf(PdfParseError);
+      await expect(source.load()).rejects.toMatchObject({ stage: "read" });
+    });
+
+    it("should throw PdfParseError with stage 'read' for directories", async () => {
+      const source = new PDFPlaybookSource(fixturesDir, "pdf");
+      await expect(source.load()).rejects.toBeInstanceOf(PdfParseError);
+      await expect(source.load()).rejects.toMatchObject({ stage: "read" });
+    });
+
+    failingFixtures.forEach((file) => {
+      it(`should throw PdfParseError with a known stage for: ${path.basename(file)}`, async () => {
+        const source = new PDFPlaybookSource(path.join(fixturesDir, file), "pdf");
+        try {
+          await source.load();
+          throw new Error("expected load() to reject");
+        } catch (error) {
+          expect(error).toBeInstanceOf(PdfParseError);
+          const stage = (error as PdfParseError).stage;
+          expect(PDF_PARSE_STAGES).toContain(stage);
+        }
+      });
     });
   });
 });

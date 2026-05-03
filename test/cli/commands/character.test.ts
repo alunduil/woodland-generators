@@ -1,5 +1,6 @@
 import { createCharacterCommand } from "../../../src/cli/commands/character";
 import { generatePlaybook } from "../../../src/generators";
+import { PdfParseError } from "../../../src/playbook";
 import { root } from "../../../src/logging";
 
 jest.mock("../../../src/generators", (): typeof import("../../../src/generators") => ({
@@ -67,5 +68,19 @@ describe("createCharacterCommand", () => {
     await expect(command.parseAsync(["character", "/path/to/playbook.pdf"])).rejects.toThrow(
       "Process exit called with code 1",
     );
+  });
+
+  it("should surface PdfParseError stage on stderr", async () => {
+    (generatePlaybook as jest.Mock).mockRejectedValue(
+      new PdfParseError("section-parse", "/path/to/playbook.pdf", "boom"),
+    );
+
+    await expect(command.parseAsync(["/path/to/playbook.pdf"], { from: "user" })).rejects.toThrow(
+      "Process exit called with code 1",
+    );
+
+    const allOutput = outputBuffer.join("");
+    expect(allOutput).toContain("[section-parse]");
+    expect(allOutput).toContain('failing stage: "section-parse"');
   });
 });

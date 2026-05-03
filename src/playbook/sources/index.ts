@@ -18,14 +18,22 @@ async function withValidSource(
   const sources = [new PDFPlaybookSource(path, "pdf"), new JSONPlaybookSource(path, "json")];
 
   for (const source of sources) {
+    let valid: boolean;
     try {
-      if (await source.isValid()) {
-        await source.load();
-        return await operation(source);
-      }
+      valid = await source.isValid();
     } catch {
-      // Continue to next source type
-      continue;
+      // isValid is meant to signal compatibility via its return value;
+      // defensively treat a thrown error as "not this source" so we still
+      // try the next one.
+      valid = false;
+    }
+    if (valid) {
+      // Once a source has claimed compatibility, surface load/operation
+      // failures so callers (CLI, tests) see the typed error — e.g.
+      // PdfParseError with its stage tag — instead of a generic
+      // "no source can handle file" fallback.
+      await source.load();
+      return await operation(source);
     }
   }
 
