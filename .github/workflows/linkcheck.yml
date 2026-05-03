@@ -1,8 +1,5 @@
 name: Link Check
 
-# This workflow runs lychee link checking with proper environment setup
-# since lychee isn't available in pre-commit.ci
-
 on:
   push:
     branches: [master]

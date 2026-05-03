@@ -6,11 +6,6 @@
 # To run manually: pre-commit run --all-files
 # To update hooks: pre-commit autoupdate
 
-# Pre-commit.ci configuration
-ci:
-  # Skip hooks that require special installation not available in pre-commit.ci
-  skip: [lychee]
-
 # Global exclusions - applied to all hooks unless overridden
 exclude: |
   (?x)^(
@@ -50,9 +45,10 @@ repos:
       - id: check-shebang-scripts-are-executable
         exclude: '^src/.*\.ts$' # TypeScript source files with shebangs are compiled, not directly executed
 
-  # Prettier for code formatting
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v4.0.0-alpha.8
+  # Prettier for code formatting (rbubley/mirrors-prettier is the maintained
+  # community successor to pre-commit/mirrors-prettier, archived 2024-04-11.)
+  - repo: https://github.com/rbubley/mirrors-prettier
+    rev: v3.8.3
     hooks:
       - id: prettier
         name: Format with Prettier
@@ -89,7 +85,7 @@ repos:
 
   # Shell script linting
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.10.0.1
+    rev: v0.11.0.1
     hooks:
       - id: shellcheck
         name: Check shell scripts
