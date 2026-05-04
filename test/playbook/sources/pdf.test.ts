@@ -1,8 +1,25 @@
-import { PDFPlaybookSource } from "../../../src/playbook/sources/pdf";
-import { root } from "../../../src/logging";
-import path from "path";
-import { glob } from "glob";
+// Wrap pdf-parse in a passthrough jest.fn so the rest of the suite keeps
+// running real fixtures while the empty-results describe block can override
+// individual calls with mockResolvedValueOnce.
+jest.mock("pdf-parse", () => {
+  const actual = jest.requireActual("pdf-parse") as (
+    buffer: Buffer,
+  ) => Promise<{ text: string; numpages: number }>;
+  return jest.fn(actual);
+});
+
+import { writeFileSync, unlinkSync } from "fs";
 import { tmpdir } from "os";
+import path from "path";
+
+import { glob } from "glob";
+import pdfParse from "pdf-parse";
+
+import { PDFPlaybookSource } from "../../../src/playbook/sources/pdf";
+import { PdfParseError, PDF_PARSE_STAGES } from "../../../src/playbook/sources/errors";
+import { root } from "../../../src/logging";
+
+const mockPdfParse = pdfParse as unknown as jest.Mock;
 
 describe("PDFPlaybookSource - PlaybookSource interface implementation", () => {
   const fixturesDir = path.join(__dirname, "../../fixtures");
@@ -145,6 +162,107 @@ describe("PDFPlaybookSource - PlaybookSource interface implementation", () => {
       const afterSecondLoad = source.getPlaybooks();
 
       expect(afterSecondLoad).toEqual(initialPlaybooks);
+    });
+  });
+
+  describe("typed PdfParseError", () => {
+    const skippedFixtures = new Set(["invalid-compression.pdf", "bad-xref-entry.pdf"]);
+
+    const failingFixtures = [
+      ...glob
+        .sync("playbooks-*/valid/*", { cwd: fixturesDir })
+        .filter((file) => !file.includes("playbooks-pdf")),
+      ...glob.sync("playbooks-pdf/invalid/*", { cwd: fixturesDir }),
+    ].filter((file) => !skippedFixtures.has(path.basename(file)));
+
+    it("should throw PdfParseError with stage 'read' for non-existent files", async () => {
+      const source = new PDFPlaybookSource(path.join(tmpdir(), "does-not-exist.pdf"), "pdf");
+      await expect(source.load()).rejects.toBeInstanceOf(PdfParseError);
+      await expect(source.load()).rejects.toMatchObject({ stage: "read" });
+    });
+
+    it("should throw PdfParseError with stage 'read' for directories", async () => {
+      const source = new PDFPlaybookSource(fixturesDir, "pdf");
+      await expect(source.load()).rejects.toBeInstanceOf(PdfParseError);
+      await expect(source.load()).rejects.toMatchObject({ stage: "read" });
+    });
+
+    failingFixtures.forEach((file) => {
+      it(`should throw PdfParseError with a known stage for: ${path.basename(file)}`, async () => {
+        const source = new PDFPlaybookSource(path.join(fixturesDir, file), "pdf");
+        try {
+          await source.load();
+          throw new Error("expected load() to reject");
+        } catch (error) {
+          expect(error).toBeInstanceOf(PdfParseError);
+          const stage = (error as PdfParseError).stage;
+          expect(PDF_PARSE_STAGES).toContain(stage);
+        }
+      });
+    });
+  });
+
+  describe("empty extraction results", () => {
+    const stubFixturePath = path.join(tmpdir(), "pdf-empty-results.test.pdf");
+
+    const stubResult = (text: string) => ({
+      text,
+      numpages: 1,
+      numrender: 1,
+      info: {},
+      metadata: null,
+      version: "v1.10.100",
+    });
+
+    beforeAll(() => {
+      // pdf-parse is mocked per-test via mockResolvedValueOnce, so the file's
+      // contents are never extracted. readFileSync still runs in load(), so
+      // the file must exist on disk.
+      writeFileSync(stubFixturePath, "stub");
+    });
+
+    afterAll(() => {
+      try {
+        unlinkSync(stubFixturePath);
+      } catch {
+        // ignore — best-effort cleanup
+      }
+    });
+
+    it("throws PdfParseError tagged 'split' when extracted text yields no playbook sections", async () => {
+      mockPdfParse.mockResolvedValueOnce(stubResult("tiny"));
+
+      const source = new PDFPlaybookSource(stubFixturePath, "pdf");
+      const promise = source.load();
+
+      await expect(promise).rejects.toBeInstanceOf(PdfParseError);
+      await expect(promise).rejects.toMatchObject({
+        stage: "split",
+        message: expect.stringContaining("no playbook sections"),
+      });
+    });
+
+    it("throws PdfParseError tagged 'section-parse' when no section produces a valid playbook", async () => {
+      // Long enough to clear minSectionLength (100), but lacks every archetype
+      // pattern and every playbook indicator ("Choose Your Nature", "Starting
+      // Moves", or the Background/vagabond pair) — every section is rejected
+      // as non-playbook.
+      const noisyText = (
+        "this is a long lorem ipsum style passage with no proper noun patterns " +
+        "and no special markers and no caps lines so the parser will not find an " +
+        "archetype here despite the text being long enough to count as a section "
+      ).repeat(2);
+
+      mockPdfParse.mockResolvedValueOnce(stubResult(noisyText));
+
+      const source = new PDFPlaybookSource(stubFixturePath, "pdf");
+      const promise = source.load();
+
+      await expect(promise).rejects.toBeInstanceOf(PdfParseError);
+      await expect(promise).rejects.toMatchObject({
+        stage: "section-parse",
+        message: expect.stringContaining("no valid playbooks"),
+      });
     });
   });
 });
