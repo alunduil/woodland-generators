@@ -2,7 +2,12 @@ import { readFileSync } from "fs";
 import { extractText, getDocumentProxy } from "unpdf";
 import { Playbook } from "../types";
 import { PlaybookSource } from "./types";
-import { createTextPreview, createPositionHighlight, normalizeWhitespace } from "./debug";
+import {
+  createTextPreview,
+  createPositionHighlight,
+  normalizeForMatching,
+  normalizeWhitespace,
+} from "./debug";
 import { asPdfParseError, PdfParseError } from "./errors";
 import { summary } from "../../maths";
 
@@ -166,7 +171,7 @@ export class PDFPlaybookSource extends PlaybookSource {
     const splitPages: number[] = [0];
 
     for (let i = 0; i < pages.length; i++) {
-      const page = pages[i] ?? "";
+      const page = normalizeForMatching(pages[i] ?? "");
       const startsPlaybook = page
         .split("\n")
         .some((line) => line.trim().startsWith("Choose Your Nature"));
@@ -197,7 +202,7 @@ export class PDFPlaybookSource extends PlaybookSource {
     for (let i = 0; i < splitPages.length; i++) {
       const startPage = splitPages[i]!;
       const endPage = i + 1 < splitPages.length ? splitPages[i + 1]! : pages.length;
-      const section = pages.slice(startPage, endPage).join("\n").trim();
+      const section = normalizeForMatching(pages.slice(startPage, endPage).join("\n")).trim();
       if (section.length > minLength) {
         sections.push(section);
         this.logger.trace({
@@ -302,21 +307,23 @@ export class PDFPlaybookSource extends PlaybookSource {
    */
   private extractArchetype(text: string, sectionIndex: number): string {
     const archetypePatterns = [
-      // Look for "The [Name]" pattern at the beginning of sections (preserve "The")
+      // Letter classes use Unicode property escapes so non-ASCII archetype
+      // names (e.g. "The Nâgualisz") match. The ASCII-only [A-Z][a-z]+ form
+      // stopped at the first diacritic and fell through to "Unknown".
       {
-        regex: /^[^\w]*(The\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/m,
+        regex: /^[^\p{L}\p{N}]*(The\s+\p{Lu}\p{Ll}+(?:\s+\p{Lu}\p{Ll}+)*)/mu,
         description: "The [Name] at section start",
       },
-      // Look for patterns near "Choose Your Nature" (preserve "The")
       {
-        regex: /(The\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)[^\w]*Choose Your Nature/i,
+        regex: /(The\s+\p{Lu}\p{Ll}+(?:\s+\p{Lu}\p{Ll}+)*)[^\p{L}\p{N}]*Choose Your Nature/iu,
         description: "The [Name] near Choose Your Nature",
       },
-      // Look for title-style headers (all caps or title case)
-      { regex: /^[^\w]*([A-Z][A-Z\s]+[A-Z])\s*$/m, description: "ALL CAPS title header" },
-      // Fallback: single word archetype names
       {
-        regex: /^[^\w]*([A-Z][a-z]+)[^\w]*Choose Your Nature/i,
+        regex: /^[^\p{L}\p{N}]*(\p{Lu}[\p{Lu}\s]+\p{Lu})\s*$/mu,
+        description: "ALL CAPS title header",
+      },
+      {
+        regex: /^[^\p{L}\p{N}]*(\p{Lu}\p{Ll}+)[^\p{L}\p{N}]*Choose Your Nature/iu,
         description: "Single word before Choose Your Nature",
       },
     ];

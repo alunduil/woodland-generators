@@ -2,8 +2,30 @@
  * Unit tests for debug utility functions - Edge cases and error conditions
  */
 
-import { createPositionHighlight } from "../../../src/playbook/sources/debug";
+import { createPositionHighlight, normalizeForMatching } from "../../../src/playbook/sources/debug";
 import { root } from "../../../src/logging";
+
+describe("normalizeForMatching", () => {
+  it("collapses non-breaking and other irregular spaces to a single space", () => {
+    // U+00A0 NBSP, U+2009 thin space, U+202F narrow NBSP — all collapse so that
+    // anchor strings ("Choose Your Nature") match regardless of the PDF
+    // extractor's whitespace choices.
+    const input = "Choose Your Nature here";
+    expect(normalizeForMatching(input)).toBe("Choose Your Nature here");
+  });
+
+  it("normalizes typographic punctuation to ASCII", () => {
+    expect(normalizeForMatching("“Hi” — it’s fine…")).toBe('"Hi" - it\'s fine...');
+  });
+
+  it("preserves newlines so line-anchored regexes still match", () => {
+    expect(normalizeForMatching("a   \n   b")).toBe("a\nb");
+  });
+
+  it("normalizes CRLF to LF", () => {
+    expect(normalizeForMatching("a\r\nb\rc")).toBe("a\nb\nc");
+  });
+});
 
 describe("createPositionHighlight", () => {
   let warnSpy: jest.SpyInstance;

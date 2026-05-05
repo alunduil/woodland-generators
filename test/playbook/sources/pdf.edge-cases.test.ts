@@ -57,16 +57,14 @@ describe("PDFPlaybookSource - edge cases (issue #128)", () => {
     expect(pb!.archetype).toBe("The Ronin");
   });
 
-  it("non-ASCII archetype: regex misses the name and falls through to 'Unknown'", async () => {
-    // The fixture's archetype is "The Nâgualisz". The four extraction
-    // regexes use [A-Z][a-z]+ which is ASCII-only, so the "â" stops the
-    // match at "N" — too short for the 3<length<50 sanity check. The
-    // section is kept (playbook indicators present) but archetype is
-    // "Unknown".
+  it("non-ASCII archetype: Unicode-aware patterns capture diacritics", async () => {
+    // The fixture's archetype is "The Nâgualisz". The extraction patterns now
+    // use \p{Lu}\p{Ll}+ instead of [A-Z][a-z]+, so the "â" no longer truncates
+    // the match.
     const source = new PDFPlaybookSource(path.join(validDir, "non-ascii-archetype-1.pdf"), "pdf");
     await source.load();
     const [pb] = source.getPlaybooks();
     expect(source.getPlaybooks().length).toBe(1);
-    expect(pb!.archetype).toBe("Unknown");
+    expect(pb!.archetype).toBe("The Nâgualisz");
   });
 });
