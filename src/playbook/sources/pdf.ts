@@ -16,6 +16,37 @@ interface PDFResult {
   numpages: number;
 }
 
+interface AnchorSpan {
+  bodyStart: number;
+  bodyEnd: number;
+}
+
+/**
+ * Known section headings within a single playbook, keyed by a stable internal
+ * name. Each regex matches the heading itself; the body span runs from the
+ * end of the heading match to the start of the next anchor in document order.
+ *
+ * Headings sit on their own line (or trailing-only content on the line) in
+ * extracted PDF text, so anchors require either a line boundary or a `?`
+ * terminator. `g` flag is set on every entry so the anchor scanner can pick
+ * up multiple occurrences for first-wins resolution.
+ */
+const SECTION_ANCHORS: ReadonlyArray<{ name: string; regex: RegExp }> = [
+  { name: "ChooseYourNature", regex: /^[ \t]*Choose Your Nature[ \t]*$/gm },
+  { name: "Background", regex: /^[ \t]*Background[ \t]*$/gm },
+  { name: "WhereDoYouCallHome", regex: /Where do you call home\?/g },
+  { name: "WhyAreYouAVagabond", regex: /Why are you a vagabond\?/g },
+  // Real playbooks use "Roguish Moves"; the original audit comment on #199
+  // confirms "Starting Moves" never appears. Both are matched here so
+  // synthetic fixtures and real content both anchor.
+  { name: "Moves", regex: /^[ \t]*(?:Starting Moves|Roguish Moves)[ \t]*$/gm },
+  { name: "Feats", regex: /^[ \t]*Roguish Feats[ \t]*$/gm },
+  { name: "WeaponSkills", regex: /^[ \t]*Weapon Skills[ \t]*$/gm },
+  { name: "Equipment", regex: /^[ \t]*Equipment[ \t]*$/gm },
+  { name: "Details", regex: /^[ \t]*Details[ \t]*$/gm },
+  { name: "Demeanor", regex: /^[ \t]*Demeanor[ \t]*$/gm },
+];
+
 /**
  * Configuration constants for PDF parsing
  */
@@ -253,12 +284,14 @@ export class PDFPlaybookSource extends PlaybookSource {
       throw asPdfParseError("archetype-extract", this.path, error, `section ${sectionIndex}`);
     }
 
+    const anchors = this.findSectionAnchors(text);
+
     // If no archetype found but has playbook indicators, this might still be a valid playbook
     const hasPlaybookIndicators =
-      text.includes("Choose Your Nature") ||
-      text.includes("Starting Moves") ||
-      (text.includes("Background") &&
-        (text.includes("Where do you call home") || text.includes("Why are you a vagabond")));
+      anchors.has("ChooseYourNature") ||
+      anchors.has("Moves") ||
+      (anchors.has("Background") &&
+        (anchors.has("WhereDoYouCallHome") || anchors.has("WhyAreYouAVagabond")));
 
     if (archetypeName === "Unknown" && !hasPlaybookIndicators) {
       this.logger.debug({
@@ -287,18 +320,65 @@ export class PDFPlaybookSource extends PlaybookSource {
 
     return {
       archetype: archetypeName,
-      background: this.parseBackground(text),
-      nature: this.parseNature(text),
-      moves: this.parseMoves(text),
-      equipment: this.parseEquipment(text),
-      feats: this.parseFeats(text),
-      weaponSkills: this.parseWeaponSkills(text),
+      background: this.parseBackground(text, anchors),
+      nature: this.parseNature(text, anchors),
+      moves: this.parseMoves(text, anchors),
+      equipment: this.parseEquipment(text, anchors),
+      feats: this.parseFeats(text, anchors),
+      weaponSkills: this.parseWeaponSkills(text, anchors),
       species: this.parseSpecies(text),
-      details: this.parseDetails(text),
-      demeanor: this.parseDemeanor(text),
+      details: this.parseDetails(text, anchors),
+      demeanor: this.parseDemeanor(text, anchors),
       rawText: text,
       pageNumber: sectionIndex,
     };
+  }
+
+  /**
+   * Locate known section anchors in document order and record each one's
+   * body span — start of body to start of the next anchor (or end of text).
+   *
+   * Field parsers consume slices from this map instead of rerunning brittle
+   * `Anchor(.*?)NextAnchor|NextAnchor2|$` regexes. Reordered or renamed
+   * upstream sections affect anchor detection here, in one place, rather
+   * than silently emptying every dependent parser.
+   */
+  private findSectionAnchors(text: string): Map<string, AnchorSpan> {
+    type Hit = { name: string; matchStart: number; bodyStart: number };
+    const hits: Hit[] = [];
+    for (const { name, regex } of SECTION_ANCHORS) {
+      regex.lastIndex = 0;
+      let match: RegExpExecArray | null;
+      while ((match = regex.exec(text)) !== null) {
+        hits.push({
+          name,
+          matchStart: match.index,
+          bodyStart: match.index + match[0].length,
+        });
+        if (!regex.global) break;
+      }
+    }
+    hits.sort((a, b) => a.matchStart - b.matchStart);
+
+    const anchors = new Map<string, AnchorSpan>();
+    for (let i = 0; i < hits.length; i++) {
+      const hit = hits[i]!;
+      // First occurrence wins; later duplicates (e.g. "Equipment" appearing
+      // again inside a sidebar) extend nothing.
+      if (anchors.has(hit.name)) continue;
+      const next = hits.slice(i + 1).find((h) => h.matchStart > hit.bodyStart);
+      anchors.set(hit.name, {
+        bodyStart: hit.bodyStart,
+        bodyEnd: next ? next.matchStart : text.length,
+      });
+    }
+    return anchors;
+  }
+
+  private sliceAnchor(text: string, anchors: Map<string, AnchorSpan>, name: string): string {
+    const span = anchors.get(name);
+    if (!span) return "";
+    return text.slice(span.bodyStart, span.bodyEnd);
   }
 
   /**
@@ -353,103 +433,62 @@ export class PDFPlaybookSource extends PlaybookSource {
   /**
    * Parse background options from text
    */
-  private parseBackground(text: string): { homeOptions: string[]; motivationOptions: string[] } {
-    const homeOptions: string[] = [];
-    const motivationOptions: string[] = [];
-
-    // Look for home options
-    const homeMatch = text.match(/Where do you call home\?(.*?)Why are you a vagabond\?/s);
-    if (homeMatch?.[1]) {
-      const homeText = homeMatch[1];
-      const options = homeText
-        .split("\n")
-        .filter((line) => line.trim().length > 0 && !line.includes("____________"));
-      homeOptions.push(...options.map((opt) => opt.trim()));
-    }
-
-    // Look for motivation options
-    const motivationMatch = text.match(
-      /Why are you a vagabond\?(.*?)(?:Starting Moves|Roguish Feats|Equipment|$)/s,
+  private parseBackground(
+    text: string,
+    anchors: Map<string, AnchorSpan>,
+  ): { homeOptions: string[]; motivationOptions: string[] } {
+    const homeOptions = this.linesFromAnchor(text, anchors, "WhereDoYouCallHome").filter(
+      (line) => !line.includes("____________"),
     );
-    if (motivationMatch?.[1]) {
-      const motivationText = motivationMatch[1];
-      const options = motivationText
-        .split("\n")
-        .filter((line) => line.trim().length > 0 && !line.includes("____________"));
-      motivationOptions.push(...options.map((opt) => opt.trim()));
-    }
-
+    const motivationOptions = this.linesFromAnchor(text, anchors, "WhyAreYouAVagabond").filter(
+      (line) => !line.includes("____________"),
+    );
     return { homeOptions, motivationOptions };
   }
 
   /**
-   * Parse nature stats from text
+   * Parse nature stats from text.
+   *
+   * Confined to the "Choose Your Nature" → next-anchor slice — the prior
+   * implementation pulled every signed integer from the entire section
+   * (capped at 35) which would soak up unrelated numerals from later
+   * sections. Falls back to the whole section when the anchor is missing.
    */
-  private parseNature(text: string): { stats: number[]; statNames: string[] } {
-    const stats: number[] = [];
+  private parseNature(
+    text: string,
+    anchors: Map<string, AnchorSpan>,
+  ): { stats: number[]; statNames: string[] } {
     const statNames = ["Charm", "Cunning", "Finesse", "Luck", "Might"];
-
-    // Look for stat values (numbers like -3, -2, -1, +0, +1, +2, +3)
-    const statPattern = /[-+]?\d+/g;
-    const matches = text.match(statPattern);
-
-    if (matches) {
-      // Filter and convert to numbers, typically first 35 numbers are the stat array
-      const numbers = matches.slice(0, 35).map((match) => parseInt(match.replace("+", ""), 10));
-      stats.push(...numbers);
-    }
-
+    const slice = this.sliceAnchor(text, anchors, "ChooseYourNature") || text;
+    const matches = slice.match(/[-+]?\d+/g) ?? [];
+    const stats = matches.map((m) => parseInt(m.replace("+", ""), 10));
     return { stats, statNames };
   }
 
   /**
    * Parse moves from text
    */
-  private parseMoves(text: string): string[] {
-    const moves: string[] = [];
-
-    // Look for starting moves section
-    const movesMatch = text.match(
-      /Starting Moves(.*?)(?:Roguish Feats|Equipment|Weapon Skills|$)/s,
-    );
-    if (movesMatch?.[1]) {
-      const movesText = movesMatch[1];
-      // Split by bullet points or move names (typically in bold/caps)
-      const moveLines = movesText.split("\n").filter((line) => line.trim().length > 10);
-      moves.push(...moveLines.map((move) => move.trim()));
-    }
-
-    return moves;
+  private parseMoves(text: string, anchors: Map<string, AnchorSpan>): string[] {
+    return this.linesFromAnchor(text, anchors, "Moves", { minLength: 10 });
   }
 
   /**
    * Parse equipment from text
    */
-  private parseEquipment(text: string): { startingValue: number; items: string[] } {
+  private parseEquipment(
+    text: string,
+    anchors: Map<string, AnchorSpan>,
+  ): { startingValue: number; items: string[] } {
     let startingValue = 0;
-    const items: string[] = [];
-
-    // Look for starting value
     const valueMatch = text.match(/starting value:\s*(\d+)/i);
     if (valueMatch?.[1]) {
       startingValue = parseInt(valueMatch[1], 10);
     }
 
-    // Look for equipment section
-    const equipmentMatch = text.match(/Equipment(.*?)$/s);
-    if (equipmentMatch?.[1]) {
-      const equipmentText = equipmentMatch[1];
-      const itemLines = equipmentText
-        .split("\n")
-        .filter(
-          (line) =>
-            line.trim().length > 0 &&
-            !line.includes("starting value") &&
-            !line.includes("carrying") &&
-            !line.includes("____"),
-        );
-      items.push(...itemLines.map((item) => item.trim()));
-    }
+    const items = this.linesFromAnchor(text, anchors, "Equipment").filter(
+      (line) =>
+        !line.includes("starting value") && !line.includes("carrying") && !line.includes("____"),
+    );
 
     return { startingValue, items };
   }
@@ -457,39 +496,34 @@ export class PDFPlaybookSource extends PlaybookSource {
   /**
    * Parse feats from text
    */
-  private parseFeats(text: string): string[] {
-    const feats: string[] = [];
-
-    const featsMatch = text.match(/Roguish Feats(.*?)(?:Weapon Skills|Equipment|$)/s);
-    if (featsMatch?.[1]) {
-      const featsText = featsMatch[1];
-      const featLines = featsText
-        .split("\n")
-        .filter((line) => line.trim().length > 0 && !line.includes("start with marked feats"));
-      feats.push(...featLines.map((feat) => feat.trim()));
-    }
-
-    return feats;
+  private parseFeats(text: string, anchors: Map<string, AnchorSpan>): string[] {
+    return this.linesFromAnchor(text, anchors, "Feats").filter(
+      (line) => !line.includes("start with marked feats"),
+    );
   }
 
   /**
    * Parse weapon skills from text
    */
-  private parseWeaponSkills(text: string): string[] {
-    const skills: string[] = [];
+  private parseWeaponSkills(text: string, anchors: Map<string, AnchorSpan>): string[] {
+    return this.linesFromAnchor(text, anchors, "WeaponSkills").filter(
+      (line) => !line.includes("choose one bolded weapon skill"),
+    );
+  }
 
-    const skillsMatch = text.match(/Weapon Skills(.*?)(?:Equipment|$)/s);
-    if (skillsMatch?.[1]) {
-      const skillsText = skillsMatch[1];
-      const skillLines = skillsText
-        .split("\n")
-        .filter(
-          (line) => line.trim().length > 0 && !line.includes("choose one bolded weapon skill"),
-        );
-      skills.push(...skillLines.map((skill) => skill.trim()));
-    }
-
-    return skills;
+  private linesFromAnchor(
+    text: string,
+    anchors: Map<string, AnchorSpan>,
+    name: string,
+    options: { minLength?: number } = {},
+  ): string[] {
+    const slice = this.sliceAnchor(text, anchors, name);
+    if (!slice) return [];
+    const min = options.minLength ?? 1;
+    return slice
+      .split("\n")
+      .map((line) => line.trim())
+      .filter((line) => line.length >= min);
   }
 
   /**
@@ -530,7 +564,10 @@ export class PDFPlaybookSource extends PlaybookSource {
   /**
    * Parse details from text
    */
-  private parseDetails(text: string): {
+  private parseDetails(
+    text: string,
+    anchors: Map<string, AnchorSpan>,
+  ): {
     pronouns: string[];
     appearance: string[];
     accessories: string[];
@@ -539,11 +576,8 @@ export class PDFPlaybookSource extends PlaybookSource {
     const appearance: string[] = [];
     const accessories: string[] = [];
 
-    // Look for the details section between "Details" and "Demeanor"
-    const detailsMatch = text.match(/Details([\s\S]*?)Demeanor/i);
-    if (detailsMatch?.[1]) {
-      const detailsText = detailsMatch[1];
-
+    const detailsText = this.sliceAnchor(text, anchors, "Details");
+    if (detailsText) {
       // Split by bullet points and clean up each line
       const lines = detailsText.split(/\n\s*•/).filter((line) => line.trim().length > 0);
 
@@ -578,29 +612,18 @@ export class PDFPlaybookSource extends PlaybookSource {
   /**
    * Parse demeanor options from text
    */
-  private parseDemeanor(text: string): string[] {
-    const demeanor: string[] = [];
+  private parseDemeanor(text: string, anchors: Map<string, AnchorSpan>): string[] {
+    const slice = this.sliceAnchor(text, anchors, "Demeanor");
+    if (!slice) return [];
 
-    // Look for "Demeanor" followed by a simple list - usually just one line with comma-separated traits
-    // Stop at the next playbook title (like "The Ranger") or major section
-    const demeanorMatch = text.match(
-      /Demeanor\s*([^\n]*?)(?:\s+The\s+\w+|\s+You\s+are|\s+Your\s+Connections|$)/i,
-    );
-    if (demeanorMatch?.[1]) {
-      const demeanorText = demeanorMatch[1].trim();
-
-      if (demeanorText) {
-        // Split by comma and clean up each item
-        const items = demeanorText
-          .split(",")
-          .map((item) => normalizeWhitespace(item))
-          .map((item) => item.replace(/^[•\s]+/, "").trim()) // Remove bullet points and leading whitespace
-          .filter((item) => item.length > 0 && item.length < 50); // Filter out overly long items
-
-        demeanor.push(...items);
-      }
-    }
-
-    return demeanor;
+    // Demeanor is a single line of comma-separated traits — take only the
+    // first non-empty line of the slice so a runaway slice (e.g. into the
+    // next playbook's title) cannot bleed in.
+    const firstLine = slice.split("\n").find((line) => line.trim().length > 0) ?? "";
+    return firstLine
+      .split(",")
+      .map((item) => normalizeWhitespace(item))
+      .map((item) => item.replace(/^[•\s]+/, "").trim())
+      .filter((item) => item.length > 0 && item.length < 50);
   }
 }
