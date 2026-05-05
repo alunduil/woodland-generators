@@ -13,7 +13,8 @@ exclude: |
     dist/.*|
     build/.*|
     \.git/.*|
-    \.vale/.*
+    \.vale/.*|
+    CHANGELOG\.md
   )$
 
 repos:
