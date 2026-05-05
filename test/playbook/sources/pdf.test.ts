@@ -1,11 +1,13 @@
-// Wrap pdf-parse in a passthrough jest.fn so the rest of the suite keeps
-// running real fixtures while the empty-results describe block can override
-// individual calls with mockResolvedValueOnce.
-jest.mock("pdf-parse", () => {
-  const actual = jest.requireActual("pdf-parse") as (
-    buffer: Buffer,
-  ) => Promise<{ text: string; numpages: number }>;
-  return jest.fn(actual);
+// Wrap unpdf's extractText in a passthrough jest.fn so the rest of the suite
+// keeps running real fixtures while the empty-results describe block can
+// override individual calls with mockResolvedValueOnce.
+jest.mock("unpdf", () => {
+  const actual = jest.requireActual("unpdf");
+  return {
+    ...actual,
+    extractText: jest.fn(actual.extractText),
+    getDocumentProxy: jest.fn(actual.getDocumentProxy),
+  };
 });
 
 import { writeFileSync, unlinkSync } from "fs";
@@ -13,13 +15,19 @@ import { tmpdir } from "os";
 import path from "path";
 
 import { glob } from "glob";
-import pdfParse from "pdf-parse";
+import { extractText, getDocumentProxy } from "unpdf";
 
 import { PDFPlaybookSource } from "../../../src/playbook/sources/pdf";
 import { PdfParseError, PDF_PARSE_STAGES } from "../../../src/playbook/sources/errors";
 import { root } from "../../../src/logging";
 
-const mockPdfParse = pdfParse as unknown as jest.Mock;
+const mockExtractText = extractText as unknown as jest.Mock;
+const mockGetDocumentProxy = getDocumentProxy as unknown as jest.Mock;
+
+// Magic-bytes isValid (see PDFPlaybookSource.isValid) cannot distinguish PDFs
+// with a valid %PDF- header but corrupt internals. These fixtures fail at
+// load() time with a stage-tagged error, not at isValid().
+const HEADER_VALID_BUT_CORRUPT = new Set(["invalid-compression.pdf", "bad-xref-entry.pdf"]);
 
 // Edge-case fixtures (issue #128) are exercised in pdf.edge-cases.test.ts so
 // each gets a fresh jest worker; pdf-parse's pdf.js v1.10.100 holds module
@@ -75,27 +83,15 @@ describe("PDFPlaybookSource - PlaybookSource interface implementation", () => {
         .sync("playbooks-*/valid/*", { cwd: fixturesDir })
         .filter((file) => !file.includes("playbooks-pdf")),
       ...glob.sync("playbooks-pdf/invalid/*", { cwd: fixturesDir }),
-    ].forEach((file) => {
-      const testName = `should return false for: ${path.basename(file)}`;
-
-      // TODO: Fix intermittent failure with invalid-compression.pdf due to PDF.js global state contamination
-      if (
-        path.basename(file) === "invalid-compression.pdf" ||
-        path.basename(file) === "bad-xref-entry.pdf"
-      ) {
-        it.skip(testName, async () => {
+    ]
+      .filter((file) => !HEADER_VALID_BUT_CORRUPT.has(path.basename(file)))
+      .forEach((file) => {
+        it(`should return false for: ${path.basename(file)}`, async () => {
           const source = new PDFPlaybookSource(path.join(fixturesDir, file), "pdf");
           const result = await source.isValid();
           expect(result).toBe(false);
         });
-      } else {
-        it(testName, async () => {
-          const source = new PDFPlaybookSource(path.join(fixturesDir, file), "pdf");
-          const result = await source.isValid();
-          expect(result).toBe(false);
-        });
-      }
-    });
+      });
 
     // Generate test cases for files that should be valid for PDF source
     glob
@@ -123,23 +119,10 @@ describe("PDFPlaybookSource - PlaybookSource interface implementation", () => {
         .filter((file) => !file.includes("playbooks-pdf")),
       ...glob.sync("playbooks-pdf/invalid/*", { cwd: fixturesDir }),
     ].forEach((file) => {
-      const testName = `should throw error when loading: ${path.basename(file)}`;
-
-      // TODO: Fix intermittent failure with invalid-compression.pdf due to PDF.js global state contamination
-      if (
-        path.basename(file) === "invalid-compression.pdf" ||
-        path.basename(file) === "bad-xref-entry.pdf"
-      ) {
-        it.skip(testName, async () => {
-          const source = new PDFPlaybookSource(path.join(fixturesDir, file), "pdf");
-          await expect(source.load()).rejects.toThrow();
-        });
-      } else {
-        it(testName, async () => {
-          const source = new PDFPlaybookSource(path.join(fixturesDir, file), "pdf");
-          await expect(source.load()).rejects.toThrow();
-        });
-      }
+      it(`should throw error when loading: ${path.basename(file)}`, async () => {
+        const source = new PDFPlaybookSource(path.join(fixturesDir, file), "pdf");
+        await expect(source.load()).rejects.toThrow();
+      });
     });
 
     // Generate test cases for files that should successfully load
@@ -224,19 +207,12 @@ describe("PDFPlaybookSource - PlaybookSource interface implementation", () => {
   describe("empty extraction results", () => {
     const stubFixturePath = path.join(tmpdir(), "pdf-empty-results.test.pdf");
 
-    const stubResult = (text: string) => ({
-      text,
-      numpages: 1,
-      numrender: 1,
-      info: {},
-      metadata: null,
-      version: "v1.10.100",
-    });
+    const stubResult = (text: string) => ({ text: [text], totalPages: 1 });
 
     beforeAll(() => {
-      // pdf-parse is mocked per-test via mockResolvedValueOnce, so the file's
-      // contents are never extracted. readFileSync still runs in load(), so
-      // the file must exist on disk.
+      // unpdf's getDocumentProxy and extractText are both mocked per-test via
+      // mockResolvedValueOnce, so the file's contents are never parsed.
+      // readFileSync still runs in load(), so the file must exist on disk.
       writeFileSync(stubFixturePath, "stub");
     });
 
@@ -249,7 +225,8 @@ describe("PDFPlaybookSource - PlaybookSource interface implementation", () => {
     });
 
     it("throws PdfParseError tagged 'split' when extracted text yields no playbook sections", async () => {
-      mockPdfParse.mockResolvedValueOnce(stubResult("tiny"));
+      mockGetDocumentProxy.mockResolvedValueOnce({});
+      mockExtractText.mockResolvedValueOnce(stubResult("tiny"));
 
       const source = new PDFPlaybookSource(stubFixturePath, "pdf");
       const promise = source.load();
@@ -272,7 +249,8 @@ describe("PDFPlaybookSource - PlaybookSource interface implementation", () => {
         "archetype here despite the text being long enough to count as a section "
       ).repeat(2);
 
-      mockPdfParse.mockResolvedValueOnce(stubResult(noisyText));
+      mockGetDocumentProxy.mockResolvedValueOnce({});
+      mockExtractText.mockResolvedValueOnce(stubResult(noisyText));
 
       const source = new PDFPlaybookSource(stubFixturePath, "pdf");
       const promise = source.load();

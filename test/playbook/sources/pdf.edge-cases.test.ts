@@ -4,12 +4,8 @@ import path from "path";
 
 // Edge-case fixtures (issue #128) pin the parser's current behavior on inputs
 // that the heuristic-heavy regex pipeline does not handle cleanly. They are
-// baselines: when the parser is hardened, these assertions should change to
-// reflect the new contract.
-//
-// They live in their own test file so each gets a fresh jest worker;
-// pdf-parse's pdf.js v1.10.100 holds module-level state that leaks across
-// parses and otherwise corrupts later reads in the same worker.
+// baselines: when the parser is hardened (#199), these assertions should
+// change to reflect the new contract.
 describe("PDFPlaybookSource - edge cases (issue #128)", () => {
   const validDir = path.join(__dirname, "../../fixtures/playbooks-pdf/valid");
 

@@ -1,10 +1,15 @@
 import { readFileSync } from "fs";
-import pdfParse, { Result as PDFResult } from "pdf-parse";
+import { extractText, getDocumentProxy } from "unpdf";
 import { Playbook } from "../types";
 import { PlaybookSource } from "./types";
 import { createTextPreview, createPositionHighlight, normalizeWhitespace } from "./debug";
 import { asPdfParseError, PdfParseError } from "./errors";
 import { summary } from "../../maths";
+
+interface PDFResult {
+  text: string;
+  numpages: number;
+}
 
 /**
  * Configuration constants for PDF parsing
@@ -41,7 +46,11 @@ export class PDFPlaybookSource extends PlaybookSource {
     this.logger.debug({ msg: "PDF file read", size: buffer.length });
 
     try {
-      this.data = await pdfParse(buffer);
+      const pdf = await getDocumentProxy(new Uint8Array(buffer));
+      // mergePages:false preserves per-page newlines that the section splitter
+      // relies on; mergePages:true would collapse the document to a single line.
+      const { text: pages, totalPages } = await extractText(pdf, { mergePages: false });
+      this.data = { text: pages.join("\n"), numpages: totalPages };
     } catch (error) {
       throw asPdfParseError("parse", this.path, error);
     }
