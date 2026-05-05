@@ -46,25 +46,11 @@ describe("PDFPlaybookSource - PlaybookSource interface implementation", () => {
         .filter((file) => !file.includes("playbooks-pdf")),
       ...glob.sync("playbooks-pdf/invalid/*", { cwd: fixturesDir }),
     ].forEach((file) => {
-      const testName = `should return false for: ${path.basename(file)}`;
-
-      // TODO: Fix intermittent failure with invalid-compression.pdf due to PDF.js global state contamination
-      if (
-        path.basename(file) === "invalid-compression.pdf" ||
-        path.basename(file) === "bad-xref-entry.pdf"
-      ) {
-        it.skip(testName, async () => {
-          const source = new PDFPlaybookSource(path.join(fixturesDir, file), "pdf");
-          const result = await source.isValid();
-          expect(result).toBe(false);
-        });
-      } else {
-        it(testName, async () => {
-          const source = new PDFPlaybookSource(path.join(fixturesDir, file), "pdf");
-          const result = await source.isValid();
-          expect(result).toBe(false);
-        });
-      }
+      it(`should return false for: ${path.basename(file)}`, async () => {
+        const source = new PDFPlaybookSource(path.join(fixturesDir, file), "pdf");
+        const result = await source.isValid();
+        expect(result).toBe(false);
+      });
     });
 
     // Generate test cases for files that should be valid for PDF source
@@ -90,23 +76,10 @@ describe("PDFPlaybookSource - PlaybookSource interface implementation", () => {
         .filter((file) => !file.includes("playbooks-pdf")),
       ...glob.sync("playbooks-pdf/invalid/*", { cwd: fixturesDir }),
     ].forEach((file) => {
-      const testName = `should throw error when loading: ${path.basename(file)}`;
-
-      // TODO: Fix intermittent failure with invalid-compression.pdf due to PDF.js global state contamination
-      if (
-        path.basename(file) === "invalid-compression.pdf" ||
-        path.basename(file) === "bad-xref-entry.pdf"
-      ) {
-        it.skip(testName, async () => {
-          const source = new PDFPlaybookSource(path.join(fixturesDir, file), "pdf");
-          await expect(source.load()).rejects.toThrow();
-        });
-      } else {
-        it(testName, async () => {
-          const source = new PDFPlaybookSource(path.join(fixturesDir, file), "pdf");
-          await expect(source.load()).rejects.toThrow();
-        });
-      }
+      it(`should throw error when loading: ${path.basename(file)}`, async () => {
+        const source = new PDFPlaybookSource(path.join(fixturesDir, file), "pdf");
+        await expect(source.load()).rejects.toThrow();
+      });
     });
 
     // Generate test cases for files that should successfully load

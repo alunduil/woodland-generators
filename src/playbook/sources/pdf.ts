@@ -1,9 +1,14 @@
 import { readFileSync } from "fs";
-import pdfParse, { Result as PDFResult } from "pdf-parse";
+import { extractText, getDocumentProxy } from "unpdf";
 import { Playbook } from "../types";
 import { PlaybookSource } from "./types";
 import { createTextPreview, createPositionHighlight, normalizeWhitespace } from "./debug";
 import { summary } from "../../maths";
+
+interface PDFResult {
+  text: string;
+  numpages: number;
+}
 
 /**
  * Configuration constants for PDF parsing
@@ -13,6 +18,9 @@ const PDF_PARSE_CONFIG = {
   minSectionLength: 100,
   /** Maximum distance between playbook indicators to avoid duplicates */
   splitPositionThreshold: 500,
+  /** Minimum extracted text length to treat a PDF as a valid playbook source.
+   *  Rejects malformed PDFs that yield only a handful of recoverable characters. */
+  minValidTextLength: 100,
 } as const;
 
 /**
@@ -34,7 +42,17 @@ export class PDFPlaybookSource extends PlaybookSource {
     const buffer = readFileSync(this.path);
     this.logger.debug({ msg: "PDF file read", size: buffer.length });
 
-    this.data = await pdfParse(buffer);
+    const pdf = await getDocumentProxy(new Uint8Array(buffer));
+    // mergePages:false preserves the per-page newline structure that the section
+    // splitter relies on; mergePages:true collapses the document to a single line.
+    const { text: pages, totalPages } = await extractText(pdf, { mergePages: false });
+    const text = pages.join("\n");
+    if (text.length < PDF_PARSE_CONFIG.minValidTextLength) {
+      throw new Error(
+        `PDF text extraction yielded only ${text.length} characters (threshold: ${PDF_PARSE_CONFIG.minValidTextLength}); file is likely malformed`,
+      );
+    }
+    this.data = { text, numpages: totalPages };
     this.logger.debug({
       msg: "PDF extraction completed",
       pageCount: this.data.numpages,
