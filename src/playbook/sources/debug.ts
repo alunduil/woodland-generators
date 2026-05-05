@@ -24,6 +24,27 @@ export function normalizeWhitespace(text: string): string {
 }
 
 /**
+ * Normalize text for anchor matching while preserving line structure.
+ *
+ * PDF extractors deliver typographic punctuation (smart quotes, en/em dashes,
+ * ellipses), non-breaking spaces, and irregular runs of horizontal whitespace.
+ * Heading anchors like "Choose Your Nature" or "Where do you call home?" must
+ * survive all of those without bespoke per-anchor regexes. Newlines are kept
+ * because the splitter and several field parsers anchor on line boundaries.
+ */
+export function normalizeForMatching(text: string): string {
+  return text
+    .replace(/\r\n?/g, "\n")
+    .replace(/[‘’‚‛]/g, "'")
+    .replace(/[“”„‟]/g, '"')
+    .replace(/[–—―]/g, "-")
+    .replace(/…/g, "...")
+    .replace(/[\u00A0\u2000-\u200A\u202F\u205F\u3000]/g, " ")
+    .replace(/[ \t]+/g, " ")
+    .replace(/[ \t]*\n[ \t]*/g, "\n");
+}
+
+/**
  * Create a debug-friendly text preview showing start and end of content
  * For short text, returns the full content. For long text, returns first and last
  * portions separated by "..." with total grapheme count of (sampleSize * 2 + 3).
