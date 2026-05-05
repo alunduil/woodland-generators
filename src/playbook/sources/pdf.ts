@@ -7,7 +7,7 @@ import { asPdfParseError, PdfParseError } from "./errors";
 import { summary } from "../../maths";
 
 interface PDFResult {
-  text: string;
+  pages: string[];
   numpages: number;
 }
 
@@ -17,8 +17,6 @@ interface PDFResult {
 const PDF_PARSE_CONFIG = {
   /** Minimum section length to consider as a valid playbook */
   minSectionLength: 100,
-  /** Maximum distance between playbook indicators to avoid duplicates */
-  splitPositionThreshold: 500,
 } as const;
 
 /**
@@ -47,17 +45,15 @@ export class PDFPlaybookSource extends PlaybookSource {
 
     try {
       const pdf = await getDocumentProxy(new Uint8Array(buffer));
-      // mergePages:false preserves per-page newlines that the section splitter
-      // relies on; mergePages:true would collapse the document to a single line.
       const { text: pages, totalPages } = await extractText(pdf, { mergePages: false });
-      this.data = { text: pages.join("\n"), numpages: totalPages };
+      this.data = { pages, numpages: totalPages };
     } catch (error) {
       throw asPdfParseError("parse", this.path, error);
     }
     this.logger.debug({
       msg: "PDF extraction completed",
       pageCount: this.data.numpages,
-      characterCount: this.data.text.length,
+      characterCount: this.data.pages.reduce((sum, p) => sum + p.length, 0),
     });
     return this.data;
   }
@@ -105,14 +101,14 @@ export class PDFPlaybookSource extends PlaybookSource {
    * Parse playbooks from the extracted text
    */
   private parsePlaybooks(): void {
-    const text = this.data?.text ?? "";
+    const pages = this.data?.pages ?? [];
 
     // Clear any existing playbooks to ensure idempotent behavior
     this.playbooks = [];
 
     let sections: string[];
     try {
-      sections = this.splitIntoPlaybookSections(text);
+      sections = this.splitIntoPlaybookSections(pages);
     } catch (error) {
       throw asPdfParseError("split", this.path, error);
     }
@@ -153,81 +149,75 @@ export class PDFPlaybookSource extends PlaybookSource {
   }
 
   /**
-   * Split the extracted text into potential playbook sections
+   * Split per-page extracted text into potential playbook sections.
+   *
+   * A page that contains "Choose Your Nature" at a line boundary marks the
+   * start of a new section. Page 0 is always a candidate start so any
+   * pre-CYN content is preserved as its own section. Page boundaries supply
+   * the dedupe that the old splitPositionThreshold provided: multiple CYN
+   * matches on the same page collapse to a single split.
    */
-  private splitIntoPlaybookSections(text: string): string[] {
+  private splitIntoPlaybookSections(pages: string[]): string[] {
     this.logger.debug({
-      msg: "Splitting text into playbook sections",
-      totalCharacterCount: text.length,
+      msg: "Splitting pages into playbook sections",
+      pageCount: pages.length,
     });
 
-    // Look for "Choose Your Nature" at the beginning of lines, which typically marks new playbooks
-    const splitPositions: number[] = [0];
+    const splitPages: number[] = [0];
 
-    // Find all occurrences of "Choose Your Nature" at line boundaries
-    const lines = text.split("\n");
-    let currentPos = 0;
+    for (let i = 0; i < pages.length; i++) {
+      const page = pages[i] ?? "";
+      const startsPlaybook = page
+        .split("\n")
+        .some((line) => line.trim().startsWith("Choose Your Nature"));
+      if (!startsPlaybook) continue;
+      if (splitPages.includes(i)) continue;
+      splitPages.push(i);
 
-    for (const line of lines) {
-      const trimmedLine = line.trim();
-      if (trimmedLine === "Choose Your Nature" || trimmedLine.startsWith("Choose Your Nature")) {
-        // Only add if it's not too close to an existing split
-        const threshold = PDF_PARSE_CONFIG.splitPositionThreshold;
-        if (!splitPositions.some((existing) => Math.abs(existing - currentPos) < threshold)) {
-          splitPositions.push(currentPos);
-
-          // Create visual highlight showing the position in context
-          const highlight = createPositionHighlight(text, currentPos, "Choose Your Nature");
-
-          this.logger.trace({
-            msg: "Found playbook delimiter",
-            position: currentPos,
-            line: trimmedLine,
-            context: highlight,
-          });
-        }
-      }
-      currentPos += line.length + 1; // +1 for the newline character
+      const pageJoined = pages.slice(0, i).reduce((sum, p) => sum + p.length + 1, 0);
+      const highlight = createPositionHighlight(pages.join("\n"), pageJoined, "Choose Your Nature");
+      this.logger.trace({
+        msg: "Found playbook delimiter on page",
+        pageIndex: i,
+        context: highlight,
+      });
     }
 
-    splitPositions.sort((a, b) => a - b);
+    splitPages.sort((a, b) => a - b);
     this.logger.debug({
       msg: "Delimiter scanning completed - ready to extract sections",
-      delimitersFound: splitPositions.length,
-      splitPositions: splitPositions,
+      delimitersFound: splitPages.length,
+      splitPages,
       hint: "Use trace level to see delimiter contexts",
     });
 
     const sections: string[] = [];
     const minLength = PDF_PARSE_CONFIG.minSectionLength;
 
-    for (let i = 0; i < splitPositions.length; i++) {
-      const start = splitPositions[i];
-      const end = i + 1 < splitPositions.length ? splitPositions[i + 1] : text.length;
-      if (start !== undefined && end !== undefined) {
-        const section = text.substring(start, end).trim();
-        if (section.length > minLength) {
-          sections.push(section);
-
-          this.logger.trace({
-            msg: "Playbook section extracted - meets minimum length",
-            sectionIndex: i,
-            startPosition: start,
-            endPosition: end,
-            characterCount: section.length,
-            requirement: `${section.length} >= ${minLength}`,
-            textPreview: createTextPreview(section),
-          });
-        } else {
-          this.logger.trace({
-            msg: "Section rejected - too short",
-            sectionIndex: i,
-            startPosition: start,
-            endPosition: end,
-            characterCount: section.length,
-            requirement: `${section.length} < ${minLength}`,
-          });
-        }
+    for (let i = 0; i < splitPages.length; i++) {
+      const startPage = splitPages[i]!;
+      const endPage = i + 1 < splitPages.length ? splitPages[i + 1]! : pages.length;
+      const section = pages.slice(startPage, endPage).join("\n").trim();
+      if (section.length > minLength) {
+        sections.push(section);
+        this.logger.trace({
+          msg: "Playbook section extracted - meets minimum length",
+          sectionIndex: i,
+          startPage,
+          endPage,
+          characterCount: section.length,
+          requirement: `${section.length} >= ${minLength}`,
+          textPreview: createTextPreview(section),
+        });
+      } else {
+        this.logger.trace({
+          msg: "Section rejected - too short",
+          sectionIndex: i,
+          startPage,
+          endPage,
+          characterCount: section.length,
+          requirement: `${section.length} < ${minLength}`,
+        });
       }
     }
 
