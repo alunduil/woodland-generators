@@ -152,6 +152,33 @@ describe("PDFPlaybookSource - PlaybookSource interface implementation", () => {
         });
       });
 
+    // Field-level assertions on the canonical synthetic fixture. Previously
+    // the only check was `playbooks.length`, which a parser returning N empty
+    // Playbook objects would still pass (issue #199, "Wider parser smells" #6).
+    it("should populate field-level data from the canonical fixture", async () => {
+      const source = new PDFPlaybookSource(
+        path.join(fixturesDir, "playbooks-pdf/valid/multiple-playbooks-3.pdf"),
+        "pdf",
+      );
+      await source.load();
+      const playbooks = source.getPlaybooks();
+      expect(playbooks).toHaveLength(3);
+      // Archetype regex greedily captures the trailing "Choose Your Nature"
+      // because every word is capitalised; the leading "The X" still
+      // identifies each playbook unambiguously.
+      expect(playbooks[0]!.archetype.startsWith("The Ranger")).toBe(true);
+      expect(playbooks[1]!.archetype.startsWith("The Thief")).toBe(true);
+      expect(playbooks[2]!.archetype.startsWith("The Tinker")).toBe(true);
+
+      for (const pb of playbooks) {
+        expect(pb.background.homeOptions.length).toBeGreaterThanOrEqual(4);
+        expect(pb.background.motivationOptions.length).toBeGreaterThanOrEqual(4);
+        expect(pb.background.homeOptions.every((opt) => opt.startsWith("•"))).toBe(true);
+        expect(pb.moves.length).toBeGreaterThan(0);
+        expect(pb.nature.statNames).toEqual(["Charm", "Cunning", "Finesse", "Luck", "Might"]);
+      }
+    });
+
     it("should be idempotent and safe for repeated calls", async () => {
       const source = new PDFPlaybookSource(getFirstValidPdf(), "pdf");
       await source.load();
@@ -236,6 +263,34 @@ describe("PDFPlaybookSource - PlaybookSource interface implementation", () => {
         stage: "split",
         message: expect.stringContaining("no playbook sections"),
       });
+    });
+
+    // Real playbook PDFs use "Roguish Moves" as the heading; "Starting Moves"
+    // never appears in the in-tree out-of-fixture content surveyed in #199.
+    // Both anchors must resolve so synthetic fixtures and real PDFs both
+    // populate the moves field instead of silently emitting an empty array.
+    it("recognizes 'Roguish Moves' as the moves anchor", async () => {
+      const text = [
+        "The Auditor",
+        "Choose Your Nature",
+        "+1 +2 -1 +0 +1",
+        "Roguish Moves",
+        "MOVE ONE: lorem ipsum dolor sit amet consectetur adipiscing elit",
+        "MOVE TWO: ut labore et dolore magna aliqua enim ad minim veniam",
+        "Background",
+        "Where do you call home?",
+        "Why are you a vagabond?",
+      ].join("\n");
+
+      mockGetDocumentProxy.mockResolvedValueOnce({});
+      mockExtractText.mockResolvedValueOnce(stubResult(text));
+
+      const source = new PDFPlaybookSource(stubFixturePath, "pdf");
+      await source.load();
+      const [pb] = source.getPlaybooks();
+      expect(pb!.moves.length).toBeGreaterThanOrEqual(2);
+      expect(pb!.moves.some((m) => m.startsWith("MOVE ONE"))).toBe(true);
+      expect(pb!.moves.some((m) => m.startsWith("MOVE TWO"))).toBe(true);
     });
 
     it("throws PdfParseError tagged 'section-parse' when no section produces a valid playbook", async () => {
