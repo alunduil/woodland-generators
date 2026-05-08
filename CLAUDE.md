@@ -10,10 +10,13 @@ resources. Source in `src/`, compiled output in `dist/`. Entry points:
 
 ## Common commands
 
-- `npm run cli -- <args>`: build and run the CLI (for example,
-  `npm run cli -- character --help`).
-- `npm run build:watch`: `tsc` in watch mode for incremental development.
-- `npm test`: Jest suite.
+The repository runs as a pnpm workspace (`packageManager` pins the version);
+activate with `corepack enable` once. Commands:
+
+- `pnpm run cli -- <args>`: build and run the CLI (for example,
+  `pnpm run cli -- character --help`).
+- `pnpm run build:watch`: `tsc` in watch mode for incremental development.
+- `pnpm test`: Jest suite.
 - `pre-commit run --all-files`: gates every PR. Authoritative hook list:
   `.pre-commit-config.yaml`.
 

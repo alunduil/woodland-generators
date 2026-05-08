@@ -8,7 +8,7 @@ node_modules/
 *.bundle.js
 
 # Ignore certain documentation that might have technical jargon
-package-lock.json
+pnpm-lock.yaml
 
 # Ignore certain markdown files that are auto-generated
 # or contain mostly code/technical content

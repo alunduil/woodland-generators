@@ -30,8 +30,9 @@
   ],
   "engines": {
     "node": ">=20.0.0",
-    "npm": ">=9.0.0"
+    "pnpm": ">=10.0.0"
   },
+  "packageManager": "pnpm@10.33.2",
   "dependencies": {
     "chalk": "^4.1.2",
     "commander": "^14.0.0",
@@ -64,17 +65,17 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "cli": "npm run build && node dist/cli.js",
+    "cli": "pnpm run build && node dist/cli.js",
     "clean": "rm -rf dist/",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
     "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
-    "bench": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.benchmark.config.json && npx tsx scripts/process-benchmarks.ts",
-    "prepare": "npm run build",
+    "bench": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.benchmark.config.json && pnpm exec tsx scripts/process-benchmarks.ts",
+    "prepare": "pnpm run build",
     "prepublishOnly": "pre-commit run --all-files",
-    "prepack": "npm run clean && npm run build",
+    "prepack": "pnpm run clean && pnpm run build",
     "postversion": "git push && git push --tags",
-    "check:outdated": "npm outdated",
+    "check:outdated": "pnpm outdated",
     "update:deps": "ncu"
   }
 }

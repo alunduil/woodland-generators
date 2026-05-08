@@ -19,8 +19,11 @@ players:
 ## Ground rules
 
 - **TypeScript with strict typing** - Type safety stays important
+- **Use pnpm** - the repository runs as a pnpm workspace; npm and yarn won't
+  produce a working install. Run `corepack enable` once on Node 20 or newer; the
+  pinned pnpm version comes from `package.json#packageManager`.
 - **Run checks** before submitting: `pre-commit run --all-files`
-- **Test your changes** with `npm run cli`
+- **Test your changes** with `pnpm run cli`
 - **Keep PRs focused** - one feature or fix per PR
 - **Stay patient** - reviews may take a few days
 
@@ -56,19 +59,20 @@ chore(deps): bump typescript to 5.9.3
 1. **Install dependencies**:
 
    ```bash
-   npm install
+   corepack enable
+   pnpm install
    ```
 
 2. **Test the CLI**:
 
    ```bash
-   npm run cli -- character --help
+   pnpm run cli -- character --help
    ```
 
 3. **Development workflow**:
 
    ```bash
-   npm run build:watch          # Watch mode dev
+   pnpm run build:watch         # Watch mode dev
    pre-commit run --all-files   # Check everything (auto-fixes)
    ```
 

@@ -23,6 +23,8 @@ Pre-commit
 rollup
 webpack
 npm
+pnpm
+corepack
 Node.js
 nodejs
 codecov
