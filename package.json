@@ -34,7 +34,7 @@
   },
   "packageManager": "pnpm@10.33.2",
   "dependencies": {
-    "chalk": "^4.1.2",
+    "chalk": "^5.0.0",
     "commander": "^14.0.0",
     "graphemer": "^1.4.0",
     "just-percentile": "^4.2.0",
