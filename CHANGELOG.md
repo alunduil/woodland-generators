@@ -6,6 +6,11 @@ The format follows [Keep a CHANGELOG](https://keepachangelog.com/en/1.1.0/), and
 this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+Once [#217](https://github.com/alunduil/woodland-generators/issues/217) lands,
+release-please will manage per-package changelogs at
+`packages/<package>/CHANGELOG.md`, and this root file will carry project-level
+(cross-package) entries only.
+
 ## [0.2.0](https://github.com/alunduil/woodland-generators/compare/woodland-generators-v0.1.0...woodland-generators-v0.2.0) (2026-05-04)
 
 
@@ -47,29 +52,18 @@ this project adheres to
 
 ## [Unreleased]
 
-### Added
+> **v0.3.0 marks a pivot.** woodland-generators is being rebuilt as a FoundryVTT
+> module that generates Root: The Tabletop RPG session-zero content (clearings,
+> NPCs, factions, conflicts) directly into Scene/Actor/Journal entries. The
+> v0.2.0 CLI shape — PDF playbook ingestion and character generation — is being
+> retired; do not expect the v0.2.0 surface to remain in v0.3.0. See
+> [#210](https://github.com/alunduil/woodland-generators/issues/210) for the
+> full scope.
 
-- CLI tool for generating Root: The Tabletop RPG resources (`woodland-gen`
-  command)
-- Character generation with `character` sub-command (alias: `char`)
-- PDF playbook parsing support for Root RPG playbook files
-- Comprehensive character generation from playbook PDF files including:
-  - Species generation with traits and details
-  - Name generation for woodland creatures
-  - Background, feat, and move generation
-  - Playbook-specific archetype selection
-  - Character details generation (pronouns, appearance, accessories)
-  - Demeanor traits drawn from playbook personality options
-- Reproducible character generation via `--seed` option
-- Custom name override via `--name` option
-- Specific archetype selection via `--archetype` option
-- Multi-source playbook support (PDF and JSON formats)
-- Global installation support via npm
-- Extended woodland species catalog (100+ species) for enhanced character
-  diversity when playbooks include "other" species option
-- `--log-level` option for controlling diagnostic output verbosity with support
-  for standard log levels (trace, debug, info, warn, error, fatal)
-- `--species` option for character command to override species selection
-- Structured logging throughout generation pipeline for debugging generation
-  failures
-- Requires Node.js 20.0.0 or later
+### Changed
+
+- Repository converted to a pnpm workspace
+  ([#264](https://github.com/alunduil/woodland-generators/pull/264)) in
+  preparation for the `packages/core`, `packages/cli`, and
+  `packages/foundry-module` split.
+
