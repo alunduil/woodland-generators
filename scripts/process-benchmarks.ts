@@ -35,8 +35,8 @@ interface BenchmarkResult {
 }
 
 function processBenchmarkResults(): void {
-  const inputFile = join(__dirname, "../benchmarks/result.txt");
-  const outputFile = join(__dirname, "../benchmarks/result-benchmarkjs.txt");
+  const inputFile = join(__dirname, "../packages/core/benchmarks/result.txt");
+  const outputFile = join(__dirname, "../packages/core/benchmarks/result-benchmarkjs.txt");
 
   if (!existsSync(inputFile)) {
     console.error("Input file not found:", inputFile);
