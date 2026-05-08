@@ -7,12 +7,13 @@ on:
     branches: [master]
     # Skip bench on PRs that don't touch perf-relevant code.
     paths:
-      - "src/**"
-      - "test/**"
+      - "packages/*/src/**"
+      - "packages/*/test/**"
+      - "packages/*/jest.benchmark.config.json"
+      - "packages/*/package.json"
       - "package.json"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
-      - "jest.benchmark.config.json"
       - "scripts/process-benchmarks.ts"
       - ".github/workflows/bench.yml"
 
@@ -53,7 +54,7 @@ jobs:
         with:
           name: "Woodland Generators Performance"
           tool: "benchmarkjs"
-          output-file-path: benchmarks/result-benchmarkjs.txt
+          output-file-path: packages/core/benchmarks/result-benchmarkjs.txt
           external-data-json-path: ./cache/benchmark-data.json
           github-token: ${{ secrets.GITHUB_TOKEN }}
           alert-threshold: "150%"

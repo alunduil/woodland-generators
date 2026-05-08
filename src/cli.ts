@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Command, Option } from "commander";
-import { root } from "./logging";
+import { root } from "@woodland-generators/core";
 import packageJson from "../package.json";
 import pino from "pino";
 

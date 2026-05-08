@@ -69,7 +69,7 @@ module.exports = [
 
   // JavaScript configuration for main source files
   {
-    files: ["src/**/*.js"],
+    files: ["src/**/*.js", "packages/*/src/**/*.js"],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: "commonjs",
@@ -90,12 +90,12 @@ module.exports = [
 
   // TypeScript configuration for main source files
   {
-    files: ["src/**/*.ts"],
+    files: ["src/**/*.ts", "packages/*/src/**/*.ts"],
     languageOptions: {
       ...commonLanguageOptions,
       parserOptions: {
         ...commonLanguageOptions.parserOptions,
-        project: "./tsconfig.json",
+        project: ["./tsconfig.json", "./packages/*/tsconfig.json"],
       },
       globals: commonNodeGlobals,
     },
@@ -108,12 +108,12 @@ module.exports = [
 
   // TypeScript configuration for test files
   {
-    files: ["test/**/*.ts"],
+    files: ["packages/*/test/**/*.ts"],
     languageOptions: {
       ...commonLanguageOptions,
       parserOptions: {
         ...commonLanguageOptions.parserOptions,
-        project: "./tsconfig.test.json",
+        project: ["./packages/*/tsconfig.test.json"],
       },
       globals: {
         ...commonNodeGlobals,

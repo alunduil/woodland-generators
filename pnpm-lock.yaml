@@ -8,28 +8,19 @@ importers:
 
   .:
     dependencies:
+      '@woodland-generators/core':
+        specifier: workspace:*
+        version: link:packages/core
       commander:
         specifier: ^14.0.0
         version: 14.0.3
-      just-percentile:
-        specifier: ^4.2.0
-        version: 4.2.0
       pino:
         specifier: ^9.7.0
         version: 9.14.0
-      pino-pretty:
-        specifier: ^13.1.1
-        version: 13.1.3
-      seeded-random-utilities:
-        specifier: ^1.1.4
-        version: 1.1.4
     devDependencies:
       '@eslint/js':
         specifier: 10.0.1
         version: 10.0.1(eslint@10.3.0)
-      '@types/jest':
-        specifier: 29.5.14
-        version: 29.5.14
       '@types/node':
         specifier: 24.12.2
         version: 24.12.2
@@ -45,6 +36,40 @@ importers:
       eslint:
         specifier: 10.3.0
         version: 10.3.0
+      npm-check-updates:
+        specifier: 22.1.0
+        version: 22.1.0
+      prettier:
+        specifier: 3.8.3
+        version: 3.8.3
+      tsx:
+        specifier: 4.21.0
+        version: 4.21.0
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+
+  packages/core:
+    dependencies:
+      just-percentile:
+        specifier: ^4.2.0
+        version: 4.2.0
+      pino:
+        specifier: ^9.7.0
+        version: 9.14.0
+      pino-pretty:
+        specifier: ^13.1.1
+        version: 13.1.3
+      seeded-random-utilities:
+        specifier: ^1.1.4
+        version: 1.1.4
+    devDependencies:
+      '@types/jest':
+        specifier: 29.5.14
+        version: 29.5.14
+      '@types/node':
+        specifier: 24.12.2
+        version: 24.12.2
       fast-check:
         specifier: 4.7.0
         version: 4.7.0
@@ -57,18 +82,9 @@ importers:
       jest-junit:
         specifier: 17.0.0
         version: 17.0.0
-      npm-check-updates:
-        specifier: 22.1.0
-        version: 22.1.0
-      prettier:
-        specifier: 3.8.3
-        version: 3.8.3
       ts-jest:
         specifier: 29.4.9
         version: 29.4.9(@babel/core@7.29.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.29.0))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.2))(typescript@5.9.3)
-      tsx:
-        specifier: 4.21.0
-        version: 4.21.0
       typescript:
         specifier: 5.9.3
         version: 5.9.3
