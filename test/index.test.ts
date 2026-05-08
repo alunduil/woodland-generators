@@ -1,12 +1,10 @@
 import * as rootExports from "../src/index";
 import type {
   Character,
-  Playbook,
   GeneratorOptions,
   CharacterGeneratorOptions,
   NameGeneratorOptions,
   SpeciesGeneratorOptions,
-  PlaybookGeneratorOptions,
   DetailsGeneratorOptions,
 } from "../src/index";
 
@@ -76,30 +74,6 @@ describe("Root module exports", () => {
           accessories: ["trinket", "badge"],
         },
       };
-    });
-  });
-
-  describe("Playbook generation", () => {
-    it("should export generatePlaybook function with proper types", () => {
-      expect(rootExports).toHaveProperty("generatePlaybook");
-      expect(typeof rootExports.generatePlaybook).toBe("function");
-
-      const _options: PlaybookGeneratorOptions = {
-        seed: "test-seed",
-        path: "/path/to/playbook.pdf",
-        archetype: "The Ranger",
-      };
-
-      const _playbook: Partial<Playbook> = {
-        archetype: "Test Archetype",
-      };
-    });
-  });
-
-  describe("Playbook sources", () => {
-    it("should export fromPath function", () => {
-      expect(rootExports).toHaveProperty("fromPath");
-      expect(typeof rootExports.fromPath).toBe("function");
     });
   });
 
