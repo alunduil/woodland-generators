@@ -2,14 +2,9 @@
 # This configuration runs various checks and formatters before each commit
 # to maintain code quality and consistency.
 #
-# To install: pre-commit install
+# To install: pre-commit install --hook-type pre-commit --hook-type commit-msg
 # To run manually: pre-commit run --all-files
 # To update hooks: pre-commit autoupdate
-
-# Pre-commit.ci configuration
-ci:
-  # Skip hooks that require special installation not available in pre-commit.ci
-  skip: [lychee]
 
 # Global exclusions - applied to all hooks unless overridden
 exclude: |
@@ -18,7 +13,8 @@ exclude: |
     dist/.*|
     build/.*|
     \.git/.*|
-    \.vale/.*
+    \.vale/.*|
+    CHANGELOG\.md
   )$
 
 repos:
@@ -50,49 +46,18 @@ repos:
       - id: check-shebang-scripts-are-executable
         exclude: '^src/.*\.ts$' # TypeScript source files with shebangs are compiled, not directly executed
 
-  # Prettier for code formatting
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v4.0.0-alpha.8
-    hooks:
-      - id: prettier
-        name: Format with Prettier
-        types_or: [javascript, jsx, ts, tsx, json, yaml, markdown, css, scss]
-        exclude: |
-          (?x)^(
-            pnpm-lock\.yaml|
-            \.vscode/.*\.json
-          )$
-
-  # ESLint for JavaScript/TypeScript linting
-  - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v10.3.0
-    hooks:
-      - id: eslint
-        name: Lint TypeScript/JavaScript
-        files: \.(js|jsx|ts|tsx)$
-        types: [file]
-        additional_dependencies:
-          - "@eslint/js@9.39.4"
-          - "@typescript-eslint/eslint-plugin@8.59.1"
-          - "@typescript-eslint/parser@8.59.1"
-          - "eslint@9.39.4"
-          - "typescript@5.9.3"
-        args: ["--fix", "--max-warnings=0"]
-
   # Markdown linting
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.48.0
     hooks:
       - id: markdownlint
-        name: Lint Markdown files
         args: ["--fix"]
 
   # Shell script linting
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.10.0.1
+    rev: v0.11.0.1
     hooks:
       - id: shellcheck
-        name: Check shell scripts
         args: ["--severity=warning"]
 
   # YAML linting
@@ -100,7 +65,6 @@ repos:
     rev: v1.38.0
     hooks:
       - id: yamllint
-        name: Lint YAML files
         args: ["-d", "relaxed"]
         exclude: '^\.github/workflows/' # Skip GitHub Actions workflows
 
@@ -109,9 +73,7 @@ repos:
     rev: v0.9.3
     hooks:
       - id: taplo-format
-        name: Format TOML with taplo
       - id: taplo-lint
-        name: Lint TOML with taplo
         args: ["--no-schema"]
 
   # Prose linting with Vale
@@ -119,8 +81,67 @@ repos:
     rev: v3.14.1
     hooks:
       - id: vale
-        name: Vale prose linting
         files: \.(md|rst|txt)$
         types_or: [markdown, rst, plain-text]
-        additional_dependencies: []
         args: ["--config=.vale.ini"]
+
+  # Lychee link checker (auto-installs the binary)
+  - repo: https://github.com/lycheeverse/lychee
+    rev: lychee-v0.24.2
+    hooks:
+      - id: lychee
+        args: ["--config=lychee.toml", "--no-progress"]
+        types: [markdown]
+
+  # Conventional Commits validation - runs at the commit-msg stage to keep
+  # release-please's changelog generation honest by rejecting non-conventional
+  # commit subjects. Requires `--hook-type commit-msg` at install time.
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.4.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: []
+
+  # Project-local hooks. Versions live in package.json devDependencies, so
+  # there is nothing for Renovate's pre-commit manager to track here. These
+  # require `pnpm install` to have populated node_modules/.
+  - repo: local
+    hooks:
+      - id: prettier
+        name: prettier
+        entry: pnpm exec prettier --write
+        language: system
+        types_or: [javascript, jsx, ts, tsx, json, yaml, markdown, css, scss]
+        exclude: |
+          (?x)^(
+            pnpm-lock\.yaml|
+            \.vscode/.*\.json
+          )$
+      - id: eslint
+        name: eslint
+        entry: pnpm exec eslint --max-warnings=0 --fix
+        language: system
+        files: \.(js|jsx|ts|tsx)$
+      - id: typecheck
+        name: typecheck
+        entry: pnpm exec tsc --noEmit
+        language: system
+        pass_filenames: false
+        types: [ts]
+      - id: depcheck
+        # depcheck only sees devDeps referenced via package.json scripts. The
+        # hook invocations here don't count, so depcheck would flag itself.
+        # prettier is referenced from .prettierrc, which depcheck's prettier
+        # special only checks for the `prettier` field in package.json.
+        name: depcheck
+        entry: pnpm exec depcheck --ignores=depcheck,prettier
+        language: system
+        pass_filenames: false
+        files: ^(package\.json|pnpm-lock\.yaml|pnpm-workspace\.yaml)$
+      - id: workspace
+        name: workspace
+        entry: pnpm exec tsx scripts/validate-workspace.ts
+        language: system
+        pass_filenames: false
+        files: ^(\.vscode/extensions\.json|\.devcontainer/devcontainer\.json|scripts/validate-workspace\.ts)$

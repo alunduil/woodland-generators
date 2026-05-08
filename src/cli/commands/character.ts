@@ -1,6 +1,7 @@
 import { Command } from "commander";
 import { generateCharacter, generatePlaybook } from "../../generators";
 import { root } from "../../logging";
+import { PdfParseError } from "../../playbook";
 import { randomBytes } from "crypto";
 import type pino from "pino";
 
@@ -77,13 +78,31 @@ export function createCharacterCommand(): Command {
       try {
         await executeCharacterCommand(path, options, logger);
       } catch (error) {
-        logger.error({
-          msg: "Character generation failed",
-          error: error instanceof Error ? error.message : String(error),
-          stack: error instanceof Error ? error.stack : undefined,
-          path,
-          options,
-        });
+        const errorMessage = error instanceof Error ? error.message : String(error);
+
+        if (error instanceof PdfParseError) {
+          process.stderr.write(`Error: ${errorMessage}\n`);
+          process.stderr.write(
+            `When filing a bug report, include the failing stage: "${error.stage}".\n`,
+          );
+          logger.error({
+            msg: "Character generation failed",
+            stage: error.stage,
+            error: errorMessage,
+            stack: error.stack,
+            path,
+            options,
+          });
+        } else {
+          process.stderr.write(`Error: ${errorMessage}\n`);
+          logger.error({
+            msg: "Character generation failed",
+            error: errorMessage,
+            stack: error instanceof Error ? error.stack : undefined,
+            path,
+            options,
+          });
+        }
 
         process.exit(1);
       }

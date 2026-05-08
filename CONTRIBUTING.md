@@ -22,10 +22,37 @@ players:
 - **Use pnpm** - the repository runs as a pnpm workspace; npm and yarn won't
   produce a working install. Run `corepack enable` once on Node 20 or newer; the
   pinned pnpm version comes from `package.json#packageManager`.
-- **Run checks** before submitting: `pnpm run check:all`
+- **Run checks** before submitting: `pre-commit run --all-files`
 - **Test your changes** with `pnpm run cli`
 - **Keep PRs focused** - one feature or fix per PR
 - **Stay patient** - reviews may take a few days
+
+## Commit messages
+
+This repository follows [Conventional Commits][conventional-commits]. Commit
+prefixes drive the automated `CHANGELOG.md` entries and version bumps managed by
+[release-please][release-please].
+
+Common prefixes:
+
+- `feat:` - new user-facing feature (minor version bump)
+- `fix:` - bug fix (patch version bump)
+- `docs:` - documentation only
+- `refactor:` - code change that neither fixes a bug nor adds a feature
+- `perf:` - performance improvement
+- `chore:` - tooling, build, or maintenance work
+
+Append `!` after the type (for example, `feat!:`) or include a
+`BREAKING CHANGE:` footer for changes that bump the major version (or minor,
+while pre-1.0).
+
+Examples:
+
+```text
+feat: add character demeanor generation
+fix(cli): respect --seed flag in name generation
+chore(deps): bump typescript to 5.9.3
+```
 
 ## Quick start
 
@@ -45,10 +72,8 @@ players:
 3. **Development workflow**:
 
    ```bash
-   pnpm run build:watch    # Watch mode dev
-   pnpm run check:all      # Check everything
-   pnpm run fix:lint       # Auto-fix code issues
-   pnpm run fix:format     # Auto-format code
+   pnpm run build:watch         # Watch mode dev
+   pre-commit run --all-files   # Check everything (auto-fixes)
    ```
 
 ## How to submit changes
@@ -58,7 +83,7 @@ players:
 1. **Open an issue first** to discuss the approach
 2. Fork the repository and create a feature branch
 3. Make your changes following the code standards
-4. Run `pnpm run check:all` to check everything works
+4. Run `pre-commit run --all-files` to check everything works
 5. Submit a pull request with a clear description
 
 ### For small fixes (typos, formatting)
@@ -83,6 +108,8 @@ players:
 
 [bug-template]:
   https://github.com/alunduil/woodland-generators/issues/new?template=bug_report.yml
+[conventional-commits]: https://www.conventionalcommits.org/en/v1.0.0/
+[discussions]: https://github.com/alunduil/woodland-generators/discussions
 [feature-template]:
   https://github.com/alunduil/woodland-generators/issues/new?template=feature_request.yml
-[discussions]: https://github.com/alunduil/woodland-generators/discussions
+[release-please]: https://github.com/googleapis/release-please

@@ -2,33 +2,10 @@ coverage:
   status:
     project:
       default:
-        target: 50%
-        threshold: 5%
-        if_not_found: success
-      generators:
-        target: 70%
-        threshold: 3%
-        paths:
-          - src/generators/
-        if_not_found: success
+        threshold: 1%
     patch:
       default:
-        target: 60%
-        threshold: 5%
-        if_not_found: success
-
-flags:
-  unittests:
-    paths:
-      - src/
-    carryforward: false
-
-comment:
-  layout: "header,diff,flags,components,tree,footer"
-  behavior: default
-  require_changes: false
-  require_base: no
-  require_head: yes
+        threshold: 1%
 
 ignore:
   - "dist/"
@@ -42,6 +19,3 @@ ignore:
   - "**/*.bench.ts"
   - "src/cli.ts"
   - "src/logging/pino-pretty-transport.js"
-
-github_checks:
-  annotations: true

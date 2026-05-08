@@ -58,7 +58,13 @@
     "source": "multiple-playbooks.json",
     "archetype": "The Tinker",
     "species": ["Otter", "Beaver", "Mole", "Hedgehog", "Porcupine"],
-    "demeanor": ["Inventive", "Practical", "Focused", "Resourceful", "Determined"],
+    "demeanor": [
+      "Inventive",
+      "Practical",
+      "Focused",
+      "Resourceful",
+      "Determined"
+    ],
     "moves": [
       {
         "name": "Craft Lorem",

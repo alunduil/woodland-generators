@@ -38,6 +38,25 @@ body:
     validations:
       required: true
 
+  - type: dropdown
+    id: pdf-parse-stage
+    attributes:
+      label: PDF parse stage (if a `woodland-gen character` PDF failure)
+      description: |
+        When `woodland-gen character` fails parsing a PDF, the error line is
+        prefixed with the failing stage in square brackets, e.g.
+        `[parse] /path/file.pdf: ...`. Pick that stage here so we can route
+        the report. Leave as "Not applicable" for non-PDF bugs.
+      options:
+        - Not applicable
+        - read
+        - parse
+        - split
+        - archetype-extract
+        - section-parse
+    validations:
+      required: false
+
   - type: input
     id: cli-version
     attributes:
