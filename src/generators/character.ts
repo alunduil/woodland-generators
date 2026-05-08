@@ -5,15 +5,17 @@ import { generateDemeanor } from "./demeanor";
 import { GeneratorOptions } from "./index";
 import { Character } from "../character";
 import { Details } from "../details";
-import { Playbook } from "../playbook";
 import { root } from "../logging";
 
-/**
- * Options for character generation from a playbook source
- */
 export interface CharacterGeneratorOptions extends GeneratorOptions {
-  /** Playbook object containing character generation data */
-  playbook: Playbook;
+  /** Archetype label written onto the generated character (e.g., "The Ranger") */
+  archetype: string;
+  /** Species choices the generator picks from */
+  speciesChoices: string[];
+  /** Per-category detail choices the generator picks from */
+  detailsChoices: Details;
+  /** Demeanor trait choices the generator picks from */
+  demeanorChoices: string[];
   /** User-provided name (if provided, this will be used instead of generating) */
   name?: string;
   /** User-provided species (if provided, this will be used instead of generating) */
@@ -25,7 +27,7 @@ export interface CharacterGeneratorOptions extends GeneratorOptions {
 }
 
 /**
- * Generate a complete character from a playbook object
+ * Generate a complete character from archetype + choice lists
  */
 export async function generateCharacter(options: CharacterGeneratorOptions): Promise<Character> {
   const logger = root.child({
@@ -35,17 +37,16 @@ export async function generateCharacter(options: CharacterGeneratorOptions): Pro
 
   logger.info({
     msg: "Starting character generation",
-    playbook: options.playbook.archetype,
+    archetype: options.archetype,
     characterName: options.name,
     species: options.species,
     details: options.details,
     demeanor: options.demeanor,
   });
 
-  // Generate character components using functional approach with seeds
   const species = generateSpecies({
     seed: options.seed,
-    choices: options.playbook.species,
+    choices: options.speciesChoices,
     ...(options.species !== undefined && { species: options.species }),
   });
 
@@ -56,19 +57,19 @@ export async function generateCharacter(options: CharacterGeneratorOptions): Pro
 
   const details = generateDetails({
     seed: options.seed,
-    choices: options.playbook.details,
+    choices: options.detailsChoices,
     ...(options.details !== undefined && { details: options.details }),
   });
 
   const demeanor = generateDemeanor({
     seed: options.seed,
-    choices: options.playbook.demeanor,
+    choices: options.demeanorChoices,
     ...(options.demeanor !== undefined && { demeanor: options.demeanor }),
   });
 
   const character = {
     name,
-    playbook: options.playbook.archetype,
+    playbook: options.archetype,
     species,
     details,
     demeanor,
@@ -76,7 +77,7 @@ export async function generateCharacter(options: CharacterGeneratorOptions): Pro
 
   logger.info({
     msg: "Character generation completed",
-    playbook: options.playbook.archetype,
+    archetype: options.archetype,
     seed: options.seed,
     characterName: name,
     species: species,

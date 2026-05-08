@@ -4,7 +4,6 @@ import { generateName } from "../../src/generators/name";
 import { generateDetails } from "../../src/generators/details";
 import { generateDemeanor } from "../../src/generators/demeanor";
 import { root } from "../../src/logging";
-import { Playbook } from "../../src/playbook";
 
 // Mock only the functions while allowing constants to pass through safely
 jest.mock("../../src/generators/species", (): typeof import("../../src/generators/species") => {
@@ -36,36 +35,13 @@ const mockGenerateName = generateName as jest.MockedFunction<typeof generateName
 const mockGenerateDetails = generateDetails as jest.MockedFunction<typeof generateDetails>;
 const mockGenerateDemeanor = generateDemeanor as jest.MockedFunction<typeof generateDemeanor>;
 
-// Helper function to create mock playbooks
-function createMockPlaybook(archetype: string, species: string[] = []): Playbook {
-  return {
-    archetype,
-    species,
-    background: {
-      homeOptions: [],
-      motivationOptions: [],
-    },
-    nature: {
-      stats: [],
-      statNames: [],
-    },
-    moves: [],
-    equipment: {
-      startingValue: 0,
-      items: [],
-    },
-    feats: [],
-    weaponSkills: [],
-    details: {
-      pronouns: ["they"],
-      appearance: ["simple"],
-      accessories: ["personal trinket"],
-    },
-    demeanor: ["Curious", "Helpful"],
-    rawText: "",
-    pageNumber: 1,
-  };
-}
+const DEFAULT_DETAILS_CHOICES = {
+  pronouns: ["they"],
+  appearance: ["simple"],
+  accessories: ["personal trinket"],
+};
+
+const DEFAULT_DEMEANOR_CHOICES = ["Curious", "Helpful"];
 
 describe("generateCharacter", () => {
   beforeEach(() => {
@@ -82,10 +58,11 @@ describe("generateCharacter", () => {
   });
 
   it("should coordinate generation and assemble character object", async () => {
-    const playbook = createMockPlaybook("The Wanderer", ["Fox", "Rabbit"]);
-
     const result = await generateCharacter({
-      playbook,
+      archetype: "The Wanderer",
+      speciesChoices: ["Fox", "Rabbit"],
+      detailsChoices: DEFAULT_DETAILS_CHOICES,
+      demeanorChoices: DEFAULT_DEMEANOR_CHOICES,
       seed: "test-seed",
     });
 
@@ -109,14 +86,14 @@ describe("generateCharacter", () => {
   });
 
   it("should delegate parameters correctly to generators", async () => {
-    const playbook = createMockPlaybook("The Ranger", ["Fox", "Rabbit"]);
-
     await generateCharacter({
-      playbook,
+      archetype: "The Ranger",
+      speciesChoices: ["Fox", "Rabbit"],
+      detailsChoices: DEFAULT_DETAILS_CHOICES,
+      demeanorChoices: DEFAULT_DEMEANOR_CHOICES,
       seed: "param-test",
     });
 
-    // Verifies parameter delegation
     expect(mockGenerateSpecies).toHaveBeenCalledWith({
       seed: "param-test",
       choices: ["Fox", "Rabbit"],
@@ -128,24 +105,21 @@ describe("generateCharacter", () => {
 
     expect(mockGenerateDetails).toHaveBeenCalledWith({
       seed: "param-test",
-      choices: {
-        pronouns: ["they"],
-        appearance: ["simple"],
-        accessories: ["personal trinket"],
-      },
+      choices: DEFAULT_DETAILS_CHOICES,
     });
 
     expect(mockGenerateDemeanor).toHaveBeenCalledWith({
       seed: "param-test",
-      choices: ["Curious", "Helpful"],
+      choices: DEFAULT_DEMEANOR_CHOICES,
     });
   });
 
   it("should pass user overrides only when defined", async () => {
-    const playbook = createMockPlaybook("The Scout", ["Squirrel"]);
-
     await generateCharacter({
-      playbook,
+      archetype: "The Scout",
+      speciesChoices: ["Squirrel"],
+      detailsChoices: DEFAULT_DETAILS_CHOICES,
+      demeanorChoices: DEFAULT_DEMEANOR_CHOICES,
       seed: "override-test",
       name: "Custom Name",
       species: "Wolf",
@@ -171,11 +145,7 @@ describe("generateCharacter", () => {
 
     expect(mockGenerateDetails).toHaveBeenCalledWith({
       seed: "override-test",
-      choices: {
-        pronouns: ["they"],
-        appearance: ["simple"],
-        accessories: ["personal trinket"],
-      },
+      choices: DEFAULT_DETAILS_CHOICES,
       details: {
         pronouns: ["he", "him"],
         appearance: ["custom"],
@@ -185,7 +155,7 @@ describe("generateCharacter", () => {
 
     expect(mockGenerateDemeanor).toHaveBeenCalledWith({
       seed: "override-test",
-      choices: ["Curious", "Helpful"],
+      choices: DEFAULT_DEMEANOR_CHOICES,
       demeanor: ["Custom", "Demeanor"],
     });
   });
