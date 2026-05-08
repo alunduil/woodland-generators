@@ -22,12 +22,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Active+Maintenance LTS pair via setup-node nvm aliases — rotates
-        # automatically as upstream LTS lines age out. `coverage: true` on
-        # the lowest gates the Codecov upload steps.
-        node-version: ["lts/-1", "lts/*"]
+        # All supported LTS via setup-node nvm aliases — auto-rotates.
+        # `lts/-2` drifts onto a just-EOL'd line ~6 mo/yr by design (between
+        # April EOL and October's new LTS); accepted as the cost of full
+        # supported-line coverage. Codecov gates on `lts/*` to anchor the
+        # signal to active LTS rather than rotating through maintenance.
+        node-version: ["lts/-2", "lts/-1", "lts/*"]
         include:
-          - node-version: "lts/-1"
+          - node-version: "lts/*"
             coverage: true
 
     steps:
