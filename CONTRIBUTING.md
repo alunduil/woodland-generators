@@ -19,8 +19,11 @@ players:
 ## Ground rules
 
 - **TypeScript with strict typing** - Type safety stays important
-- **Run checks** before submitting: `npm run check:all`
-- **Test your changes** with `npm run cli`
+- **Use pnpm** - the repository runs as a pnpm workspace; npm and yarn won't
+  produce a working install. Run `corepack enable` once on Node 20 or newer; the
+  pinned pnpm version comes from `package.json#packageManager`.
+- **Run checks** before submitting: `pnpm run check:all`
+- **Test your changes** with `pnpm run cli`
 - **Keep PRs focused** - one feature or fix per PR
 - **Stay patient** - reviews may take a few days
 
@@ -29,22 +32,23 @@ players:
 1. **Install dependencies**:
 
    ```bash
-   npm install
+   corepack enable
+   pnpm install
    ```
 
 2. **Test the CLI**:
 
    ```bash
-   npm run cli -- character --help
+   pnpm run cli -- character --help
    ```
 
 3. **Development workflow**:
 
    ```bash
-   npm run build:watch    # Watch mode dev
-   npm run check:all      # Check everything
-   npm run fix:lint       # Auto-fix code issues
-   npm run fix:format     # Auto-format code
+   pnpm run build:watch    # Watch mode dev
+   pnpm run check:all      # Check everything
+   pnpm run fix:lint       # Auto-fix code issues
+   pnpm run fix:format     # Auto-format code
    ```
 
 ## How to submit changes
@@ -54,7 +58,7 @@ players:
 1. **Open an issue first** to discuss the approach
 2. Fork the repository and create a feature branch
 3. Make your changes following the code standards
-4. Run `npm run check:all` to check everything works
+4. Run `pnpm run check:all` to check everything works
 5. Submit a pull request with a clear description
 
 ### For small fixes (typos, formatting)

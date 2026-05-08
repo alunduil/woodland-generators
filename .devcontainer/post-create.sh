@@ -3,9 +3,14 @@ set -e
 
 echo "🚀 Setting up Woodland Generators development environment..."
 
+# Activate pnpm via corepack (version pinned by package.json#packageManager)
+echo "📦 Activating pnpm via corepack..."
+corepack enable
+corepack prepare --activate
+
 # Install project dependencies
 echo "📦 Installing project dependencies..."
-npm install
+pnpm install --frozen-lockfile
 
 # Install lychee for link checking
 "$(dirname "${BASH_SOURCE[0]}")/../scripts/install-lychee.sh"
