@@ -6,11 +6,6 @@ The format follows [Keep a CHANGELOG](https://keepachangelog.com/en/1.1.0/), and
 this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Once [#217](https://github.com/alunduil/woodland-generators/issues/217) lands,
-release-please will manage per-package changelogs at
-`packages/<package>/CHANGELOG.md`, and this root file will carry project-level
-(cross-package) entries only.
-
 ## [0.2.0](https://github.com/alunduil/woodland-generators/compare/woodland-generators-v0.1.0...woodland-generators-v0.2.0) (2026-05-04)
 
 
@@ -49,21 +44,4 @@ release-please will manage per-package changelogs at
 * migrate from Dependabot to Renovate ([#143](https://github.com/alunduil/woodland-generators/issues/143)) ([2fc3b86](https://github.com/alunduil/woodland-generators/commit/2fc3b86d43b90d4d0a15538b4babff85bf154c70))
 * retire duplicate check:* npm scripts ([#186](https://github.com/alunduil/woodland-generators/issues/186)) ([68bddc4](https://github.com/alunduil/woodland-generators/commit/68bddc4c7ac47d50baefb5dff3ec42cfd7a896e3))
 * retire sync:deps script and sync-precommit workflow ([#172](https://github.com/alunduil/woodland-generators/issues/172)) ([ee3b437](https://github.com/alunduil/woodland-generators/commit/ee3b4379380d2b4369e694dfea3f1a7617f83870))
-
-## [Unreleased]
-
-> **v0.3.0 marks a pivot.** woodland-generators is being rebuilt as a FoundryVTT
-> module that generates Root: The Tabletop RPG session-zero content (clearings,
-> NPCs, factions, conflicts) directly into Scene/Actor/Journal entries. The
-> v0.2.0 CLI shape — PDF playbook ingestion and character generation — is being
-> retired; do not expect the v0.2.0 surface to remain in v0.3.0. See
-> [#210](https://github.com/alunduil/woodland-generators/issues/210) for the
-> full scope.
-
-### Changed
-
-- Repository converted to a pnpm workspace
-  ([#264](https://github.com/alunduil/woodland-generators/pull/264)) in
-  preparation for the `packages/core`, `packages/cli`, and
-  `packages/foundry-module` split.
 
