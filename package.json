@@ -33,7 +33,7 @@
   "dependencies": {
     "@woodland-generators/core": "workspace:*",
     "commander": "^14.0.0",
-    "pino": "^9.7.0"
+    "pino": "^10.0.0"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
