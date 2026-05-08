@@ -10,11 +10,15 @@ A CLI tool for generating resources for Root: The Tabletop RPG.
 
 ## What this tool does
 
-Woodland Generators is being rewired into a FoundryVTT module backed by a shared
-generator core; see
-[#210](https://github.com/alunduil/woodland-generators/issues/210) for the pivot
-rationale. The pre-pivot PDF playbook ingestion has been retired. New generator
-surfaces (clearings, NPCs, factions, conflicts) are tracked on the
+Woodland Generators currently ships one capability:
+
+- **Character generator**: Build a Root character from a playbook PDF (or
+  pre-parsed JSON playbook), with optional seed, archetype, name, and species
+  overrides. Writes JSON to standard output, ready to redirect to a file or pipe
+  into another tool.
+
+Other generators (NPC, clearing, adventure plot) and additional export formats
+(Markdown, HTML, PDF) are planned but not yet implemented. Track progress on the
 [milestones page](https://github.com/alunduil/woodland-generators/milestones).
 
 ## Installation
@@ -37,9 +41,22 @@ run the file.
 
 ## Usage
 
-The CLI is being rebuilt against the new generator core
-([#213](https://github.com/alunduil/woodland-generators/issues/213)). For now
-only `woodland-gen --help` and `woodland-gen --version` are wired up.
+### Quick start
+
+```bash
+# Generate a character from a Root playbook PDF
+woodland-gen character path/to/playbook.pdf
+
+# Reproduce the same character later via seed
+woodland-gen character path/to/playbook.pdf --seed abc123
+
+# Get help for any command
+woodland-gen --help
+woodland-gen character --help
+```
+
+The generated character prints as JSON. Redirect to a file or pipe into another
+tool as needed.
 
 ## Contributing
 
