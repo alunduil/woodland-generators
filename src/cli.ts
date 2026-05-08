@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
 import { Command, Option } from "commander";
-import { createCharacterCommand } from "./cli/commands/character";
-import { root } from "./logging";
+import { root } from "@woodland-generators/core";
 import packageJson from "../package.json";
 import pino from "pino";
 
@@ -26,8 +25,6 @@ program.hook("preAction", (thisCommand) => {
     root.level = logLevel;
   }
 });
-
-program.addCommand(createCharacterCommand());
 
 // Handle unhandled promise rejections (Node.js default behavior is poor for CLI tools)
 process.on("unhandledRejection", (reason) => {

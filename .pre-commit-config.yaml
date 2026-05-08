@@ -105,27 +105,27 @@ repos:
 
   # Project-local hooks. Versions live in package.json devDependencies, so
   # there is nothing for Renovate's pre-commit manager to track here. These
-  # require `npm ci` to have populated node_modules/.
+  # require `pnpm install` to have populated node_modules/.
   - repo: local
     hooks:
       - id: prettier
         name: prettier
-        entry: npx prettier --write
+        entry: pnpm exec prettier --write
         language: system
         types_or: [javascript, jsx, ts, tsx, json, yaml, markdown, css, scss]
         exclude: |
           (?x)^(
-            package-lock\.json|
+            pnpm-lock\.yaml|
             \.vscode/.*\.json
           )$
       - id: eslint
         name: eslint
-        entry: npx eslint --max-warnings=0 --fix
+        entry: pnpm exec eslint --max-warnings=0 --fix
         language: system
         files: \.(js|jsx|ts|tsx)$
       - id: typecheck
         name: typecheck
-        entry: npx tsc --noEmit
+        entry: pnpm exec tsc --noEmit
         language: system
         pass_filenames: false
         types: [ts]
@@ -135,13 +135,13 @@ repos:
         # prettier is referenced from .prettierrc, which depcheck's prettier
         # special only checks for the `prettier` field in package.json.
         name: depcheck
-        entry: npx depcheck --ignores=depcheck,prettier
+        entry: pnpm exec depcheck --ignores=depcheck,prettier
         language: system
         pass_filenames: false
-        files: ^(package\.json|package-lock\.json)$
+        files: ^(package\.json|pnpm-lock\.yaml|pnpm-workspace\.yaml)$
       - id: workspace
         name: workspace
-        entry: npx tsx scripts/validate-workspace.ts
+        entry: pnpm exec tsx scripts/validate-workspace.ts
         language: system
         pass_filenames: false
         files: ^(\.vscode/extensions\.json|\.devcontainer/devcontainer\.json|scripts/validate-workspace\.ts)$

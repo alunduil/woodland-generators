@@ -18,4 +18,4 @@ ignore:
   - "**/*.test.ts"
   - "**/*.bench.ts"
   - "src/cli.ts"
-  - "src/logging/pino-pretty-transport.js"
+  - "packages/*/src/logging/pino-pretty-transport.js"
