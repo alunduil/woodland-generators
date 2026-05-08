@@ -3,6 +3,12 @@
 ---
 blank_issues_enabled: false
 contact_links:
-  - name: Questions or discussion
-    url: https://github.com/alunduil/woodland-generators/discussions
-    about: Use discussions for questions, ideas, or general conversation.
+  - name: Question or help request
+    url: https://github.com/alunduil/woodland-generators/discussions/categories/q-a
+    about: Ask the community for help or how-to questions.
+  - name: Idea or proposal (not yet a commitment)
+    url: https://github.com/alunduil/woodland-generators/discussions/categories/ideas
+    about: Float a feature idea before opening a feature request.
+  - name: General discussion
+    url: https://github.com/alunduil/woodland-generators/discussions/categories/general
+    about: Anything else that isn't a bug or feature request.

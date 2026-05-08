@@ -45,31 +45,3 @@ this project adheres to
 * retire duplicate check:* npm scripts ([#186](https://github.com/alunduil/woodland-generators/issues/186)) ([68bddc4](https://github.com/alunduil/woodland-generators/commit/68bddc4c7ac47d50baefb5dff3ec42cfd7a896e3))
 * retire sync:deps script and sync-precommit workflow ([#172](https://github.com/alunduil/woodland-generators/issues/172)) ([ee3b437](https://github.com/alunduil/woodland-generators/commit/ee3b4379380d2b4369e694dfea3f1a7617f83870))
 
-## [Unreleased]
-
-### Added
-
-- CLI tool for generating Root: The Tabletop RPG resources (`woodland-gen`
-  command)
-- Character generation with `character` sub-command (alias: `char`)
-- PDF playbook parsing support for Root RPG playbook files
-- Comprehensive character generation from playbook PDF files including:
-  - Species generation with traits and details
-  - Name generation for woodland creatures
-  - Background, feat, and move generation
-  - Playbook-specific archetype selection
-  - Character details generation (pronouns, appearance, accessories)
-  - Demeanor traits drawn from playbook personality options
-- Reproducible character generation via `--seed` option
-- Custom name override via `--name` option
-- Specific archetype selection via `--archetype` option
-- Multi-source playbook support (PDF and JSON formats)
-- Global installation support via npm
-- Extended woodland species catalog (100+ species) for enhanced character
-  diversity when playbooks include "other" species option
-- `--log-level` option for controlling diagnostic output verbosity with support
-  for standard log levels (trace, debug, info, warn, error, fatal)
-- `--species` option for character command to override species selection
-- Structured logging throughout generation pipeline for debugging generation
-  failures
-- Requires Node.js 20.0.0 or later
