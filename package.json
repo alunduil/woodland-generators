@@ -30,8 +30,9 @@
   ],
   "engines": {
     "node": ">=20.0.0",
-    "npm": ">=9.0.0"
+    "pnpm": ">=10.0.0"
   },
+  "packageManager": "pnpm@10.33.2",
   "dependencies": {
     "chalk": "^4.1.2",
     "commander": "^14.0.0",
@@ -65,26 +66,26 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "cli": "npm run build && node dist/cli.js",
+    "cli": "pnpm run build && node dist/cli.js",
     "clean": "rm -rf dist/",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "bench": "jest --config jest.benchmark.config.json && npx tsx scripts/process-benchmarks.ts",
-    "prepare": "npm run build",
-    "prepublishOnly": "npm run check:all",
-    "prepack": "npm run clean && npm run build",
+    "bench": "jest --config jest.benchmark.config.json && tsx scripts/process-benchmarks.ts",
+    "prepare": "pnpm run build",
+    "prepublishOnly": "pnpm run check:all",
+    "prepack": "pnpm run clean && pnpm run build",
     "postversion": "git push && git push --tags",
-    "check:all": "npm run check:types && npm run check:lint && npm run check:format && npm run check:deps && npm run test",
+    "check:all": "pnpm run check:types && pnpm run check:lint && pnpm run check:format && pnpm run check:deps && pnpm run test",
     "check:types": "tsc --noEmit",
     "check:lint": "eslint src/",
     "check:format": "prettier --check src/**/*.ts",
     "check:deps": "depcheck",
-    "check:outdated": "npm outdated",
-    "check:workspace": "npx tsx scripts/validate-workspace.ts",
+    "check:outdated": "pnpm outdated",
+    "check:workspace": "tsx scripts/validate-workspace.ts",
     "fix:lint": "eslint src/ --fix",
     "fix:format": "prettier --write src/**/*.ts",
     "update:deps": "ncu",
-    "sync:deps": "npx tsx scripts/sync-precommit-deps.ts"
+    "sync:deps": "tsx scripts/sync-precommit-deps.ts"
   }
 }

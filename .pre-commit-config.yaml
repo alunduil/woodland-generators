@@ -59,7 +59,7 @@ repos:
         types_or: [javascript, jsx, ts, tsx, json, yaml, markdown, css, scss]
         exclude: |
           (?x)^(
-            package-lock\.json|
+            pnpm-lock\.yaml|
             \.vscode/.*\.json
           )$
 
