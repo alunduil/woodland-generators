@@ -1,0 +1,83 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt <alunduil@gmail.com>
+# SPDX-License-Identifier: MIT
+---
+name: Bug report
+description: Report incorrect behavior so it can be fixed.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template when something is not working the way you expect.
+        For the title, briefly describe what went wrong, for example:
+        "woodland-gen character emits duplicate names for bird faction".
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: A short description of the bug.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      description: >-
+        Minimal steps to trigger the bug. Include the exact commands you
+        ran or the in-Foundry interactions.
+      placeholder: |
+        1. Run `woodland-gen character --faction bird --seed 42`
+        2. Observe …
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual behavior
+      description: What happens when you follow the steps above?
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: What should happen instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: >-
+        Share any details about your setup that might be relevant.
+        Fill in only what applies.
+      placeholder: |
+        For CLI issues:
+        - woodland-gen: 0.2.0 (run `woodland-gen --version`)
+        - Node: 22.x
+        - OS: Debian 13
+
+        For Foundry module issues:
+        - Module version: 0.2.0
+        - Foundry: 12.331
+        - Browser: Chrome 130
+        - OS: macOS 15
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: >-
+        Paste relevant console output, error messages, or attach screenshots.
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: >-
+        Anything else that helps: related issues, workarounds tried, frequency.
