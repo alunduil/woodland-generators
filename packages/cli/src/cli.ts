@@ -4,6 +4,7 @@ import { Command, Option } from "commander";
 import { root } from "@woodland-generators/core";
 import packageJson from "../package.json";
 import pino from "pino";
+import { createCharacterCommand } from "./commands/character";
 import { createNameCommand } from "./commands/name";
 
 const program = new Command();
@@ -26,6 +27,7 @@ program.hook("preAction", (thisCommand) => {
   }
 });
 
+program.addCommand(createCharacterCommand());
 program.addCommand(createNameCommand());
 
 process.on("unhandledRejection", (reason) => {
