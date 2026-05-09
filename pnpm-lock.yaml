@@ -39,37 +39,6 @@ importers:
         specifier: 5.9.3
         version: 5.9.3
 
-  packages/cli:
-    dependencies:
-      '@woodland-generators/core':
-        specifier: workspace:*
-        version: link:../core
-      commander:
-        specifier: ^14.0.0
-        version: 14.0.3
-      pino:
-        specifier: ^10.0.0
-        version: 10.3.1
-    devDependencies:
-      '@types/jest':
-        specifier: 30.0.0
-        version: 30.0.0
-      '@types/node':
-        specifier: 24.12.2
-        version: 24.12.2
-      jest:
-        specifier: 30.3.0
-        version: 30.3.0(@types/node@24.12.2)
-      jest-junit:
-        specifier: 17.0.0
-        version: 17.0.0
-      ts-jest:
-        specifier: 29.4.9
-        version: 29.4.9(@babel/core@7.29.0)(@jest/transform@30.3.0)(@jest/types@30.4.1)(babel-jest@30.3.0(@babel/core@7.29.0))(jest-util@30.4.1)(jest@30.3.0(@types/node@24.12.2))(typescript@5.9.3)
-      typescript:
-        specifier: 5.9.3
-        version: 5.9.3
-
   packages/core:
     dependencies:
       just-percentile:
@@ -81,9 +50,6 @@ importers:
       pino-pretty:
         specifier: ^13.1.1
         version: 13.1.3
-      seeded-random-utilities:
-        specifier: ^1.1.4
-        version: 1.1.4
     devDependencies:
       '@types/jest':
         specifier: 30.0.0
@@ -1140,10 +1106,6 @@ packages:
   colorette@2.0.20:
     resolution: {integrity: sha512-IfEDxwoWIjkeXL1eXcDiow4UbKjhLdq6/EuSVR9GMN7KVH3r9gQ83e73hsz1Nd1T3ijd5xv1wcWRYO+D6kCI2w==}
 
-  commander@14.0.3:
-    resolution: {integrity: sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw==}
-    engines: {node: '>=20'}
-
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
@@ -2101,9 +2063,6 @@ packages:
   quick-format-unescaped@4.0.4:
     resolution: {integrity: sha512-tYC1Q1hgyRuHgloV/YXs2w15unPVh8qfu/qCTfhTYamaw7fyhumKa2yGpdSo87vY32rIclj+4fWYQXUMs9EHvg==}
 
-  rand-seed@0.1.5:
-    resolution: {integrity: sha512-0OPwHkTNn/+RsObbkCSaXQJvYrhLGDm62LI+p5sVRFYaJXkinspuxn5AoDQwCbjpszFUaX4xf2iQ19Uh9WG0JA==}
-
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
@@ -2162,9 +2121,6 @@ packages:
 
   secure-json-parse@4.1.0:
     resolution: {integrity: sha512-l4KnYfEyqYJxDwlNVyRfO2E4NTHfMKAWdUuA8J0yve2Dz/E/PdBepY03RvyJpssIpRFwJoCD55wA+mEDs6ByWA==}
-
-  seeded-random-utilities@1.1.4:
-    resolution: {integrity: sha512-tMuA1U+nwIeCGfXW0bzR8kq7gHTyY4XoQACZrcQwjM0FVQeP63YO30P8z+O8vi8LSPcZb+8TIlf0U7NSI4e7vA==}
 
   semver-compare@1.0.0:
     resolution: {integrity: sha512-YM3/ITh2MJ5MtzaM429anh+x2jiLVjqILF4m4oyQB18W7Ggea7BfqdH/wGMK7dDiMghv/6WG7znWMwUDzJiXow==}
@@ -3638,8 +3594,6 @@ snapshots:
 
   colorette@2.0.20: {}
 
-  commander@14.0.3: {}
-
   concat-map@0.0.1: {}
 
   convert-source-map@2.0.0: {}
@@ -4893,8 +4847,6 @@ snapshots:
 
   quick-format-unescaped@4.0.4: {}
 
-  rand-seed@0.1.5: {}
-
   react-is@18.3.1: {}
 
   react-is@19.2.6: {}
@@ -4942,10 +4894,6 @@ snapshots:
   safe-stable-stringify@2.5.0: {}
 
   secure-json-parse@4.1.0: {}
-
-  seeded-random-utilities@1.1.4:
-    dependencies:
-      rand-seed: 0.1.5
 
   semver-compare@1.0.0: {}
 
