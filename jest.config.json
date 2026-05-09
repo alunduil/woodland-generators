@@ -1,0 +1,19 @@
+{
+  "projects": ["<rootDir>/packages/cli", "<rootDir>/packages/core"],
+  "coverageDirectory": "<rootDir>/coverage",
+  "coverageReporters": ["text", "lcov", "html"],
+  "reporters": [
+    "default",
+    [
+      "jest-junit",
+      {
+        "outputDirectory": "./test-results",
+        "outputName": "junit.xml",
+        "classNameTemplate": "{classname}",
+        "titleTemplate": "{title}",
+        "ancestorSeparator": " › ",
+        "usePathForSuiteName": true
+      }
+    ]
+  ]
+}

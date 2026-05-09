@@ -26,6 +26,12 @@ importers:
       eslint:
         specifier: 10.3.0
         version: 10.3.0
+      jest:
+        specifier: 30.3.0
+        version: 30.3.0(@types/node@24.12.2)
+      jest-junit:
+        specifier: 17.0.0
+        version: 17.0.0
       npm-check-updates:
         specifier: 22.1.0
         version: 22.1.0

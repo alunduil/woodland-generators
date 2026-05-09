@@ -1,29 +1,15 @@
 {
+  "displayName": "cli",
   "preset": "ts-jest",
   "testEnvironment": "node",
   "clearMocks": true,
   "collectCoverageFrom": ["src/**/*.ts", "!src/**/*.d.ts"],
   "testPathIgnorePatterns": ["/node_modules/", "/dist/"],
-  "coverageReporters": ["text", "lcov", "html"],
-  "reporters": [
-    "default",
-    [
-      "jest-junit",
-      {
-        "outputDirectory": "./test-results",
-        "outputName": "junit.xml",
-        "classNameTemplate": "{classname}",
-        "titleTemplate": "{title}",
-        "ancestorSeparator": " › ",
-        "usePathForSuiteName": true
-      }
-    ]
-  ],
   "transform": {
     "^.+\\.ts$": [
       "ts-jest",
       {
-        "tsconfig": "tsconfig.test.json"
+        "tsconfig": "<rootDir>/tsconfig.test.json"
       }
     ]
   }
