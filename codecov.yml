@@ -17,5 +17,6 @@ ignore:
   - "**/*.d.ts"
   - "**/*.test.ts"
   - "**/*.bench.ts"
-  - "src/cli.ts"
+  # cli coverage isn't uploaded yet — #216 wires the per-package matrix.
+  - "packages/cli/**"
   - "packages/*/src/logging/pino-pretty-transport.js"

@@ -1,9 +1,10 @@
 {
-  "name": "@woodland-generators/core",
+  "name": "@woodland-generators/cli",
   "version": "0.0.0",
-  "description": "Reusable generator algorithms for Root: The Tabletop RPG (engine, no UI)",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "description": "Thin CLI dispatching to @woodland-generators/core for headless verification and scripting",
+  "bin": {
+    "woodland-gen": "dist/cli.js"
+  },
   "author": "Alex Brandt",
   "license": "MIT",
   "private": true,
@@ -17,28 +18,24 @@
     "pnpm": ">=10.0.0"
   },
   "dependencies": {
-    "just-percentile": "^4.2.0",
-    "pino": "^10.0.0",
-    "pino-pretty": "^13.1.1",
-    "seeded-random-utilities": "^1.1.4"
+    "@woodland-generators/core": "workspace:*",
+    "commander": "^14.0.0",
+    "pino": "^10.0.0"
   },
   "devDependencies": {
     "@types/jest": "30.0.0",
     "@types/node": "24.12.2",
-    "fast-check": "4.7.0",
     "jest": "30.3.0",
-    "jest-bench": "29.7.1",
     "jest-junit": "17.0.0",
     "ts-jest": "29.4.9",
     "typescript": "5.9.3"
   },
   "scripts": {
-    "build": "tsc && cp src/logging/pino-pretty-transport.js dist/logging/",
+    "build": "tsc",
     "build:watch": "tsc --watch",
     "clean": "rm -rf dist/",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
-    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
-    "bench": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.benchmark.config.json"
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
   }
 }

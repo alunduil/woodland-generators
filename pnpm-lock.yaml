@@ -7,16 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@woodland-generators/core':
-        specifier: workspace:*
-        version: link:packages/core
-      commander:
-        specifier: ^14.0.0
-        version: 14.0.3
-      pino:
-        specifier: ^10.0.0
-        version: 10.3.1
     devDependencies:
       '@eslint/js':
         specifier: 10.0.1
@@ -45,6 +35,37 @@ importers:
       tsx:
         specifier: 4.21.0
         version: 4.21.0
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+
+  packages/cli:
+    dependencies:
+      '@woodland-generators/core':
+        specifier: workspace:*
+        version: link:../core
+      commander:
+        specifier: ^14.0.0
+        version: 14.0.3
+      pino:
+        specifier: ^10.0.0
+        version: 10.3.1
+    devDependencies:
+      '@types/jest':
+        specifier: 30.0.0
+        version: 30.0.0
+      '@types/node':
+        specifier: 24.12.2
+        version: 24.12.2
+      jest:
+        specifier: 30.3.0
+        version: 30.3.0(@types/node@24.12.2)
+      jest-junit:
+        specifier: 17.0.0
+        version: 17.0.0
+      ts-jest:
+        specifier: 29.4.9
+        version: 29.4.9(@babel/core@7.29.0)(@jest/transform@30.3.0)(@jest/types@30.4.1)(babel-jest@30.3.0(@babel/core@7.29.0))(jest-util@30.4.1)(jest@30.3.0(@types/node@24.12.2))(typescript@5.9.3)
       typescript:
         specifier: 5.9.3
         version: 5.9.3
