@@ -44,27 +44,6 @@ jobs:
       - name: Run tests with coverage
         run: pnpm run test:coverage
 
-      - name: Upload coverage to Codecov
-        if: matrix.coverage
-        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6
-        with:
-          files: ./packages/core/coverage/lcov.info
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: true
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Upload test results to Codecov
-        if: always() && matrix.coverage
-        uses: codecov/test-results-action@0fa95f0e1eeaafde2c782583b36b28ad0d8c77d3 # v1
-        with:
-          files: ./packages/core/test-results/junit.xml
-          flags: unittests
-          name: test-results
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
   build:
     runs-on: ubuntu-latest
     needs: test

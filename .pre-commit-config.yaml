@@ -133,9 +133,10 @@ repos:
         # depcheck only sees devDeps referenced via package.json scripts. The
         # hook invocations here don't count, so depcheck would flag itself.
         # prettier is referenced from .prettierrc, which depcheck's prettier
-        # special only checks for the `prettier` field in package.json.
+        # special only checks for the `prettier` field in package.json. tsx is
+        # invoked by the workspace hook below, not by any package.json script.
         name: depcheck
-        entry: pnpm exec depcheck --ignores=depcheck,prettier
+        entry: pnpm exec depcheck --ignores=depcheck,prettier,tsx
         language: system
         pass_filenames: false
         files: ^(package\.json|pnpm-lock\.yaml|pnpm-workspace\.yaml)$

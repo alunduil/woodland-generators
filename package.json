@@ -1,7 +1,7 @@
 {
   "name": "woodland-generators",
   "version": "0.2.0",
-  "description": "Workspace orchestrator for the Woodland Generators monorepo (core, foundry-module).",
+  "description": "Workspace orchestrator for the Woodland Generators monorepo.",
   "author": "Alex Brandt",
   "license": "MIT",
   "private": true,
@@ -28,7 +28,6 @@
     "test": "pnpm -r test",
     "test:watch": "pnpm -r test:watch",
     "test:coverage": "pnpm -r test:coverage",
-    "bench": "pnpm -r bench && pnpm exec tsx scripts/process-benchmarks.ts",
     "prepare": "pnpm run build",
     "check:outdated": "pnpm outdated",
     "update:deps": "ncu"
