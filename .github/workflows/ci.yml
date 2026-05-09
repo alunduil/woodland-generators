@@ -44,6 +44,20 @@ jobs:
       - name: Run tests with coverage
         run: pnpm run test:coverage
 
+      # Per-package jest writes SF: lines relative to packages/<pkg>/, so
+      # uploaded paths land as src/foo.ts and miss codecov.yml's repo-relative
+      # ignore patterns and Codecov's PR diff overlay. Prefix each lcov in
+      # place so paths align with the rest of the repo.
+      - name: Rewrite lcov paths to repo-relative
+        if: matrix.coverage
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          for lcov in packages/*/coverage/lcov.info; do
+            pkg=$(dirname "$(dirname "$lcov")")
+            sed -i "s|^SF:|SF:${pkg}/|" "$lcov"
+          done
+
       - name: Upload coverage to Codecov
         if: matrix.coverage
         uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6
