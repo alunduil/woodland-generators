@@ -44,7 +44,7 @@ repos:
       # Other useful checks
       - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
-        exclude: '^src/.*\.ts$' # TypeScript source files with shebangs are compiled, not directly executed
+        exclude: '^packages/.*/src/.*\.ts$' # TypeScript source files with shebangs are compiled, not directly executed
 
   # Markdown linting
   - repo: https://github.com/igorshubovych/markdownlint-cli
@@ -125,7 +125,7 @@ repos:
         files: \.(js|jsx|ts|tsx)$
       - id: typecheck
         name: typecheck
-        entry: pnpm exec tsc --noEmit
+        entry: pnpm -r exec tsc --noEmit
         language: system
         pass_filenames: false
         types: [ts]

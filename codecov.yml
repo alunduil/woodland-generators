@@ -17,5 +17,5 @@ ignore:
   - "**/*.d.ts"
   - "**/*.test.ts"
   - "**/*.bench.ts"
-  - "src/cli.ts"
+  - "packages/cli/src/cli.ts"
   - "packages/*/src/logging/pino-pretty-transport.js"

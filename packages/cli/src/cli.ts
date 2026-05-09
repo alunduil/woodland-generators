@@ -4,6 +4,7 @@ import { Command, Option } from "commander";
 import { root } from "@woodland-generators/core";
 import packageJson from "../package.json";
 import pino from "pino";
+import { createNameCommand } from "./commands/name";
 
 const program = new Command();
 
@@ -17,7 +18,6 @@ program
       .default("warn"),
   );
 
-// Set global log level based on the selected level before parsing commands
 program.hook("preAction", (thisCommand) => {
   const opts = thisCommand.optsWithGlobals();
   const logLevel = opts.logLevel;
@@ -26,7 +26,8 @@ program.hook("preAction", (thisCommand) => {
   }
 });
 
-// Handle unhandled promise rejections (Node.js default behavior is poor for CLI tools)
+program.addCommand(createNameCommand());
+
 process.on("unhandledRejection", (reason) => {
   console.error("Error:", reason instanceof Error ? reason.message : String(reason));
   process.exit(1);

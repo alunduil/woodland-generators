@@ -1,40 +1,15 @@
 {
   "name": "woodland-generators",
   "version": "0.2.0",
-  "description": "CLI tool for generating resources for Root: The Tabletop RPG",
-  "bin": {
-    "woodland-gen": "dist/cli.js"
-  },
+  "description": "Workspace orchestrator for the Woodland Generators monorepo (core, cli, foundry-module).",
   "author": "Alex Brandt",
   "license": "MIT",
-  "keywords": [
-    "root",
-    "rpg",
-    "tabletop",
-    "generator",
-    "cli",
-    "character-generator",
-    "npc-generator",
-    "clearing-generator",
-    "woodland",
-    "leder-games",
-    "random-generator"
-  ],
-  "files": [
-    "dist/",
-    "README.md",
-    "LICENSE"
-  ],
+  "private": true,
   "engines": {
     "node": ">=20.0.0",
     "pnpm": ">=10.0.0"
   },
   "packageManager": "pnpm@10.33.2",
-  "dependencies": {
-    "@woodland-generators/core": "workspace:*",
-    "commander": "^14.0.0",
-    "pino": "^10.0.0"
-  },
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@types/node": "24.12.2",
@@ -48,18 +23,13 @@
     "typescript": "5.9.3"
   },
   "scripts": {
-    "build": "pnpm -r build && tsc",
-    "build:watch": "tsc --watch",
-    "cli": "pnpm run build && node dist/cli.js",
-    "clean": "rm -rf dist/ packages/*/dist/",
+    "build": "pnpm -r build",
+    "cli": "pnpm --filter @woodland-generators/cli run build && node packages/cli/dist/cli.js",
+    "clean": "rm -rf packages/*/dist/",
     "test": "pnpm -r test",
     "test:watch": "pnpm -r test:watch",
     "test:coverage": "pnpm -r test:coverage",
     "bench": "pnpm -r bench && pnpm exec tsx scripts/process-benchmarks.ts",
-    "prepare": "pnpm run build",
-    "prepublishOnly": "pre-commit run --all-files",
-    "prepack": "pnpm run clean && pnpm run build",
-    "postversion": "git push && git push --tags",
     "check:outdated": "pnpm outdated",
     "update:deps": "ncu"
   }

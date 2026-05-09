@@ -1,11 +1,30 @@
 {
-  "extends": "./tsconfig.json",
   "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
     "module": "ES2022",
     "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noEmitOnError": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "sourceMap": true,
+    "declaration": true,
     "outDir": "./dist/tools",
-    "rootDir": "."
+    "rootDir": ".",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "removeComments": true,
+    "newLine": "lf",
+    "types": ["node"]
   },
   "include": ["scripts/**/*"],
-  "exclude": ["node_modules", "dist", "src", "test"]
+  "exclude": ["node_modules", "dist", "packages"]
 }
