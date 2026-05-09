@@ -16,7 +16,7 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Test (Node ${{ matrix.node-version }})
+    name: Test (${{ matrix.package }}, Node ${{ matrix.node-version }})
     timeout-minutes: 15
 
     strategy:
@@ -28,8 +28,13 @@ jobs:
         # supported-line coverage. Codecov gates on `lts/*` to anchor the
         # signal to active LTS rather than rotating through maintenance.
         node-version: ["lts/-2", "lts/-1", "lts/*"]
+        package: [core, cli]
         include:
           - node-version: "lts/*"
+            package: core
+            coverage: true
+          - node-version: "lts/*"
+            package: cli
             coverage: true
 
     steps:
@@ -42,15 +47,15 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Run tests with coverage
-        run: pnpm run test:coverage
+        run: pnpm --filter @woodland-generators/${{ matrix.package }} run test:coverage
 
       - name: Upload coverage to Codecov
         if: matrix.coverage
         uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6
         with:
-          files: ./packages/core/coverage/lcov.info
-          flags: unittests
-          name: codecov-umbrella
+          files: ./packages/${{ matrix.package }}/coverage/lcov.info
+          flags: ${{ matrix.package }}
+          name: codecov-${{ matrix.package }}
           fail_ci_if_error: true
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
@@ -59,9 +64,9 @@ jobs:
         if: always() && matrix.coverage
         uses: codecov/test-results-action@0fa95f0e1eeaafde2c782583b36b28ad0d8c77d3 # v1
         with:
-          files: ./packages/core/test-results/junit.xml
-          flags: unittests
-          name: test-results
+          files: ./packages/${{ matrix.package }}/test-results/junit.xml
+          flags: ${{ matrix.package }}
+          name: test-results-${{ matrix.package }}
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
