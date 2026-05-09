@@ -7,31 +7,44 @@
   "bump-patch-for-minor-pre-major": false,
   "draft": false,
   "prerelease": false,
-  "changelog-sections": [
-    { "type": "feat", "section": "Added" },
-    { "type": "fix", "section": "Fixed" },
-    { "type": "perf", "section": "Changed" },
-    { "type": "refactor", "section": "Changed" },
-    { "type": "revert", "section": "Removed" },
-    { "type": "docs", "section": "Documentation" },
-    { "type": "chore", "section": "Maintenance" },
-    { "type": "ci", "section": "Maintenance", "hidden": true },
-    { "type": "build", "section": "Maintenance", "hidden": true },
-    { "type": "test", "section": "Maintenance", "hidden": true },
-    { "type": "style", "section": "Maintenance", "hidden": true }
-  ],
   "packages": {
     "packages/core": {
       "release-type": "node",
       "package-name": "@woodland-generators/core",
       "component": "core",
-      "changelog-path": "CHANGELOG.md"
+      "changelog-path": "CHANGELOG.md",
+      "changelog-sections": [
+        { "type": "feat", "section": "Added" },
+        { "type": "fix", "section": "Fixed" },
+        { "type": "perf", "section": "Changed" },
+        { "type": "refactor", "section": "Changed" },
+        { "type": "revert", "section": "Removed" },
+        { "type": "docs", "section": "Documentation" },
+        { "type": "chore", "section": "Maintenance" },
+        { "type": "build", "section": "Maintenance" },
+        { "type": "ci", "section": "Maintenance", "hidden": true },
+        { "type": "test", "section": "Maintenance", "hidden": true },
+        { "type": "style", "section": "Maintenance", "hidden": true }
+      ]
     },
     "packages/cli": {
       "release-type": "node",
       "package-name": "@woodland-generators/cli",
       "component": "cli",
-      "changelog-path": "CHANGELOG.md"
+      "changelog-path": "CHANGELOG.md",
+      "changelog-sections": [
+        { "type": "feat", "section": "Added" },
+        { "type": "fix", "section": "Fixed" },
+        { "type": "perf", "section": "Changed" },
+        { "type": "refactor", "section": "Changed" },
+        { "type": "revert", "section": "Removed" },
+        { "type": "docs", "section": "Documentation" },
+        { "type": "chore", "section": "Maintenance", "hidden": true },
+        { "type": "build", "section": "Maintenance", "hidden": true },
+        { "type": "ci", "section": "Maintenance", "hidden": true },
+        { "type": "test", "section": "Maintenance", "hidden": true },
+        { "type": "style", "section": "Maintenance", "hidden": true }
+      ]
     }
   }
 }
