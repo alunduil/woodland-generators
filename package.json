@@ -30,6 +30,7 @@
     "test:watch": "pnpm -r test:watch",
     "test:coverage": "pnpm -r test:coverage",
     "bench": "pnpm -r bench && pnpm exec tsx scripts/process-benchmarks.ts",
+    "prepare": "pnpm run build",
     "check:outdated": "pnpm outdated",
     "update:deps": "ncu"
   }
