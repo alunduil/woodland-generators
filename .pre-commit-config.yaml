@@ -130,15 +130,15 @@ repos:
         pass_filenames: false
         types: [ts]
       - id: depcheck
-        # depcheck only sees devDeps referenced via package.json scripts. The
-        # hook invocations here don't count, so depcheck would flag itself.
-        # prettier is referenced from .prettierrc, which depcheck's prettier
-        # special only checks for the `prettier` field in package.json.
+        # Audits the root and every workspace package. Per-package ignores
+        # live in each package's `.depcheckrc.json`; only the root needs one
+        # today (depcheck and prettier are devDeps used via tool config, not
+        # imports, so depcheck can't see them).
         name: depcheck
-        entry: pnpm exec depcheck --ignores=depcheck,prettier
+        entry: pnpm -r --include-workspace-root exec depcheck
         language: system
         pass_filenames: false
-        files: ^(package\.json|pnpm-lock\.yaml|pnpm-workspace\.yaml)$
+        files: (^|/)package\.json$|^pnpm-lock\.yaml$|^pnpm-workspace\.yaml$|(^|/)\.depcheckrc\.json$
       - id: workspace
         name: workspace
         entry: pnpm exec tsx scripts/validate-workspace.ts
