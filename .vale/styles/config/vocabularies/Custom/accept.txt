@@ -12,6 +12,7 @@ RPG
 TTRPG
 
 # Technical terms
+monorepo
 TypeScript
 JavaScript
 DevContainer

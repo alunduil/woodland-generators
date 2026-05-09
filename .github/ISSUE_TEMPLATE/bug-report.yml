@@ -10,7 +10,7 @@ body:
       value: |
         Use this template when something is not working the way you expect.
         For the title, briefly describe what went wrong, for example:
-        "woodland-gen character emits duplicate names for bird faction".
+        "Faction generator emits duplicate names for bird factions".
 
   - type: textarea
     id: summary
@@ -25,10 +25,10 @@ body:
     attributes:
       label: Steps to reproduce
       description: >-
-        Minimal steps to trigger the bug. Include the exact commands you
-        ran or the in-Foundry interactions.
+        Minimal steps to trigger the bug. Include the exact in-Foundry
+        interactions you performed.
       placeholder: |
-        1. Run `woodland-gen character --faction bird --seed 42`
+        1. Open the Faction generator dialog with seed 42.
         2. Observe …
     validations:
       required: true
@@ -57,12 +57,6 @@ body:
         Share any details about your setup that might be relevant.
         Fill in only what applies.
       placeholder: |
-        For CLI issues:
-        - woodland-gen: 0.2.0 (run `woodland-gen --version`)
-        - Node: 22.x
-        - OS: Debian 13
-
-        For Foundry module issues:
         - Module version: 0.2.0
         - Foundry: 12.331
         - Browser: Chrome 130

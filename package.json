@@ -1,7 +1,7 @@
 {
   "name": "woodland-generators",
   "version": "0.2.0",
-  "description": "Workspace orchestrator for the Woodland Generators monorepo (core, cli, foundry-module).",
+  "description": "Workspace orchestrator for the Woodland Generators monorepo (core, foundry-module).",
   "author": "Alex Brandt",
   "license": "MIT",
   "private": true,
@@ -24,7 +24,6 @@
   },
   "scripts": {
     "build": "pnpm -r build",
-    "cli": "pnpm --filter @woodland-generators/cli run build && node packages/cli/dist/cli.js",
     "clean": "rm -rf packages/*/dist/",
     "test": "pnpm -r test",
     "test:watch": "pnpm -r test:watch",

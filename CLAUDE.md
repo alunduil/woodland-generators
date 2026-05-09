@@ -4,19 +4,17 @@ Audience: AI coding assistants. Humans use [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Project overview
 
-A TypeScript CLI (`woodland-gen`) for generating Root: The Tabletop RPG
-resources. Source in `src/`, compiled output in `dist/`. Entry points:
-`src/cli.ts` (CLI binary) and `src/index.ts` (library export).
+A pnpm monorepo of TypeScript packages for generating Root: The Tabletop RPG
+resources. `packages/core/` holds the shared generator algorithms; the
+FoundryVTT module that consumes them is the headline surface.
 
 ## Common commands
 
 The repository runs as a pnpm workspace (`packageManager` pins the version);
 activate with `corepack enable` once. Commands:
 
-- `pnpm run cli -- <args>`: build and run the CLI (for example,
-  `pnpm run cli -- character --help`).
-- `pnpm run build:watch`: `tsc` in watch mode for incremental development.
-- `pnpm test`: Jest suite.
+- `pnpm -r build`: build every package.
+- `pnpm -r test`: run the Jest suite across packages.
 - `pre-commit run --all-files`: gates every PR. Authoritative hook list:
   `.pre-commit-config.yaml`.
 
