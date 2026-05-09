@@ -1,6 +1,6 @@
 {
   "name": "@woodland-generators/cli",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Thin CLI dispatching to @woodland-generators/core for headless verification and scripting",
   "bin": {
     "woodland-gen": "dist/cli.js"
