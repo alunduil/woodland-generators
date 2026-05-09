@@ -2,4 +2,4 @@
  * Details domain module
  */
 
-export { Details } from "./types";
+export type { Details } from "./types";

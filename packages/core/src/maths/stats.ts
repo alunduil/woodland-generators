@@ -1,4 +1,10 @@
-import percentile from "just-percentile";
+function percentile(sorted: number[], p: number): number {
+  const idx = (sorted.length - 1) * p;
+  const lo = Math.floor(idx);
+  const hi = Math.ceil(idx);
+  if (lo === hi) return sorted[lo]!;
+  return sorted[lo]! + (sorted[hi]! - sorted[lo]!) * (idx - lo);
+}
 
 /**
  * Statistical summary information for a numeric dataset
