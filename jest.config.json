@@ -1,0 +1,3 @@
+{
+  "projects": ["<rootDir>/packages/cli", "<rootDir>/packages/core"]
+}
