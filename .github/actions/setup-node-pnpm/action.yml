@@ -19,6 +19,10 @@ runs:
         node-version: ${{ inputs.node-version }}
         cache: "pnpm"
 
+    - name: Rewrite GitHub SSH URLs to HTTPS
+      shell: bash
+      run: git config --global url."https://github.com/".insteadOf "git@github.com:"
+
     - name: Install dependencies
       shell: bash
       run: pnpm install --frozen-lockfile

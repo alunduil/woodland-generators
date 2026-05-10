@@ -1,0 +1,30 @@
+{
+  "name": "@woodland-generators/foundry-module",
+  "version": "0.0.0",
+  "description": "Foundry VTT module shell loading the Woodland Generators core into a live world",
+  "author": "Alex Brandt",
+  "license": "MIT",
+  "private": true,
+  "files": [
+    "dist/",
+    "module.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "build": "node esbuild.config.mjs",
+    "build:watch": "node esbuild.config.mjs --watch",
+    "clean": "rm -rf dist/",
+    "install:dev": "node scripts/install-dev.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@league-of-foundry-developers/foundry-vtt-types": "13.346.0-beta.20250812191140",
+    "esbuild": "0.28.0",
+    "typescript": "5.9.3"
+  }
+}
