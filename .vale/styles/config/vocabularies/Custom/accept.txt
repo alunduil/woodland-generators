@@ -61,6 +61,14 @@ macOS
 Linux
 Windows
 Docker
+Magpie
+Roleplaying
+Quickstart
+PbtA
+Matheus
+Clemente
+Asacolips
+gonzaPaEst
 
 # Gaming terms
 dungeon
