@@ -61,6 +61,22 @@ macOS
 Linux
 Windows
 Docker
+Magpie
+Roleplaying
+Quickstart
+PbtA
+Matheus
+Clemente
+Asacolips
+gonzaPaEst
+ADR
+ADRs
+Nygard
+MADR
+scrollback
+scaffolded
+Compat
+paywalling
 
 # Gaming terms
 dungeon
