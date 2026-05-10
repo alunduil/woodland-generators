@@ -24,10 +24,10 @@ lightweight format from Michael Nygard's [Documenting Architecture
 Decisions][nygard]. ADRs live under `docs/adr/` as `NNNN-kebab-title.md`,
 numbered from 0000 (this record).
 
-Each ADR carries a `Status`: `Accepted`, `Deprecated`, `Superseded by NNNN`, or
-`Amended by NNNN`. ADRs land as `Accepted`—the PR review is the deliberation,
-not the committed status field. `scripts/validate-adrs.ts` enforces the allowed
-values.
+Each ADR carries a `Status`: `Accepted`, `Deprecated`, or `Superseded by NNNN`,
+matching Michael Nygard's original four (minus `Proposed`). ADRs land as
+`Accepted`—the PR review is the deliberation, not the committed status field.
+`scripts/validate-adrs.ts` enforces the allowed values.
 
 An ADR is warranted when a decision is significant _and_ hard to reverse.
 Tactical choices, reversible defaults, and personal style belong in the commit

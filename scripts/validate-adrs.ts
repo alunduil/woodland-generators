@@ -7,7 +7,7 @@ import { join } from "node:path";
 
 const ADR_DIR = join(process.cwd(), "docs", "adr");
 const FILENAME_RE = /^(\d{4})-[a-z0-9]+(?:-[a-z0-9]+)*\.md$/;
-const STATUS_RE = /^(Accepted|Deprecated|Superseded by \d{4}|Amended by \d{4})$/;
+const STATUS_RE = /^(Accepted|Deprecated|Superseded by \d{4})$/;
 const REQUIRED_SECTIONS = ["Status", "Context", "Decision", "Consequences"];
 
 const errors: string[] = [];
@@ -41,7 +41,7 @@ for (const file of files) {
     const status = statusBlock[1].trim();
     if (!STATUS_RE.test(status)) {
       errors.push(
-        `${file}: Status '${status}' is not allowed (must be Accepted, Deprecated, Superseded by NNNN, or Amended by NNNN)`,
+        `${file}: Status '${status}' is not allowed (must be Accepted, Deprecated, or Superseded by NNNN)`,
       );
     }
   }
