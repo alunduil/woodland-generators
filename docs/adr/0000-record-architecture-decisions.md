@@ -13,10 +13,9 @@ behind each choice fades into commit messages, PR threads, and Discord
 scrollback. Future contributors inherit the _what_ and have to work out the
 _why_ from scratch. That gets expensive.
 
-The first such decision (ADR-0001, Foundry integration posture) made the gap
-concrete. The survey-and-pick output had no settled home. A free-floating
-`docs/foundry-ecosystem.md` mixed reference and rationale, setting no shape for
-the next decision.
+Scattered records also resist discovery. A future reader doesn't know whether to
+grep commit messages, scan PR descriptions, or search chat history. A consistent
+home and template solves both problems.
 
 ## Decision
 
