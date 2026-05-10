@@ -1,4 +1,5 @@
 {
   "packages/core": "0.0.0",
-  "packages/cli": "0.0.0"
+  "packages/cli": "0.0.0",
+  "packages/foundry-module": "0.0.0"
 }
