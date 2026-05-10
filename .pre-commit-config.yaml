@@ -145,3 +145,9 @@ repos:
         language: system
         pass_filenames: false
         files: ^(\.vscode/extensions\.json|\.devcontainer/devcontainer\.json|scripts/validate-workspace\.ts)$
+      - id: validate-adrs
+        name: validate-adrs
+        entry: pnpm exec tsx scripts/validate-adrs.ts
+        language: system
+        pass_filenames: false
+        files: ^(docs/adr/.*\.md|scripts/validate-adrs\.ts)$
