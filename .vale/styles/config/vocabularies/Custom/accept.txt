@@ -75,6 +75,8 @@ Nygard
 MADR
 scrollback
 scaffolded
+Compat
+paywalling
 
 # Gaming terms
 dungeon

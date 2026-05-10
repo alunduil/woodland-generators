@@ -8,44 +8,38 @@ Proposed
 
 ## Context
 
-Architectural decisions accumulate as the project grows. Without a durable
-record, the reasoning behind each choice fades into commit messages, PR threads,
-and Discord scrollback. Future contributors (human or AI) inherit the _what_ but
-lose the _why_, which makes revisiting a decision expensive: every
-reconsideration starts by re-deriving constraints that someone already worked
-through.
+Decisions stack up as the project grows. Without a durable record, the _why_
+behind each choice fades into commit messages, PR threads, and Discord
+scrollback. Future contributors inherit the _what_ and have to work out the
+_why_ from scratch. That gets expensive.
 
-The first such decision (Foundry integration posture, 0001) made the gap
-concrete. The survey-and-pick output had no settled place to live; a
-free-floating `docs/foundry-ecosystem.md` mixed reference material with
-rationale and gave no shape for the next architectural decision to follow.
+The first such decision (ADR-0001, Foundry integration posture) made the gap
+concrete. The survey-and-pick output had no settled home. A free-floating
+`docs/foundry-ecosystem.md` mixed reference and rationale, setting no shape for
+the next decision.
 
 ## Decision
 
-We will record architecturally significant decisions as Architecture Decision
-Records (ADRs), following the lightweight format described by Michael Nygard in
-[Documenting Architecture Decisions][nygard]. ADRs live under `docs/adr/` as
-`NNNN-kebab-title.md`, numbered sequentially starting at 0000 (this record).
+Record significant decisions as Architecture Decision Records (ADRs), in the
+lightweight format from Michael Nygard's [Documenting Architecture
+Decisions][nygard]. ADRs live under `docs/adr/` as `NNNN-kebab-title.md`,
+numbered from 0000 (this record).
 
-Each ADR carries a `Status` (`Proposed`, `Accepted`, `Superseded by NNNN`, or
-`Deprecated`). New ADRs land as `Proposed`; maintainers promote on merge or
-follow-up review.
+Each ADR carries a `Status`: `Proposed`, `Accepted`, `Superseded by NNNN`, or
+`Deprecated`. New ADRs land as `Proposed`. Maintainers promote on merge or
+review.
 
-An ADR is warranted when a decision is architecturally significant _and_ hard to
-reverse. Tactical implementation choices, low-cost-to-reverse defaults, and
-personal style do not warrant ADRs; their record belongs in the commit message
-or PR description.
+An ADR is warranted when a decision is significant _and_ hard to reverse.
+Tactical choices, reversible defaults, and personal style belong in the commit
+message, not here.
 
 ## Consequences
 
-- Future architectural decisions have a single discoverable home and a
-  consistent shape.
-- Revisiting a decision starts from the recorded context and alternatives, not
-  from re-derivation.
-- The project accepts a small per-decision overhead (~one short Markdown file)
-  in exchange for durable rationale.
-- ADR sprawl is a real failure mode; the warranted-or-not gate is load-bearing.
-  When unsure, prefer not to write one.
+- Future decisions have one home and one shape.
+- Going back to a decision starts from recorded context, not scratch.
+- Cost: one short Markdown file per decision. Payoff: durable rationale.
+- ADR sprawl is a real failure mode. The warranted-or-not gate is load-bearing.
+  When unsure, skip.
 
 [nygard]:
   https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions
