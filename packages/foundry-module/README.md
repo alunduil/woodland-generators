@@ -1,6 +1,7 @@
 # Foundry module shell
 
-Foundry VTT module shell loading the Woodland Generators core into a live world.
+Foundry VTT module package for Woodland Generators. Registers as
+`woodland-generators` and logs an init-hook heartbeat at world load.
 
 ## Verifying the module in Foundry (`docker compose`)
 
@@ -57,3 +58,8 @@ container, so each rebuild is visible on the next world reload.
 docker compose down       # keep license cache for next run
 docker compose down -v    # also drop the foundry-data volume
 ```
+
+## See also
+
+- [Root `CONTRIBUTING.md`](../../CONTRIBUTING.md): repository setup, commit
+  conventions, and PR flow.
