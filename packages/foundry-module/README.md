@@ -17,7 +17,7 @@ entry.
 ## Verify it loads in Foundry
 
 Without a host Foundry install:
-[Verify with `docker compose`](docs/verify-with-docker-compose.md).
+[Verify with `docker compose`](../../docs/how-to/verify-foundry-module-with-docker-compose.md).
 
 ## See also
 
