@@ -25,6 +25,7 @@ webpack
 npm
 pnpm
 corepack
+esbuild
 Node.js
 nodejs
 codecov
