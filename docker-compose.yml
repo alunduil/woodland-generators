@@ -1,0 +1,24 @@
+---
+# Local Foundry VTT harness for verifying packages/foundry-module/.
+# See packages/foundry-module/README.md for setup and usage.
+
+services:
+  foundry:
+    image: felddy/foundryvtt:13.351.0
+    # Foundry binds the license to the container hostname; pinning keeps the
+    # license valid across `docker compose down` / `up` cycles.
+    hostname: woodland-generators-foundry
+    init: true
+    ports:
+      - "30000:30000"
+    env_file:
+      - .env
+    environment:
+      CONTAINER_PRESERVE_CONFIG: "true"
+    volumes:
+      - foundry-data:/data
+      - ./packages/foundry-module/module.json:/data/Data/modules/woodland-generators/module.json:ro
+      - ./packages/foundry-module/dist:/data/Data/modules/woodland-generators/dist:ro
+
+volumes:
+  foundry-data:

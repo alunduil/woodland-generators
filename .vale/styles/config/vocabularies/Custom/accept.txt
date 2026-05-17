@@ -25,6 +25,7 @@ webpack
 npm
 pnpm
 corepack
+esbuild
 Node.js
 nodejs
 codecov
@@ -62,6 +63,7 @@ Linux
 Windows
 Docker
 Magpie
+Podman
 Roleplaying
 Quickstart
 PbtA
