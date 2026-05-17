@@ -1,55 +1,44 @@
-# Verify with `docker compose`
-
-A `docker-compose.yml` at the repository root runs Foundry locally with this
-package mounted as a module. Contributors with a Foundry account can confirm the
-module loads end-to-end without installing Foundry on the host.
-
-The image, `felddy/foundryvtt`, is community-maintained, not published by
-Foundry. The license you supply is your own; nothing distributable lives in the
-repository.
+# How to verify the Foundry module loads with `docker compose`
 
 ## Prerequisites
 
 - Docker (or Podman with the compose plugin) on the host.
-- A Foundry account that owns at least one Foundry license. The license is
-  per-developer; the repository does not provide one.
+- A Foundry account that owns at least one Foundry license.
 
-## One-time setup
+## Steps
 
-```bash
-cp .env.example .env
-# Edit .env with your Foundry account credentials and an admin key.
-```
+1. From the repository root, copy the environment template:
 
-`.env` is listed in `.gitignore`. See the image's
-[environment-variable reference](https://github.com/felddy/foundryvtt-docker#environment-variables)
-for the full contract.
+   ```bash
+   cp .env.example .env
+   ```
 
-## Run
+   Set `FOUNDRY_USERNAME`, `FOUNDRY_PASSWORD`, and `FOUNDRY_ADMIN_KEY` to your
+   Foundry account credentials and a chosen admin password.
 
-```bash
-pnpm --filter @woodland-generators/foundry-module build
-docker compose up
-```
+2. Build the module bundle:
 
-Then browse to <http://localhost:30000>, create or open a world, and enable
-**Woodland Generators** under _Manage Modules_. The init hook logs
-`woodland-generators | initialized` to the browser console when the world loads.
+   ```bash
+   pnpm --filter @woodland-generators/foundry-module build
+   ```
 
-## Iterate
+3. Start Foundry:
 
-Rebuild the module bundle (in another terminal) and reload the Foundry tab:
+   ```bash
+   docker compose up
+   ```
 
-```bash
-pnpm --filter @woodland-generators/foundry-module build:watch
-```
+4. Open <http://localhost:30000>. Create or open a world, then enable **Woodland
+   Generators** under _Manage Modules_.
 
-The compose mounts the package's `dist/` and `module.json` read-only into the
-container, so each rebuild is visible on the next world reload.
+5. Open the browser console. The line `woodland-generators | initialized` on
+   world load confirms the module loaded.
 
-## Stop and clean up
+6. Stop the harness:
 
-```bash
-docker compose down       # keep license cache for next run
-docker compose down -v    # also drop the foundry-data volume
-```
+   ```bash
+   docker compose down
+   ```
+
+For the full set of environment variables the image accepts, see the
+[image's reference](https://github.com/felddy/foundryvtt-docker#environment-variables).
