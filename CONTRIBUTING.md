@@ -29,22 +29,21 @@ players:
 
 ## Commit messages
 
-This repository follows [Conventional Commits][conventional-commits]. Commit
-prefixes drive the automated `CHANGELOG.md` entries and version bumps managed by
-[release-please][release-please].
+This repository follows [Conventional Commits][conventional-commits]. The
+`commit-msg` git hook and the `PR Title` GitHub Actions check both enforce
+conventional subjects.
 
 Common prefixes:
 
-- `feat:` - new user-facing feature (minor version bump)
-- `fix:` - bug fix (patch version bump)
+- `feat:` - new user-facing feature
+- `fix:` - bug fix
 - `docs:` - documentation only
 - `refactor:` - code change that neither fixes a bug nor adds a feature
 - `perf:` - performance improvement
 - `chore:` - tooling, build, or maintenance work
 
 Append `!` after the type (for example, `feat!:`) or include a
-`BREAKING CHANGE:` footer for changes that bump the major version (or minor,
-while pre-1.0).
+`BREAKING CHANGE:` footer to mark a breaking change.
 
 Examples:
 
@@ -112,4 +111,3 @@ chore(deps): bump typescript to 5.9.3
 [discussions]: https://github.com/alunduil/woodland-generators/discussions
 [feature-template]:
   https://github.com/alunduil/woodland-generators/issues/new?template=feature_request.yml
-[release-please]: https://github.com/googleapis/release-please
