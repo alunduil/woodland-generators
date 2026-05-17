@@ -1,6 +1,6 @@
 {
   "name": "@woodland-generators/core",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Reusable generator algorithms for Root: The Tabletop RPG (engine, no UI)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
