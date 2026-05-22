@@ -1,5 +1,22 @@
 # Custom vocabulary for Woodland Generators
-# Add project-specific terms that should be accepted by Vale
+#
+# When to add a term here:
+#   - Proper nouns: product names, people, places, organizations
+#     (Magpie, Nygard, Foundry).
+#   - Project-internal identifiers that appear unbackticked in prose
+#     (rare — prefer backticks for package IDs and code symbols).
+#   - Established acronyms with no surrounding-text rewrite available
+#     (RPG, MADR, ADR).
+#
+# When NOT to add a term here:
+#   - The lint reflects a stylistic rule that is wrong for technical
+#     docs — tune the rule in .vale.ini instead (Microsoft.Dashes,
+#     Microsoft.HeadingColons, alex.Condescending all live there).
+#   - A package ID flagged by Vale.Terms — wrap in backticks instead
+#     (`magpie-root`, `foundry-module`). Backticked tokens skip Terms.
+#   - A one-off rephrase would clear the lint without losing meaning.
+#
+# Entries are case-sensitive unless wrapped in `(?i)`.
 
 # Project names and terms (case-insensitive for flexibility)
 (?i)Woodland
