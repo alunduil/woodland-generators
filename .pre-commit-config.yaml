@@ -83,7 +83,7 @@ repos:
       - id: vale
         files: \.(md|rst|txt)$
         types_or: [markdown, rst, plain-text]
-        args: ["--config=.vale.ini"]
+        args: ["--config=.vale.ini", "--minAlertLevel=error"]
 
   # Lychee link checker (auto-installs the binary)
   - repo: https://github.com/lycheeverse/lychee
