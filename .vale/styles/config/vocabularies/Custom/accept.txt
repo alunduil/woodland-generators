@@ -9,12 +9,11 @@
 #     (RPG, MADR, ADR).
 #
 # When NOT to add a term here:
-#   - The lint reflects a stylistic rule that is wrong for technical
-#     docs — tune the rule in .vale.ini instead (Microsoft.Dashes,
-#     Microsoft.HeadingColons, alex.Condescending all live there).
 #   - A package ID flagged by Vale.Terms — wrap in backticks instead
 #     (`magpie-root`, `foundry-module`). Backticked tokens skip Terms.
-#   - A one-off rephrase would clear the lint without losing meaning.
+#   - A rule fired on standard English the doc should comply with —
+#     rewrite to comply, not whitelist the wording. Demoting a rule
+#     so it stops firing is the wrong fix.
 #
 # Entries are case-sensitive unless wrapped in `(?i)`.
 
