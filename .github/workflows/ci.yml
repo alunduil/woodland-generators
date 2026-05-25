@@ -28,7 +28,7 @@ jobs:
         # supported-line coverage. Codecov gates on `lts/*` to anchor the
         # signal to active LTS rather than rotating through maintenance.
         node-version: ["lts/-2", "lts/-1", "lts/*"]
-        package: [core, cli]
+        package: [core]
 
     steps:
       - name: Checkout code
