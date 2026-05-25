@@ -10,9 +10,13 @@
 
 set -e
 
-LYCHEE_VERSION="v0.15.1"
-LYCHEE_ARCHIVE="lychee-${LYCHEE_VERSION}-x86_64-unknown-linux-gnu.tar.gz"
-LYCHEE_URL="https://github.com/lycheeverse/lychee/releases/download/${LYCHEE_VERSION}/${LYCHEE_ARCHIVE}"
+# Upstream tags releases as "lychee-vX.Y.Z" and ships assets without the
+# version in the filename. Renovate strips the prefix via extractVersion so
+# the bare semver lives in LYCHEE_VERSION here.
+# renovate: datasource=github-releases depName=lycheeverse/lychee extractVersion=^lychee-(?<version>v.+)$
+LYCHEE_VERSION="v0.24.2"
+LYCHEE_ARCHIVE="lychee-x86_64-unknown-linux-gnu.tar.gz"
+LYCHEE_URL="https://github.com/lycheeverse/lychee/releases/download/lychee-${LYCHEE_VERSION}/${LYCHEE_ARCHIVE}"
 
 echo "🔗 Installing lychee link checker (${LYCHEE_VERSION})..."
 

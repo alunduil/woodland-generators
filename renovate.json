@@ -13,6 +13,16 @@
     "enabled": true,
     "schedule": ["before 6pm on friday"]
   },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Track the lychee pin in scripts/install-lychee.sh now that the pre-commit hook runs the system binary instead of an upstream-managed repo entry",
+      "managerFilePatterns": ["^scripts/install-lychee\\.sh$"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>.+?) depName=(?<depName>.+?) extractVersion=(?<extractVersion>.+?)\\s+LYCHEE_VERSION=\"(?<currentValue>.+?)\""
+      ]
+    }
+  ],
   "packageRules": [
     {
       "description": "Group non-major npm updates in a single PR; majors land individually for review",
