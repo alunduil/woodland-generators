@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+// SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
 import { Command, Option } from "commander";
 import { root } from "@woodland-generators/core";
 import packageJson from "../package.json";

@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
 /**
  * Get expected collision rate threshold based on number of choices
  * Uses a simple lookup table based on empirical testing

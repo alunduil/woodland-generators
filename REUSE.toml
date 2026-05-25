@@ -1,0 +1,49 @@
+version = 1
+
+# JSON and JSONC files cannot carry inline comment headers, so REUSE.toml
+# is the only way to declare their SPDX information.
+[[annotations]]
+path = ["**/*.json", ".prettierrc"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025-2026 Alex Brandt"
+SPDX-License-Identifier = "MIT"
+
+# Markdown documentation. Inline HTML comment headers render visibly in
+# some markdown viewers; REUSE.toml keeps the rendered output clean.
+[[annotations]]
+path = "**/*.md"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025-2026 Alex Brandt"
+SPDX-License-Identifier = "MIT"
+
+# Ignore-style config files (one pattern per line, comments often awkward).
+[[annotations]]
+path = [".gitignore", ".prettierignore", ".valeignore", ".env.example"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025-2026 Alex Brandt"
+SPDX-License-Identifier = "MIT"
+
+# Project license file at repo root (the LICENSES/MIT.txt template lives
+# under LICENSES/ and is the SPDX-canonical text REUSE consults).
+[[annotations]]
+path = "LICENSE"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025-2026 Alex Brandt"
+SPDX-License-Identifier = "MIT"
+
+# Lock file managed by pnpm. Annotating in-band would be churned by every
+# dependency update.
+[[annotations]]
+path = "pnpm-lock.yaml"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025-2026 Alex Brandt"
+SPDX-License-Identifier = "MIT"
+
+# Vendored Vale style packs pulled in by `vale sync`. Upstream packs are
+# permissively licensed (mostly MIT); collapsing them under one annotation
+# avoids touching ~100 upstream files we don't author.
+[[annotations]]
+path = ".vale/styles/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Various upstream Vale style pack authors"
+SPDX-License-Identifier = "MIT"

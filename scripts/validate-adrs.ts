@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
 // Validates docs/adr/ against ADR-0000's conventions: filename pattern,
 // sequential numbering, required Nygard sections, and allowed Status values.
 // `Proposed` is rejected — the PR review is the deliberation.

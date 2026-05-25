@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
 import { Command } from "commander";
 import { generateName } from "@woodland-generators/core";
 import { randomBytes } from "crypto";

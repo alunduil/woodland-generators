@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
 const eslintJs = require("@eslint/js");
 const { configs: eslintConfigs } = eslintJs;
 const tseslint = require("@typescript-eslint/eslint-plugin");

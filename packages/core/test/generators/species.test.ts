@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
 import { generateSpecies, EXTENDED_WOODLAND_SPECIES } from "../../src/generators/species";
 
 describe("generateSpecies", () => {
