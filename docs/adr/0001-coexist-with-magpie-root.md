@@ -91,7 +91,7 @@ Foundry awareness is a `foundry-module` concern.
   document-shape paths.
 - The Foundry v13 floor (PR #293) stands. Every surveyed package verifies on
   v13.
-- The community `root` module's v11 pin does not apply: it's superseded.
+- The community `root` module's v11 pin doesn't apply: it's superseded.
 - No live test-install ran. The first generator emitting Foundry documents (NPC,
   #134) is the natural point to spin up a throwaway world; verification defers
   to that work.
