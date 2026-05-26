@@ -39,11 +39,44 @@ precedence = "aggregate"
 SPDX-FileCopyrightText = "2025-2026 Alex Brandt"
 SPDX-License-Identifier = "MIT"
 
-# Vendored Vale style packs pulled in by `vale sync`. Upstream packs are
-# permissively licensed (mostly MIT); collapsing them under one annotation
-# avoids touching ~100 upstream files we don't author.
+# Vendored Vale style packs pulled in by `vale sync`. Each pack carries
+# its upstream author and license -- add a new stanza when adding a pack
+# so additions and removals stay localised and a non-MIT pack surfaces in
+# review rather than getting collapsed under an aggregate annotation.
+
 [[annotations]]
-path = ".vale/styles/**"
+path = ".vale/styles/Microsoft/**"
 precedence = "aggregate"
-SPDX-FileCopyrightText = "Various upstream Vale style pack authors"
+SPDX-FileCopyrightText = "2018-2019 Joseph Kato"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ".vale/styles/proselint/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2019 errata.ai"
+SPDX-License-Identifier = "BSD-3-Clause"
+
+[[annotations]]
+path = ".vale/styles/write-good/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2019 errata.ai"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ".vale/styles/alex/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2020 errata.ai"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ".vale/styles/Readability/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021 errata.ai"
+SPDX-License-Identifier = "MIT"
+
+# Project's own custom Vale vocabulary, not vendored.
+[[annotations]]
+path = ".vale/styles/config/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025-2026 Alex Brandt"
 SPDX-License-Identifier = "MIT"
