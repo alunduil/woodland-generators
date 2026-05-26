@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
 # Install lychee link checker
 #
 # Downloads and installs a pre-built lychee binary (much faster than compiling from source).

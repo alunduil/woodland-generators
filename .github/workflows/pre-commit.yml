@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
 name: Pre-commit
 
 on:
@@ -27,6 +31,18 @@ jobs:
 
       - name: Install lychee
         run: ./scripts/install-lychee.sh
+
+      # Persist lychee's URL→status cache across CI runs so unchanged links
+      # don't re-hit the network every PR. lychee's own max_cache_age (1d)
+      # still re-validates entries daily, so real link rot surfaces; the
+      # cache_exclude_status in lychee.toml keeps transient 5xx out.
+      - name: Cache lychee link-check results
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        with:
+          path: .lycheecache
+          key: lychee-${{ hashFiles('scripts/install-lychee.sh', 'lychee.toml') }}-${{ github.run_id }}
+          restore-keys: |
+            lychee-${{ hashFiles('scripts/install-lychee.sh', 'lychee.toml') }}-
 
       - name: Run
         uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1

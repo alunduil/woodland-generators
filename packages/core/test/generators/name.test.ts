@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
 import { generateName, CHARACTER_NAMES } from "../../src/generators/name";
 import { getCollisionThreshold, uniquePairs } from "../utils";
 import fc from "fast-check";

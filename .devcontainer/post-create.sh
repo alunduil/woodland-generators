@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
 set -e
 
 echo "🚀 Setting up Woodland Generators development environment..."

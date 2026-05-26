@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
 import { GeneratorOptions } from "./index";
 import SeededRandomUtilities from "seeded-random-utilities";
 import { root } from "../logging";
