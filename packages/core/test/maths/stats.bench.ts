@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
 /**
  * Benchmark tests for summary statistics performance
  * Run with: npm run benchmark

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
 # Pre-commit configuration for Woodland Generators
 # This configuration runs various checks and formatters before each commit
 # to maintain code quality and consistency.
@@ -81,6 +85,14 @@ repos:
       - id: taplo-format
       - id: taplo-lint
         args: ["--no-schema"]
+
+  # REUSE compliance: every tracked file must declare copyright + license
+  # via inline SPDX headers or REUSE.toml annotations. The hook runs
+  # `reuse lint` against the whole tree on every commit.
+  - repo: https://github.com/fsfe/reuse-tool
+    rev: v6.2.0
+    hooks:
+      - id: reuse
 
   # Prose linting with Vale
   - repo: https://github.com/errata-ai/vale

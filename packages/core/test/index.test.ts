@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
 import * as rootExports from "../src/index";
 import type {
   Character,

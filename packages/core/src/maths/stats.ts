@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
 function percentile(sorted: number[], p: number): number {
   const idx = (sorted.length - 1) * p;
   const lo = Math.floor(idx);

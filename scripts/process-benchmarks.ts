@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+// SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
 /**
  * Process jest-bench NDJSON output into benchmarkjs text format
  *
