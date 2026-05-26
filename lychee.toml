@@ -21,6 +21,15 @@ accept = [
 ]
 # Enable caching for faster repeated runs (default: false)
 cache = true
+# Never cache transient failures: rate-limits (429) and any 5xx upstream
+# error. Without this, a single GitHub 502 during a CI run would poison
+# the persisted cache and re-fail subsequent runs until max_cache_age (1d)
+# expired the entry.
+cache_exclude_status = "429, 500.."
+# Wait between retries of failed requests. Lychee defaults to 3 retries
+# at 1s, which proved too short to ride out GitHub 502 storms (see #288).
+# Bumped to 10s for ~30s of total retry window per link.
+retry_wait_time = 10
 # Filesystem paths to skip
 exclude_path = ["node_modules", "dist", "build"]
 # Exclude patterns (files/URLs to skip)
