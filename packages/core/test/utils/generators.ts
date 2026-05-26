@@ -22,6 +22,7 @@ export function uniquePairs<T>(
     .map((arr) => Array.from(new Set(arr)))
     .filter((arr) => arr.length >= minUnique)
     .map((arr) => {
+      // Unordered combinations: j = i + 1 avoids both (a, a) and the (b, a) of (a, b).
       const pairs: [T, T][] = [];
       for (let i = 0; i < arr.length; i++) {
         for (let j = i + 1; j < arr.length; j++) {
