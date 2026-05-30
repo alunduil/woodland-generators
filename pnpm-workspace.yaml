@@ -1,2 +1,10 @@
+# SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
 packages:
   - "packages/*"
+blockExoticSubdeps: false
+allowBuilds:
+  esbuild: true
+  unrs-resolver: true

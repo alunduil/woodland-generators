@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
 import { FeatGenerator, FeatGeneratorOptions } from "../../src/generators/feat";
 import { getCollisionThreshold, uniquePairs, uniqueArray } from "../utils";
 import fc from "fast-check";

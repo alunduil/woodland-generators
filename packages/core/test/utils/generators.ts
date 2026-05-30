@@ -1,20 +1,28 @@
+// SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
 import fc from "fast-check";
 
 /**
- * Helper function to create a generator for unique pairs
- * Generates an array of unique combinations (pairs) from a set of unique values
- * Useful for property-based testing when you need pairs of different values
+ * Helper function to create a generator for unique pairs.
+ * Generates an array of unique combinations (pairs) from a set of unique values.
+ * Post-shrink, the unique-item count is guaranteed >= minLength (floor 2), so
+ * shrinking can't collapse a property's input down to a single pair when the
+ * caller asked for more.
  */
 export function uniquePairs<T>(
   generator: fc.Arbitrary<T>,
   options?: { minLength?: number; maxLength?: number },
 ): fc.Arbitrary<[T, T][]> {
+  const minUnique = Math.max(2, options?.minLength ?? 2);
+
   return fc
     .array(generator, { minLength: 2, maxLength: 10, ...options })
-    .map((arr) => Array.from(new Set(arr))) // Remove duplicates
-    .filter((arr) => arr.length >= 2) // Ensure we have at least 2 unique items
+    .map((arr) => Array.from(new Set(arr)))
+    .filter((arr) => arr.length >= minUnique)
     .map((arr) => {
-      // Create unique combinations (not cartesian product - avoid [a,b] and [b,a])
+      // Unordered combinations: j = i + 1 avoids both (a, a) and the (b, a) of (a, b).
       const pairs: [T, T][] = [];
       for (let i = 0; i < arr.length; i++) {
         for (let j = i + 1; j < arr.length; j++) {
@@ -22,8 +30,7 @@ export function uniquePairs<T>(
         }
       }
       return pairs;
-    })
-    .filter((pairs) => pairs.length > 0); // Ensure we have at least one pair
+    });
 }
 
 /**

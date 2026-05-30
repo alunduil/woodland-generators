@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
 import { Logger } from "pino";
 import SeededRandomUtilities from "seeded-random-utilities";
 

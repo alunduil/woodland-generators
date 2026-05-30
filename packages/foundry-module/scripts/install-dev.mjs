@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
 // Symlinks this package into the local Foundry user data directory so a built
 // module can be enabled in a world without copying files. Reads the user data
 // path from FOUNDRY_USER_DATA — Foundry itself uses --dataPath / the in-app

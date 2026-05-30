@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
 name: CI
 
 on:
@@ -28,7 +32,7 @@ jobs:
         # supported-line coverage. Codecov gates on `lts/*` to anchor the
         # signal to active LTS rather than rotating through maintenance.
         node-version: ["lts/-2", "lts/-1", "lts/*"]
-        package: [core, cli]
+        package: [core]
 
     steps:
       - name: Checkout code
@@ -44,7 +48,7 @@ jobs:
 
       - name: Upload coverage to Codecov
         if: matrix.node-version == 'lts/*'
-        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6
+        uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354 # v6
         with:
           files: ./packages/${{ matrix.package }}/coverage/lcov.info
           flags: ${{ matrix.package }}

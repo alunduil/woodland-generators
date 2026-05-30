@@ -29,19 +29,17 @@ Test files mirror the module under test: tests for `src/foo/bar.ts` live at
 
 Subjects must follow [Conventional Commits][conventional-commits]. The
 `commit-msg` git hook (`compilerla/conventional-pre-commit`) rejects
-non-conventional subjects at `git commit` time. `release-please` reads commit
-prefixes to populate `CHANGELOG.md` and to bump the version on merge to
-`master`, so a non-conventional subject drops out of the released CHANGELOG.
+non-conventional subjects at `git commit` time. The active type list lives in
+the `pr-title.yml` workflow.
 
 Type and scope rules with examples:
-[CONTRIBUTING.md](CONTRIBUTING.md#commit-messages). The active type list lives
-in `release-please-config.json`.
+[CONTRIBUTING.md](CONTRIBUTING.md#commit-messages).
 
 ## Releases
 
-`release-please` opens a release PR from conventional commits, bumps the
-version, regenerates the released sections of `CHANGELOG.md`, and tags the
-release on merge. Don't hand-edit released sections. Only the `[Unreleased]`
-block accepts manual entries.
+No automated release tooling is wired up right now. Both packages sit at `0.0.0`
+and nothing publishes from `master`. `CHANGELOG.md` is frozen as historical
+record of the pre-workspace era; don't append to it until a release process
+returns.
 
 [conventional-commits]: https://www.conventionalcommits.org/en/v1.0.0/

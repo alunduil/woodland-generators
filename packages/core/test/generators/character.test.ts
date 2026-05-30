@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
 import { generateCharacter } from "../../src/generators/character";
 import { generateSpecies } from "../../src/generators/species";
 import { generateName } from "../../src/generators/name";

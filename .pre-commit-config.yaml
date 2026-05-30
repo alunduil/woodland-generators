@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
 # Pre-commit configuration for Woodland Generators
 # This configuration runs various checks and formatters before each commit
 # to maintain code quality and consistency.
@@ -39,7 +43,6 @@ repos:
       - id: check-json
         exclude: '(\.devcontainer/.*\.json$|\.vscode/.*\.json$)' # DevContainer and VS Code files use JSONC (JSON with comments)
       - id: check-yaml
-        exclude: '^\.github/workflows/' # GitHub Actions YAML can have some special syntax
 
       # Other useful checks
       - id: check-executables-have-shebangs
@@ -66,7 +69,14 @@ repos:
     hooks:
       - id: yamllint
         args: ["-d", "relaxed"]
-        exclude: '^\.github/workflows/' # Skip GitHub Actions workflows
+
+  # GitHub Actions workflow linting. actionlint owns workflow YAML validation
+  # (schema, expression syntax, shellcheck integration); check-yaml and yamllint
+  # now cover the basic parse/style smells on the same files.
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
 
   # TOML formatting and linting with taplo
   - repo: https://github.com/ComPWA/taplo-pre-commit
@@ -76,26 +86,39 @@ repos:
       - id: taplo-lint
         args: ["--no-schema"]
 
+  # REUSE compliance: every tracked file must declare copyright + license
+  # via inline SPDX headers or REUSE.toml annotations. The hook runs
+  # `reuse lint` against the whole tree on every commit.
+  - repo: https://github.com/fsfe/reuse-tool
+    rev: v6.2.0
+    hooks:
+      - id: reuse
+
   # Prose linting with Vale
   - repo: https://github.com/errata-ai/vale
-    rev: v3.14.1
+    rev: v3.14.2
     hooks:
       - id: vale
         files: \.(md|rst|txt)$
         types_or: [markdown, rst, plain-text]
-        args: ["--config=.vale.ini"]
+        args: ["--config=.vale.ini", "--minAlertLevel=error"]
 
-  # Lychee link checker (auto-installs the binary)
-  - repo: https://github.com/lycheeverse/lychee
-    rev: lychee-v0.24.2
+  # Lychee link checker. Uses the system-installed binary (provisioned by
+  # scripts/install-lychee.sh in the devcontainer and CI) rather than the
+  # upstream hook's precompiled binary, which links against GLIBC 2.38 and
+  # fails to run on Debian 12 hosts shipping GLIBC 2.36. The pinned version
+  # lives in scripts/install-lychee.sh and is Renovate-tracked from there.
+  - repo: local
     hooks:
       - id: lychee
-        args: ["--config=lychee.toml", "--no-progress"]
+        name: lychee
+        entry: lychee --config=lychee.toml --no-progress
+        language: system
         types: [markdown]
 
-  # Conventional Commits validation - runs at the commit-msg stage to keep
-  # release-please's changelog generation honest by rejecting non-conventional
-  # commit subjects. Requires `--hook-type commit-msg` at install time.
+  # Conventional Commits validation - runs at the commit-msg stage to reject
+  # non-conventional commit subjects. Requires `--hook-type commit-msg` at
+  # install time.
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v4.4.0
     hooks:
@@ -145,3 +168,9 @@ repos:
         language: system
         pass_filenames: false
         files: ^(\.vscode/extensions\.json|\.devcontainer/devcontainer\.json|scripts/validate-workspace\.ts)$
+      - id: validate-adrs
+        name: validate-adrs
+        entry: pnpm exec tsx scripts/validate-adrs.ts
+        language: system
+        pass_filenames: false
+        files: ^(docs/adr/.*\.md|scripts/validate-adrs\.ts)$
