@@ -8,8 +8,7 @@
   "files": [
     "dist/",
     "module.json",
-    "README.md",
-    "LICENSE"
+    "README.md"
   ],
   "engines": {
     "node": ">=20.0.0",

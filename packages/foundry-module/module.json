@@ -14,5 +14,7 @@
     }
   ],
   "esmodules": ["dist/module.js"],
-  "url": "https://github.com/alunduil/woodland-generators"
+  "url": "https://github.com/alunduil/woodland-generators",
+  "readme": "https://github.com/alunduil/woodland-generators/blob/master/packages/foundry-module/README.md",
+  "bugs": "https://github.com/alunduil/woodland-generators/issues"
 }
