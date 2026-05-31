@@ -13,8 +13,14 @@
    cp .env.example .env
    ```
 
-   Set `FOUNDRY_USERNAME`, `FOUNDRY_PASSWORD`, and `FOUNDRY_ADMIN_KEY` to your
-   Foundry account credentials and a chosen admin password.
+   Pick one authentication method and set `FOUNDRY_ADMIN_KEY` (any value; you
+   type it into the browser when prompted):
+   - Without a password on disk, set `FOUNDRY_RELEASE_URL` to a timed download
+     link from your Foundry account (Purchased Software Licenses, OS set to
+     "Node.js", timed URL button). It expires, so generate it just before
+     starting the container.
+   - Otherwise set `FOUNDRY_USERNAME` and `FOUNDRY_PASSWORD` to your account
+     credentials.
 
 2. Build the module bundle:
 
