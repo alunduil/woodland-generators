@@ -25,7 +25,8 @@ services:
       - foundry-data:/data
       # Mount the package outside /data; the container patch symlinks it into
       # the modules directory. Mounting into /data directly makes Docker
-      # pre-create the parents as root, which the image can't chown back.
+      # pre-create the parents as root, which the non-root foundry user can't
+      # then write under.
       - ./packages/foundry-module:/srv/module:ro
       - ./packages/foundry-module/scripts/foundry-link-module.sh:/srv/patches/link-module.sh:ro
 
