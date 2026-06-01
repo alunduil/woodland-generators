@@ -16,7 +16,9 @@ services:
     ports:
       - "30000:30000"
     env_file:
-      - .env
+      # Needed only on first run; a warm foundry-data volume runs without it.
+      - path: .env
+        required: false
     environment:
       CONTAINER_PRESERVE_CONFIG: "true"
       # Run link-module.sh from /srv/patches (outside /data) at startup.
