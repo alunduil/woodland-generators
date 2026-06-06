@@ -32,13 +32,19 @@
    docker compose up
    ```
 
-4. Open <http://localhost:30000>. Enter the license key if prompted, then create
-   or open a world and enable **Woodland Generators** under _Manage Modules_.
+4. Open <http://localhost:30000> and enter the license key if prompted. The
+   module declares no system dependency, so any game system works; if you have
+   none installed, go to **Game Systems → Install System**, search for
+   **Worldbuilding** (Foundry's free, minimal system), install it, then create a
+   world with it.
 
-5. Open the browser console. The line `woodland-generators | initialized` on
+5. Open or launch the world and enable **Woodland Generators** under _Manage
+   Modules_.
+
+6. Open the browser console. The line `woodland-generators | initialized` on
    world load confirms the module loaded.
 
-6. Stop the harness, keeping the volume so the next run skips the download and
+7. Stop the harness, keeping the volume so the next run skips the download and
    licensing:
 
    ```bash
