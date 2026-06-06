@@ -39,6 +39,11 @@
       "addLabels": ["npm"]
     },
     {
+      "description": "Hold pnpm on the 10.x line: pnpm 11.x requires Node >=22.13 and imports node:sqlite (Node >=22.5), which the CI matrix's lts/-2 Node 20 line cannot run",
+      "matchPackageNames": ["pnpm"],
+      "allowedVersions": "<11.0.0"
+    },
+    {
       "description": "Group all GitHub Actions updates in a single PR",
       "matchManagers": ["github-actions"],
       "groupName": "github actions",
