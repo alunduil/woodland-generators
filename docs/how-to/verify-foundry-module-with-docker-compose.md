@@ -7,14 +7,18 @@
 
 ## Steps
 
-1. From the repository root, copy the environment template:
+1. On the first run only, create `.env` with a download link for the Foundry
+   build:
 
    ```bash
    cp .env.example .env
    ```
 
-   Set `FOUNDRY_USERNAME`, `FOUNDRY_PASSWORD`, and `FOUNDRY_ADMIN_KEY` to your
-   Foundry account credentials and a chosen admin password.
+   Set `FOUNDRY_RELEASE_URL` to a timed link from your Foundry account
+   (Purchased Software Licenses, OS set to "Node.js", timed URL button). It
+   expires, so generate it just before starting the container. Later runs reuse
+   the cached build and license from the `foundry-data` volume and need no
+   `.env`.
 
 2. Build the module bundle:
 
@@ -28,17 +32,27 @@
    docker compose up
    ```
 
-4. Open <http://localhost:30000>. Create or open a world, then enable **Woodland
-   Generators** under _Manage Modules_.
+4. Open <http://localhost:30000> and enter the license key if prompted. The
+   module declares no system dependency, so any game system works; if you have
+   none installed, go to **Game Systems → Install System**, search for
+   **Worldbuilding** (Foundry's free, minimal system), install it, then create a
+   world with it.
 
-5. Open the browser console. The line `woodland-generators | initialized` on
+5. Open or launch the world and enable **Woodland Generators** under _Manage
+   Modules_.
+
+6. Open the browser console. The line `woodland-generators | initialized` on
    world load confirms the module loaded.
 
-6. Stop the harness:
+7. Stop the harness, keeping the volume so the next run skips the download and
+   licensing:
 
    ```bash
    docker compose down
    ```
+
+   Use `docker compose down -v` only to start fresh; it deletes the cached build
+   and license, so the next run needs `.env` again.
 
 For the full set of environment variables the image accepts, see the
 [image's reference](https://github.com/felddy/foundryvtt-docker#environment-variables).

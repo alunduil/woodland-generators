@@ -1,0 +1,20 @@
+{
+  "id": "woodland-generators",
+  "title": "Woodland Generators",
+  "description": "Generators for Root: The Tabletop RPG, integrated into Foundry VTT",
+  "version": "0.0.0",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14"
+  },
+  "authors": [
+    {
+      "name": "Alex Brandt",
+      "url": "https://github.com/alunduil"
+    }
+  ],
+  "esmodules": ["dist/module.js"],
+  "url": "https://github.com/alunduil/woodland-generators",
+  "readme": "https://github.com/alunduil/woodland-generators/blob/master/packages/foundry-module/README.md",
+  "bugs": "https://github.com/alunduil/woodland-generators/issues"
+}

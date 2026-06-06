@@ -16,13 +16,21 @@ services:
     ports:
       - "30000:30000"
     env_file:
-      - .env
+      # Needed only on first run; a warm foundry-data volume runs without it.
+      - path: .env
+        required: false
     environment:
       CONTAINER_PRESERVE_CONFIG: "true"
+      # Run link-module.sh from /srv/patches (outside /data) at startup.
+      CONTAINER_PATCHES: "/srv/patches"
     volumes:
       - foundry-data:/data
-      - ./packages/foundry-module/module.json:/data/Data/modules/woodland-generators/module.json:ro
-      - ./packages/foundry-module/dist:/data/Data/modules/woodland-generators/dist:ro
+      # Mount the package outside /data; the container patch symlinks it into
+      # the modules directory. Mounting into /data directly makes Docker
+      # pre-create the parents as root, which the non-root foundry user can't
+      # then write under.
+      - ./packages/foundry-module:/srv/module:ro
+      - ./packages/foundry-module/scripts/foundry-link-module.sh:/srv/patches/link-module.sh:ro
 
 volumes:
   foundry-data:
