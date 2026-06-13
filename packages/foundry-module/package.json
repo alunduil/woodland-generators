@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@league-of-foundry-developers/foundry-vtt-types": "13.346.0-beta.20250812191140",
-    "esbuild": "0.28.0",
+    "esbuild": "0.28.1",
     "typescript": "5.9.3"
   }
 }
