@@ -15,7 +15,7 @@
    ```
 
    Set `FOUNDRY_RELEASE_URL` to a timed link from your Foundry account
-   (Purchased Software Licenses, OS set to "Node.js", timed URL button). It
+   (Purchased Software Licenses, OS set to "Node.js," timed URL button). It
    expires, so generate it just before starting the container. Later runs reuse
    the cached build and license from the `foundry-data` volume and need no
    `.env`.
