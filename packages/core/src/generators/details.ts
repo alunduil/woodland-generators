@@ -3,10 +3,9 @@
 // SPDX-License-Identifier: MIT
 
 import { GeneratorOptions } from "./index";
-import SeededRandomUtilities from "seeded-random-utilities";
 import { root } from "../logging";
 import { Details } from "../details";
-import { generateMultipleFromChoices } from "./core/choices";
+import { generateMultipleFromChoices, Rng } from "./core";
 
 /**
  * Options for functional details generation
@@ -33,7 +32,7 @@ export function generateDetails(options: DetailsGeneratorOptions): Details {
     details: options.details,
   });
 
-  const rng = new SeededRandomUtilities(options.seed);
+  const rng = new Rng(options.seed);
 
   // Generate details for each category (user-provided or generated, with validation)
   const generated = generateMultipleFromChoices(

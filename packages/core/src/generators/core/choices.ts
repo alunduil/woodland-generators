@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import { Logger } from "pino";
-import SeededRandomUtilities from "seeded-random-utilities";
+import { Rng } from "./rng";
 
 /**
  * Validate that choices array is non-empty
@@ -26,7 +26,7 @@ export function generateSubsetFromChoices<T extends string>(
   category: string,
   selection: T[] | undefined,
   choices: T[],
-  rng: SeededRandomUtilities,
+  rng: Rng,
   logger: Logger,
 ): T[] {
   // Validate choices are non-empty
@@ -50,7 +50,7 @@ export function generateSubsetFromChoices<T extends string>(
   }
 
   // Generate 1 to all available random choices
-  const count = rng.getRandomIntegar(1, choices.length);
+  const count = rng.getRandomIntInclusive(1, choices.length);
   return rng.selectUniqueRandomElements(choices, count) as T[];
 }
 
@@ -61,7 +61,7 @@ export function generateSubsetFromChoices<T extends string>(
 export function generateMultipleFromChoices<T extends string, K extends string>(
   selections: Record<K, T[] | undefined>,
   choices: Record<K, T[]>,
-  rng: SeededRandomUtilities,
+  rng: Rng,
   logger: Logger,
 ): Record<K, T[]> {
   const result = {} as Record<K, T[]>;
@@ -82,7 +82,7 @@ export function generateSingleFromChoices<T extends string>(
   category: string,
   selection: T | undefined,
   choices: T[],
-  rng: SeededRandomUtilities,
+  rng: Rng,
   logger: Logger,
 ): T {
   // Validate choices are non-empty
