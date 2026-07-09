@@ -7,9 +7,9 @@ import {
   generateSubsetFromChoices,
   generateSingleFromChoices,
   generateMultipleFromChoices,
+  Rng,
 } from "../../../src/generators/core";
 import { root } from "../../../src/logging";
-import SeededRandomUtilities from "seeded-random-utilities";
 import fc from "fast-check";
 import { getCollisionThreshold, uniquePairs, uniqueArray } from "../../utils";
 
@@ -50,7 +50,7 @@ describe("generateSubsetFromChoices", () => {
           }),
         ),
         (seed, { choices, userSelection }) => {
-          const rng = new SeededRandomUtilities(seed);
+          const rng = new Rng(seed);
 
           const result = generateSubsetFromChoices("test", userSelection, choices, rng, root);
 
@@ -69,7 +69,7 @@ describe("generateSubsetFromChoices", () => {
         fc.string(),
         uniqueArray(fc.string({ minLength: 1 }), { minLength: 1, maxLength: 20 }),
         (seed, choices) => {
-          const rng = new SeededRandomUtilities(seed);
+          const rng = new Rng(seed);
           const result = generateSubsetFromChoices("test", undefined, choices, rng, root);
 
           return result.every((item) => choices.includes(item));
@@ -84,8 +84,8 @@ describe("generateSubsetFromChoices", () => {
         fc.string(),
         uniqueArray(fc.string({ minLength: 1 }), { minLength: 1, maxLength: 50 }),
         (seed, choices) => {
-          const rng1 = new SeededRandomUtilities(seed);
-          const rng2 = new SeededRandomUtilities(seed);
+          const rng1 = new Rng(seed);
+          const rng2 = new Rng(seed);
 
           const result1 = generateSubsetFromChoices("test", undefined, choices, rng1, root);
           const result2 = generateSubsetFromChoices("test", undefined, choices, rng2, root);
@@ -102,7 +102,7 @@ describe("generateSubsetFromChoices", () => {
         fc.string(),
         uniqueArray(fc.string({ minLength: 1 }), { minLength: 1, maxLength: 50 }),
         (seed, choices) => {
-          const rng = new SeededRandomUtilities(seed);
+          const rng = new Rng(seed);
           const result = generateSubsetFromChoices("test", undefined, choices, rng, root);
 
           return result.length <= choices.length;
@@ -117,7 +117,7 @@ describe("generateSubsetFromChoices", () => {
         fc.string(),
         uniqueArray(fc.string({ minLength: 1 }), { minLength: 1, maxLength: 50 }),
         (seed, choices) => {
-          const rng = new SeededRandomUtilities(seed);
+          const rng = new Rng(seed);
           const result = generateSubsetFromChoices("test", undefined, choices, rng, root);
 
           return result.length > 0;
@@ -147,8 +147,8 @@ describe("generateSubsetFromChoices", () => {
           let differentResults = 0;
 
           for (const [seed1, seed2] of seedPairs) {
-            const rng1 = new SeededRandomUtilities(seed1);
-            const rng2 = new SeededRandomUtilities(seed2);
+            const rng1 = new Rng(seed1);
+            const rng2 = new Rng(seed2);
 
             const result1 = generateSubsetFromChoices("test", undefined, choices, rng1, root);
             const result2 = generateSubsetFromChoices("test", undefined, choices, rng2, root);
@@ -182,7 +182,7 @@ describe("generateSubsetFromChoices", () => {
             }),
         ),
         (seed, { validChoices, invalidChoice }) => {
-          const rng = new SeededRandomUtilities(seed);
+          const rng = new Rng(seed);
 
           expect(() => {
             generateSubsetFromChoices("test", [invalidChoice], validChoices, rng, root);
@@ -210,7 +210,7 @@ describe("generateSubsetFromChoices", () => {
             }),
         ),
         (seed, { validChoices, invalidChoice }) => {
-          const rng = new SeededRandomUtilities(seed);
+          const rng = new Rng(seed);
           const userSelection = [validChoices[0]!, invalidChoice];
 
           expect(() => {
@@ -237,7 +237,7 @@ describe("generateSingleFromChoices", () => {
         fc.string(),
         uniqueArray(fc.string({ minLength: 1 }), { minLength: 1, maxLength: 10 }),
         (seed, choices) => {
-          const rng = new SeededRandomUtilities(seed);
+          const rng = new Rng(seed);
           const userSelection = choices[0]!;
 
           const result = generateSingleFromChoices("test", userSelection, choices, rng, root);
@@ -254,7 +254,7 @@ describe("generateSingleFromChoices", () => {
         fc.string(),
         uniqueArray(fc.string({ minLength: 1 }), { minLength: 1, maxLength: 20 }),
         (seed, choices) => {
-          const rng = new SeededRandomUtilities(seed);
+          const rng = new Rng(seed);
           const result = generateSingleFromChoices("test", undefined, choices, rng, root);
 
           return choices.includes(result);
@@ -269,8 +269,8 @@ describe("generateSingleFromChoices", () => {
         fc.string(),
         uniqueArray(fc.string({ minLength: 1 }), { minLength: 1, maxLength: 10 }),
         (seed, choices) => {
-          const rng1 = new SeededRandomUtilities(seed);
-          const rng2 = new SeededRandomUtilities(seed);
+          const rng1 = new Rng(seed);
+          const rng2 = new Rng(seed);
 
           const result1 = generateSingleFromChoices("test", undefined, choices, rng1, root);
           const result2 = generateSingleFromChoices("test", undefined, choices, rng2, root);
@@ -301,8 +301,8 @@ describe("generateSingleFromChoices", () => {
           let differentResults = 0;
 
           for (const [seed1, seed2] of seedPairs) {
-            const rng1 = new SeededRandomUtilities(seed1);
-            const rng2 = new SeededRandomUtilities(seed2);
+            const rng1 = new Rng(seed1);
+            const rng2 = new Rng(seed2);
 
             const result1 = generateSingleFromChoices("test", undefined, choices, rng1, root);
             const result2 = generateSingleFromChoices("test", undefined, choices, rng2, root);
@@ -336,7 +336,7 @@ describe("generateSingleFromChoices", () => {
             }),
         ),
         (seed, { validChoices, invalidChoice }) => {
-          const rng = new SeededRandomUtilities(seed);
+          const rng = new Rng(seed);
 
           expect(() => {
             generateSingleFromChoices("test", invalidChoice, validChoices, rng, root);
@@ -365,7 +365,7 @@ describe("generateMultipleFromChoices", () => {
           category2: uniqueArray(fc.string({ minLength: 1 }), { minLength: 2, maxLength: 5 }),
         }),
         (seed, choices) => {
-          const rng = new SeededRandomUtilities(seed);
+          const rng = new Rng(seed);
           const userSelections = {
             category1: [choices.category1[0]!],
             category2: [choices.category2[0]!],
@@ -391,7 +391,7 @@ describe("generateMultipleFromChoices", () => {
           category2: uniqueArray(fc.string({ minLength: 1 }), { minLength: 1, maxLength: 5 }),
         }),
         (seed, choices) => {
-          const rng = new SeededRandomUtilities(seed);
+          const rng = new Rng(seed);
           const userSelections = { category1: undefined, category2: undefined };
 
           const result = generateMultipleFromChoices(userSelections, choices, rng, root);
@@ -421,7 +421,7 @@ describe("generateMultipleFromChoices", () => {
             }),
         ),
         (seed, { validChoices, invalidChoice }) => {
-          const rng = new SeededRandomUtilities(seed);
+          const rng = new Rng(seed);
           const userSelections = { category1: [invalidChoice] };
           const choices = { category1: validChoices };
 

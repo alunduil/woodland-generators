@@ -3,9 +3,8 @@
 // SPDX-License-Identifier: MIT
 
 import { GeneratorOptions } from "./index";
-import SeededRandomUtilities from "seeded-random-utilities";
 import { root } from "../logging";
-import { generateSubsetFromChoices } from "./core";
+import { generateSubsetFromChoices, Rng } from "./core";
 
 /**
  * Options for functional demeanor generation
@@ -32,7 +31,7 @@ export function generateDemeanor(options: DemeanorGeneratorOptions): string[] {
     demeanor: options.demeanor,
   });
 
-  const rng = new SeededRandomUtilities(options.seed);
+  const rng = new Rng(options.seed);
 
   // Generate demeanor (user-provided or generated, with validation)
   const demeanor = generateSubsetFromChoices(

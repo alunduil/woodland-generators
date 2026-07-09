@@ -7,9 +7,9 @@ import {
   generateSubsetFromChoices,
   generateSingleFromChoices,
   generateMultipleFromChoices,
+  Rng,
 } from "../../../src/generators/core";
 import { root } from "../../../src/logging";
-import SeededRandomUtilities from "seeded-random-utilities";
 
 describe("generateSubsetFromChoices", () => {
   beforeEach(() => {
@@ -17,7 +17,7 @@ describe("generateSubsetFromChoices", () => {
   });
 
   it("should throw error when choices array is empty", () => {
-    const rng = new SeededRandomUtilities("test-seed");
+    const rng = new Rng("test-seed");
 
     expect(() => {
       generateSubsetFromChoices("test", undefined, [], rng, root);
@@ -31,7 +31,7 @@ describe("generateSingleFromChoices", () => {
   });
 
   it("should throw error when choices array is empty", () => {
-    const rng = new SeededRandomUtilities("test-seed");
+    const rng = new Rng("test-seed");
 
     expect(() => {
       generateSingleFromChoices("test", undefined, [], rng, root);
@@ -57,7 +57,7 @@ describe("generateMultipleFromChoices", () => {
   });
 
   it("should throw error when any category has empty choices", () => {
-    const rng = new SeededRandomUtilities("test-seed");
+    const rng = new Rng("test-seed");
 
     expect(() => {
       generateMultipleFromChoices(
