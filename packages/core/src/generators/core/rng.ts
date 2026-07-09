@@ -33,8 +33,8 @@ function hashSeed(seed: string): number {
 export class Rng {
   private readonly generator: RandomGenerator;
 
-  constructor(seed: string | number) {
-    this.generator = xoroshiro128plus(typeof seed === "number" ? seed : hashSeed(seed));
+  constructor(seed: string) {
+    this.generator = xoroshiro128plus(hashSeed(seed));
   }
 
   /** Random integer in the inclusive range [min, max]. */
