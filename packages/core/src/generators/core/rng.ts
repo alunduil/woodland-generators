@@ -7,28 +7,21 @@ import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 import type { RandomGenerator } from "pure-rand/types/RandomGenerator";
 
 /**
- * Derive a 32-bit seed from a string via cyrb53.
+ * Derive a 32-bit seed from a string via FNV-1a.
  *
  * pure-rand generators take a numeric seed, but every generator is seeded from
- * a user-facing string. cyrb53 gives well-dispersed output so distinct seed
- * strings produce distinct random streams.
+ * a user-facing string. The engine's state initialization does the mixing, so
+ * this only has to be deterministic and low-collision.
  */
 function hashSeed(seed: string): number {
-  let h1 = 0xdeadbeef;
-  let h2 = 0x41c6ce57;
+  let h = 0x811c9dc5;
 
   for (let i = 0; i < seed.length; i++) {
-    const ch = seed.charCodeAt(i);
-    h1 = Math.imul(h1 ^ ch, 2654435761);
-    h2 = Math.imul(h2 ^ ch, 1597334677);
+    h ^= seed.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
   }
 
-  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
-  h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
-  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
-  h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
-
-  return (h1 ^ h2) >>> 0;
+  return h >>> 0;
 }
 
 /**
