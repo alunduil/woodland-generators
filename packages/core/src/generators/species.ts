@@ -3,9 +3,8 @@
 // SPDX-License-Identifier: MIT
 
 import { GeneratorOptions } from "./index";
-import SeededRandomUtilities from "seeded-random-utilities";
 import { root } from "../logging";
-import { generateSingleFromChoices } from "./core";
+import { generateSingleFromChoices, Rng } from "./core";
 
 /**
  * Extended list of woodland animals compatible with Root's ecosystem
@@ -178,7 +177,7 @@ export function generateSpecies(options: SpeciesGeneratorOptions): string {
     species: options.species,
   });
 
-  const rng = new SeededRandomUtilities(options.seed);
+  const rng = new Rng(options.seed);
 
   let selected: string;
 

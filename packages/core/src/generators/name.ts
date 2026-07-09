@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import { GeneratorOptions } from "./index";
-import SeededRandomUtilities from "seeded-random-utilities";
+import { Rng } from "./core";
 import { root } from "../logging";
 
 /**
@@ -63,7 +63,7 @@ export function generateName(options: NameGeneratorOptions): string {
     result = options.name;
   } else {
     // Create seeded random generator for reproducible selection
-    const rng = new SeededRandomUtilities(options.seed);
+    const rng = new Rng(options.seed);
     result = rng.selectRandomElement([...CHARACTER_NAMES]);
   }
 
