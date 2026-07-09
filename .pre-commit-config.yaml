@@ -78,13 +78,22 @@ repos:
     hooks:
       - id: actionlint
 
-  # TOML formatting and linting with taplo
-  - repo: https://github.com/ComPWA/taplo-pre-commit
-    rev: v0.9.3
+  # TOML formatting and linting with taplo. Version lives in package.json
+  # devDependencies (Renovate-tracked via npm) rather than a pre-commit rev,
+  # matching the project-local hooks below; requires `pnpm install` to have
+  # populated node_modules.
+  - repo: local
     hooks:
       - id: taplo-format
+        name: taplo-format
+        entry: pnpm exec taplo format
+        language: system
+        types: [toml]
       - id: taplo-lint
-        args: ["--no-schema"]
+        name: taplo-lint
+        entry: pnpm exec taplo lint --no-schema
+        language: system
+        types: [toml]
 
   # REUSE compliance: every tracked file must declare copyright + license
   # via inline SPDX headers or REUSE.toml annotations. The hook runs
