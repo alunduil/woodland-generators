@@ -152,16 +152,17 @@ repos:
         language: system
         pass_filenames: false
         types: [ts]
-      - id: depcheck
-        # Audits the root and every workspace package. Per-package ignores
-        # live in each package's `.depcheckrc.json`; only the root needs one
-        # today (depcheck and prettier are devDeps used via tool config, not
-        # imports, so depcheck can't see them).
-        name: depcheck
-        entry: pnpm -r --include-workspace-root exec depcheck
+      - id: knip
+        # Unused/unlisted dependency gate, scoped to `--dependencies` to match
+        # the contract depcheck held. knip is workspace-aware natively, so it
+        # runs once at the root and audits every package from `knip.json`.
+        # Per-package entry/project globs and the root `ignoreDependencies`
+        # (jest, prettier — used via tool config, not imports) live there.
+        name: knip
+        entry: pnpm exec knip --dependencies
         language: system
         pass_filenames: false
-        files: (^|/)package\.json$|^pnpm-lock\.yaml$|^pnpm-workspace\.yaml$|(^|/)\.depcheckrc\.json$
+        files: (^|/)package\.json$|^pnpm-lock\.yaml$|^pnpm-workspace\.yaml$|^knip\.json$
       - id: workspace
         name: workspace
         entry: pnpm exec tsx scripts/validate-workspace.ts
