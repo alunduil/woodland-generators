@@ -78,22 +78,18 @@ repos:
     hooks:
       - id: actionlint
 
-  # TOML formatting and linting with taplo. Version lives in package.json
-  # devDependencies (Renovate-tracked via npm) rather than a pre-commit rev,
-  # matching the project-local hooks below; requires `pnpm install` to have
-  # populated node_modules.
-  - repo: local
+  # TOML formatting and linting with tombi. taplo (and its ComPWA
+  # pre-commit wrapper) went dormant in 2024; tombi is the actively
+  # maintained successor and ships a first-party hook backed by prebuilt
+  # PyPI wheels, so no local toolchain is required. --offline keeps the
+  # hooks from fetching schemas at commit time.
+  - repo: https://github.com/tombi-toml/tombi-pre-commit
+    rev: v1.2.0
     hooks:
-      - id: taplo-format
-        name: taplo-format
-        entry: pnpm exec taplo format
-        language: system
-        types: [toml]
-      - id: taplo-lint
-        name: taplo-lint
-        entry: pnpm exec taplo lint --no-schema
-        language: system
-        types: [toml]
+      - id: tombi-format
+        args: ["--offline"]
+      - id: tombi-lint
+        args: ["--offline"]
 
   # REUSE compliance: every tracked file must declare copyright + license
   # via inline SPDX headers or REUSE.toml annotations. The hook runs
@@ -161,16 +157,17 @@ repos:
         language: system
         pass_filenames: false
         types: [ts]
-      - id: depcheck
-        # Audits the root and every workspace package. Per-package ignores
-        # live in each package's `.depcheckrc.json`; only the root needs one
-        # today (depcheck and prettier are devDeps used via tool config, not
-        # imports, so depcheck can't see them).
-        name: depcheck
-        entry: pnpm -r --include-workspace-root exec depcheck
+      - id: knip
+        # Unused/unlisted dependency gate, scoped to `--dependencies` to match
+        # the contract depcheck held. knip is workspace-aware natively, so it
+        # runs once at the root and audits every package from `knip.json`.
+        # Per-package entry/project globs and the root `ignoreDependencies`
+        # (jest, prettier — used via tool config, not imports) live there.
+        name: knip
+        entry: pnpm exec knip --dependencies
         language: system
         pass_filenames: false
-        files: (^|/)package\.json$|^pnpm-lock\.yaml$|^pnpm-workspace\.yaml$|(^|/)\.depcheckrc\.json$
+        files: (^|/)package\.json$|^pnpm-lock\.yaml$|^pnpm-workspace\.yaml$|^knip\.json$
       - id: workspace
         name: workspace
         entry: pnpm exec tsx scripts/validate-workspace.ts

@@ -4,26 +4,54 @@ Audience: AI coding assistants. Humans use [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Project overview
 
-A TypeScript CLI (`woodland-gen`) for generating Root: The Tabletop RPG
-resources. Source in `src/`, compiled output in `dist/`. Entry points:
-`src/cli.ts` (CLI binary) and `src/index.ts` (library export).
+A pnpm workspace of TypeScript packages for generating Root: The Tabletop RPG
+resources.
+
+- `packages/core` (`@woodland-generators/core`): the library implementing the
+  generators. Public API exported from `src/index.ts`, compiled to `dist/`.
+- `packages/foundry-module` (`@woodland-generators/foundry-module`): a Foundry
+  VTT module shell that loads core into a live world; entry `src/module.ts`.
+
+No CLI binary is wired up at HEAD despite the `woodland-gen` framing in the
+README: there is no `bin`, `cli.ts`, or `cli` script, so don't reach for
+`pnpm run cli`.
 
 ## Common commands
 
-The repository runs as a pnpm workspace (`packageManager` pins the version);
-activate with `corepack enable` once. Commands:
+Run `corepack enable` once, then:
 
-- `pnpm run cli -- <args>`: build and run the CLI (for example,
-  `pnpm run cli -- character --help`).
-- `pnpm run build:watch`: `tsc` in watch mode for incremental development.
-- `pnpm test`: Jest suite.
+- `pnpm run build`: build every package (`pnpm -r build`).
+- `pnpm --filter @woodland-generators/core build:watch`: `tsc --watch` for
+  incremental core development.
+- `pnpm test`: Jest suite (root configuration runs the `core` project only).
+- `pnpm run bench`: benchmark suite.
 - `pre-commit run --all-files`: gates every PR. Authoritative hook list:
   `.pre-commit-config.yaml`.
 
+## Tooling inventory
+
+Prefer these over `curl`, manual API calls, or first-principles scripts.
+Configuration file shown in parentheses.
+
+- Package manager: pnpm, workspace pinned via `packageManager`
+  (`pnpm-workspace.yaml`); `corepack enable` once.
+- Test / coverage: Jest (`jest.config.json`, per-package
+  `packages/*/jest.config.json`); coverage configuration `codecov.yml`.
+- Lint / format, all via `pre-commit` (`.pre-commit-config.yaml`): `eslint`
+  (`eslint.config.cjs`), `prettier` (`.prettierrc`), `markdownlint`
+  (`.markdownlint.json`), `yamllint` (`.yamllint.yaml`), `shellcheck`,
+  `actionlint`, `tombi` for TOML, Vale prose (`.vale.ini`, `.vale/`), `lychee`
+  link check (`lychee.toml`), `depcheck` (`.depcheckrc.json`), `reuse`
+  licensing, `tsc` type-checking, and workspace/ADR validation (`scripts/`).
+- Development environment: `.devcontainer/`.
+- Dependency updates: Renovate (`renovate.json`); locally
+  `pnpm run check:outdated` and `pnpm run update:deps`.
+
 ## Tests
 
-Test files mirror the module under test: tests for `src/foo/bar.ts` live at
-`test/foo/bar.test.ts`. Don't split tests by feature or scenario.
+Test files mirror the module under test within each package: tests for
+`packages/core/src/foo/bar.ts` live at `packages/core/test/foo/bar.test.ts`.
+Don't split tests by feature or scenario.
 
 ## Commits
 
@@ -34,6 +62,16 @@ the `pr-title.yml` workflow.
 
 Type and scope rules with examples:
 [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages).
+
+## Scope discipline
+
+When working a numbered issue:
+
+- Keep the change within that issue's scope; don't bleed into sibling or linked
+  issues, and revert incidental out-of-scope edits before requesting review.
+- If an issue depends on prerequisite work that hasn't shipped, propose deferral
+  with a `blocked-by` edge instead of writing premature code.
+- File unrelated problems found mid-task as separate issues by default.
 
 ## Releases
 

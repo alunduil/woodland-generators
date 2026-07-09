@@ -7,17 +7,17 @@
 
 # Accept status codes as valid (default: ["200", "429"])
 accept = [
-  200, # OK
-  204, # No Content
-  206, # Partial Content
-  300, # Multiple Choices
-  301, # Moved Permanently
-  302, # Found
-  303, # See Other
-  307, # Temporary Redirect
-  308, # Permanent Redirect
-  403, # Forbidden (some sites block crawlers)
-  429, # Too Many Requests (rate limiting)
+  200,  # OK
+  204,  # No Content
+  206,  # Partial Content
+  300,  # Multiple Choices
+  301,  # Moved Permanently
+  302,  # Found
+  303,  # See Other
+  307,  # Temporary Redirect
+  308,  # Permanent Redirect
+  403,  # Forbidden (some sites block crawlers)
+  429,  # Too Many Requests (rate limiting)
 ]
 # Enable caching for faster repeated runs (default: false)
 cache = true
