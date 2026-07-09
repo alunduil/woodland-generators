@@ -18,8 +18,7 @@ README: there is no `bin`, `cli.ts`, or `cli` script, so don't reach for
 
 ## Common commands
 
-The repository runs as a pnpm workspace (`packageManager` pins the version);
-activate with `corepack enable` once. Commands:
+Run `corepack enable` once, then:
 
 - `pnpm run build`: build every package (`pnpm -r build`).
 - `pnpm --filter @woodland-generators/core build:watch`: `tsc --watch` for
