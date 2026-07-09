@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:best-practices"],
-  "baseBranchPatterns": ["master"],
+  "baseBranchPatterns": ["main"],
   "schedule": ["before 6pm on friday"],
   "timezone": "Europe/London",
   "labels": ["dependencies", "automated"],

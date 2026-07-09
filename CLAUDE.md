@@ -76,8 +76,7 @@ When working a numbered issue:
 ## Releases
 
 No automated release tooling is wired up right now. Both packages sit at `0.0.0`
-and nothing publishes from `master`. `CHANGELOG.md` is frozen as historical
-record of the pre-workspace era; don't append to it until a release process
-returns.
+and nothing publishes from `main`. `CHANGELOG.md` is frozen as historical record
+of the pre-workspace era; don't append to it until a release process returns.
 
 [conventional-commits]: https://www.conventionalcommits.org/en/v1.0.0/
