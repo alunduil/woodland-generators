@@ -40,7 +40,7 @@ Configuration file shown in parentheses.
 - Lint / format, all via `pre-commit` (`.pre-commit-config.yaml`): `eslint`
   (`eslint.config.cjs`), `prettier` (`.prettierrc`), `markdownlint`
   (`.markdownlint.json`), `yamllint` (`.yamllint.yaml`), `shellcheck`,
-  `actionlint`, `taplo` for TOML, Vale prose (`.vale.ini`, `.vale/`), `lychee`
+  `actionlint`, `tombi` for TOML, Vale prose (`.vale.ini`, `.vale/`), `lychee`
   link check (`lychee.toml`), `depcheck` (`.depcheckrc.json`), `reuse`
   licensing, `tsc` type-checking, and workspace/ADR validation (`scripts/`).
 - Development environment: `.devcontainer/`.

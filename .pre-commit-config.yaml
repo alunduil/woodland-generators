@@ -78,13 +78,15 @@ repos:
     hooks:
       - id: actionlint
 
-  # TOML formatting and linting with taplo
-  - repo: https://github.com/ComPWA/taplo-pre-commit
-    rev: v0.9.3
+  # TOML formatting and linting. --offline keeps the hooks from fetching
+  # schemas over the network at commit time.
+  - repo: https://github.com/tombi-toml/tombi-pre-commit
+    rev: v1.2.0
     hooks:
-      - id: taplo-format
-      - id: taplo-lint
-        args: ["--no-schema"]
+      - id: tombi-format
+        args: ["--offline"]
+      - id: tombi-lint
+        args: ["--offline"]
 
   # REUSE compliance: every tracked file must declare copyright + license
   # via inline SPDX headers or REUSE.toml annotations. The hook runs
