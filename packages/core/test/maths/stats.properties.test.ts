@@ -66,11 +66,14 @@ describe("summary properties", () => {
             const original = summary(numbers);
             const shuffled = summary([...numbers].sort(() => Math.random() - 0.5));
 
-            // Check mathematical equality (handles 0/-0 distinction naturally)
+            // Check mathematical equality (handles 0/-0 distinction naturally).
+            // Uses === rather than toBe throughout because Object.is treats
+            // -0 and +0 as distinct, and a stable sort can place either at a
+            // quartile position depending on the input order.
             expect(original.min === shuffled.min).toBe(true);
-            expect(original.q1).toBe(shuffled.q1);
-            expect(original.median).toBe(shuffled.median);
-            expect(original.q3).toBe(shuffled.q3);
+            expect(original.q1 === shuffled.q1).toBe(true);
+            expect(original.median === shuffled.median).toBe(true);
+            expect(original.q3 === shuffled.q3).toBe(true);
             expect(original.max === shuffled.max).toBe(true);
             expect(original.count).toBe(shuffled.count);
           },
