@@ -5,12 +5,13 @@
 import { build, context } from "esbuild";
 
 const config = {
-  entryPoints: ["src/module.ts"],
+  entryPoints: ["src/module.ts", "src/styles/module.css"],
   bundle: true,
   format: "esm",
   target: "es2022",
   platform: "browser",
-  outfile: "dist/module.js",
+  outdir: "dist",
+  outbase: "src",
   sourcemap: true,
   logLevel: "info",
 };
