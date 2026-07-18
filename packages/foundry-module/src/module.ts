@@ -2,9 +2,13 @@
 //
 // SPDX-License-Identifier: MIT
 
-/* global Hooks */
+/* global Hooks, game */
 const MODULE_ID = "woodland-generators";
 
-Hooks.once("init", () => {
-  console.log(`${MODULE_ID} | initialized`);
+// i18nInit, not init: the translation catalog loads just before this hook, so
+// localize resolves the key rather than echoing it back.
+Hooks.once("i18nInit", () => {
+  if (game.i18n) {
+    console.log(`${MODULE_ID} | ${game.i18n.localize("WOODLAND-GENERATORS.Initialized")}`);
+  }
 });

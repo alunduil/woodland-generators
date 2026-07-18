@@ -2,8 +2,8 @@
 
 The Foundry VTT integration package for [Woodland Generators](../../README.md).
 Built output is an ESM bundle that Foundry loads as a module. The loaded module
-registers under the ID `woodland-generators` and logs an init-hook heartbeat to
-the browser console.
+registers under the ID `woodland-generators` and logs a localized heartbeat to
+the browser console once Foundry initializes its localization.
 
 ## Build
 
