@@ -16,7 +16,11 @@ permissions:
   contents: read
 
 concurrency:
+  # Ref-less group so a manual dispatch and the schedule can't run
+  # concurrently and race on the shared report issue; cancel rather than
+  # queue so a fresh dispatch supersedes an in-flight run.
   group: ${{ github.workflow }}
+  cancel-in-progress: true
 
 jobs:
   # External URLs rot independently of our diffs, so checking them per-PR
