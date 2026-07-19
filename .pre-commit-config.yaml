@@ -113,7 +113,7 @@ repos:
   #
   # --offline restricts the gate to internal/relative links: fast, deterministic,
   # and safe to block on. External URLs rot from time and third parties, not the
-  # diff, so they are checked weekly by external-link-check.yml instead (see #336).
+  # diff, so they are checked weekly by external-links.yml instead (see #336).
   - repo: local
     hooks:
       - id: lychee
