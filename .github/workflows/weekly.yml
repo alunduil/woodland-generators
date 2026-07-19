@@ -27,7 +27,7 @@ jobs:
   # produces flaky failures. Verify them weekly and open an issue on breakage
   # rather than blocking the line. Never fails the run.
   external-links:
-    name: external-links
+    name: Check external links
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
