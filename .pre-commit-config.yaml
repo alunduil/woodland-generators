@@ -110,11 +110,15 @@ repos:
   # upstream hook's precompiled binary, which links against GLIBC 2.38 and
   # fails to run on Debian 12 hosts shipping GLIBC 2.36. The pinned version
   # lives in scripts/install-lychee.sh and is Renovate-tracked from there.
+  #
+  # --offline restricts the gate to internal/relative links: fast, deterministic,
+  # and safe to block on. External URLs rot from time and third parties, not the
+  # diff, so they are checked weekly by external-link-check.yml instead (see #336).
   - repo: local
     hooks:
       - id: lychee
         name: lychee
-        entry: lychee --config=lychee.toml --no-progress
+        entry: lychee --config=lychee.toml --no-progress --offline
         language: system
         types: [markdown]
 

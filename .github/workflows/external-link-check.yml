@@ -1,0 +1,66 @@
+# SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
+name: External Link Check
+
+on:
+  schedule:
+    # Fridays at 18:00 Europe/London. The timezone field (GitHub Actions
+    # support added March 2026) handles BST/GMT automatically.
+    - cron: "0 18 * * 5"
+      timezone: Europe/London
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}
+
+jobs:
+  # External URLs rot independently of our diffs, so checking them per-PR
+  # produces flaky failures. Verify them weekly and open an issue on breakage
+  # rather than blocking the line. Never fails the run.
+  external:
+    name: External Links
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+      # Reads lychee.toml from the repo root, so the #288 resilience tuning
+      # (retry_wait_time, cache_exclude_status, accept list) applies here too.
+      - name: Check all links
+        id: lychee
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: --no-progress "**/*.md"
+          fail: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Reuse the open report if one exists so repeated breakage updates a
+      # single issue instead of filing a new one every week.
+      - name: Find existing report issue
+        if: steps.lychee.outputs.exit_code != 0
+        id: report
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          number=$(gh issue list --repo "${{ github.repository }}" --state open \
+            --search 'Link Checker Report in:title' --json number --jq '.[0].number // empty')
+          echo "number=${number}" >> "${GITHUB_OUTPUT}"
+
+      - name: Open or update issue on broken links
+        if: steps.lychee.outputs.exit_code != 0
+        uses: peter-evans/create-issue-from-file@fca9117c27cdc29c6c4db3b86c48e4115a786710 # v6.0.0
+        with:
+          title: Link Checker Report
+          content-filepath: ./lychee/out.md
+          issue-number: ${{ steps.report.outputs.number }}
+          labels: documentation, automated
