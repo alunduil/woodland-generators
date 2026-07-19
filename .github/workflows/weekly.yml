@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-name: External Links
+name: Weekly
 
 on:
   schedule:
@@ -26,8 +26,8 @@ jobs:
   # External URLs rot independently of our diffs, so checking them per-PR
   # produces flaky failures. Verify them weekly and open an issue on breakage
   # rather than blocking the line. Never fails the run.
-  lychee:
-    name: lychee
+  external-links:
+    name: external-links
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
