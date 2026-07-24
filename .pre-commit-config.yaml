@@ -81,7 +81,7 @@ repos:
   # TOML formatting and linting. --offline keeps the hooks from fetching
   # schemas over the network at commit time.
   - repo: https://github.com/tombi-toml/tombi-pre-commit
-    rev: v1.2.0
+    rev: v1.2.4
     hooks:
       - id: tombi-format
         args: ["--offline"]
