@@ -6,9 +6,9 @@ name: Benchmarks
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
     # Skip bench on PRs that don't touch perf-relevant code.
     paths:
       - "packages/*/src/**"
@@ -26,7 +26,7 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   bench:
