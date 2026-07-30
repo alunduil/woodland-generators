@@ -39,17 +39,7 @@
       "minimumReleaseAge": null
     },
     {
-      "description": "Group non-major npm updates in a single PR; majors land individually for review",
       "matchManagers": ["npm"],
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "groupName": "npm dependencies",
-      "groupSlug": "npm",
-      "addLabels": ["npm"]
-    },
-    {
-      "description": "Label major npm updates so they are easy to spot",
-      "matchManagers": ["npm"],
-      "matchUpdateTypes": ["major"],
       "addLabels": ["npm"]
     },
     {
@@ -58,24 +48,15 @@
       "allowedVersions": "<11.0.0"
     },
     {
-      "description": "Group all GitHub Actions updates in a single PR",
       "matchManagers": ["github-actions"],
-      "groupName": "github actions",
-      "groupSlug": "github-actions",
       "addLabels": ["actions"]
     },
     {
-      "description": "Group all Docker updates in a single PR",
       "matchManagers": ["dockerfile", "docker-compose"],
-      "groupName": "docker dependencies",
-      "groupSlug": "docker",
       "addLabels": ["docker"]
     },
     {
-      "description": "Group all DevContainer updates in a single PR",
       "matchManagers": ["devcontainer"],
-      "groupName": "devcontainer dependencies",
-      "groupSlug": "devcontainer",
       "addLabels": ["devcontainer"]
     }
   ]
