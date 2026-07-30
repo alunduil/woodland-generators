@@ -122,6 +122,18 @@ repos:
         language: system
         types: [markdown]
 
+  # Renovate config validation. --strict also fails on configs that merely need
+  # migration (e.g. fileMatch -> managerFilePatterns), not just outright errors;
+  # --no-global stops the validator treating renovate.json as self-hosted global
+  # config, which misreports repo-only fields. Neither is an upstream default.
+  # Remote presets are not resolved, so a missing `extends` target still only
+  # surfaces as a Repository Problem on the next Renovate run.
+  - repo: https://github.com/renovatebot/pre-commit-hooks
+    rev: 44.2.1
+    hooks:
+      - id: renovate-config-validator
+        args: [--strict, --no-global]
+
   # Conventional Commits validation - runs at the commit-msg stage to reject
   # non-conventional commit subjects. Requires `--hook-type commit-msg` at
   # install time.

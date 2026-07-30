@@ -1,41 +1,45 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:best-practices"],
-  "baseBranchPatterns": ["master"],
-  "schedule": ["before 6pm on friday"],
+  "extends": [
+    "config:best-practices",
+    "security:openssf-scorecard",
+    "customManagers:githubActionsVersions"
+  ],
   "timezone": "Europe/London",
   "labels": ["dependencies", "automated"],
   "reviewers": ["alunduil"],
+  "minimumReleaseAge": "3 days",
+  "osvVulnerabilityAlerts": true,
   "pre-commit": {
     "enabled": true
-  },
-  "lockFileMaintenance": {
-    "enabled": true,
-    "schedule": ["before 6pm on friday"]
   },
   "customManagers": [
     {
       "customType": "regex",
-      "description": "Track the lychee pin in scripts/install-lychee.sh now that the pre-commit hook runs the system binary instead of an upstream-managed repo entry",
-      "managerFilePatterns": ["^scripts/install-lychee\\.sh$"],
+      "description": "Read `# renovate:` annotations above shell `*_VERSION=` pins so a new pin needs an annotation rather than a manager of its own",
+      "managerFilePatterns": ["scripts/*"],
       "matchStrings": [
-        "# renovate: datasource=(?<datasource>.+?) depName=(?<depName>.+?) extractVersion=(?<extractVersion>.+?)\\s+LYCHEE_VERSION=\"(?<currentValue>.+?)\""
+        "# renovate: datasource=(?<datasource>[a-zA-Z0-9-._]+?) depName=(?<depName>[^\\s]+?)(?: packageName=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?\\s+[A-Za-z0-9_]+?_VERSION=\"(?<currentValue>.+?)\""
       ]
     }
   ],
   "packageRules": [
     {
-      "description": "Group non-major npm updates in a single PR; majors land individually for review",
-      "matchManagers": ["npm"],
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "groupName": "npm dependencies",
-      "groupSlug": "npm",
-      "addLabels": ["npm"]
+      "description": "Exempt update types that cannot carry a release timestamp from the bake period; without this they stall forever on a pending stability check and no PR is ever opened",
+      "matchUpdateTypes": [
+        "pin",
+        "pinDigest",
+        "digest",
+        "lockFileMaintenance",
+        "lockfileUpdate",
+        "rollback",
+        "bump",
+        "replacement"
+      ],
+      "minimumReleaseAge": null
     },
     {
-      "description": "Label major npm updates so they are easy to spot",
       "matchManagers": ["npm"],
-      "matchUpdateTypes": ["major"],
       "addLabels": ["npm"]
     },
     {
@@ -44,24 +48,15 @@
       "allowedVersions": "<11.0.0"
     },
     {
-      "description": "Group all GitHub Actions updates in a single PR",
       "matchManagers": ["github-actions"],
-      "groupName": "github actions",
-      "groupSlug": "github-actions",
       "addLabels": ["actions"]
     },
     {
-      "description": "Group all Docker updates in a single PR",
-      "matchManagers": ["dockerfile"],
-      "groupName": "docker dependencies",
-      "groupSlug": "docker",
+      "matchManagers": ["dockerfile", "docker-compose"],
       "addLabels": ["docker"]
     },
     {
-      "description": "Group all DevContainer updates in a single PR",
       "matchManagers": ["devcontainer"],
-      "groupName": "devcontainer dependencies",
-      "groupSlug": "devcontainer",
       "addLabels": ["devcontainer"]
     }
   ]
