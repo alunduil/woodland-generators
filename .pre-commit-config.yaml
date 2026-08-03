@@ -98,7 +98,7 @@ repos:
 
   # Prose linting with Vale
   - repo: https://github.com/errata-ai/vale
-    rev: v3.16.0
+    rev: v3.17.0
     hooks:
       - id: vale
         files: \.(md|rst|txt)$
