@@ -18,7 +18,7 @@
     "eslint": "10.8.0",
     "jest": "30.4.2",
     "knip": "6.31.0",
-    "npm-check-updates": "23.0.0",
+    "npm-check-updates": "23.0.1",
     "prettier": "3.9.6",
     "tsx": "4.23.4",
     "typescript": "7.0.2"
