@@ -15,8 +15,9 @@ permissions:
   contents: read
 
 concurrency:
-  # No cancel-in-progress: a truncated sweep loses the operations-per-run
-  # resume cache and restarts from the first pull request.
+  # Serialise a manual dispatch against the schedule so two sweeps cannot
+  # comment on the same pull request. Queue rather than cancel, so the dispatch
+  # still runs.
   group: ${{ github.workflow }}
 
 jobs:
@@ -25,14 +26,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
-      # `actions: write` is omitted: it covers only the resume cache, so a
-      # truncated run warns and restarts rather than failing.
       issues: write
       pull-requests: write
     steps:
-      # Both issue legs are disabled, not just marking: an issue already
-      # carrying the label would otherwise stay eligible for closing. #167
-      # settled that this repo's issue backlog is groomed by hand.
+      # Marking and closing are both off: switching off marking alone would
+      # still close an issue that already carries the stale label.
       - uses: actions/stale@4391f3da665fdf50b6810c1a66712fb9ba21aa93 # v11
         with:
           days-before-issue-stale: -1
@@ -40,17 +38,13 @@ jobs:
           days-before-pr-stale: 30
           days-before-pr-close: 14
           # Closing a Renovate pull request tells Renovate the version is
-          # unwanted and it will not re-offer it. Renovate labels nothing by
-          # default, so this depends on renovate.json applying the label.
+          # unwanted, so it stops re-offering the update. Depends on
+          # renovate.json applying this label; Renovate applies none by default.
           exempt-pr-labels: dependencies
           stale-pr-message: >-
             This has been quiet for 30 days, so it's picked up a stale label. A
             comment or a push clears the label and restarts the clock. Otherwise
             this closes in another 14 days.
-          # No duration here: it would be days-before-pr-stale plus
-          # days-before-pr-close, and a hand-computed sum goes stale silently
-          # when either knob moves. The stale comment above it on the same
-          # thread already stated both.
           close-pr-message: >-
             Closing this after a long quiet stretch. That isn't a call on the
             change itself, and nothing is lost: the branch stays where it is, so
