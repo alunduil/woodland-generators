@@ -47,7 +47,11 @@ jobs:
             This has been quiet for 30 days, so it's picked up a stale label. A
             comment or a push clears the label and restarts the clock. Otherwise
             this closes in another 14 days.
+          # No duration here: it would be days-before-pr-stale plus
+          # days-before-pr-close, and a hand-computed sum goes stale silently
+          # when either knob moves. The stale comment above it on the same
+          # thread already stated both.
           close-pr-message: >-
-            Closing this after 44 quiet days. That isn't a call on the change
-            itself, and nothing is lost: the branch stays where it is, so
+            Closing this after a long quiet stretch. That isn't a call on the
+            change itself, and nothing is lost: the branch stays where it is, so
             comment here if you want to pick it back up and I'll reopen it.
