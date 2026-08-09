@@ -193,3 +193,10 @@ repos:
         language: system
         pass_filenames: false
         files: ^(docs/adr/.*\.md|scripts/validate-adrs\.ts)$
+      # Complements `reuse lint`, which never reads manifest `license` fields.
+      - id: validate-licenses
+        name: validate-licenses
+        entry: pnpm exec tsx scripts/validate-licenses.ts
+        language: system
+        pass_filenames: false
+        files: ^(package\.json|packages/[^/]+/(package|module)\.json|LICENSES/.*|scripts/validate-licenses\.ts)$
