@@ -16,7 +16,11 @@ entry.
 
 ## Verify it loads in Foundry
 
-Without a host Foundry install:
+With a host Foundry install:
+[Install into a local Foundry](../../docs/how-to/install-the-foundry-module-into-a-local-foundry.md).
+It also covers the watch-and-reload loop.
+
+Without one:
 [Verify with `docker compose`](../../docs/how-to/verify-foundry-module-with-docker-compose.md).
 
 ## See also
