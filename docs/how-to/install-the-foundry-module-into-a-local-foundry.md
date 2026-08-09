@@ -23,7 +23,7 @@
    $env:FOUNDRY_USER_DATA = "$env:LOCALAPPDATA\FoundryVTT"
    ```
 
-   If you start Foundry with `--dataPath`, or changed **User Data Path** in the
+   If you launch Foundry with `--dataPath` or set **User Data Path** in the
    setup screen, use that directory instead.
 
 2. Build the module bundle:
@@ -38,10 +38,8 @@
    pnpm --filter @woodland-generators/foundry-module install:dev
    ```
 
-   The command prints the link it created, and re-running it replaces the link
-   rather than nesting a second one. It exits without changing anything when
-   `Data/modules/woodland-generators` is a real directory; remove that directory
-   first.
+   Re-running replaces the link. The command exits without changing anything
+   when `Data/modules/woodland-generators` is a real directory; remove it first.
 
    On Windows, turn on Developer Mode or run the shell as Administrator.
    Creating a directory symlink fails with `EPERM` otherwise.
@@ -60,8 +58,8 @@
    pnpm --filter @woodland-generators/foundry-module build:watch
    ```
 
-2. Hard-reload the browser tab running the world to pick up the rebuilt bundle:
-   `Ctrl+Shift+R`, or `Cmd+Shift+R` on macOS.
+2. Hard-reload the browser tab running the world: `Ctrl+Shift+R`, or
+   `Cmd+Shift+R` on macOS.
 
 ## Remove the link
 
