@@ -23,7 +23,8 @@ Start with an issue labeled [good first issue][good-first-issue] or [help
 wanted][help-wanted]. Both filters list work that's ready to pick up without
 deep context on the codebase.
 
-Typos and formatting fixes need no issue at all - open a pull request directly.
+Typos and formatting fixes need no issue at all - see
+[small fixes](#for-small-fixes-typos-formatting).
 
 ## Project layout
 
@@ -93,12 +94,8 @@ pre-commit run --all-files   # formatting, lint, types, prose, links
 pnpm test                    # Jest suite
 ```
 
-`pre-commit run --all-files` covers Prettier, ESLint, `tsc --noEmit`, `knip`,
-`markdownlint`, `yamllint`, `actionlint`, `shellcheck`, REUSE licensing, Vale
-prose, and a link check. Many of those hooks fix files in place, so re-stage
-anything they touch.
-
-The authoritative hook list lives in `.pre-commit-config.yaml`.
+Many hooks fix files in place, so re-stage anything they touch. The full hook
+list lives in `.pre-commit-config.yaml`.
 
 ## Tests
 
