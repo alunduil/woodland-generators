@@ -23,6 +23,7 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "@codecov/bundle-analyzer": "2.0.1",
     "@league-of-foundry-developers/foundry-vtt-types": "13.346.0-beta.20250812191140",
     "esbuild": "0.28.1",
     "typescript": "7.0.2"

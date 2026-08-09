@@ -83,6 +83,20 @@ jobs:
       - name: Build TypeScript
         run: pnpm run build
 
+      # Codecov publishes no esbuild plugin, so the standalone analyzer reads
+      # the built directory instead. Bundle analysis keys on `--bundle-name`;
+      # it has no equivalent of the per-package flags the coverage uploads use.
+      - name: Upload bundle analysis to Codecov
+        continue-on-error: true
+        working-directory: packages/foundry-module
+        run: >-
+          pnpm exec bundle-analyzer dist
+          --bundle-name=foundry-module
+          --upload-token "$CODECOV_TOKEN"
+          --ignore-patterns '*.map'
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
       - name: Upload build artifacts
         if: github.event_name == 'push'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
