@@ -4,8 +4,7 @@ Thank you for your interest in contributing! Woodland Generators is a pnpm
 workspace of TypeScript packages that generate resources for Root: The Tabletop
 RPG.
 
-These guidelines help maintainers review your work. Following them shows respect
-for their time.
+These guidelines help get your work reviewed quickly.
 
 ## What you can contribute
 
@@ -41,13 +40,12 @@ decisions in `docs/adr/`.
 
 ## Ground rules
 
-- **TypeScript with strict typing** - type safety stays important
 - **Use pnpm** - the repository runs as a pnpm workspace; npm and yarn won't
   produce a working install. Run `corepack enable` once on Node 20 or newer; the
   pinned pnpm version comes from `package.json#packageManager`.
+- **Keep strict typing** - `tsc --noEmit` runs as a check and has to pass
 - **Run the checks** before submitting - see [Checks](#checks) below
 - **Keep PRs focused** - one feature or fix per PR
-- **Stay patient** - reviews may take a few days
 
 ## Quick start
 
@@ -77,17 +75,13 @@ decisions in `docs/adr/`.
    pnpm run test:watch
    ```
 
-   `build:watch` is a per-package script, so it needs the `--filter` flag. The
-   root package has no `build:watch`.
-
 The repository also ships a [devcontainer](.devcontainer/devcontainer.json) with
 Node, pnpm, `pre-commit`, `shellcheck`, and Vale preinstalled. Open the
 repository in a supporting editor to skip the local tool setup.
 
 ## Checks
 
-Two sensors gate a change, and you need both - `pre-commit` doesn't run the
-tests:
+Run both before submitting. `pre-commit` doesn't run the tests:
 
 ```bash
 pre-commit run --all-files   # formatting, lint, types, prose, links
@@ -175,10 +169,9 @@ Two how-to guides cover the module development loop:
 
 ## Code review process
 
-- The project team reviews PRs on a regular basis, typically within a week
-- Reviewers provide feedback through GitHub review comments
-- Maintainers may request changes before merging
-- Once approved, maintainers will merge your PR
+Woodland Generators has one maintainer, so expect a review within about a week.
+Feedback arrives as GitHub review comments and may ask for changes. The
+maintainer merges the PR once it's approved.
 
 [bug-template]:
   https://github.com/alunduil/woodland-generators/issues/new?template=bug-report.yml
