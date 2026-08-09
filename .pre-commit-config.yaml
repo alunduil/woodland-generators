@@ -194,10 +194,10 @@ repos:
         pass_filenames: false
         files: ^(docs/adr/.*\.md|scripts/validate-adrs\.ts)$
       - id: validate-licenses
-        # Complements `reuse lint`, which covers per-file SPDX information but
-        # never reads a manifest `license` field.
+        # Foundry manifest licenses only. `reuse lint` sees per-file SPDX
+        # information and never reads a module.json.
         name: validate-licenses
         entry: pnpm exec tsx scripts/validate-licenses.ts
         language: system
         pass_filenames: false
-        files: ^(package\.json|packages/[^/]+/(package|module)\.json|LICENSES/.*|scripts/validate-licenses\.ts)$
+        files: ^(packages/[^/]+/module\.json|scripts/validate-licenses\.ts)$
