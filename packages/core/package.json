@@ -9,8 +9,7 @@
   "private": true,
   "files": [
     "dist/",
-    "README.md",
-    "LICENSE"
+    "README.md"
   ],
   "engines": {
     "node": ">=20.0.0",
