@@ -2,7 +2,9 @@
 
 ## Prerequisites
 
-- Foundry VTT installed on the host.
+- Foundry VTT installed on the host. Without one, follow
+  [Verify with `docker compose`](verify-foundry-module-with-docker-compose.md)
+  instead.
 - The repository cloned, with `corepack enable` and `pnpm install` already run.
 
 ## Steps
@@ -66,6 +68,3 @@
 ```bash
 rm "$FOUNDRY_USER_DATA/Data/modules/woodland-generators"
 ```
-
-To verify the module without a host Foundry install, see
-[Verify with `docker compose`](verify-foundry-module-with-docker-compose.md).
