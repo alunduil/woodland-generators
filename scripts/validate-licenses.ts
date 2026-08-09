@@ -3,18 +3,12 @@
 // SPDX-License-Identifier: MIT
 
 /**
- * Package manifest license validator.
+ * `reuse lint` covers per-file SPDX information but never reads a manifest's
+ * `license` field, so a package can be REUSE-clean while shipping no license
+ * metadata for npm or Foundry.
  *
- * `reuse lint` covers per-file SPDX information but never reads the `license`
- * field of a package.json, so a package can be REUSE-clean while shipping no
- * license metadata for npm or Foundry. This checks the manifests instead:
- * every workspace package.json against the root license, the root license
- * against LICENSES/ so REUSE can resolve the identifier it names, and any
- * module.json against Foundry's rules, which take a path or URL rather than
- * an SPDX identifier.
- *
- * Runs both as the pre-commit gate over the working tree and as its own test
- * suite, the same way scripts/validate-workspace.ts does.
+ * Runs as both the pre-commit gate and its own test suite, like
+ * scripts/validate-workspace.ts.
  */
 
 import { after, describe, it } from "node:test";
@@ -60,11 +54,7 @@ function packageLicenseErrors(name: string, declared: unknown, expected: string)
   ];
 }
 
-/**
- * Foundry resolves a module manifest's license as either a publicly reachable
- * URL or a path inside the module root. An SPDX identifier is not one of its
- * options, which is why this differs from the package.json rule.
- */
+/** Foundry's manifest takes a path or URL here, never an SPDX identifier. */
 function resolvesForFoundry(moduleRoot: string, license: string): boolean {
   return license.startsWith(LICENSE_URL_PREFIX) || existsSync(join(moduleRoot, license));
 }
@@ -90,9 +80,8 @@ export function validateLicenses(root: string): Report {
   const checked = ["package.json"];
   const declared = rootManifest.license;
 
-  // A root license nobody can resolve makes every per-package comparison
-  // below meaningless, so report the cause once instead of echoing it as a
-  // mismatch against 'undefined' for every package in the workspace.
+  // An unresolvable root license makes every per-package comparison
+  // meaningless, so report the cause alone rather than once per package.
   if (typeof declared !== "string" || declared.length === 0) {
     return { checked, errors: ["package.json: missing 'license'"] };
   }
@@ -108,9 +97,8 @@ export function validateLicenses(root: string): Report {
   const errors: string[] = [];
   const names = packageNames(root);
 
-  // One pass per manifest kind. Folded into a single loop, an early exit for
-  // a package with no package.json would also skip its module.json, and the
-  // next check added would inherit that truncation by position alone.
+  // One pass per manifest kind: sharing a loop lets one kind's early exit
+  // truncate the checks for another.
   for (const name of names) {
     const relativePath = join("packages", name, "package.json");
     const manifest = readManifest(root, relativePath);
@@ -161,9 +149,8 @@ describe("this repository's manifests", () => {
   it("are all covered, so a passing run is never vacuous", () => {
     const { checked } = validateLicenses(process.cwd());
 
-    // Deliberately not packageNames(): building the expectation from the
-    // function under test makes this assertion pass by construction the
-    // moment discovery breaks, which is the failure it exists to catch.
+    // Not packageNames(): an expectation built from the function under test
+    // would pass by construction exactly when discovery breaks.
     const directories = readdirSync(join(process.cwd(), "packages"), { withFileTypes: true })
       .filter((entry) => entry.isDirectory())
       .map((entry) => entry.name);
