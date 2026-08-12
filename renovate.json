@@ -48,6 +48,11 @@
       "allowedVersions": "<11.0.0"
     },
     {
+      "description": "Hold tombi-pre-commit below 1.2.8: that release added a top-level test_mirror.py alongside mirror.py without declaring py_modules, so setuptools flat-layout discovery refuses to build the hook environment",
+      "matchPackageNames": ["tombi-toml/tombi-pre-commit"],
+      "allowedVersions": "<1.2.8"
+    },
+    {
       "matchManagers": ["github-actions"],
       "addLabels": ["actions"]
     },
