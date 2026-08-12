@@ -34,7 +34,11 @@ trap 'rm -rf "${TEMP_DIR}"' EXIT
 
 # Download and extract lychee
 echo "  📥 Downloading from ${LYCHEE_URL}..."
-curl -sSfL "${LYCHEE_URL}" -o "${TEMP_DIR}/${LYCHEE_ARCHIVE}"
+# Retry on transport failures as well as HTTP errors: release-asset fetches
+# have failed here with both a 503 and a mid-transfer connection reset, each
+# of which takes the whole pre-commit gate down on a single attempt.
+curl -sSfL --retry 5 --retry-delay 2 --retry-all-errors --connect-timeout 10 \
+    "${LYCHEE_URL}" -o "${TEMP_DIR}/${LYCHEE_ARCHIVE}"
 
 echo "  📦 Extracting archive..."
 # Modern lychee tarballs wrap their contents in a target-named top-level
