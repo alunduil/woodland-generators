@@ -48,6 +48,11 @@
       "allowedVersions": "<11.0.0"
     },
     {
+      "description": "Hold typescript on the 6.x line: typescript-eslint peers on `>=4.8.4 <6.1.0` and ts-jest on `>=4.3 <7`, so a 7.x bump silently disables the eslint hook and the entire Jest suite. Lift once both consumers accept 7 (typescript-eslint/typescript-eslint#10940)",
+      "matchPackageNames": ["typescript"],
+      "allowedVersions": "<7.0.0"
+    },
+    {
       "description": "Hold tombi-pre-commit below 1.2.8: that release added a top-level test_mirror.py alongside mirror.py without declaring py_modules, so setuptools flat-layout discovery refuses to build the hook environment",
       "matchPackageNames": ["tombi-toml/tombi-pre-commit"],
       "allowedVersions": "<1.2.8"
