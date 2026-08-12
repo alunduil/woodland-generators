@@ -6,9 +6,9 @@ name: Benchmarks
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
     # Skip bench on PRs that don't touch perf-relevant code.
     paths:
       - "packages/*/src/**"
@@ -26,7 +26,7 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   bench:
@@ -54,7 +54,7 @@ jobs:
         run: pnpm run bench
 
       - name: Store benchmark result
-        uses: benchmark-action/github-action-benchmark@v1
+        uses: benchmark-action/github-action-benchmark@52576c92bccf6ac60c8223ec7eb2565637cae9ba # v1.22.1
         with:
           name: "Woodland Generators Performance"
           tool: "benchmarkjs"

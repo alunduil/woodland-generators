@@ -6,16 +6,16 @@ name: CI
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 
 permissions:
   contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   test:
@@ -26,12 +26,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # All supported LTS via setup-node nvm aliases — auto-rotates.
-        # `lts/-2` drifts onto a just-EOL'd line ~6 mo/yr by design (between
-        # April EOL and October's new LTS); accepted as the cost of full
-        # supported-line coverage. Codecov gates on `lts/*` to anchor the
-        # signal to active LTS rather than rotating through maintenance.
-        node-version: ["lts/-2", "lts/-1", "lts/*"]
+        # nvm aliases rather than literals, so the matrix auto-rotates.
+        # `lts/-2` is deliberately absent: between April's EOL and October's
+        # new LTS it names an end-of-life line, and pnpm's Node floor sits
+        # above it, so that leg cannot install at all. Codecov gates on
+        # `lts/*` so coverage tracks the newest LTS.
+        node-version: ["lts/-1", "lts/*"]
         package: [core]
 
     steps:
