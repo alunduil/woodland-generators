@@ -47,6 +47,9 @@ const commonRules = {
   "@typescript-eslint/prefer-nullish-coalescing": "error",
   "@typescript-eslint/prefer-optional-chain": "error",
   "@typescript-eslint/no-unnecessary-condition": "warn",
+  // Disable base rule; TypeScript resolves identifiers itself and the base
+  // rule cannot see type-space references such as ambient namespaces.
+  "no-undef": "off",
 };
 
 module.exports = [
