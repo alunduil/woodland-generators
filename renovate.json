@@ -43,21 +43,6 @@
       "addLabels": ["npm"]
     },
     {
-      "description": "Hold pnpm on the 10.x line: pnpm 11.x requires Node >=22.13 and imports node:sqlite (Node >=22.5), which the CI matrix's lts/-2 Node 20 line cannot run",
-      "matchPackageNames": ["pnpm"],
-      "allowedVersions": "<11.0.0"
-    },
-    {
-      "description": "Hold typescript on the 6.x line: neither typescript-eslint nor ts-jest accepts 7, and both fail by refusing to load rather than by failing a check, so a bump past their peer ranges disables the eslint hook and the whole Jest suite silently. Lift once both accept 7 (typescript-eslint/typescript-eslint#10940)",
-      "matchPackageNames": ["typescript"],
-      "allowedVersions": "<7.0.0"
-    },
-    {
-      "description": "Hold tombi-pre-commit below 1.2.8: upstream ships two top-level modules without declaring py_modules, so setuptools flat-layout discovery refuses to build the hook environment and every hook goes down with it. Lift once upstream declares py_modules or moves to a src layout",
-      "matchPackageNames": ["tombi-toml/tombi-pre-commit"],
-      "allowedVersions": "<1.2.8"
-    },
-    {
       "matchManagers": ["github-actions"],
       "addLabels": ["actions"]
     },
