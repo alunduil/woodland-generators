@@ -26,11 +26,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Active LTS via setup-node nvm aliases — auto-rotates.
-        # `lts/-2` is excluded: it drifts onto a just-EOL'd line ~6 mo/yr
-        # (between April EOL and October's new LTS), and pnpm requires Node
-        # >=22.13, so that line cannot install dependencies at all. Codecov
-        # gates on `lts/*` to anchor the signal to the newest LTS.
+        # nvm aliases rather than literals, so the matrix auto-rotates.
+        # `lts/-2` is deliberately absent: between April's EOL and October's
+        # new LTS it names an end-of-life line, and pnpm's Node floor sits
+        # above it, so that leg cannot install at all. Codecov gates on
+        # `lts/*` so coverage tracks the newest LTS.
         node-version: ["lts/-1", "lts/*"]
         package: [core]
 

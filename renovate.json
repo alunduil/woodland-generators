@@ -48,12 +48,12 @@
       "allowedVersions": "<11.0.0"
     },
     {
-      "description": "Hold typescript on the 6.x line: typescript-eslint peers on `>=4.8.4 <6.1.0` and ts-jest on `>=4.3 <7`, so a 7.x bump silently disables the eslint hook and the entire Jest suite. Lift once both consumers accept 7 (typescript-eslint/typescript-eslint#10940)",
+      "description": "Hold typescript on the 6.x line: neither typescript-eslint nor ts-jest accepts 7, and both fail by refusing to load rather than by failing a check, so a bump past their peer ranges disables the eslint hook and the whole Jest suite silently. Lift once both accept 7 (typescript-eslint/typescript-eslint#10940)",
       "matchPackageNames": ["typescript"],
       "allowedVersions": "<7.0.0"
     },
     {
-      "description": "Hold tombi-pre-commit below 1.2.8: that release added a top-level test_mirror.py alongside mirror.py without declaring py_modules, so setuptools flat-layout discovery refuses to build the hook environment",
+      "description": "Hold tombi-pre-commit below 1.2.8: upstream ships two top-level modules without declaring py_modules, so setuptools flat-layout discovery refuses to build the hook environment and every hook goes down with it. Lift once upstream declares py_modules or moves to a src layout",
       "matchPackageNames": ["tombi-toml/tombi-pre-commit"],
       "allowedVersions": "<1.2.8"
     },

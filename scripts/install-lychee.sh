@@ -34,9 +34,8 @@ trap 'rm -rf "${TEMP_DIR}"' EXIT
 
 # Download and extract lychee
 echo "  📥 Downloading from ${LYCHEE_URL}..."
-# Retry on transport failures as well as HTTP errors: release-asset fetches
-# have failed here with both a 503 and a mid-transfer connection reset, each
-# of which takes the whole pre-commit gate down on a single attempt.
+# --retry alone covers transient HTTP status codes; --retry-all-errors is what
+# covers transport-level failures such as a mid-transfer connection reset.
 curl -sSfL --retry 5 --retry-delay 2 --retry-all-errors --connect-timeout 10 \
     "${LYCHEE_URL}" -o "${TEMP_DIR}/${LYCHEE_ARCHIVE}"
 
