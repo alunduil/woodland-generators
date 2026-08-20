@@ -46,11 +46,11 @@ jobs:
       - name: Run tests with coverage
         run: pnpm --filter @woodland-generators/${{ matrix.package }} run test:coverage
 
-      - name: Upload coverage reports
-        if: always() && matrix.node-version == 'lts/*'
+      - name: Upload Codecov reports
+        if: ${{ !cancelled() && matrix.node-version == 'lts/*' }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: coverage-${{ matrix.package }}
+          name: codecov-reports-${{ matrix.package }}
           path: |
             packages/${{ matrix.package }}/coverage/lcov.info
             packages/${{ matrix.package }}/test-results/junit.xml
@@ -66,6 +66,11 @@ jobs:
     name: Coverage (${{ matrix.package }})
     timeout-minutes: 15
 
+    # Safe at job scope because nothing here executes project or dependency
+    # code -- no install, no build, just the reports the test job produced.
+    env:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
     strategy:
       fail-fast: false
       matrix:
@@ -76,10 +81,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - name: Download coverage reports
+      - name: Download Codecov reports
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          name: coverage-${{ matrix.package }}
+          name: codecov-reports-${{ matrix.package }}
           path: packages/${{ matrix.package }}
 
       - name: Upload coverage to Codecov
@@ -89,18 +94,15 @@ jobs:
           flags: ${{ matrix.package }}
           name: codecov-${{ matrix.package }}
           fail_ci_if_error: true
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Upload test results to Codecov
-        if: always()
+        if: ${{ !cancelled() }}
         uses: codecov/test-results-action@0fa95f0e1eeaafde2c782583b36b28ad0d8c77d3 # v1
         with:
           files: ./packages/${{ matrix.package }}/test-results/junit.xml
           flags: ${{ matrix.package }}
           name: test-results-${{ matrix.package }}
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
 
   build:
     runs-on: ubuntu-latest
