@@ -20,18 +20,24 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Test (${{ matrix.package }}, Node ${{ matrix.node-version }})
+    name: Test (${{ matrix.package }}, Node ${{ matrix.node.version }})
     timeout-minutes: 15
 
     strategy:
       fail-fast: false
       matrix:
         # nvm aliases rather than literals, so the matrix auto-rotates.
+        # `slug` repeats each leg without the `/` and `*` that artifact
+        # names and Codecov flags reject.
+        #
         # `lts/-2` is deliberately absent: between April's EOL and October's
         # new LTS it names an end-of-life line, and pnpm's Node floor sits
-        # above it, so that leg cannot install at all. Codecov gates on
-        # `lts/*` so coverage tracks the newest LTS.
-        node-version: ["lts/-1", "lts/*"]
+        # above it, so that leg cannot install at all.
+        node:
+          - version: "lts/-1"
+            slug: lts-1
+          - version: "lts/*"
+            slug: lts
         package: [core]
 
     steps:
@@ -41,16 +47,16 @@ jobs:
       - name: Setup Node.js + pnpm
         uses: ./.github/actions/setup-node-pnpm
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ matrix.node.version }}
 
       - name: Run tests with coverage
         run: pnpm --filter @woodland-generators/${{ matrix.package }} run test:coverage
 
       - name: Upload Codecov reports
-        if: ${{ !cancelled() && matrix.node-version == 'lts/*' }}
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: codecov-reports-${{ matrix.package }}
+          name: codecov-reports-${{ matrix.package }}-${{ matrix.node.slug }}
           path: |
             packages/${{ matrix.package }}/coverage/lcov.info
             packages/${{ matrix.package }}/test-results/junit.xml
@@ -59,11 +65,11 @@ jobs:
   # Separate from `test` so a failure in Codecov's uploader cannot fail a
   # check named `Test`. `!cancelled()` rather than plain `needs`, because a
   # failing suite is when Codecov's test analytics is most useful.
-  coverage:
+  codecov:
     runs-on: ubuntu-latest
     needs: test
     if: ${{ !cancelled() }}
-    name: Coverage (${{ matrix.package }})
+    name: Codecov (${{ matrix.package }}, Node ${{ matrix.node.version }})
     timeout-minutes: 15
 
     # Job scope is safe while nothing here runs project or dependency code.
@@ -73,7 +79,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Keep in sync with the `test` job's package list.
+        # Keep the leg set in sync with the `test` job. Coverage comes from
+        # one leg, so a single Node line's V8 behaviour cannot move the
+        # percentage. Test results come from every leg, because Codecov
+        # classifies a flake by finding a pass and a fail on one commit.
+        node:
+          - version: "lts/-1"
+            slug: lts-1
+            coverage: false
+          - version: "lts/*"
+            slug: lts
+            coverage: true
         package: [core]
 
     steps:
@@ -83,10 +99,11 @@ jobs:
       - name: Download Codecov reports
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
-          name: codecov-reports-${{ matrix.package }}
+          name: codecov-reports-${{ matrix.package }}-${{ matrix.node.slug }}
           path: packages/${{ matrix.package }}
 
       - name: Upload coverage to Codecov
+        if: ${{ matrix.node.coverage }}
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7
         with:
           files: ./packages/${{ matrix.package }}/coverage/lcov.info
@@ -99,8 +116,8 @@ jobs:
         uses: codecov/test-results-action@0fa95f0e1eeaafde2c782583b36b28ad0d8c77d3 # v1
         with:
           files: ./packages/${{ matrix.package }}/test-results/junit.xml
-          flags: ${{ matrix.package }}
-          name: test-results-${{ matrix.package }}
+          flags: ${{ matrix.package }},node-${{ matrix.node.slug }}
+          name: test-results-${{ matrix.package }}-${{ matrix.node.slug }}
           fail_ci_if_error: true
 
   build:
