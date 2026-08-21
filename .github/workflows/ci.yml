@@ -26,18 +26,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # nvm aliases rather than literals, so the matrix auto-rotates;
-        # `alias` restates each version without the `/` and `*` that artifact
-        # names and Codecov flags reject.
+        # `version` is an nvm alias rather than a literal, so the matrix
+        # auto-rotates; `slug` is the same leg spelled in the characters
+        # artifact names and Codecov flags accept.
         #
         # `lts/-2` is deliberately absent: between April's EOL and October's
         # new LTS it names an end-of-life line, and pnpm's Node floor sits
         # above it, so that leg cannot install at all.
         node:
           - version: "lts/-1"
-            alias: lts-1
+            slug: lts-1
           - version: "lts/*"
-            alias: lts
+            slug: lts
         package: [core]
 
     steps:
@@ -56,7 +56,7 @@ jobs:
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: codecov-reports-${{ matrix.package }}-${{ matrix.node.alias }}
+          name: codecov-reports-${{ matrix.package }}-${{ matrix.node.slug }}
           path: |
             packages/${{ matrix.package }}/coverage/lcov.info
             packages/${{ matrix.package }}/test-results/junit.xml
@@ -79,12 +79,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Keep in sync with the `test` job's matrix.
+        # Leg set mirrors the `test` job. `coverage` marks the single leg
+        # whose lcov anchors the percentage, so one Node line's V8 behaviour
+        # cannot move it. Test results carry no such risk and upload from
+        # every leg, which is what lets Codecov see a same-commit pass and
+        # fail and classify a flake.
         node:
           - version: "lts/-1"
-            alias: lts-1
+            slug: lts-1
+            coverage: false
           - version: "lts/*"
-            alias: lts
+            slug: lts
+            coverage: true
         package: [core]
 
     steps:
@@ -94,15 +100,11 @@ jobs:
       - name: Download Codecov reports
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
-          name: codecov-reports-${{ matrix.package }}-${{ matrix.node.alias }}
+          name: codecov-reports-${{ matrix.package }}-${{ matrix.node.slug }}
           path: packages/${{ matrix.package }}
 
-      # One leg anchors the coverage percentage, so a Node line's V8 quirks
-      # cannot move it. Test results carry no such risk and upload from every
-      # leg, which is also what lets Codecov see a same-commit pass and fail
-      # and classify a flake.
       - name: Upload coverage to Codecov
-        if: ${{ matrix.node.version == 'lts/*' }}
+        if: ${{ matrix.node.coverage }}
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7
         with:
           files: ./packages/${{ matrix.package }}/coverage/lcov.info
@@ -115,8 +117,8 @@ jobs:
         uses: codecov/test-results-action@0fa95f0e1eeaafde2c782583b36b28ad0d8c77d3 # v1
         with:
           files: ./packages/${{ matrix.package }}/test-results/junit.xml
-          flags: ${{ matrix.package }},node-${{ matrix.node.alias }}
-          name: test-results-${{ matrix.package }}-${{ matrix.node.alias }}
+          flags: ${{ matrix.package }},node-${{ matrix.node.slug }}
+          name: test-results-${{ matrix.package }}-${{ matrix.node.slug }}
           fail_ci_if_error: true
 
   build:
