@@ -26,9 +26,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # `version` is an nvm alias rather than a literal, so the matrix
-        # auto-rotates; `slug` is the same leg spelled in the characters
-        # artifact names and Codecov flags accept.
+        # nvm aliases rather than literals, so the matrix auto-rotates.
+        # `slug` repeats each leg without the `/` and `*` that artifact
+        # names and Codecov flags reject.
         #
         # `lts/-2` is deliberately absent: between April's EOL and October's
         # new LTS it names an end-of-life line, and pnpm's Node floor sits
@@ -79,11 +79,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Leg set mirrors the `test` job. `coverage` marks the single leg
-        # whose lcov anchors the percentage, so one Node line's V8 behaviour
-        # cannot move it. Test results carry no such risk and upload from
-        # every leg, which is what lets Codecov see a same-commit pass and
-        # fail and classify a flake.
+        # Keep the leg set in sync with the `test` job. Coverage comes from
+        # one leg, so a single Node line's V8 behaviour cannot move the
+        # percentage. Test results come from every leg, because Codecov
+        # classifies a flake by finding a pass and a fail on one commit.
         node:
           - version: "lts/-1"
             slug: lts-1
