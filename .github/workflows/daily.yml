@@ -7,8 +7,8 @@ name: Daily
 on:
   schedule:
     # Offset from the hour: on-the-hour schedules queue behind platform peak
-    # load. The timezone field (GitHub Actions support added March 2026)
-    # handles BST/GMT automatically.
+    # load. Without the timezone field the cron would run in UTC and drift an
+    # hour at each BST transition.
     - cron: "47 6 * * *"
       timezone: Europe/London
   workflow_dispatch:
@@ -32,18 +32,15 @@ jobs:
       issues: write
       pull-requests: write
 
-    # Both windows are quoted back to the contributor in the messages below.
-    # Defined once so retuning the policy cannot leave a comment promising a
-    # deadline that differs from the one being enforced.
     env:
       DAYS_BEFORE_STALE: 30
       DAYS_BEFORE_CLOSE: 14
 
     steps:
-      # Both issue legs are disabled, not just marking: an issue already
-      # carrying the label would otherwise stay eligible for closing.
       - uses: actions/stale@4391f3da665fdf50b6810c1a66712fb9ba21aa93 # v11
         with:
+          # Disabling only the marking leg would leave an issue that already
+          # carries the label eligible for closing.
           days-before-issue-stale: -1
           days-before-issue-close: -1
           days-before-pr-stale: ${{ env.DAYS_BEFORE_STALE }}
@@ -57,9 +54,6 @@ jobs:
             picked up a stale label. A comment or a push clears the label and
             restarts the clock. Otherwise this closes in another
             ${{ env.DAYS_BEFORE_CLOSE }} days.
-          # Counts only the window that just elapsed, rather than the total
-          # since the last activity: the expression language has no arithmetic
-          # operators, so a total could only be a third literal to keep in sync.
           close-pr-message: >-
             Closing this: the stale label went on
             ${{ env.DAYS_BEFORE_CLOSE }} days ago and it has stayed quiet
