@@ -32,6 +32,13 @@ jobs:
       issues: write
       pull-requests: write
 
+    # Both windows are quoted back to the contributor in the messages below.
+    # Defined once so retuning the policy cannot leave a comment promising a
+    # deadline that differs from the one being enforced.
+    env:
+      DAYS_BEFORE_STALE: 30
+      DAYS_BEFORE_CLOSE: 14
+
     steps:
       # Both issue legs are disabled, not just marking: an issue already
       # carrying the label would otherwise stay eligible for closing.
@@ -39,17 +46,23 @@ jobs:
         with:
           days-before-issue-stale: -1
           days-before-issue-close: -1
-          days-before-pr-stale: 30
-          days-before-pr-close: 14
+          days-before-pr-stale: ${{ env.DAYS_BEFORE_STALE }}
+          days-before-pr-close: ${{ env.DAYS_BEFORE_CLOSE }}
           # Closing a Renovate pull request tells Renovate the version is
           # unwanted and it will not re-offer it. Renovate labels nothing by
           # default, so this depends on renovate.json applying the label.
           exempt-pr-labels: dependencies
           stale-pr-message: >-
-            This has been quiet for 30 days, so it's picked up a stale label. A
-            comment or a push clears the label and restarts the clock. Otherwise
-            this closes in another 14 days.
+            This has been quiet for ${{ env.DAYS_BEFORE_STALE }} days, so it's
+            picked up a stale label. A comment or a push clears the label and
+            restarts the clock. Otherwise this closes in another
+            ${{ env.DAYS_BEFORE_CLOSE }} days.
+          # Counts only the window that just elapsed, rather than the total
+          # since the last activity: the expression language has no arithmetic
+          # operators, so a total could only be a third literal to keep in sync.
           close-pr-message: >-
-            Closing this after 44 quiet days. That isn't a call on the change
-            itself, and nothing is lost: the branch stays where it is, so
-            comment here if you want to pick it back up and I'll reopen it.
+            Closing this: the stale label went on
+            ${{ env.DAYS_BEFORE_CLOSE }} days ago and it has stayed quiet
+            since. That isn't a call on the change itself, and nothing is lost:
+            the branch stays where it is, so comment here if you want to pick
+            it back up and I'll reopen it.
