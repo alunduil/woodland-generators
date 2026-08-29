@@ -4,59 +4,33 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![codecov](https://codecov.io/github/alunduil/woodland-generators/graph/badge.svg?token=WR4ZQLMJMB)](https://codecov.io/github/alunduil/woodland-generators)
 
-A CLI tool for generating resources for Root: The Tabletop RPG.
+Generators for Root: The Tabletop RPG.
 
 **By [Alex Brandt](https://github.com/alunduil)**
 
-## What this tool does
+## What this project is
 
-Woodland Generators currently ships one capability:
+A pnpm workspace of two TypeScript packages:
 
-- **Character generator**: Build a Root character from a playbook PDF (or
-  pre-parsed JSON playbook), with optional seed, archetype, name, and species
-  overrides. Writes JSON to standard output, ready to redirect to a file or pipe
-  into another tool.
+- **`@woodland-generators/core`**: seeded generator functions for Root
+  characters, covering name, species, details, and demeanor.
+- **`@woodland-generators/foundry-module`**: a Foundry VTT module that loads
+  core into a live world.
 
-Other generators (NPC, clearing, adventure plot) and additional export formats
-(Markdown, HTML, PDF) are planned but not yet implemented. Track progress on the
+Track progress on the
 [milestones page](https://github.com/alunduil/woodland-generators/milestones).
 
 ## Installation
 
-### Method 1 - npm (recommended)
-
-```bash
-npm install -g woodland-generators
-```
-
-### Method 2 - direct download
-
-Get the newest version from the
-[releases page](https://github.com/alunduil/woodland-generators/releases) and
-run the file.
+Neither package is published. Build the workspace from a clone: see
+[CONTRIBUTING.md](CONTRIBUTING.md) for setup, then
+[install the Foundry module into a local Foundry](docs/how-to/install-the-foundry-module-into-a-local-foundry.md)
+to load it into a world.
 
 ## Requirements
 
-- Node.js 22.13.0 or later (for npm installation)
-
-## Usage
-
-### Quick start
-
-```bash
-# Generate a character from a Root playbook PDF
-woodland-gen character path/to/playbook.pdf
-
-# Reproduce the same character later via seed
-woodland-gen character path/to/playbook.pdf --seed abc123
-
-# Get help for any command
-woodland-gen --help
-woodland-gen character --help
-```
-
-The generated character prints as JSON. Redirect to a file or pipe into another
-tool as needed.
+- Node.js 22.13.0 or later
+- pnpm 11.8.0 or later, enabled with `corepack enable`
 
 ## Contributing
 
@@ -72,13 +46,11 @@ For setup help and detailed guides, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Documentation
 
-- **README.md** (this file): Project overview, setup, and basic use
+- **README.md** (this file): Project overview and setup
 - **[CONTRIBUTING.md](CONTRIBUTING.md)**: Setup help and guide for helpers
 - **[CHANGELOG.md](CHANGELOG.md)**: Project history and version changes
 - **[LICENSE](LICENSE)**: MIT License terms
 - **docs/**: Extra docs for helpers and maintainers
-
-For help with commands, use `woodland-gen [command] --help`.
 
 ## Support
 
