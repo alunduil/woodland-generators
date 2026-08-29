@@ -48,3 +48,11 @@ jobs:
       # another by tag fails the run at resolution, before any step executes.
       - name: Run
         uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec # v1.0.5
+
+      # A second invocation is what selects the manual stage, and it reuses
+      # the hook environment the step above provisioned and cached. See
+      # .pre-commit-config.yaml for why that stage exists.
+      - name: Validate TOML against published schemas
+        uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec # v1.0.5
+        with:
+          extra_args: --hook-stage manual --all-files tombi-lint-online
