@@ -30,7 +30,7 @@ to load it into a world.
 ## Requirements
 
 - Node.js 22.13.0 or later
-- pnpm 11.8.0 or later, enabled with `corepack enable`
+- pnpm, provisioned by `corepack enable` from the `packageManager` pin
 
 ## Contributing
 
