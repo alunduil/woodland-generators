@@ -22,15 +22,19 @@ Track progress on the
 
 ## Installation
 
-Neither package is published. Build the workspace from a clone: see
-[CONTRIBUTING.md](CONTRIBUTING.md) for setup, then
-[install the Foundry module into a local Foundry](docs/how-to/install-the-foundry-module-into-a-local-foundry.md)
-to load it into a world.
+Neither package is published, so the workspace runs from a clone.
 
-## Requirements
+You need:
 
 - Node.js 22.13.0 or later
 - pnpm, provisioned by `corepack enable` from the `packageManager` pin
+
+Then:
+
+1. Follow [CONTRIBUTING.md](CONTRIBUTING.md) to install dependencies and build
+   the workspace.
+2. [Install the Foundry module into a local Foundry](docs/how-to/install-the-foundry-module-into-a-local-foundry.md)
+   to load it into a world.
 
 ## Contributing
 
