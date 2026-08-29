@@ -14,8 +14,8 @@ A pnpm workspace of two TypeScript packages:
 
 - **`@woodland-generators/core`**: seeded generator functions for Root
   characters, covering name, species, details, and demeanor.
-- **`@woodland-generators/foundry-module`**: a Foundry VTT module that loads
-  core into a live world.
+- **`@woodland-generators/foundry-module`**: a Foundry VTT module shell. It
+  loads into a world and logs a startup message; nothing wires it to core.
 
 Track progress on the
 [milestones page](https://github.com/alunduil/woodland-generators/milestones).
