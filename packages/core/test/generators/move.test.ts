@@ -232,11 +232,9 @@ describe("MoveGenerator", () => {
         fc.property(
           uniqueArray(fc.string(), { minLength: 0, maxLength: 5 }),
           fc.option(fc.string()),
-          fc.option(fc.boolean()),
-          (availableMoves, seed, useFallbacks) => {
+          (availableMoves, seed) => {
             const options: MoveGeneratorOptions = { availableMoves };
             if (seed !== null) options.seed = seed;
-            if (useFallbacks !== null) options.useFallbacks = useFallbacks;
 
             const generator = new MoveGenerator(options);
 
@@ -247,21 +245,6 @@ describe("MoveGenerator", () => {
             return generator.isAvailable() === availableMoves.length > 0;
           },
         ),
-      );
-    });
-
-    it("should disable fallbacks by default", () => {
-      fc.assert(
-        fc.property(uniqueArray(fc.string(), { minLength: 0, maxLength: 3 }), (availableMoves) => {
-          const generator = new MoveGenerator({ availableMoves });
-
-          // With empty moves and default fallbacks (false), should not be available
-          if (availableMoves.length === 0) {
-            return !generator.isAvailable();
-          }
-
-          return generator.isAvailable();
-        }),
       );
     });
   });
