@@ -13,7 +13,7 @@ const rng = new Rng("a seed phrase");
 
 rng.getRandomIntInclusive(1, 6);
 rng.selectRandomElement(["ash", "birch", "cedar"]);
-rng.selectUniqueRandomElements(["ash", "birch", "cedar"], 2);
+rng.selectRandomSample(["ash", "birch", "cedar"], 2);
 ```
 
 `hashSeed` derives the 32-bit numeric seed the underlying generator takes. It's

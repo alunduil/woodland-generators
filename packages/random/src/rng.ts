@@ -21,7 +21,9 @@ export class Rng {
     this.generator = xoroshiro128plus(hashSeed(seed));
   }
 
-  /** Random integer in the inclusive range [min, max]. */
+  /**
+   * Random integer in the inclusive range [min, max].
+   */
   getRandomIntInclusive(min: number, max: number): number {
     return uniformInt(this.generator, min, max);
   }
@@ -32,10 +34,14 @@ export class Rng {
   }
 
   /**
-   * Pick `count` distinct elements via a partial Fisher-Yates shuffle. Returns
-   * fewer than `count` only when the pool is smaller than requested.
+   * Sample `count` elements without replacement, via a partial Fisher-Yates
+   * shuffle. Returns fewer than `count` only when the pool holds fewer than
+   * that.
+   *
+   * Positions are sampled rather than values, so a pool holding the same value
+   * twice can yield that value twice.
    */
-  selectUniqueRandomElements<T>(elements: T[], count: number): T[] {
+  selectRandomSample<T>(elements: T[], count: number): T[] {
     const pool = [...elements];
     const take = Math.min(count, pool.length);
 

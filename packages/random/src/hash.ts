@@ -2,6 +2,11 @@
 //
 // SPDX-License-Identifier: MIT
 
+// The 32-bit FNV-1a parameters, named as the specification names them so the
+// reference test vectors can be read against this implementation.
+const FNV_OFFSET_BASIS = 0x811c9dc5;
+const FNV_PRIME = 0x01000193;
+
 /**
  * Derive a 32-bit seed from a string via FNV-1a.
  *
@@ -14,11 +19,11 @@
  * bytes would silently repoint every non-ASCII seed at a different stream.
  */
 export function hashSeed(seed: string): number {
-  let h = 0x811c9dc5;
+  let h = FNV_OFFSET_BASIS;
 
   for (let i = 0; i < seed.length; i++) {
     h ^= seed.charCodeAt(i);
-    h = Math.imul(h, 0x01000193);
+    h = Math.imul(h, FNV_PRIME);
   }
 
   return h >>> 0;

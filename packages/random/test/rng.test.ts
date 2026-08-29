@@ -26,9 +26,32 @@ describe("Rng", () => {
   });
 });
 
-describe("selectUniqueRandomElements", () => {
-  it("returns distinct elements drawn from the pool", () => {
-    const selected = new Rng("woodland").selectUniqueRandomElements(POOL, 4);
+describe("getRandomIntInclusive", () => {
+  it("draws within the inclusive bounds", () => {
+    const rng = new Rng("woodland");
+
+    for (let i = 0; i < 100; i++) {
+      const drawn = rng.getRandomIntInclusive(3, 5);
+
+      expect(drawn).toBeGreaterThanOrEqual(3);
+      expect(drawn).toBeLessThanOrEqual(5);
+    }
+  });
+
+  it("draws the bound itself when the range holds one value", () => {
+    expect(new Rng("woodland").getRandomIntInclusive(7, 7)).toBe(7);
+  });
+});
+
+describe("selectRandomElement", () => {
+  it("returns an element of the array", () => {
+    expect(POOL).toContain(new Rng("woodland").selectRandomElement(POOL));
+  });
+});
+
+describe("selectRandomSample", () => {
+  it("returns elements drawn from distinct positions", () => {
+    const selected = new Rng("woodland").selectRandomSample(POOL, 4);
 
     expect(selected).toHaveLength(4);
     expect(new Set(selected).size).toBe(4);
@@ -36,16 +59,31 @@ describe("selectUniqueRandomElements", () => {
   });
 
   it("truncates to the pool when asked for more than it holds", () => {
-    const selected = new Rng("woodland").selectUniqueRandomElements(POOL, POOL.length + 3);
+    const selected = new Rng("woodland").selectRandomSample(POOL, POOL.length + 3);
 
     expect([...selected].sort()).toEqual([...POOL].sort());
+  });
+
+  it("returns nothing when asked for nothing", () => {
+    expect(new Rng("woodland").selectRandomSample(POOL, 0)).toEqual([]);
   });
 
   it("leaves the caller's pool untouched", () => {
     const pool = [...POOL];
 
-    new Rng("woodland").selectUniqueRandomElements(pool, 3);
+    new Rng("woodland").selectRandomSample(pool, 3);
 
     expect(pool).toEqual(POOL);
+  });
+
+  // Positions are sampled, not values, so the name promises no more than that.
+  it("can repeat a value the pool holds twice", () => {
+    const drawn = new Set<string>();
+
+    for (let i = 0; i < 40; i++) {
+      drawn.add(new Rng(`seed-${i}`).selectRandomSample(["ash", "ash", "birch"], 2).join());
+    }
+
+    expect(drawn).toContain("ash,ash");
   });
 });
