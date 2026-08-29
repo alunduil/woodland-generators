@@ -5,6 +5,14 @@
 packages:
   - "packages/*"
 blockExoticSubdeps: false
+overrides:
+  # foundry-vtt-types pulls tinymce and showdown for its type surface alone:
+  # foundry-module is esbuild-bundled from src/ and loads inside Foundry VTT,
+  # which supplies its own copies, so neither reaches shipped code. Pinning
+  # tinymce past its declared ^6.8.5 clears XSS advisories that resolve only in
+  # 7.x. showdown gets no entry: every published version carries its advisories,
+  # accepted on the same not-reachable grounds.
+  tinymce: 7.9.3
 allowBuilds:
   esbuild: true
   unrs-resolver: true
