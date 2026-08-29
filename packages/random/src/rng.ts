@@ -24,9 +24,8 @@ export class Rng {
   /**
    * Random integer in the inclusive range [min, max].
    *
-   * An inverted range draws from no values at all, which pure-rand answers
-   * with a number outside the range rather than a failure, so the bounds are
-   * checked here.
+   * pure-rand answers an inverted range with a value outside it rather than
+   * failing, so the bounds are checked here.
    */
   getRandomIntInclusive(min: number, max: number): number {
     if (min > max) {
@@ -42,14 +41,12 @@ export class Rng {
       throw new Error("Cannot select an element from an empty array");
     }
 
-    // The guard above puts the drawn index inside the array.
     return elements[this.getRandomIntInclusive(0, elements.length - 1)]!;
   }
 
   /**
    * Sample `count` elements without replacement, via a partial Fisher-Yates
-   * shuffle. Returns fewer than `count` only when the pool holds fewer than
-   * that.
+   * shuffle. Returns fewer than `count` only when the pool is smaller.
    *
    * Positions are sampled rather than values, so a pool holding the same value
    * twice can yield that value twice.

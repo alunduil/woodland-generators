@@ -2,8 +2,6 @@
 //
 // SPDX-License-Identifier: MIT
 
-// The 32-bit FNV-1a parameters, named as the specification names them so the
-// reference test vectors can be read against this implementation.
 const FNV_OFFSET_BASIS = 0x811c9dc5;
 const FNV_PRIME = 0x01000193;
 
@@ -16,7 +14,7 @@ const FNV_PRIME = 0x01000193;
  *
  * The digest is taken over UTF-16 code units, not the UTF-8 bytes canonical
  * FNV-1a specifies. The two agree on ASCII and diverge beyond it; changing to
- * bytes would silently repoint every non-ASCII seed at a different stream.
+ * bytes would send every non-ASCII seed to a different stream.
  */
 export function hashSeed(seed: string): number {
   let h = FNV_OFFSET_BASIS;

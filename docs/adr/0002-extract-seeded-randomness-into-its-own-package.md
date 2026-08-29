@@ -13,15 +13,14 @@ maths, and logging. Nothing unifies them beyond "not the Foundry UI," so the
 package name predicts nothing about what belongs inside it, and every new
 utility lands there by default.
 
-Seeded randomness is the first piece whose boundary draws itself. `Rng` wraps
+Seeded randomness is the first piece with a clear boundary. `Rng` wraps
 `pure-rand` behind the four operations the generators need, and an FNV-1a hash
 turns a user-facing seed string into the numeric seed the generator takes.
 Neither touches a Root concept. Both landed inline in `core` with the
 `pure-rand` swap (#360, for #311) as a deliberately temporary home.
 
-The question is precedent-setting rather than local: whatever splits `core`
-first fixes what a new workspace package costs and how the pieces address each
-other.
+The decision sets precedent. Whatever splits `core` first fixes what a new
+workspace package costs and how the pieces address each other.
 
 ### Considered options
 
@@ -30,7 +29,7 @@ other.
 Costs nothing today. `core` keeps growing without a rule for what it excludes,
 and the next utility of the same shape has no precedent to follow. The
 seeded-randomness boundary is as clean as any that will appear, so declining
-here effectively declines to split `core` at all.
+here declines to split `core` at all.
 
 #### A general `utils` package
 
@@ -43,7 +42,7 @@ home. `core` already demonstrates where that ends.
 Names one capability. The cost is per-package scaffolding: `package.json`, a
 `tsconfig.json` and `tsconfig.test.json`, a jest configuration, an entry in the
 root jest `projects` list, and a `knip.json` workspace block. Every one of those
-already exists twice over, so the marginal cost is copying, not designing.
+already exists twice over, so the marginal cost is mechanical.
 
 ## Decision
 
@@ -77,7 +76,7 @@ let the boundary be the package's public API.
   `core` at this point, so the break costs nothing to make now and grows more
   expensive to make later.
 - `core` still holds generators, character and details types, maths, and
-  logging. It remains a catch-all, one utility smaller.
+  logging. It remains a catch-all.
 - Each further carve-out repeats the scaffolding. Should that repetition start
   to hurt, shared configuration is the answer, not fewer packages.
 - Cross-package changes need a build before a type-check reflects them.

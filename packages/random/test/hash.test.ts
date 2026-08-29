@@ -5,9 +5,8 @@
 import { hashSeed } from "../src/hash";
 
 describe("hashSeed", () => {
-  // Canonical FNV-1a 32-bit vectors. Every input here is ASCII, where the
-  // UTF-16 code units hashSeed digests coincide with the UTF-8 bytes the
-  // reference defines.
+  // The reference vectors are ASCII, where the UTF-16 code units hashSeed
+  // digests coincide with the UTF-8 bytes FNV-1a defines.
   it.each([
     ["", 0x811c9dc5],
     ["a", 0xe40c292c],

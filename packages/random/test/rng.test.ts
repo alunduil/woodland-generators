@@ -42,8 +42,6 @@ describe("getRandomIntInclusive", () => {
     expect(new Rng("woodland").getRandomIntInclusive(7, 7)).toBe(7);
   });
 
-  // Left unchecked, pure-rand answers an inverted range with a number outside
-  // it: [5, 2] yielded 6.
   it("rejects an inverted range", () => {
     expect(() => new Rng("woodland").getRandomIntInclusive(5, 2)).toThrow(
       "Cannot draw from the empty range [5, 2]",
@@ -56,7 +54,6 @@ describe("selectRandomElement", () => {
     expect(POOL).toContain(new Rng("woodland").selectRandomElement(POOL));
   });
 
-  // The return type promises a T, and an empty array has none to give.
   it("rejects an empty array", () => {
     expect(() => new Rng("woodland").selectRandomElement([])).toThrow(
       "Cannot select an element from an empty array",
@@ -83,8 +80,6 @@ describe("selectRandomSample", () => {
     expect(new Rng("woodland").selectRandomSample(POOL, 0)).toEqual([]);
   });
 
-  // Math.min let a negative count through to Array.slice, where it counted
-  // back from the end: -3 against a pool of 6 returned 3 elements.
   it("rejects a negative count", () => {
     expect(() => new Rng("woodland").selectRandomSample(POOL, -3)).toThrow(
       "Cannot sample a negative number of elements: -3",
@@ -99,7 +94,6 @@ describe("selectRandomSample", () => {
     expect(pool).toEqual(POOL);
   });
 
-  // Positions are sampled, not values, so the name promises no more than that.
   it("can repeat a value the pool holds twice", () => {
     const drawn = new Set<string>();
 

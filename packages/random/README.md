@@ -16,8 +16,7 @@ rng.selectRandomElement(["ash", "birch", "cedar"]);
 rng.selectRandomSample(["ash", "birch", "cedar"], 2);
 ```
 
-`hashSeed` derives the 32-bit numeric seed the underlying generator takes. It's
-exported for callers that need the same string-to-seed mapping outside an `Rng`.
+`hashSeed` derives the 32-bit numeric seed the underlying generator takes.
 
 ## Development
 
