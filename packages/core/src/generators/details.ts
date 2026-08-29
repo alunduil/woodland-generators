@@ -8,7 +8,7 @@ import { Details } from "../details";
 import { generateMultipleFromChoices, Rng } from "./core";
 
 /**
- * Options for functional details generation
+ * Options for details generation
  */
 export interface DetailsGeneratorOptions extends GeneratorOptions {
   /** Available detail choices from playbook */
@@ -18,7 +18,7 @@ export interface DetailsGeneratorOptions extends GeneratorOptions {
 }
 
 /**
- * Generate random character details using functional approach
+ * Generate random character details
  */
 export function generateDetails(options: DetailsGeneratorOptions): Details {
   const logger = root.child({

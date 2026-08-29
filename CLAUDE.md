@@ -24,7 +24,6 @@ Run `corepack enable` once, then:
 - `pnpm --filter @woodland-generators/core build:watch`: `tsc --watch` for
   incremental core development.
 - `pnpm test`: Jest suite (root configuration runs the `core` project only).
-- `pnpm run bench`: benchmark suite.
 - `pre-commit run --all-files`: gates every PR. Authoritative hook list:
   `.pre-commit-config.yaml`.
 

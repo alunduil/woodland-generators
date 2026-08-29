@@ -4,14 +4,10 @@
     ".": {
       "entry": ["scripts/*.ts"],
       "project": ["scripts/**/*.ts"],
-      "ignoreDependencies": ["jest", "prettier"]
+      "ignoreDependencies": ["jest", "prettier", "tsx"]
     },
     "packages/core": {
-      "entry": [
-        "src/logging/pino-pretty-transport.js",
-        "test/**/*.test.ts",
-        "test/**/*.bench.ts"
-      ],
+      "entry": ["src/logging/pino-pretty-transport.js", "test/**/*.test.ts"],
       "project": ["src/**/*.{ts,js}"]
     },
     "packages/foundry-module": {

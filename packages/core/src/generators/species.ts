@@ -154,7 +154,7 @@ export const EXTENDED_WOODLAND_SPECIES = [
 ] as const;
 
 /**
- * Options for functional species generation
+ * Options for species generation
  */
 export interface SpeciesGeneratorOptions extends GeneratorOptions {
   /** Species choices available for selection (from playbook) */
@@ -164,7 +164,7 @@ export interface SpeciesGeneratorOptions extends GeneratorOptions {
 }
 
 /**
- * Generate a random character species using functional approach
+ * Generate a random character species
  */
 export function generateSpecies(options: SpeciesGeneratorOptions): string {
   const logger = root.child({
