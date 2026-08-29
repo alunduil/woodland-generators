@@ -171,13 +171,12 @@ repos:
         pass_filenames: false
         types: [ts]
       - id: knip
-        # Dead-code gate: unused files, exports, and exported types alongside
-        # unused/unlisted dependencies. knip is workspace-aware natively, so it
-        # runs once at the root and audits every package from `knip.json`.
-        # Per-package entry/project globs and the root `ignoreDependencies`
-        # (jest, prettier — used via tool config, not imports) live there.
-        # Sources are in `files` because reachability, not just the manifests,
-        # decides the verdict.
+        # Dead-code and unused-dependency gate. One root invocation covers
+        # every package: knip is workspace-aware and reads its per-package
+        # globs from `knip.json`. That file also ignores jest and prettier,
+        # which tool config pulls in rather than any import.
+        # A source edit alone can change what knip reports, so `files`
+        # matches sources as well as manifests.
         name: knip
         entry: pnpm exec knip
         language: system
