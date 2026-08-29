@@ -4,7 +4,7 @@
   "testEnvironment": "node",
   "clearMocks": true,
   "collectCoverageFrom": ["src/**/*.ts", "!src/**/*.d.ts"],
-  "testPathIgnorePatterns": ["/node_modules/", "/dist/", ".*\\.bench\\.ts$"],
+  "testPathIgnorePatterns": ["/node_modules/", "/dist/"],
   "coverageReporters": ["text", ["lcov", { "projectRoot": "../.." }], "html"],
   "reporters": [
     "default",

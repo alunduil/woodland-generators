@@ -14,11 +14,9 @@ coverage:
 ignore:
   - "dist/"
   - "coverage/"
-  - "benchmarks/"
   - "scripts/"
   - "test/"
   - "test-results/"
   - "**/*.d.ts"
   - "**/*.test.ts"
-  - "**/*.bench.ts"
   - "packages/*/src/logging/pino-pretty-transport.js"
