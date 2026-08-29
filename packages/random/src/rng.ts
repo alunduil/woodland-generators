@@ -6,23 +6,7 @@ import { uniformInt } from "pure-rand/distribution/uniformInt";
 import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 import type { RandomGenerator } from "pure-rand/types/RandomGenerator";
 
-/**
- * Derive a 32-bit seed from a string via FNV-1a.
- *
- * pure-rand generators take a numeric seed, but every generator is seeded from
- * a user-facing string. The engine's state initialization does the mixing, so
- * this only has to be deterministic and low-collision.
- */
-function hashSeed(seed: string): number {
-  let h = 0x811c9dc5;
-
-  for (let i = 0; i < seed.length; i++) {
-    h ^= seed.charCodeAt(i);
-    h = Math.imul(h, 0x01000193);
-  }
-
-  return h >>> 0;
-}
+import { hashSeed } from "./hash";
 
 /**
  * Seedable random helper over pure-rand.

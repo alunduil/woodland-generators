@@ -17,6 +17,10 @@
     "packages/foundry-module": {
       "entry": ["src/module.ts"],
       "project": ["src/**/*.ts"]
+    },
+    "packages/random": {
+      "entry": ["src/index.ts", "test/**/*.test.ts"],
+      "project": ["src/**/*.ts"]
     }
   }
 }

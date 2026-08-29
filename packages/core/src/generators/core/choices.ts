@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import { Logger } from "pino";
-import { Rng } from "./rng";
+import { Rng } from "@woodland-generators/random";
 
 /**
  * Validate that choices array is non-empty

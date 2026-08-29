@@ -2,12 +2,13 @@
 //
 // SPDX-License-Identifier: MIT
 
+import { Rng } from "@woodland-generators/random";
+
 import {
   validateChoicesNonEmpty,
   generateSubsetFromChoices,
   generateSingleFromChoices,
   generateMultipleFromChoices,
-  Rng,
 } from "../../../src/generators/core";
 import { root } from "../../../src/logging";
 
