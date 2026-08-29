@@ -8,17 +8,6 @@
 export interface GeneratorOptions {
   /** Seed for reproducible random generation */
   seed?: string;
-  /** Whether to use fallback defaults if no options available */
-  useFallbacks?: boolean;
-}
-
-/**
- * Base interface for all character generators
- */
-export interface Generator<T> {
-  generate(options?: GeneratorOptions): T | null;
-  getAvailableOptions(): T[];
-  isAvailable(): boolean;
 }
 
 /**
@@ -32,14 +21,12 @@ export interface MoveGeneratorOptions extends GeneratorOptions {
 /**
  * Generator for character moves
  */
-export class MoveGenerator implements Generator<string> {
+export class MoveGenerator {
   private options: MoveGeneratorOptions;
 
   constructor(options: MoveGeneratorOptions) {
-    this.options = {
-      useFallbacks: false, // Moves are specific to playbooks, no generic fallbacks
-      ...options,
-    };
+    // Copied so updateOptions cannot write through to the caller's object.
+    this.options = { ...options };
   }
 
   /**
