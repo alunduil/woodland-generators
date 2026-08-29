@@ -48,3 +48,11 @@ jobs:
       # another by tag fails the run at resolution, before any step executes.
       - name: Run
         uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec # v1.0.5
+
+      # Schema validation needs the network, so the committed tombi hooks run
+      # --offline and this manual-stage hook carries the online run. Reuses the
+      # hook environment the step above already provisioned and cached.
+      - name: Validate TOML against published schemas
+        uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec # v1.0.5
+        with:
+          extra_args: --hook-stage manual --all-files tombi-lint-online

@@ -80,6 +80,12 @@ repos:
 
   # TOML formatting and linting. --offline keeps the hooks from fetching
   # schemas over the network at commit time.
+  #
+  # tombi-lint-online drops --offline so tombi resolves the schemastore
+  # catalog and validates against the published schema (lychee.json today),
+  # which catches unknown keys and wrong value types that --offline passes
+  # silently. It sits on the manual stage so only CI runs it; see the
+  # matching step in .github/workflows/pre-commit.yml.
   - repo: https://github.com/tombi-toml/tombi-pre-commit
     rev: v1.4.1
     hooks:
@@ -87,6 +93,10 @@ repos:
         args: ["--offline"]
       - id: tombi-lint
         args: ["--offline"]
+      - id: tombi-lint
+        alias: tombi-lint-online
+        name: tombi-lint (online)
+        stages: [manual]
 
   # REUSE compliance: every tracked file must declare copyright + license
   # via inline SPDX headers or REUSE.toml annotations. The hook runs
