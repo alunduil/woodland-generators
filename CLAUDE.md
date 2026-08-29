@@ -14,10 +14,13 @@ resources.
 - `packages/random` (`@woodland-generators/random`): seeded randomness (`Rng`,
   `hashSeed`). `core` depends on it; it depends on nothing in the workspace.
 
-`core` is a catch-all being split; `random` is the first carve-out
-([ADR 0002](docs/adr/0002-extract-seeded-randomness-into-its-own-package.md)).
-Give a new foundational capability its own package and address it by its package
-name. Each package exports what it owns.
+`core` is a catch-all being split; `random` is the first carve-out. Give a new
+foundational capability its own package and address it by its package name. Each
+package exports what it owns.
+
+A cross-package change needs `pnpm run build` before a type-check sees it.
+Packages resolve each other through `dist/`, so `tsc --noEmit` against a stale
+sibling reports a missing export rather than a real error.
 
 No CLI binary is wired up at HEAD despite the `woodland-gen` framing in the
 README: there is no `bin`, `cli.ts`, or `cli` script, so don't reach for
