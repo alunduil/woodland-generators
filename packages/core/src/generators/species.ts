@@ -2,9 +2,11 @@
 //
 // SPDX-License-Identifier: MIT
 
+import { Rng } from "@woodland-generators/random";
+
 import { GeneratorOptions } from "./index";
 import { root } from "../logging";
-import { generateSingleFromChoices, Rng } from "./core";
+import { generateSingleFromChoices } from "./core";
 
 /**
  * Extended list of woodland animals compatible with Root's ecosystem

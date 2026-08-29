@@ -9,12 +9,14 @@ Generators for Root: The Tabletop RPG.
 
 ## What this project is
 
-A pnpm workspace of two TypeScript packages:
+A pnpm workspace of three TypeScript packages:
 
 - **`@woodland-generators/core`**: seeded generator functions for Root
   characters, covering name, species, details, and demeanor.
 - **`@woodland-generators/foundry-module`**: a Foundry VTT module shell. It
   loads into a world and logs a startup message; nothing wires it to core.
+- **`@woodland-generators/random`**: the seeded randomness core draws from, so a
+  seed phrase reproduces the same character.
 
 Track progress on the
 [milestones page](https://github.com/alunduil/woodland-generators/milestones).

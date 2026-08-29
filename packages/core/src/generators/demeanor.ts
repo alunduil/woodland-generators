@@ -2,9 +2,11 @@
 //
 // SPDX-License-Identifier: MIT
 
+import { Rng } from "@woodland-generators/random";
+
 import { GeneratorOptions } from "./index";
 import { root } from "../logging";
-import { generateSubsetFromChoices, Rng } from "./core";
+import { generateSubsetFromChoices } from "./core";
 
 /**
  * Options for demeanor generation

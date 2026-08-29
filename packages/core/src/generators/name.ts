@@ -2,8 +2,9 @@
 //
 // SPDX-License-Identifier: MIT
 
+import { Rng } from "@woodland-generators/random";
+
 import { GeneratorOptions } from "./index";
-import { Rng } from "./core";
 import { root } from "../logging";
 
 /**

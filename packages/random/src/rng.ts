@@ -6,23 +6,7 @@ import { uniformInt } from "pure-rand/distribution/uniformInt";
 import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 import type { RandomGenerator } from "pure-rand/types/RandomGenerator";
 
-/**
- * Derive a 32-bit seed from a string via FNV-1a.
- *
- * pure-rand generators take a numeric seed, but every generator is seeded from
- * a user-facing string. The engine's state initialization does the mixing, so
- * this only has to be deterministic and low-collision.
- */
-function hashSeed(seed: string): number {
-  let h = 0x811c9dc5;
-
-  for (let i = 0; i < seed.length; i++) {
-    h ^= seed.charCodeAt(i);
-    h = Math.imul(h, 0x01000193);
-  }
-
-  return h >>> 0;
-}
+import { hashSeed } from "./hash";
 
 /**
  * Seedable random helper over pure-rand.
@@ -37,21 +21,41 @@ export class Rng {
     this.generator = xoroshiro128plus(hashSeed(seed));
   }
 
-  /** Random integer in the inclusive range [min, max]. */
+  /**
+   * Random integer in the inclusive range [min, max].
+   *
+   * pure-rand answers an inverted range with a value outside it rather than
+   * failing, so the bounds are checked here.
+   */
   getRandomIntInclusive(min: number, max: number): number {
+    if (min > max) {
+      throw new Error(`Cannot draw from the empty range [${min}, ${max}]`);
+    }
+
     return uniformInt(this.generator, min, max);
   }
 
   /** Pick a single element uniformly at random. */
   selectRandomElement<T>(elements: T[]): T {
+    if (elements.length === 0) {
+      throw new Error("Cannot select an element from an empty array");
+    }
+
     return elements[this.getRandomIntInclusive(0, elements.length - 1)]!;
   }
 
   /**
-   * Pick `count` distinct elements via a partial Fisher-Yates shuffle. Returns
-   * fewer than `count` only when the pool is smaller than requested.
+   * Sample `count` elements without replacement, via a partial Fisher-Yates
+   * shuffle. Returns fewer than `count` only when the pool is smaller.
+   *
+   * Positions are sampled rather than values, so a pool holding the same value
+   * twice can yield that value twice.
    */
-  selectUniqueRandomElements<T>(elements: T[], count: number): T[] {
+  selectRandomSample<T>(elements: T[], count: number): T[] {
+    if (count < 0) {
+      throw new Error(`Cannot sample a negative number of elements: ${count}`);
+    }
+
     const pool = [...elements];
     const take = Math.min(count, pool.length);
 

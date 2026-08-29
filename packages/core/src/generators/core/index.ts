@@ -15,4 +15,3 @@
  */
 
 export * from "./choices";
-export * from "./rng";

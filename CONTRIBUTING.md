@@ -27,12 +27,14 @@ Typos and formatting fixes need no issue at all - see
 
 ## Project layout
 
-Two packages live under `packages/`:
+Three packages live under `packages/`:
 
 - **`@woodland-generators/core`** - the generator algorithms. No user interface,
   no input or output beyond logging. Most generator work lands here.
 - **`@woodland-generators/foundry-module`** - a Foundry VTT module that loads
   core into a live world.
+- **`@woodland-generators/random`** - the seeded randomness core draws from. A
+  new foundational capability gets its own package alongside it.
 
 Repository-wide docs sit in `docs/`, organized by
 [Diátaxis](https://diataxis.fr): how-to guides in `docs/how-to/`, architecture
