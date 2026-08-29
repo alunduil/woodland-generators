@@ -171,16 +171,18 @@ repos:
         pass_filenames: false
         types: [ts]
       - id: knip
-        # Unused/unlisted dependency gate, scoped to `--dependencies` to match
-        # the contract depcheck held. knip is workspace-aware natively, so it
+        # Dead-code gate: unused files, exports, and exported types alongside
+        # unused/unlisted dependencies. knip is workspace-aware natively, so it
         # runs once at the root and audits every package from `knip.json`.
         # Per-package entry/project globs and the root `ignoreDependencies`
         # (jest, prettier — used via tool config, not imports) live there.
+        # Sources are in `files` because reachability, not just the manifests,
+        # decides the verdict.
         name: knip
-        entry: pnpm exec knip --dependencies
+        entry: pnpm exec knip
         language: system
         pass_filenames: false
-        files: (^|/)package\.json$|^pnpm-lock\.yaml$|^pnpm-workspace\.yaml$|^knip\.json$
+        files: \.(ts|tsx|js|mjs|cjs)$|(^|/)package\.json$|^pnpm-lock\.yaml$|^pnpm-workspace\.yaml$|^knip\.json$
       - id: workspace
         name: workspace
         entry: pnpm exec tsx scripts/validate-workspace.ts

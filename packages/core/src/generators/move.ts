@@ -13,15 +13,6 @@ export interface GeneratorOptions {
 }
 
 /**
- * Base interface for all character generators
- */
-export interface Generator<T> {
-  generate(options?: GeneratorOptions): T | null;
-  getAvailableOptions(): T[];
-  isAvailable(): boolean;
-}
-
-/**
  * Configuration options for move generation
  */
 export interface MoveGeneratorOptions extends GeneratorOptions {
@@ -32,7 +23,7 @@ export interface MoveGeneratorOptions extends GeneratorOptions {
 /**
  * Generator for character moves
  */
-export class MoveGenerator implements Generator<string> {
+export class MoveGenerator {
   private options: MoveGeneratorOptions;
 
   constructor(options: MoveGeneratorOptions) {

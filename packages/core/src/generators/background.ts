@@ -13,15 +13,6 @@ export interface GeneratorOptions {
 }
 
 /**
- * Base interface for all character generators
- */
-export interface Generator<T> {
-  generate(options?: GeneratorOptions): T | null;
-  getAvailableOptions(): T[];
-  isAvailable(): boolean;
-}
-
-/**
  * Configuration options for background generation
  */
 export interface BackgroundGeneratorOptions extends GeneratorOptions {
@@ -42,7 +33,7 @@ export interface BackgroundInfo {
 /**
  * Generator for character backgrounds
  */
-export class BackgroundGenerator implements Generator<BackgroundInfo> {
+export class BackgroundGenerator {
   private options: BackgroundGeneratorOptions;
 
   constructor(options: BackgroundGeneratorOptions) {

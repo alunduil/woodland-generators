@@ -15,7 +15,7 @@
       "project": ["src/**/*.{ts,js}"]
     },
     "packages/foundry-module": {
-      "entry": ["src/module.ts"],
+      "entry": ["src/manifest.ts"],
       "project": ["src/**/*.ts"]
     }
   }

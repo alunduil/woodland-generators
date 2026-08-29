@@ -13,15 +13,6 @@ export interface GeneratorOptions {
 }
 
 /**
- * Base interface for all character generators
- */
-export interface Generator<T> {
-  generate(options?: GeneratorOptions): T | null;
-  getAvailableOptions(): T[];
-  isAvailable(): boolean;
-}
-
-/**
  * Configuration options for feat generation
  */
 export interface FeatGeneratorOptions extends GeneratorOptions {
@@ -32,7 +23,7 @@ export interface FeatGeneratorOptions extends GeneratorOptions {
 /**
  * Generator for character feats
  */
-export class FeatGenerator implements Generator<string> {
+export class FeatGenerator {
   private options: FeatGeneratorOptions;
 
   constructor(options: FeatGeneratorOptions) {
