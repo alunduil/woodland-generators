@@ -23,13 +23,26 @@ export class Rng {
 
   /**
    * Random integer in the inclusive range [min, max].
+   *
+   * An inverted range draws from no values at all, which pure-rand answers
+   * with a number outside the range rather than a failure, so the bounds are
+   * checked here.
    */
   getRandomIntInclusive(min: number, max: number): number {
+    if (min > max) {
+      throw new Error(`Cannot draw from the empty range [${min}, ${max}]`);
+    }
+
     return uniformInt(this.generator, min, max);
   }
 
   /** Pick a single element uniformly at random. */
   selectRandomElement<T>(elements: T[]): T {
+    if (elements.length === 0) {
+      throw new Error("Cannot select an element from an empty array");
+    }
+
+    // The guard above puts the drawn index inside the array.
     return elements[this.getRandomIntInclusive(0, elements.length - 1)]!;
   }
 
@@ -42,6 +55,10 @@ export class Rng {
    * twice can yield that value twice.
    */
   selectRandomSample<T>(elements: T[], count: number): T[] {
+    if (count < 0) {
+      throw new Error(`Cannot sample a negative number of elements: ${count}`);
+    }
+
     const pool = [...elements];
     const take = Math.min(count, pool.length);
 
