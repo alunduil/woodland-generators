@@ -8,8 +8,6 @@
 export interface GeneratorOptions {
   /** Seed for reproducible random generation */
   seed?: string;
-  /** Whether to use fallback defaults if no options available */
-  useFallbacks?: boolean;
 }
 
 /**
@@ -27,10 +25,8 @@ export class FeatGenerator {
   private options: FeatGeneratorOptions;
 
   constructor(options: FeatGeneratorOptions) {
-    this.options = {
-      useFallbacks: false, // Feats are specific to playbooks, no generic fallbacks
-      ...options,
-    };
+    // Copied so updateOptions cannot write through to the caller's object.
+    this.options = { ...options };
   }
 
   /**

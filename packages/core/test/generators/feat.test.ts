@@ -232,11 +232,9 @@ describe("FeatGenerator", () => {
         fc.property(
           uniqueArray(fc.string(), { minLength: 0, maxLength: 5 }),
           fc.option(fc.string()),
-          fc.option(fc.boolean()),
-          (availableFeats, seed, useFallbacks) => {
+          (availableFeats, seed) => {
             const options: FeatGeneratorOptions = { availableFeats };
             if (seed !== null) options.seed = seed;
-            if (useFallbacks !== null) options.useFallbacks = useFallbacks;
 
             const generator = new FeatGenerator(options);
 
@@ -247,21 +245,6 @@ describe("FeatGenerator", () => {
             return generator.isAvailable() === availableFeats.length > 0;
           },
         ),
-      );
-    });
-
-    it("should disable fallbacks by default", () => {
-      fc.assert(
-        fc.property(uniqueArray(fc.string(), { minLength: 0, maxLength: 3 }), (availableFeats) => {
-          const generator = new FeatGenerator({ availableFeats });
-
-          // With empty feats and default fallbacks (false), should not be available
-          if (availableFeats.length === 0) {
-            return !generator.isAvailable();
-          }
-
-          return generator.isAvailable();
-        }),
       );
     });
   });

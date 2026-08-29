@@ -8,8 +8,6 @@
 export interface GeneratorOptions {
   /** Seed for reproducible random generation */
   seed?: string;
-  /** Whether to use fallback defaults if no options available */
-  useFallbacks?: boolean;
 }
 
 /**
@@ -37,10 +35,8 @@ export class BackgroundGenerator {
   private options: BackgroundGeneratorOptions;
 
   constructor(options: BackgroundGeneratorOptions) {
-    this.options = {
-      useFallbacks: true,
-      ...options,
-    };
+    // Copied so updateOptions cannot write through to the caller's object.
+    this.options = { ...options };
   }
 
   /**
@@ -67,16 +63,9 @@ export class BackgroundGenerator {
    * Get all available background options
    */
   getAvailableOptions(): BackgroundInfo[] {
-    // For backgrounds, this returns all possible combinations
-    const backgrounds: BackgroundInfo[] = [];
-
-    this.options.homeOptions.forEach((home) => {
-      this.options.motivationOptions.forEach((motivation) => {
-        backgrounds.push({ home, motivation });
-      });
-    });
-
-    return backgrounds;
+    return this.options.homeOptions.flatMap((home) =>
+      this.options.motivationOptions.map((motivation) => ({ home, motivation })),
+    );
   }
 
   /**
