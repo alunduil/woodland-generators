@@ -81,14 +81,13 @@ repos:
   # TOML formatting and linting. --offline keeps the hooks from fetching
   # schemas over the network at commit time.
   #
-  # Dropping --offline lets tombi resolve the schemastore catalog and
-  # validate against the published schema (lychee.json today), catching
-  # unknown keys and wrong value types that --offline passes silently.
-  # That needs the network, so it stays off the commit path on the manual
-  # stage, which .github/workflows/pre-commit.yml runs.
+  # Without --offline, tombi resolves the schemastore catalog and rejects
+  # unknown keys and wrong value types that the offline hooks pass silently.
+  # That network dependency belongs in CI, so it sits on the manual stage
+  # .github/workflows/pre-commit.yml drives.
   #
-  # The alias is what selects it: every other hook defaults to all stages,
-  # so `--hook-stage manual` on its own would rerun the whole config.
+  # The alias is the selector: every other hook defaults to all stages, so
+  # `--hook-stage manual` alone reruns the whole config.
   - repo: https://github.com/tombi-toml/tombi-pre-commit
     rev: v1.4.1
     hooks:

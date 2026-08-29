@@ -49,10 +49,9 @@ jobs:
       - name: Run
         uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec # v1.0.5
 
-      # The manual stage sits outside the run above, so it takes a second
-      # invocation; it reuses the hook environment that step provisioned and
-      # cached. Why schema validation is staged off the commit path at all:
-      # .pre-commit-config.yaml.
+      # A second invocation is what selects the manual stage, and it reuses
+      # the hook environment the step above provisioned and cached. See
+      # .pre-commit-config.yaml for why that stage exists.
       - name: Validate TOML against published schemas
         uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec # v1.0.5
         with:
