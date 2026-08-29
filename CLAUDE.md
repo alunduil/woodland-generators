@@ -11,6 +11,14 @@ resources.
   generators. Public API exported from `src/index.ts`, compiled to `dist/`.
 - `packages/foundry-module` (`@woodland-generators/foundry-module`): a Foundry
   VTT module shell that loads core into a live world; entry `src/module.ts`.
+- `packages/random` (`@woodland-generators/random`): seeded randomness (`Rng`,
+  `hashSeed`). `core` depends on it; it depends on nothing in the workspace.
+
+`core` is a catch-all being split capability by capability; `random` is the
+first carve-out
+([ADR 0002](docs/adr/0002-extract-seeded-randomness-into-its-own-package.md)).
+Put a new foundational capability in its own package rather than in `core`, and
+address it by its package name. `core` doesn't re-export what it consumes.
 
 No CLI binary is wired up at HEAD despite the `woodland-gen` framing in the
 README: there is no `bin`, `cli.ts`, or `cli` script, so don't reach for

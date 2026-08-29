@@ -38,7 +38,7 @@ jobs:
             slug: lts-1
           - version: "lts/*"
             slug: lts
-        package: [core]
+        package: [core, random]
 
     steps:
       - name: Checkout code
@@ -90,7 +90,7 @@ jobs:
           - version: "lts/*"
             slug: lts
             coverage: true
-        package: [core]
+        package: [core, random]
 
     steps:
       - name: Checkout code
