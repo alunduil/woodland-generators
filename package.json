@@ -20,7 +20,7 @@
     "knip": "6.33.0",
     "npm-check-updates": "23.1.0",
     "prettier": "3.9.6",
-    "tsx": "4.23.12",
+    "tsx": "4.23.13",
     "typescript": "6.0.3"
   },
   "scripts": {
