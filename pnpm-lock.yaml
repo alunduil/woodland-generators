@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  tinymce: 7.9.3
+  tinymce: 8.9.0
 
 importers:
 
@@ -2955,8 +2955,8 @@ packages:
     resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
     engines: {node: '>=12.0.0'}
 
-  tinymce@7.9.3:
-    resolution: {integrity: sha512-Mtm54U5YJ6Pyo/GaAx+JSHXTGEuxrg2AowVWCD9zy1eBolp5Ub7S1rTtsyQdxhPegfhLuR3VLiTKGw1tacv09g==}
+  tinymce@8.9.0:
+    resolution: {integrity: sha512-zh9NKpdF89vnqOB3VEkTHiPtltrY6i3vTEVF5+l7vLxMX6lBju7d0UV9wWV7Vm1NyO1PccDCwa6qxAb2pWSvfg==}
 
   tmpl@1.0.5:
     resolution: {integrity: sha512-3f0uOEAQwIqGuWW2MVzYg8fV/QNnc/IpuJNG837rLuczAaLVHslWHZQj4IGiEl5Hs3kkbhwL9Ab7Hrsmuj+Smw==}
@@ -3874,7 +3874,7 @@ snapshots:
       socket.io: 4.8.3(supports-color@8.1.1)
       socket.io-client: 4.8.3(supports-color@8.1.1)
       spark-md5: 3.0.2
-      tinymce: 7.9.3
+      tinymce: 8.9.0
     optionalDependencies:
       typescript: 6.0.3
     transitivePeerDependencies:
@@ -6354,7 +6354,7 @@ snapshots:
       fdir: 6.5.0(picomatch@4.0.7)
       picomatch: 4.0.7
 
-  tinymce@7.9.3: {}
+  tinymce@8.9.0: {}
 
   tmpl@1.0.5: {}
 
