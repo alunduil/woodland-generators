@@ -67,7 +67,8 @@ Don't split tests by feature or scenario.
 Subjects must follow [Conventional Commits][conventional-commits]. The
 `commit-msg` git hook (`compilerla/conventional-pre-commit`) rejects
 non-conventional subjects at `git commit` time. The active type list lives in
-the `pr-title.yml` workflow.
+the `pr-title.yml` workflow. `release-please` reads the same prefixes to choose
+the version bump.
 
 Type and scope rules with examples:
 [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages).
@@ -84,9 +85,13 @@ When working a numbered issue:
 
 ## Releases
 
-No automated release tooling is wired up right now. Both packages sit at `0.0.0`
-and nothing publishes from `master`. `CHANGELOG.md` is frozen as historical
-record of the pre-workspace era; don't append to it until a release process
-returns.
+`release-please` releases `packages/foundry-module`; `packages/core` and
+`packages/random` don't release. A push to `main` opens a release PR from the
+conventional commits touching the module. Merging it bumps `package.json` and
+`module.json`, writes `packages/foundry-module/CHANGELOG.md`, and tags
+`foundry-module@x.y.z`.
+
+Don't hand-edit released CHANGELOG sections. Root `CHANGELOG.md` is frozen as
+historical record of the pre-workspace era; don't append to it.
 
 [conventional-commits]: https://www.conventionalcommits.org/en/v1.0.0/
