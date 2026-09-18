@@ -1,0 +1,32 @@
+# SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    name: Tag foundry-module releases
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      # Tags pushed with the default GITHUB_TOKEN don't trigger workflows.
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        with:
+          token: ${{ secrets.PAT_TOKEN }}

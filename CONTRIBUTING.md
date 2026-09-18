@@ -104,19 +104,22 @@ scenario.
 
 This repository follows [Conventional Commits][conventional-commits]. The
 `commit-msg` git hook and the `PR Title` GitHub Actions check both enforce
-conventional subjects.
+conventional subjects. [release-please][release-please] releases the Foundry
+module from `feat`, `fix`, `perf`, and `revert` commits. Other prefixes cut no
+release.
 
 Common prefixes:
 
-- `feat:` - new user-facing feature
-- `fix:` - bug fix
+- `feat:` - new user-facing feature (minor version bump)
+- `fix:` - bug fix (patch version bump)
 - `docs:` - documentation only
 - `refactor:` - code change that neither fixes a bug nor adds a feature
 - `perf:` - performance improvement
 - `chore:` - tooling, build, or maintenance work
 
 Append `!` after the type (for example, `feat!:`) or include a
-`BREAKING CHANGE:` footer to mark a breaking change.
+`BREAKING CHANGE:` footer for changes that bump the major version (or minor,
+while pre-1.0).
 
 Examples:
 
@@ -193,5 +196,6 @@ maintainer merges the PR once it's approved.
   https://github.com/alunduil/woodland-generators/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22
 [help-wanted]:
   https://github.com/alunduil/woodland-generators/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22
+[release-please]: https://github.com/googleapis/release-please
 [work-item-template]:
   https://github.com/alunduil/woodland-generators/issues/new?template=work-item.yml
