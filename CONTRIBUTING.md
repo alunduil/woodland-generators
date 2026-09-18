@@ -104,8 +104,9 @@ scenario.
 
 This repository follows [Conventional Commits][conventional-commits]. The
 `commit-msg` git hook and the `PR Title` GitHub Actions check both enforce
-conventional subjects. [release-please][release-please] also reads the prefix to
-choose the Foundry module's version bump.
+conventional subjects. [release-please][release-please] releases the Foundry
+module from `feat`, `fix`, `perf`, and `revert` commits. Other prefixes cut no
+release.
 
 Common prefixes:
 
