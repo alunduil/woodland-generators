@@ -100,14 +100,10 @@ Test files mirror the module under test within each package. Tests for
 `packages/core/test/generators/name.test.ts`. Don't split tests by feature or
 scenario.
 
-`packages/foundry-module` runs under Jest with no Foundry present. Its tests
-stub the `Hooks` and `game` objects Foundry injects, then assert the module's
-contract with them: which hook it registers on, and what it logs. Compose that
-console line from `module.json` and the language catalog, so a renamed module ID
-or a dropped translation key fails the suite.
-
-Start a Foundry by hand to check behaviour Jest can't reach: see [Verify with
-`docker compose`][foundry-docker].
+Jest runs no Foundry, so stub the `Hooks` and `game` objects Foundry injects
+when testing `packages/foundry-module`. Derive expected strings from
+`module.json` and the language catalog, so a renamed ID or a dropped key fails
+the suite.
 
 ## Commit messages
 
