@@ -62,21 +62,6 @@ jobs:
             packages/${{ matrix.package }}/test-results/junit.xml
           retention-days: 1
 
-  # The matrix expands one status-check context per cell, so its shape moves
-  # whenever a Node line or package is added. This job is the stable context
-  # branch protection can require instead.
-  test-matrix:
-    runs-on: ubuntu-latest
-    needs: test
-    if: ${{ always() }}
-    name: Confirm every test leg passed
-    timeout-minutes: 5
-
-    steps:
-      - name: Fail unless every leg succeeded
-        if: ${{ needs.test.result != 'success' }}
-        run: exit 1
-
   # Separate from `test` so a failure in Codecov's uploader cannot fail a test
   # check. `!cancelled()` rather than plain `needs`, because a failing suite is
   # when Codecov's test analytics is most useful.
@@ -135,6 +120,23 @@ jobs:
           name: test-results-${{ matrix.package }}-${{ matrix.node.slug }}
           fail_ci_if_error: true
 
+  # `test` expands one status-check context per cell, so its shape moves
+  # whenever a Node line or package is added. This job is the stable context
+  # branch protection can require instead. `always()` rather than
+  # `!cancelled()`, because a skipped required check counts as passing — a
+  # cancelled run has to leave the gate red, not absent.
+  test-gate:
+    runs-on: ubuntu-latest
+    needs: test
+    if: ${{ always() }}
+    name: Confirm every test leg passed
+    timeout-minutes: 5
+
+    steps:
+      - name: Fail unless every leg succeeded
+        if: ${{ needs.test.result != 'success' }}
+        run: exit 1
+
   build:
     runs-on: ubuntu-latest
     needs: test
@@ -190,7 +192,7 @@ jobs:
 
       # SHA pinning is transitive: an action whose own action.yml references
       # another by tag fails the run at resolution, before any step executes.
-      - name: Run
+      - name: Run every pre-commit hook
         uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec # v1.0.5
 
       # A second invocation is what selects the manual stage, and it reuses
