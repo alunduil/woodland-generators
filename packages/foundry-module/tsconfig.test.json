@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "node16",
+    "moduleResolution": "node16",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "types": ["@league-of-foundry-developers/foundry-vtt-types", "node", "jest"]
+  },
+  "include": ["src/module.ts", "test/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

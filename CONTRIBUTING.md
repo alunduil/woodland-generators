@@ -100,6 +100,11 @@ Test files mirror the module under test within each package. Tests for
 `packages/core/test/generators/name.test.ts`. Don't split tests by feature or
 scenario.
 
+Jest runs no Foundry, so stub the `Hooks` and `game` objects Foundry injects
+when testing `packages/foundry-module`. Derive expected strings from
+`module.json` and the language catalog, so a renamed ID or a dropped key fails
+the suite.
+
 ## Commit messages
 
 This repository follows [Conventional Commits][conventional-commits]. The
