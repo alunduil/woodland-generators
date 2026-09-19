@@ -83,6 +83,26 @@ When working a numbered issue:
   with a `blocked-by` edge instead of writing premature code.
 - File unrelated problems found mid-task as separate issues by default.
 
+## GitHub Actions
+
+Workflow `name:` names the trigger or cadence: `CI`, `Daily`, `Weekly`,
+`Release`. A single-purpose workflow may take its subject instead until it moves
+into a shared file (`PR Title`). Job `name:` names the outcome as a
+human-readable phrase a maintainer reads in the checks list, such as
+`Check external links` or `Build every package`. Job `id:` is the kebab wiring
+identifier that `needs:` and reuse address (`external-links`); it need not match
+the name.
+
+Branch protection matches the job `name:` as the status-check context, not
+`Workflow / Job`. Job names are therefore the scarce identifiers: keep each one
+unique repo-wide and legible standing alone. A matrix expands one context per
+cell, so a matrix that must be required gets a stable aggregator job to target
+instead, as `Confirm every test leg passed` does in `ci.yml`.
+
+Give a workflow its own file only when its `on:` differs. Set `permissions`,
+`concurrency`, `env`, and `defaults` on the job inside an existing file; each is
+configurable per job, so none of them forces a split.
+
 ## Releases
 
 `release-please` releases `packages/foundry-module`; `packages/core` and
