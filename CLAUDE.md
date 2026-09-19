@@ -90,8 +90,9 @@ Name a workflow for when it runs and a job for what it produces:
 - Workflow `name:` is the trigger or cadence (`CI`, `Daily`, `Weekly`,
   `Release`), and the filename is that name, kebab-cased. A single-purpose
   workflow may take its subject instead until a sibling joins it (`PR Title`).
-- Job `name:` is the outcome as a phrase read in the checks list:
-  `Check external links`, `Build every package`.
+- Job `name:` is a verb phrase naming the outcome, read in the checks list:
+  `Check external links`, `Build every package`. Give the verb a concrete object
+  rather than an article and an abstract noun (`Run the test suite`).
 - Job `id:` is the kebab identifier `needs:` and reuse refer to
   (`external-links`). It need not match the name.
 

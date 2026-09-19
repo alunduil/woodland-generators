@@ -20,7 +20,7 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Run the test suite (${{ matrix.package }}, Node ${{ matrix.node.version }})
+    name: Test ${{ matrix.package }} on Node ${{ matrix.node.version }}
     timeout-minutes: 15
 
     strategy:
