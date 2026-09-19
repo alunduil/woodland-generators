@@ -124,7 +124,7 @@ jobs:
   # protection cannot target them; this job is the stable one to require. A
   # skipped required check counts as passing, hence `always()`: under
   # `!cancelled()` a cancelled run would merge through a green gate.
-  test-gate:
+  all-tests:
     runs-on: ubuntu-latest
     needs: test
     if: ${{ always() }}
