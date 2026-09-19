@@ -164,7 +164,7 @@ jobs:
 
   pre-commit:
     runs-on: ubuntu-latest
-    name: Run the pre-commit gate
+    name: Run every pre-commit hook
     timeout-minutes: 10
 
     steps:
@@ -177,6 +177,14 @@ jobs:
       - name: Install lychee
         run: ./scripts/install-lychee.sh
 
+      # `key` and `restore-keys` have to share a prefix or every run misses the
+      # cache silently, so derive it once here rather than writing the hash
+      # twice. `hashFiles` needs the workspace, which rules out a job-level
+      # `env`: that resolves before the checkout above.
+      - name: Derive the lychee cache prefix
+        id: lychee-cache
+        run: echo "prefix=lychee-${{ hashFiles('scripts/install-lychee.sh', 'lychee.toml') }}" >>"$GITHUB_OUTPUT"
+
       # Persist lychee's URL→status cache across CI runs so unchanged links
       # don't re-hit the network every PR. lychee's own max_cache_age (1d)
       # still re-validates entries daily, so real link rot surfaces; the
@@ -185,13 +193,13 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: .lycheecache
-          key: lychee-${{ hashFiles('scripts/install-lychee.sh', 'lychee.toml') }}-${{ github.run_id }}
+          key: ${{ steps.lychee-cache.outputs.prefix }}-${{ github.run_id }}
           restore-keys: |
-            lychee-${{ hashFiles('scripts/install-lychee.sh', 'lychee.toml') }}-
+            ${{ steps.lychee-cache.outputs.prefix }}-
 
       # SHA pinning is transitive: an action whose own action.yml references
       # another by tag fails the run at resolution, before any step executes.
-      - name: Run every pre-commit hook
+      - name: Run default-stage hooks
         uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec # v1.0.5
 
       # A second invocation is what selects the manual stage, and it reuses
