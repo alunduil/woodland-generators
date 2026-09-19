@@ -16,8 +16,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  validate:
+  pr-title:
     runs-on: ubuntu-latest
+    name: Enforce Conventional Commits
     timeout-minutes: 5
     permissions:
       pull-requests: read

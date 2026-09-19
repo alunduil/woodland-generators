@@ -83,6 +83,31 @@ When working a numbered issue:
   with a `blocked-by` edge instead of writing premature code.
 - File unrelated problems found mid-task as separate issues by default.
 
+## GitHub Actions
+
+Name a workflow for when it runs and a job for what it produces:
+
+- Workflow `name:` is the trigger or cadence (`CI`, `Daily`, `Weekly`,
+  `Release`), and the filename is that name, kebab-cased. A single-purpose
+  workflow may take its subject instead until a sibling joins it (`PR Title`).
+- Job `name:` is a verb phrase naming the outcome, read in the checks list:
+  `Check external links`, `Build every package`. Give the verb a concrete object
+  rather than an article and an abstract noun (`Run the test suite`).
+- Job `id:` is the kebab identifier `needs:` and reuse refer to
+  (`external-links`). It need not match the name.
+
+Branch protection matches the job `name:` alone as the status-check context, not
+`Workflow / Job`, so job names must be unique repo-wide and legible standing
+alone. A matrix emits one context per cell, so a matrix that must be required
+gets a stable aggregator job to target instead: `ci.yml`'s `all-tests`.
+
+Give a workflow its own file only when its `on:` differs. `permissions`,
+`concurrency`, `env`, and `defaults` all scope per job, so set them on a job
+inside an existing file.
+
+Rationale and examples:
+[CONTRIBUTING.md](CONTRIBUTING.md#workflow-and-job-names).
+
 ## Releases
 
 `release-please` releases `packages/foundry-module`; `packages/core` and

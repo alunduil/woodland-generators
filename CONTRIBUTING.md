@@ -129,6 +129,46 @@ fix(core): respect the seed argument in name generation
 chore(deps): bump typescript to 5.9.3
 ```
 
+## Workflow and job names
+
+A workflow's `name:` says when it runs; a job's `name:` says what it produces.
+Branch protection matches the job name alone as the status-check context, not
+`Workflow / Job`, so a job name has to be unique across every workflow here and
+has to make sense read on its own in a checks list.
+
+- Workflow `name:` is the trigger or cadence, and the filename is that name
+  kebab-cased: `CI` in `ci.yml`, `Weekly` in `weekly.yml`. A workflow with a
+  single purpose may take its subject instead until a sibling joins it, as
+  `PR Title` does.
+- Job `name:` is a verb phrase naming the outcome. Give the verb a concrete
+  object rather than an article and an abstract noun.
+- Job `id:` is the kebab identifier that `needs:` and reuse refer to. It need
+  not match the name.
+
+Give a workflow its own file only when its `on:` differs. `permissions`,
+`concurrency`, `env`, and `defaults` all scope per job, so set them on a job
+inside an existing file.
+
+A matrix emits one status context per cell, so those names change shape whenever
+the matrix does. Where one has to be required, add a job that depends on the
+matrix and require that instead, as `all-tests` does in `ci.yml`.
+
+Names that work:
+
+```text
+Check external links           verb, concrete object, reads alone
+Build every package            verb, concrete object
+Enforce Conventional Commits   verb, concrete object
+```
+
+Names that don't:
+
+```text
+Build                collides with any other workflow that builds
+validate             says nothing in the required-checks picker
+Run the test suite   an article and an abstract noun, no outcome
+```
+
 ## How to submit changes
 
 ### For big changes
