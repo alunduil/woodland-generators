@@ -2,7 +2,7 @@
   "id": "woodland-generators",
   "title": "Woodland Generators",
   "description": "Generators for Root: The Tabletop RPG, integrated into Foundry VTT",
-  "version": "0.0.0",
+  "version": "0.4.0",
   "compatibility": {
     "minimum": "14",
     "verified": "14"
@@ -13,8 +13,12 @@
       "url": "https://github.com/alunduil"
     }
   ],
-  "esmodules": ["dist/module.js"],
-  "styles": ["dist/styles/module.css"],
+  "esmodules": [
+    "dist/module.js"
+  ],
+  "styles": [
+    "dist/styles/module.css"
+  ],
   "languages": [
     {
       "lang": "en",
