@@ -80,6 +80,10 @@ importers:
         version: 6.0.3
 
   packages/foundry-module:
+    dependencies:
+      '@woodland-generators/random':
+        specifier: workspace:*
+        version: link:../random
     devDependencies:
       '@codecov/bundle-analyzer':
         specifier: 2.0.1
