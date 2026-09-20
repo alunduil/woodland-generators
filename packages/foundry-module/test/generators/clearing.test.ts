@@ -81,8 +81,10 @@ describe("generateClearing", () => {
     });
 
     it("keeps a faction that is not in play out of the conflict", () => {
+      const possible = [...factions, ...LOCAL_CHALLENGERS];
+
       for (const { conflict } of clearings({ factions })) {
-        expect([...factions, ...LOCAL_CHALLENGERS]).toContain(conflict.challenger);
+        expect(possible).toContain(conflict.challenger);
       }
     });
 

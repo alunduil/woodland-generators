@@ -164,6 +164,50 @@ const MAX_FEATURES = 3;
 const MAX_INHABITANTS = 2;
 
 /**
+ * The factions this woodland has in it, every faction unless narrowed.
+ *
+ * Throws rather than return a roster no clearing can be drawn from: one with
+ * nobody in it, or one without room for the ruler the caller chose.
+ */
+function factionsInPlay({ factions, ruler }: ClearingGeneratorOptions): Faction[] {
+  const inPlay = factions ?? [...FACTIONS];
+
+  if (inPlay.length === 0) {
+    throw new Error("No factions available to rule the clearing");
+  }
+
+  if (ruler && !inPlay.includes(ruler)) {
+    throw new Error(`Invalid ruler provided: "${ruler}". Available choices: ${inPlay.join(", ")}.`);
+  }
+
+  return inPlay;
+}
+
+/** Draw one to `most` distinct entries from `table`. */
+function drawAtLeastOne<T>(rng: Rng, table: readonly T[], most: number): T[] {
+  return rng.selectRandomSample([...table], rng.getRandomIntInclusive(1, most));
+}
+
+/**
+ * Draw the trouble the clearing is in.
+ *
+ * A ruler does not contest what it already holds, and a faction this woodland
+ * has no room for cannot arrive to contest it either, so the pool is whatever
+ * the roster has left plus the parties already inside the clearing.
+ */
+function drawConflict(rng: Rng, inPlay: Faction[], ruler: Faction): Conflict {
+  const challengers: Challenger[] = [
+    ...inPlay.filter((faction) => faction !== ruler),
+    ...LOCAL_CHALLENGERS,
+  ];
+
+  return {
+    challenger: rng.selectRandomElement(challengers),
+    over: rng.selectRandomElement([...CONFLICT_SUBJECTS]),
+  };
+}
+
+/**
  * Generate a Woodland clearing.
  *
  * Deterministic on `options.seed`: the same options produce the same clearing.
@@ -171,44 +215,14 @@ const MAX_INHABITANTS = 2;
  * clearing differs from the drawn one in more than its ruler.
  */
 export function generateClearing(options: ClearingGeneratorOptions): Clearing {
-  const eligible = options.factions ?? [...FACTIONS];
-
-  if (eligible.length === 0) {
-    throw new Error("No factions available to rule the clearing");
-  }
-
-  if (options.ruler && !eligible.includes(options.ruler)) {
-    throw new Error(
-      `Invalid ruler provided: "${options.ruler}". Available choices: ${eligible.join(", ")}.`,
-    );
-  }
-
+  const inPlay = factionsInPlay(options);
   const rng = new Rng(options.seed);
-
-  const ruler = options.ruler ?? rng.selectRandomElement(eligible);
-
-  const features = rng.selectRandomSample(
-    [...CLEARING_FEATURES],
-    rng.getRandomIntInclusive(1, MAX_FEATURES),
-  );
-
-  const inhabitants = rng.selectRandomSample(
-    [...DENIZEN_SPECIES],
-    rng.getRandomIntInclusive(1, MAX_INHABITANTS),
-  );
-
-  const challengers: Challenger[] = [
-    ...eligible.filter((faction) => faction !== ruler),
-    ...LOCAL_CHALLENGERS,
-  ];
+  const ruler = options.ruler ?? rng.selectRandomElement(inPlay);
 
   return {
-    features,
-    inhabitants,
+    features: drawAtLeastOne(rng, CLEARING_FEATURES, MAX_FEATURES),
+    inhabitants: drawAtLeastOne(rng, DENIZEN_SPECIES, MAX_INHABITANTS),
     ruler,
-    conflict: {
-      challenger: rng.selectRandomElement(challengers),
-      over: rng.selectRandomElement([...CONFLICT_SUBJECTS]),
-    },
+    conflict: drawConflict(rng, inPlay, ruler),
   };
 }
