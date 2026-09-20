@@ -100,8 +100,10 @@ Test files mirror the module under test within each package. Tests for
 `packages/core/test/generators/name.test.ts`. Don't split tests by feature or
 scenario.
 
-Jest runs no Foundry, so stub the `Hooks` and `game` objects Foundry injects
-when testing `packages/foundry-module`. Derive expected strings from
+Jest runs no Foundry, so stub the `Hooks`, `game`, and `foundry` objects Foundry
+injects when testing `packages/foundry-module`. An Application subclass resolves
+its base class off `foundry` while its class body evaluates, so stub that global
+before importing the module under test. Derive expected strings from
 `module.json` and the language catalog, so a renamed ID or a dropped key fails
 the suite.
 

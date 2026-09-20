@@ -33,6 +33,22 @@ function stubMissingLocalization(): void {
   globalThis.game = {} as unknown as typeof game;
 }
 
+function stubSettings(): jest.Mock {
+  const registerMenu = jest.fn();
+
+  globalThis.game = { settings: { registerMenu } } as unknown as typeof game;
+
+  return registerMenu;
+}
+
+// The menu's own behaviour is covered in applications/generator-menu.test.ts;
+// here the class only has to survive being named as a submenu `type`.
+function stubApplicationV2(): void {
+  globalThis.foundry = {
+    applications: { api: { ApplicationV2: class {} } },
+  } as unknown as typeof foundry;
+}
+
 // Registration happens at import time, so the module registry resets per call:
 // a second import of a cached module registers nothing.
 function loadModule(): void {
@@ -47,6 +63,7 @@ describe("module", () => {
 
   beforeEach(() => {
     hooks = stubHooks();
+    stubApplicationV2();
     log = jest.spyOn(console, "log").mockImplementation(() => undefined);
     loadModule();
   });
@@ -55,8 +72,8 @@ describe("module", () => {
     jest.restoreAllMocks();
   });
 
-  it("registers on i18nInit rather than init", () => {
-    expect([...hooks.keys()]).toEqual(["i18nInit"]);
+  it("takes the heartbeat on i18nInit and the menu on init", () => {
+    expect([...hooks.keys()]).toEqual(["i18nInit", "init"]);
   });
 
   it("logs the heartbeat line a verifier looks for in the console", () => {
@@ -73,5 +90,31 @@ describe("module", () => {
     hooks.get("i18nInit")?.();
 
     expect(log).not.toHaveBeenCalled();
+  });
+
+  it("registers the menu under the module's own namespace", () => {
+    const registerMenu = stubSettings();
+
+    hooks.get("init")?.();
+
+    expect(registerMenu).toHaveBeenCalledWith(manifest.id, expect.any(String), expect.any(Object));
+  });
+
+  it("leaves the GM gate to Foundry's restricted flag", () => {
+    const registerMenu = stubSettings();
+
+    hooks.get("init")?.();
+
+    expect(registerMenu.mock.calls[0]?.[2]).toMatchObject({ restricted: true });
+  });
+
+  it("names strings the catalog defines", () => {
+    const registerMenu = stubSettings();
+
+    hooks.get("init")?.();
+
+    const { name, label, hint } = registerMenu.mock.calls[0]?.[2] as Record<string, string>;
+
+    expect(Object.keys(en)).toEqual(expect.arrayContaining([name, label, hint]));
   });
 });

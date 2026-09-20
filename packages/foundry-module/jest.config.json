@@ -5,6 +5,9 @@
   "clearMocks": true,
   "collectCoverageFrom": ["src/**/*.ts", "!src/**/*.d.ts", "!src/manifest.ts"],
   "testPathIgnorePatterns": ["/node_modules/", "/dist/", "/test/integration/"],
+  "moduleNameMapper": {
+    "^(\\.{1,2}/.*)\\.js$": "$1"
+  },
   "coverageReporters": ["text", ["lcov", { "projectRoot": "../.." }], "html"],
   "reporters": [
     "default",
