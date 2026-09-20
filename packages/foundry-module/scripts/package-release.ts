@@ -20,6 +20,7 @@ import { zipSync } from "fflate";
 
 const MANIFEST = "module.json";
 const ARCHIVE = "module.zip";
+const PACKAGE = "package.json";
 const OUT_DIR = "release";
 
 // release-please composes the tag from `component` and `tag-separator` in
@@ -33,6 +34,12 @@ interface ModuleManifest {
   [field: string]: unknown;
 }
 
+/** Zip entries, keyed by the path each one lands at inside the archive. */
+type Payload = Record<string, Uint8Array>;
+
+const readJson = async <T>(path: string): Promise<T> =>
+  JSON.parse(await readFile(path, "utf8")) as T;
+
 /**
  * Foundry fetches `manifest` to decide whether a newer version exists, so it
  * names the latest release. It installs `download` from the manifest it just
@@ -44,76 +51,94 @@ const releaseManifest = (manifest: ModuleManifest, tag: string): ModuleManifest 
   download: `${manifest.url}/releases/download/${tag}/${ARCHIVE}`,
 });
 
-/**
- * Reads the declared entries into the path-to-bytes map the zip is written
- * from. Zip paths are `/`-separated on every platform, hence the rewrite of
- * whatever separator the host uses.
- */
-const readPayload = async (
-  packageDir: string,
-  entries: string[],
-): Promise<Record<string, Uint8Array>> => {
-  const payload: Record<string, Uint8Array> = {};
+const serialize = (manifest: ModuleManifest): Uint8Array =>
+  Buffer.from(`${JSON.stringify(manifest, undefined, 2)}\n`);
 
-  const add = async (file: string): Promise<void> => {
-    payload[relative(packageDir, file).split(sep).join("/")] = await readFile(file);
-  };
+// release-please bumps module.json in the commit it tags. A disagreement means
+// the checkout is not the commit being released.
+const assertTagNamesPayload = (tag: string): void => {
+  const expected = process.env.RELEASE_TAG;
+
+  if (expected !== undefined && expected !== tag) {
+    throw new Error(`module.json packages ${tag}, but the release tag is ${expected}.`);
+  }
+};
+
+/** Resolves the declared entries to the files they name, directories expanded. */
+const declaredFiles = async (packageDir: string, entries: string[]): Promise<string[]> => {
+  const files: string[] = [];
 
   for (const entry of entries) {
     const absolute = resolve(packageDir, entry);
     const stats = await stat(absolute).catch(() => undefined);
 
     if (!stats) {
-      throw new Error(
-        `package.json lists ${entry}, which is missing. Run the package build first.`,
-      );
+      throw new Error(`${PACKAGE} lists ${entry}, which is missing. Run the package build first.`);
     }
 
     if (!stats.isDirectory()) {
-      await add(absolute);
+      files.push(absolute);
       continue;
     }
 
     for (const dirent of await readdir(absolute, { recursive: true, withFileTypes: true })) {
-      if (dirent.isFile()) await add(join(dirent.parentPath, dirent.name));
+      if (dirent.isFile()) files.push(join(dirent.parentPath, dirent.name));
     }
+  }
+
+  return files;
+};
+
+/** Zip paths are `/`-separated on every platform, hence the separator rewrite. */
+const readFiles = async (packageDir: string, files: string[]): Promise<Payload> => {
+  const payload: Payload = {};
+
+  for (const file of files) {
+    payload[relative(packageDir, file).split(sep).join("/")] = await readFile(file);
   }
 
   return payload;
 };
 
-const readJson = async <T>(path: string): Promise<T> =>
-  JSON.parse(await readFile(path, "utf8")) as T;
+const releasePayload = async (
+  packageDir: string,
+  entries: string[],
+  manifest: Uint8Array,
+): Promise<Payload> => ({
+  ...(await readFiles(packageDir, await declaredFiles(packageDir, entries))),
+  // Keying by path is what puts the manifest at the zip root, where Foundry
+  // looks for it.
+  [MANIFEST]: manifest,
+});
+
+const writeAssets = async (
+  outDir: string,
+  manifest: Uint8Array,
+  archive: Uint8Array,
+): Promise<void> => {
+  await rm(outDir, { recursive: true, force: true });
+  await mkdir(outDir, { recursive: true });
+
+  await writeFile(join(outDir, MANIFEST), manifest);
+  await writeFile(join(outDir, ARCHIVE), archive);
+};
 
 const main = async (): Promise<void> => {
   const packageDir = resolve(fileURLToPath(import.meta.url), "../..");
 
   const manifest = await readJson<ModuleManifest>(join(packageDir, MANIFEST));
   const tag = `${TAG_PREFIX}${manifest.version}`;
-
-  // release-please bumps module.json in the commit it tags. A disagreement
-  // means the checkout is not the commit being released.
-  const expected = process.env.RELEASE_TAG;
-  if (expected !== undefined && expected !== tag) {
-    throw new Error(`module.json packages ${tag}, but the release tag is ${expected}.`);
-  }
+  assertTagNamesPayload(tag);
 
   // The package is `private: true`, so npm never reads `files` and this script
   // is its only consumer. An entry added there lands in the zip.
-  const { files } = await readJson<{ files: string[] }>(join(packageDir, "package.json"));
-  const payload = await readPayload(packageDir, files);
+  const { files } = await readJson<{ files: string[] }>(join(packageDir, PACKAGE));
 
-  // Keyed at the zip root, which is the placement Foundry requires and the
-  // reason the payload is keyed by path rather than zipped from a directory.
-  const released = Buffer.from(`${JSON.stringify(releaseManifest(manifest, tag), undefined, 2)}\n`);
-  payload[MANIFEST] = released;
+  const released = serialize(releaseManifest(manifest, tag));
+  const payload = await releasePayload(packageDir, files, released);
 
   const outDir = join(packageDir, OUT_DIR);
-  await rm(outDir, { recursive: true, force: true });
-  await mkdir(outDir, { recursive: true });
-
-  await writeFile(join(outDir, MANIFEST), released);
-  await writeFile(join(outDir, ARCHIVE), zipSync(payload));
+  await writeAssets(outDir, released, zipSync(payload));
 
   console.log(`Packaged ${tag} into ${outDir}`);
 };
