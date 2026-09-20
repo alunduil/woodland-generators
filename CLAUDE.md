@@ -60,7 +60,11 @@ Configuration file shown in parentheses.
 
 Test files mirror the module under test within each package: tests for
 `packages/core/src/foo/bar.ts` live at `packages/core/test/foo/bar.test.ts`.
-Don't split tests by feature or scenario.
+Don't split tests by feature or scenario. A package's `test/support/` is the one
+directory outside that rule: helpers shared between suites live there and mirror
+nothing. `packages/foundry-module/test/support/foundry.ts` holds the stubs for
+the `Hooks`, `game`, and `foundry` objects Foundry injects; extend it rather
+than hand-rolling a stub in a suite.
 
 ## Commits
 

@@ -3,76 +3,82 @@
 // SPDX-License-Identifier: MIT
 
 import en from "../../languages/en.json";
+import { loadIsolated, localizeWith, stubApplicationV2, stubGame } from "../support/foundry";
+
+const EMPTY_STATE = en["WOODLAND-GENERATORS.Menu.Empty"];
+const KEY_PREFIX = "WOODLAND-GENERATORS";
 
 // `_renderHTML` and `_replaceHTML` are protected: Foundry calls them, and the
 // test stands in for Foundry.
-interface RenderSeam {
+interface MenuInstance {
   _renderHTML(): Promise<string>;
   _replaceHTML(result: string, content: HTMLElement): void;
 }
 
-// ApplicationV2 is resolved off the `foundry` global when the class body is
-// evaluated, so the stub has to be in place before the import.
-function stubApplicationV2(): void {
-  globalThis.foundry = {
-    applications: { api: { ApplicationV2: class {} } },
-  } as unknown as typeof foundry;
-}
-
-function stubLocalization(catalog: Record<string, string>): void {
-  globalThis.game = {
-    i18n: { localize: (key: string) => catalog[key] ?? key },
-  } as unknown as typeof game;
-}
-
-function stubMissingLocalization(): void {
-  globalThis.game = {} as unknown as typeof game;
-}
-
-function loadMenu(): { new (): RenderSeam; DEFAULT_OPTIONS: { window: { title: string } } } {
-  let menu!: ReturnType<typeof loadMenu>;
-
-  jest.isolateModules(() => {
-    menu = require("../../src/applications/generator-menu").default;
-  });
-
-  return menu;
+interface MenuClass {
+  new (): MenuInstance;
+  DEFAULT_OPTIONS: { window: { title: string } };
+  register(namespace: string): void;
 }
 
 describe("GeneratorMenu", () => {
-  let GeneratorMenu: ReturnType<typeof loadMenu>;
+  let GeneratorMenu: MenuClass;
 
   beforeEach(() => {
     stubApplicationV2();
-    GeneratorMenu = loadMenu();
+    GeneratorMenu = loadIsolated(
+      () => require("../../src/applications/generator-menu").default as MenuClass,
+    );
   });
+
+  /** The submenu descriptor Foundry receives, as `register` hands it over. */
+  function registerSubmenu(): Record<string, unknown> {
+    const registerMenu = jest.fn();
+
+    stubGame({ settings: { registerMenu } });
+    GeneratorMenu.register("woodland-generators");
+
+    return registerMenu.mock.calls[0]?.[2] as Record<string, unknown>;
+  }
 
   it("titles its window with a key the catalog defines", () => {
     expect(Object.keys(en)).toContain(GeneratorMenu.DEFAULT_OPTIONS.window.title);
   });
 
-  it("renders the localized empty-state message", async () => {
-    stubLocalization(en);
+  it("leaves the GM gate to Foundry's restricted flag", () => {
+    expect(registerSubmenu()).toMatchObject({ restricted: true });
+  });
 
-    await expect(new GeneratorMenu()._renderHTML()).resolves.toContain(
-      en["WOODLAND-GENERATORS.Menu.Empty"],
-    );
+  it("opens itself as the submenu's Application", () => {
+    expect(registerSubmenu()).toMatchObject({ type: GeneratorMenu });
+  });
+
+  it("labels the submenu with keys the catalog defines", () => {
+    const { name, label, hint } = registerSubmenu() as Record<string, string>;
+
+    expect(Object.keys(en)).toEqual(expect.arrayContaining([name, label, hint]));
+  });
+
+  it("renders the localized empty-state message", async () => {
+    stubGame({ i18n: localizeWith(en) });
+
+    await expect(new GeneratorMenu()._renderHTML()).resolves.toContain(EMPTY_STATE);
   });
 
   it("renders without the catalog rather than echoing the key back", async () => {
-    stubMissingLocalization();
+    stubGame();
 
-    await expect(new GeneratorMenu()._renderHTML()).resolves.not.toContain("WOODLAND-GENERATORS");
+    await expect(new GeneratorMenu()._renderHTML()).resolves.not.toContain(KEY_PREFIX);
   });
 
   it("puts the rendered markup inside the window content", async () => {
-    stubLocalization(en);
+    stubGame({ i18n: localizeWith(en) });
 
     const menu = new GeneratorMenu();
     const content = { innerHTML: "" } as HTMLElement;
 
     menu._replaceHTML(await menu._renderHTML(), content);
 
-    expect(content.innerHTML).toContain(en["WOODLAND-GENERATORS.Menu.Empty"]);
+    expect(content.innerHTML).toContain(EMPTY_STATE);
   });
 });
