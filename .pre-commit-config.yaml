@@ -177,9 +177,9 @@ repos:
         language: system
         files: \.(js|jsx|ts|tsx)$
       - id: typecheck
-        # Each package owns the projects it type-checks, which `tsc --noEmit`
-        # alone cannot express: it reads tsconfig.json and nothing beside it,
-        # so a package with a second project (scripts, tests) went ungated.
+        # Each package names the projects it type-checks. Bare `tsc --noEmit`
+        # reads tsconfig.json and nothing beside it, which misses a package
+        # that has a second project.
         name: typecheck
         entry: pnpm -r run typecheck
         language: system

@@ -54,8 +54,10 @@ const releaseManifest = (manifest: ModuleManifest, tag: string): ModuleManifest 
 const serialize = (manifest: ModuleManifest): Uint8Array =>
   Buffer.from(`${JSON.stringify(manifest, undefined, 2)}\n`);
 
-// release-please bumps module.json in the commit it tags. A disagreement means
-// the checkout is not the commit being released.
+/**
+ * release-please bumps module.json in the commit it tags. A disagreement means
+ * the checkout is not the commit being released.
+ */
 const assertTagNamesPayload = (tag: string): void => {
   const expected = process.env.RELEASE_TAG;
 
@@ -64,7 +66,6 @@ const assertTagNamesPayload = (tag: string): void => {
   }
 };
 
-/** Resolves the declared entries to the files they name, directories expanded. */
 const declaredFiles = async (packageDir: string, entries: string[]): Promise<string[]> => {
   const files: string[] = [];
 
@@ -89,7 +90,7 @@ const declaredFiles = async (packageDir: string, entries: string[]): Promise<str
   return files;
 };
 
-/** Zip paths are `/`-separated on every platform, hence the separator rewrite. */
+/** Zip paths are `/`-separated on every platform, whatever the host uses. */
 const readFiles = async (packageDir: string, files: string[]): Promise<Payload> => {
   const payload: Payload = {};
 
@@ -106,8 +107,6 @@ const releasePayload = async (
   manifest: Uint8Array,
 ): Promise<Payload> => ({
   ...(await readFiles(packageDir, await declaredFiles(packageDir, entries))),
-  // Keying by path is what puts the manifest at the zip root, where Foundry
-  // looks for it.
   [MANIFEST]: manifest,
 });
 

@@ -74,9 +74,9 @@ module.exports = [
     },
   },
 
-  // TypeScript configuration for package-local scripts. Separate from the
-  // block above because `files` resolves against this file, so `scripts/**`
-  // reaches the repo-root directory alone.
+  // TypeScript configuration for package-local scripts. Distinct from the root
+  // `scripts/**` block because flat-config `files` patterns resolve against
+  // this file's directory.
   {
     files: ["packages/*/scripts/**/*.ts"],
     languageOptions: {
