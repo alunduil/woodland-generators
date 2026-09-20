@@ -67,7 +67,6 @@ function drawAtLeastOne<T>(rng: Rng, table: readonly T[], most: number): T[] {
   return rng.selectRandomSample([...table], rng.getRandomIntInclusive(1, most));
 }
 
-/** Draw the trouble the clearing is in. */
 function drawConflict(rng: Rng, inPlay: Faction[], ruler: Faction): Conflict {
   const challengers: Challenger[] = [
     ...inPlay.filter((faction) => faction !== ruler),

@@ -3,22 +3,15 @@
 // SPDX-License-Identifier: MIT
 
 /**
- * The content a clearing is drawn from.
- *
- * Apart from the draw procedure because the two change for different reasons:
- * an entry gets curated, or the algorithm gets rewritten, rarely in the same
- * edit. Each table states the rule an entry has to satisfy.
+ * The content a clearing is drawn from. Each table states the rule an entry
+ * has to satisfy.
  */
 
 /**
  * The factions contesting the Woodland.
  *
  * The seven the roleplaying game supports: three in the Core Book and four
- * more in Travelers & Outsiders. The board game's Marauder factions are
- * absent because no roleplaying book carries them.
- *
- * Stays fixed while the rest of this file stays swappable: a clearing's ruler
- * has to be a name the rest of the module recognises.
+ * more in Travelers & Outsiders.
  */
 export const FACTIONS = [
   "Marquisate",
