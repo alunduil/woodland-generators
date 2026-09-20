@@ -7,9 +7,8 @@ import { Rng } from "@woodland-generators/random";
 /**
  * The factions contesting the Woodland.
  *
- * The setting's cast rather than table contents: a generated clearing has to
- * name a ruler that a Root table, a player, and the rest of the module all
- * recognise, so this roster is fixed where the tables below are swappable.
+ * Stays fixed while the tables in this file stay swappable: a clearing's
+ * ruler has to be a name the rest of the module recognises.
  */
 export const FACTIONS = [
   "Marquisate",
@@ -28,10 +27,8 @@ export type Faction = (typeof FACTIONS)[number];
 /**
  * What a clearing is known for.
  *
- * Every entry is somewhere a scene can happen and a reason denizens pass
- * through, so the list holds working structures rather than scenery. Each is
- * also something a faction can tax, seize, or burn, which is what lets a
- * feature feed the conflict drawn alongside it.
+ * An entry qualifies when it is somewhere a scene can happen and something a
+ * faction can take, so a feature can feed the conflict drawn beside it.
  */
 export const CLEARING_FEATURES = [
   "watermill",
@@ -59,11 +56,8 @@ type ClearingFeature = (typeof CLEARING_FEATURES)[number];
 /**
  * Species that hold a clearing in numbers.
  *
- * Narrower than the species a single character can be. A clearing is settled
- * by whoever farms it, builds it, and turns out to defend it, so solitary
- * hunters and canopy specialists are absent here even though a character can
- * be one. Mice, rabbits, and foxes lead because the Woodland's clearings are
- * theirs; the rest keep the draw from collapsing onto three outcomes.
+ * An entry qualifies when it settles and defends ground, which leaves out the
+ * solitary hunters and canopy specialists a single character may still be.
  */
 export const DENIZEN_SPECIES = [
   "mice",
@@ -85,9 +79,8 @@ type DenizenSpecies = (typeof DENIZEN_SPECIES)[number];
 /**
  * Parties that contest a clearing without flying a faction's banner.
  *
- * A conflict needs a challenger the ruler cannot simply outspend or outmarch,
- * and the other factions are not always nearby. These keep a clearing's
- * trouble local when the woodland around it is quiet.
+ * Keeps the challenger pool populated when the ruler is the only faction in
+ * play.
  */
 export const LOCAL_CHALLENGERS = [
   "the clearing's own denizens",
@@ -107,8 +100,8 @@ type Challenger = Faction | LocalChallenger;
 /**
  * What the two sides want that only one can have.
  *
- * Each subject is something the table can act on in a session: it names a
- * resource, an obligation, or a person, not an abstract grievance.
+ * An entry qualifies when it names something concrete a table can act on: a
+ * resource, an obligation, a person.
  */
 export const CONFLICT_SUBJECTS = [
   "a levy the clearing cannot pay",
@@ -127,47 +120,36 @@ export const CONFLICT_SUBJECTS = [
 
 type ConflictSubject = (typeof CONFLICT_SUBJECTS)[number];
 
-/** The trouble the clearing is in right now. */
+/** The trouble the clearing is in. */
 interface Conflict {
-  /** Who is pushing back against the ruling faction. */
   challenger: Challenger;
-  /** What the two sides are fighting over. */
   over: ConflictSubject;
 }
 
-/** A generated Woodland clearing. */
 export interface Clearing {
-  /** What the clearing is known for. */
   features: ClearingFeature[];
-  /** The species living there, most numerous first. */
   inhabitants: DenizenSpecies[];
-  /** The faction holding the clearing. */
   ruler: Faction;
-  /** The trouble it is in. */
   conflict: Conflict;
 }
 
-/** Options for clearing generation. */
 export interface ClearingGeneratorOptions {
-  /** Seed for reproducible random generation. */
   seed: string;
-  /** Factions in play in this woodland; defaults to every faction. */
+  /** The factions this woodland has in it; defaults to all of them. */
   factions?: Faction[];
-  /** Ruling faction, chosen by the user rather than drawn. */
+  /** Overrides the ruler draw. */
   ruler?: Faction;
 }
 
-/** Most features one clearing is known for. */
 const MAX_FEATURES = 3;
 
-/** Most species that share one clearing. */
 const MAX_INHABITANTS = 2;
 
 /**
- * The factions this woodland has in it, every faction unless narrowed.
+ * Every faction unless `factions` narrows the roster.
  *
- * Throws rather than return a roster no clearing can be drawn from: one with
- * nobody in it, or one without room for the ruler the caller chose.
+ * Throws when the roster is empty, or when it has no room for the ruler the
+ * caller chose.
  */
 function factionsInPlay({ factions, ruler }: ClearingGeneratorOptions): Faction[] {
   const inPlay = factions ?? [...FACTIONS];
@@ -188,13 +170,7 @@ function drawAtLeastOne<T>(rng: Rng, table: readonly T[], most: number): T[] {
   return rng.selectRandomSample([...table], rng.getRandomIntInclusive(1, most));
 }
 
-/**
- * Draw the trouble the clearing is in.
- *
- * A ruler does not contest what it already holds, and a faction this woodland
- * has no room for cannot arrive to contest it either, so the pool is whatever
- * the roster has left plus the parties already inside the clearing.
- */
+/** Draw the trouble the clearing is in. */
 function drawConflict(rng: Rng, inPlay: Faction[], ruler: Faction): Conflict {
   const challengers: Challenger[] = [
     ...inPlay.filter((faction) => faction !== ruler),
@@ -208,11 +184,10 @@ function drawConflict(rng: Rng, inPlay: Faction[], ruler: Faction): Conflict {
 }
 
 /**
- * Generate a Woodland clearing.
+ * Generate a Woodland clearing, deterministically on `options.seed`.
  *
- * Deterministic on `options.seed`: the same options produce the same clearing.
- * Supplying `ruler` skips its draw rather than discarding it, so an overridden
- * clearing differs from the drawn one in more than its ruler.
+ * Supplying `ruler` skips that draw, so the rest of the clearing differs from
+ * what the same seed produces without it.
  */
 export function generateClearing(options: ClearingGeneratorOptions): Clearing {
   const inPlay = factionsInPlay(options);

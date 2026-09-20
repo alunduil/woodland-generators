@@ -47,8 +47,8 @@ describe("generateClearing", () => {
     }
   });
 
-  // What keeps the uniqueness check below honest: a sweep that only ever drew
-  // one of each would pass it without exercising anything.
+  // A sweep that only ever drew one of each would pass the uniqueness check
+  // without exercising it.
   it("varies how much a clearing has of each", () => {
     const drawn = clearings();
 
@@ -56,8 +56,8 @@ describe("generateClearing", () => {
     expect(Math.max(...drawn.map(({ inhabitants }) => inhabitants.length))).toBeGreaterThan(1);
   });
 
-  // Sampling without replacement is the RNG's contract; that this generator
-  // asks for a sample rather than repeated draws is its own.
+  // Sampling without replacement is the RNG's contract; asking for a sample
+  // at all is this generator's.
   it("never repeats a feature or a species within one clearing", () => {
     for (const { features, inhabitants } of clearings()) {
       expect(new Set(features).size).toBe(features.length);
