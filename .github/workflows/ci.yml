@@ -152,16 +152,15 @@ jobs:
       - name: Build TypeScript
         run: pnpm run build
 
-      # Codecov publishes no esbuild plugin, so the standalone analyzer reads
-      # the built directory instead. Bundle analysis keys on `--bundle-name`;
-      # it has no equivalent of the per-package flags the coverage uploads use.
+      # `analyze:bundle` dry-runs by default so a contributor can read their
+      # bundle's weight without a Codecov account; only CI opts into the
+      # upload. Bundle analysis keys on the bundle name the script sets, not
+      # on the per-package flags the coverage uploads use.
       - name: Upload bundle analysis to Codecov
-        working-directory: packages/foundry-module
         run: >-
-          pnpm exec bundle-analyzer dist
-          --bundle-name=foundry-module
+          pnpm --filter @woodland-generators/foundry-module run analyze:bundle
+          --no-dry-run
           --upload-token "$CODECOV_TOKEN"
-          --ignore-patterns '*.map'
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 

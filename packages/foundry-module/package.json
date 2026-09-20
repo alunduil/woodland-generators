@@ -18,6 +18,7 @@
   "scripts": {
     "build": "node esbuild.config.mjs",
     "build:watch": "node esbuild.config.mjs --watch",
+    "analyze:bundle": "bundle-analyzer dist --bundle-name=foundry-module --ignore-patterns '*.map' --dry-run",
     "clean": "rm -rf dist/",
     "install:dev": "node scripts/install-dev.mjs",
     "package": "tsx scripts/package-release.ts",
