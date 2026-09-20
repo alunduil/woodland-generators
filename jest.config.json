@@ -1,3 +1,7 @@
 {
-  "projects": ["<rootDir>/packages/core"]
+  "projects": [
+    "<rootDir>/packages/core",
+    "<rootDir>/packages/foundry-module/jest.config.json",
+    "<rootDir>/packages/random"
+  ]
 }

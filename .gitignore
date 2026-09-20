@@ -9,6 +9,7 @@ yarn-error.log*
 dist/
 build/
 *.tsbuildinfo
+packages/foundry-module/release/
 
 # Environment files
 .env
@@ -50,9 +51,6 @@ coverage/
 # Test outputs
 test-results/
 playwright-report/
-
-# Benchmark outputs
-benchmarks/
 
 # Temporary files
 *.tmp

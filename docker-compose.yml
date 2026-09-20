@@ -8,7 +8,7 @@
 
 services:
   foundry:
-    image: felddy/foundryvtt:14.365.0@sha256:bb8402d7098d0dcc136bf47c8932c0a1de5e405e021ca1710691cdd0ebdff730
+    image: felddy/foundryvtt:14.367.0@sha256:5004a67fbbef8e3f5f82afb01c8dbe06626c57519cad541a59b1bdce3c2a97ac
     # Foundry binds the license to the container hostname; pinning keeps the
     # license valid across `docker compose down` / `up` cycles.
     hostname: woodland-generators-foundry

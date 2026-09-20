@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import { Logger } from "pino";
-import { Rng } from "./rng";
+import { Rng } from "@woodland-generators/random";
 
 /**
  * Validate that choices array is non-empty
@@ -51,7 +51,7 @@ export function generateSubsetFromChoices<T extends string>(
 
   // Generate 1 to all available random choices
   const count = rng.getRandomIntInclusive(1, choices.length);
-  return rng.selectUniqueRandomElements(choices, count) as T[];
+  return rng.selectRandomSample(choices, count) as T[];
 }
 
 /**

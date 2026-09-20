@@ -1,0 +1,37 @@
+{
+  "name": "@woodland-generators/random",
+  "version": "0.0.0",
+  "description": "Seeded randomness primitives for the Woodland Generators packages",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Alex Brandt",
+  "license": "MIT",
+  "private": true,
+  "files": [
+    "dist/"
+  ],
+  "engines": {
+    "node": ">=22.13.0",
+    "pnpm": ">=11.8.0"
+  },
+  "dependencies": {
+    "pure-rand": "^8.4.1"
+  },
+  "devDependencies": {
+    "@types/jest": "30.0.0",
+    "@types/node": "24.13.5",
+    "jest": "30.4.2",
+    "jest-junit": "17.0.0",
+    "ts-jest": "29.4.12",
+    "typescript": "6.0.3"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "clean": "rm -rf dist/",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
+  }
+}

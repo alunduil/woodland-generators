@@ -2,8 +2,9 @@
 //
 // SPDX-License-Identifier: MIT
 
+import { Rng } from "@woodland-generators/random";
+
 import { GeneratorOptions } from "./index";
-import { Rng } from "./core";
 import { root } from "../logging";
 
 /**
@@ -35,7 +36,7 @@ export const CHARACTER_NAMES = [
 ] as const;
 
 /**
- * Options for functional name generation
+ * Options for name generation
  */
 export interface NameGeneratorOptions extends GeneratorOptions {
   /** User-provided name (if provided, this will be returned instead of generating) */
@@ -43,7 +44,7 @@ export interface NameGeneratorOptions extends GeneratorOptions {
 }
 
 /**
- * Generate a random character name using functional approach
+ * Generate a random character name
  */
 export function generateName(options: NameGeneratorOptions): string {
   const logger = root.child({

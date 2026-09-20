@@ -34,7 +34,10 @@ trap 'rm -rf "${TEMP_DIR}"' EXIT
 
 # Download and extract lychee
 echo "  📥 Downloading from ${LYCHEE_URL}..."
-curl -sSfL "${LYCHEE_URL}" -o "${TEMP_DIR}/${LYCHEE_ARCHIVE}"
+# --retry alone covers transient HTTP status codes; --retry-all-errors is what
+# covers transport-level failures such as a mid-transfer connection reset.
+curl -sSfL --retry 5 --retry-delay 2 --retry-all-errors --connect-timeout 10 \
+    "${LYCHEE_URL}" -o "${TEMP_DIR}/${LYCHEE_ARCHIVE}"
 
 echo "  📦 Extracting archive..."
 # Modern lychee tarballs wrap their contents in a target-named top-level

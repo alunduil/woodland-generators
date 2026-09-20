@@ -14,7 +14,6 @@ export interface GeneratorOptions {
   seed: string;
 }
 
-// Export the functional generators and their options
 export { generateCharacter, type CharacterGeneratorOptions } from "./character";
 export { generateName, type NameGeneratorOptions } from "./name";
 export { generateSpecies, type SpeciesGeneratorOptions } from "./species";

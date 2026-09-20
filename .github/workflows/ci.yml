@@ -6,33 +6,39 @@ name: CI
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 
 permissions:
   contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Test (${{ matrix.package }}, Node ${{ matrix.node-version }})
+    name: Test ${{ matrix.package }} on Node ${{ matrix.node.version }}
     timeout-minutes: 15
 
     strategy:
       fail-fast: false
       matrix:
-        # All supported LTS via setup-node nvm aliases — auto-rotates.
-        # `lts/-2` drifts onto a just-EOL'd line ~6 mo/yr by design (between
-        # April EOL and October's new LTS); accepted as the cost of full
-        # supported-line coverage. Codecov gates on `lts/*` to anchor the
-        # signal to active LTS rather than rotating through maintenance.
-        node-version: ["lts/-2", "lts/-1", "lts/*"]
-        package: [core]
+        # nvm aliases rather than literals, so the matrix auto-rotates.
+        # `slug` repeats each leg without the `/` and `*` that artifact
+        # names and Codecov flags reject.
+        #
+        # `lts/-2` is deliberately absent: between April's EOL and October's
+        # new LTS it names an end-of-life line, and pnpm's Node floor sits
+        # above it, so that leg cannot install at all.
+        node:
+          - version: "lts/-1"
+            slug: lts-1
+          - version: "lts/*"
+            slug: lts
+        package: [core, foundry-module, random]
 
     steps:
       - name: Checkout code
@@ -41,36 +47,99 @@ jobs:
       - name: Setup Node.js + pnpm
         uses: ./.github/actions/setup-node-pnpm
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ matrix.node.version }}
 
       - name: Run tests with coverage
         run: pnpm --filter @woodland-generators/${{ matrix.package }} run test:coverage
 
+      - name: Upload Codecov reports
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: codecov-reports-${{ matrix.package }}-${{ matrix.node.slug }}
+          path: |
+            packages/${{ matrix.package }}/coverage/lcov.info
+            packages/${{ matrix.package }}/test-results/junit.xml
+          retention-days: 1
+
+  # Separate from `test` so a failure in Codecov's uploader cannot fail a test
+  # check. `!cancelled()` rather than plain `needs`, because a failing suite is
+  # when Codecov's test analytics is most useful.
+  codecov:
+    runs-on: ubuntu-latest
+    needs: test
+    if: ${{ !cancelled() }}
+    name: Upload reports to Codecov (${{ matrix.package }}, Node ${{ matrix.node.version }})
+    timeout-minutes: 15
+
+    # Job scope is safe while nothing here runs project or dependency code.
+    env:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # Keep the leg set in sync with the `test` job. Coverage comes from
+        # one leg, so a single Node line's V8 behaviour cannot move the
+        # percentage. Test results come from every leg, because Codecov
+        # classifies a flake by finding a pass and a fail on one commit.
+        node:
+          - version: "lts/-1"
+            slug: lts-1
+            coverage: false
+          - version: "lts/*"
+            slug: lts
+            coverage: true
+        package: [core, foundry-module, random]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Download Codecov reports
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: codecov-reports-${{ matrix.package }}-${{ matrix.node.slug }}
+          path: packages/${{ matrix.package }}
+
       - name: Upload coverage to Codecov
-        if: matrix.node-version == 'lts/*'
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7
+        if: ${{ matrix.node.coverage }}
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7
         with:
           files: ./packages/${{ matrix.package }}/coverage/lcov.info
           flags: ${{ matrix.package }}
           name: codecov-${{ matrix.package }}
           fail_ci_if_error: true
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Upload test results to Codecov
-        if: always() && matrix.node-version == 'lts/*'
+        if: ${{ !cancelled() }}
         uses: codecov/test-results-action@0fa95f0e1eeaafde2c782583b36b28ad0d8c77d3 # v1
         with:
           files: ./packages/${{ matrix.package }}/test-results/junit.xml
-          flags: ${{ matrix.package }}
-          name: test-results-${{ matrix.package }}
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          flags: ${{ matrix.package }},node-${{ matrix.node.slug }}
+          name: test-results-${{ matrix.package }}-${{ matrix.node.slug }}
+          fail_ci_if_error: true
+
+  # Per-cell contexts from `test` are renamed by any matrix change, so branch
+  # protection cannot target them; this job is the stable one to require. A
+  # skipped required check counts as passing, hence `always()`: under
+  # `!cancelled()` a cancelled run would merge through a green gate.
+  all-tests:
+    runs-on: ubuntu-latest
+    needs: test
+    if: ${{ always() }}
+    name: Confirm every test leg passed
+    timeout-minutes: 5
+
+    steps:
+      - name: Fail unless every leg succeeded
+        if: ${{ needs.test.result != 'success' }}
+        run: exit 1
 
   build:
     runs-on: ubuntu-latest
     needs: test
-    name: Build
+    name: Build every package
     timeout-minutes: 15
 
     steps:
@@ -97,6 +166,12 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
+      # release.yml runs this same script during a release. Running it here too
+      # means a payload that won't assemble fails the pull request rather than
+      # the release.
+      - name: Assemble the module release assets
+        run: pnpm --filter @woodland-generators/foundry-module run package
+
       - name: Upload build artifacts
         if: github.event_name == 'push'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
@@ -106,3 +181,51 @@ jobs:
             dist/
             packages/*/dist/
           retention-days: 7
+
+  pre-commit:
+    runs-on: ubuntu-latest
+    name: Run every pre-commit hook
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Setup Node.js + pnpm
+        uses: ./.github/actions/setup-node-pnpm
+
+      - name: Install lychee
+        run: ./scripts/install-lychee.sh
+
+      # `key` and `restore-keys` have to share a prefix or every run misses the
+      # cache silently, so derive it once here rather than writing the hash
+      # twice. `hashFiles` needs the workspace, which rules out a job-level
+      # `env`: that resolves before the checkout above.
+      - name: Derive the lychee cache prefix
+        id: lychee-cache
+        run: echo "prefix=lychee-${{ hashFiles('scripts/install-lychee.sh', 'lychee.toml') }}" >>"$GITHUB_OUTPUT"
+
+      # Persist lychee's URL→status cache across CI runs so unchanged links
+      # don't re-hit the network every PR. lychee's own max_cache_age (1d)
+      # still re-validates entries daily, so real link rot surfaces; the
+      # cache_exclude_status in lychee.toml keeps transient 5xx out.
+      - name: Cache lychee link-check results
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: .lycheecache
+          key: ${{ steps.lychee-cache.outputs.prefix }}-${{ github.run_id }}
+          restore-keys: |
+            ${{ steps.lychee-cache.outputs.prefix }}-
+
+      # SHA pinning is transitive: an action whose own action.yml references
+      # another by tag fails the run at resolution, before any step executes.
+      - name: Run default-stage hooks
+        uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec # v1.0.5
+
+      # A second invocation is what selects the manual stage, and it reuses
+      # the hook environment the step above provisioned and cached. See
+      # .pre-commit-config.yaml for why that stage exists.
+      - name: Validate TOML against published schemas
+        uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec # v1.0.5
+        with:
+          extra_args: --hook-stage manual --all-files tombi-lint-online

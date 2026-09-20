@@ -12,7 +12,7 @@
     "README.md"
   ],
   "engines": {
-    "node": ">=20.0.0",
+    "node": ">=22.13.0",
     "pnpm": ">=11.8.0"
   },
   "scripts": {
@@ -20,12 +20,23 @@
     "build:watch": "node esbuild.config.mjs --watch",
     "clean": "rm -rf dist/",
     "install:dev": "node scripts/install-dev.mjs",
-    "typecheck": "tsc --noEmit"
+    "package": "tsx scripts/package-release.ts",
+    "verify:release": "tsx scripts/verify-release.ts",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.scripts.json",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
   },
   "devDependencies": {
     "@codecov/bundle-analyzer": "2.0.1",
     "@league-of-foundry-developers/foundry-vtt-types": "13.346.0-beta.20250812191140",
-    "esbuild": "0.28.1",
-    "typescript": "7.0.2"
+    "@types/jest": "30.0.0",
+    "@types/node": "24.13.5",
+    "esbuild": "0.28.2",
+    "fflate": "0.8.3",
+    "jest": "30.4.2",
+    "jest-junit": "17.0.0",
+    "ts-jest": "29.4.12",
+    "typescript": "6.0.3"
   }
 }

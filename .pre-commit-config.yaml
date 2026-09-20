@@ -80,13 +80,25 @@ repos:
 
   # TOML formatting and linting. --offline keeps the hooks from fetching
   # schemas over the network at commit time.
+  #
+  # Without --offline, tombi resolves the schemastore catalog and rejects
+  # unknown keys and wrong value types that the offline hooks pass silently.
+  # That network dependency belongs in CI, so it sits on the manual stage
+  # .github/workflows/pre-commit.yml drives.
+  #
+  # The alias is the selector: every other hook defaults to all stages, so
+  # `--hook-stage manual` alone reruns the whole config.
   - repo: https://github.com/tombi-toml/tombi-pre-commit
-    rev: v1.2.6
+    rev: v1.5.5
     hooks:
       - id: tombi-format
         args: ["--offline"]
       - id: tombi-lint
         args: ["--offline"]
+      - id: tombi-lint
+        alias: tombi-lint-online
+        name: tombi-lint (online)
+        stages: [manual]
 
   # REUSE compliance: every tracked file must declare copyright + license
   # via inline SPDX headers or REUSE.toml annotations. The hook runs
@@ -98,7 +110,7 @@ repos:
 
   # Prose linting with Vale
   - repo: https://github.com/errata-ai/vale
-    rev: v3.17.1
+    rev: v3.21.0
     hooks:
       - id: vale
         files: \.(md|rst|txt)$
@@ -129,7 +141,7 @@ repos:
   # Remote presets are not resolved, so a missing `extends` target still only
   # surfaces as a Repository Problem on the next Renovate run.
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 44.13.3
+    rev: 44.96.2
     hooks:
       - id: renovate-config-validator
         args: [--strict, --no-global]
@@ -165,22 +177,26 @@ repos:
         language: system
         files: \.(js|jsx|ts|tsx)$
       - id: typecheck
+        # Each package names the projects it type-checks. Bare `tsc --noEmit`
+        # reads tsconfig.json and nothing beside it, which misses a package
+        # that has a second project.
         name: typecheck
-        entry: pnpm -r exec tsc --noEmit
+        entry: pnpm -r run typecheck
         language: system
         pass_filenames: false
         types: [ts]
       - id: knip
-        # Unused/unlisted dependency gate, scoped to `--dependencies` to match
-        # the contract depcheck held. knip is workspace-aware natively, so it
-        # runs once at the root and audits every package from `knip.json`.
-        # Per-package entry/project globs and the root `ignoreDependencies`
-        # (jest, prettier — used via tool config, not imports) live there.
+        # Dead-code and unused-dependency gate. One root invocation covers
+        # every package: knip is workspace-aware and reads its per-package
+        # globs from `knip.json`. That file also ignores jest and prettier,
+        # which tool config pulls in rather than any import.
+        # A source edit alone can change what knip reports, so `files`
+        # matches sources as well as manifests.
         name: knip
-        entry: pnpm exec knip --dependencies
+        entry: pnpm exec knip
         language: system
         pass_filenames: false
-        files: (^|/)package\.json$|^pnpm-lock\.yaml$|^pnpm-workspace\.yaml$|^knip\.json$
+        files: \.(ts|tsx|js|mjs|cjs)$|(^|/)package\.json$|^pnpm-lock\.yaml$|^pnpm-workspace\.yaml$|^knip\.json$
       - id: workspace
         name: workspace
         entry: pnpm exec tsx scripts/validate-workspace.ts

@@ -23,6 +23,7 @@
     }
   ],
   "url": "https://github.com/alunduil/woodland-generators",
-  "readme": "https://github.com/alunduil/woodland-generators/blob/master/packages/foundry-module/README.md",
+  "readme": "https://github.com/alunduil/woodland-generators/blob/main/packages/foundry-module/README.md",
+  "license": "https://github.com/alunduil/woodland-generators/blob/main/LICENSE",
   "bugs": "https://github.com/alunduil/woodland-generators/issues"
 }

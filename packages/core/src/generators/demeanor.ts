@@ -2,12 +2,14 @@
 //
 // SPDX-License-Identifier: MIT
 
+import { Rng } from "@woodland-generators/random";
+
 import { GeneratorOptions } from "./index";
 import { root } from "../logging";
-import { generateSubsetFromChoices, Rng } from "./core";
+import { generateSubsetFromChoices } from "./core";
 
 /**
- * Options for functional demeanor generation
+ * Options for demeanor generation
  */
 export interface DemeanorGeneratorOptions extends GeneratorOptions {
   /** Available demeanor choices from playbook */
@@ -17,7 +19,7 @@ export interface DemeanorGeneratorOptions extends GeneratorOptions {
 }
 
 /**
- * Generate random character demeanor using functional approach
+ * Generate random character demeanor
  */
 export function generateDemeanor(options: DemeanorGeneratorOptions): string[] {
   const logger = root.child({

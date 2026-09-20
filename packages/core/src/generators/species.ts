@@ -2,9 +2,11 @@
 //
 // SPDX-License-Identifier: MIT
 
+import { Rng } from "@woodland-generators/random";
+
 import { GeneratorOptions } from "./index";
 import { root } from "../logging";
-import { generateSingleFromChoices, Rng } from "./core";
+import { generateSingleFromChoices } from "./core";
 
 /**
  * Extended list of woodland animals compatible with Root's ecosystem
@@ -154,7 +156,7 @@ export const EXTENDED_WOODLAND_SPECIES = [
 ] as const;
 
 /**
- * Options for functional species generation
+ * Options for species generation
  */
 export interface SpeciesGeneratorOptions extends GeneratorOptions {
   /** Species choices available for selection (from playbook) */
@@ -164,7 +166,7 @@ export interface SpeciesGeneratorOptions extends GeneratorOptions {
 }
 
 /**
- * Generate a random character species using functional approach
+ * Generate a random character species
  */
 export function generateSpecies(options: SpeciesGeneratorOptions): string {
   const logger = root.child({

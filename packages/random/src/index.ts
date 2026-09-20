@@ -2,8 +2,5 @@
 //
 // SPDX-License-Identifier: MIT
 
-/**
- * Mathematical utilities and calculations
- */
-
-export * from "./stats";
+export * from "./hash";
+export * from "./rng";

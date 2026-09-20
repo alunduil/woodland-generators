@@ -47,6 +47,9 @@ const commonRules = {
   "@typescript-eslint/prefer-nullish-coalescing": "error",
   "@typescript-eslint/prefer-optional-chain": "error",
   "@typescript-eslint/no-unnecessary-condition": "warn",
+  // TypeScript resolves identifiers itself, and the base rule cannot see
+  // type-space references such as ambient namespaces.
+  "no-undef": "off",
 };
 
 module.exports = [
@@ -61,6 +64,26 @@ module.exports = [
       parserOptions: {
         ...commonLanguageOptions.parserOptions,
         project: "./tsconfig.scripts.json",
+      },
+      globals: commonNodeGlobals,
+    },
+    plugins: commonPlugins,
+    rules: {
+      ...commonRules,
+      "@typescript-eslint/explicit-function-return-type": "warn",
+    },
+  },
+
+  // TypeScript configuration for package-local scripts. Distinct from the root
+  // `scripts/**` block because flat-config `files` patterns resolve against
+  // this file's directory.
+  {
+    files: ["packages/*/scripts/**/*.ts"],
+    languageOptions: {
+      ...commonLanguageOptions,
+      parserOptions: {
+        ...commonLanguageOptions.parserOptions,
+        project: ["./packages/*/tsconfig.scripts.json"],
       },
       globals: commonNodeGlobals,
     },
