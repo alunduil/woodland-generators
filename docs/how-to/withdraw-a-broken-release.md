@@ -1,4 +1,10 @@
-# How to roll back a released module version
+# How to withdraw a broken release
+
+Foundry only updates upward. It compares the version at the manifest URL against
+the installed one and downloads when the manifest names a higher version.
+Nothing tells a world that the version it holds was withdrawn. None of the steps
+below reach a world that already updated. Publishing a higher version is what
+reaches those; stopping the spread only buys time.
 
 ## Prerequisites
 
@@ -6,7 +12,7 @@
 - `gh` authenticated with write access to the repository.
 - The SHA of the commit that introduced the breakage.
 
-## Withdraw the release
+## Stop new installs
 
 1. Name the release you're withdrawing:
 
@@ -34,10 +40,12 @@
      jq -r .version
    ```
 
-   Worlds that already installed the withdrawn version stay on it until a higher
-   version publishes.
+   New installs, and worlds that haven't taken the update yet, now get the
+   previous version.
 
-## Publish a replacement
+## Ship the fix
+
+Only a higher version reaches a world already running the broken one.
 
 1. Revert the commit without committing:
 
@@ -54,9 +62,18 @@
 
 3. Open a pull request and merge it into `main`.
 
-4. Merge the release pull request release-please opens. The new release becomes
-   Latest, and worlds pick it up on their next update check.
+4. Merge the release pull request release-please opens. Worlds pick the new
+   version up on their next update check.
 
 Cut a new version rather than reissuing the withdrawn one.
 `.release-please-manifest.json` on `main` records the withdrawn number, and
 release-please counts forward from there.
+
+## Move one world back before the fix ships
+
+Have the affected user uninstall the module, then install it from the previous
+release's manifest asset, which pins its own download to that release:
+
+```text
+https://github.com/alunduil/woodland-generators/releases/download/foundry-module@0.4.0/module.json
+```

@@ -2,8 +2,8 @@
 
 Woodland Generators releases one artifact: the Foundry module. Merging the
 release pull request does the rest. This covers what that merge sets off and
-why. To withdraw a release that shipped broken, see
-[Roll back a released module version](../how-to/roll-back-a-released-module-version.md).
+why. For a release that shipped broken, see
+[Withdraw a broken release](../how-to/withdraw-a-broken-release.md).
 
 ## One releasable package
 
@@ -68,5 +68,9 @@ packaging script rewrites two fields:
   polls it for updates.
 
 Installs therefore follow the latest-release pointer, not the newest tag.
-Cutting a release publishes to every world that already has the module. Moving
-that pointer takes a release back.
+Cutting a release publishes to every world that already has the module.
+
+Moving the pointer back doesn't retract anything, because Foundry only updates
+upward. It offers an update when the manifest names a higher version than the
+installed one, and it has no notion of a version being withdrawn. A world that
+took a bad version keeps it until a higher one ships.
