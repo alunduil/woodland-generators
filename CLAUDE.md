@@ -110,11 +110,8 @@ Rationale and examples:
 
 ## Releases
 
-`release-please` releases `packages/foundry-module`; `packages/core` and
-`packages/random` don't release. A push to `main` opens a release PR from the
-releasable commits touching the module. Merging it bumps `package.json` and
-`module.json`, writes `packages/foundry-module/CHANGELOG.md`, and tags
-`foundry-module@x.y.z`.
+[docs/explanation/releases.md](docs/explanation/releases.md) covers the release
+pipeline and what the manifest URL commits the project to.
 
 Don't hand-edit released CHANGELOG sections. Root `CHANGELOG.md` is frozen as
 historical record of the pre-workspace era; don't append to it.
