@@ -51,6 +51,8 @@ jobs:
     permissions:
       contents: write
 
+    # Read twice: the packaging script checks it against module.json, and the
+    # upload names the release it attaches to.
     env:
       RELEASE_TAG: ${{ needs.release-please.outputs.tag }}
 
