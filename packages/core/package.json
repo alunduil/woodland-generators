@@ -33,6 +33,7 @@
     "build": "tsc && cp src/logging/pino-pretty-transport.js dist/logging/",
     "build:watch": "tsc --watch",
     "clean": "rm -rf dist/",
+    "typecheck": "tsc --noEmit",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
     "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
