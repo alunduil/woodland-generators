@@ -98,21 +98,15 @@ list lives in `.pre-commit-config.yaml`.
 Test files mirror the module under test within each package. Tests for
 `packages/core/src/generators/name.ts` belong at
 `packages/core/test/generators/name.test.ts`. Don't split tests by feature or
-scenario. Helpers shared between suites are the exception: they live in the
-package's `test/support/`.
+scenario. Helpers shared between suites live in the package's `test/support/`.
 
-Jest runs no Foundry. `packages/foundry-module/test/support/foundry.ts` stands
-in for the `Hooks`, `game`, and `foundry` objects Foundry injects; extend it
-rather than writing a stub inside a suite. An Application subclass resolves its
-base class while its class body evaluates, so install the `foundry` stub before
-the import that loads it. Derive expected strings from `module.json` and the
-language catalog, so a renamed ID or a dropped key fails the suite.
+Jest runs no Foundry, so extend the shared stubs for the `Hooks`, `game`, and
+`foundry` objects Foundry injects rather than writing your own. Derive expected
+strings from `module.json` and the language catalog, so a renamed ID or a
+dropped key fails the suite.
 
-Stubbing that thoroughly leaves behaviour no Jest test can reach: whether
-Foundry accepts a registration, renders a window, or closes one. Those live as
-numbered scenarios under `packages/foundry-module/test/manual/`, walked by hand
-against a live world. A change to that behaviour records its run in the pull
-request. Add a scenario when you add a surface Foundry owns.
+Behaviour that needs a running Foundry goes in the package's `test/manual/` as a
+numbered scenario, walked by hand and recorded in your pull request.
 
 ## Commit messages
 

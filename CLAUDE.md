@@ -65,6 +65,10 @@ the package's `test/support/`. `packages/foundry-module/test/support/foundry.ts`
 stubs the `Hooks`, `game`, and `foundry` objects Foundry injects; extend it
 rather than adding a stub inside a suite.
 
+Behaviour needing a running Foundry goes in
+`packages/foundry-module/test/manual/` as a numbered scenario, walked by hand
+and recorded in the pull request. #657 converts these to Playwright specs.
+
 ## Commits
 
 Subjects must follow [Conventional Commits][conventional-commits]. The
