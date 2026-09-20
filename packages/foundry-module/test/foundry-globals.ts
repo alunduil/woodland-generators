@@ -33,14 +33,3 @@ export function stubHooks(): Map<string, () => void> {
 
   return registered;
 }
-
-/** Modules register their hooks at import time, so a cached import registers nothing. */
-export function loadIsolated<T>(load: () => T): T {
-  let loaded!: T;
-
-  jest.isolateModules(() => {
-    loaded = load();
-  });
-
-  return loaded;
-}

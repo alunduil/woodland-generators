@@ -4,7 +4,7 @@
 
 import en from "../languages/en.json";
 import manifest from "../module.json";
-import { loadIsolated, localizeWith, stubGame, stubHooks } from "./support/foundry";
+import { localizeWith, stubGame, stubHooks } from "./foundry-globals";
 
 const INITIALIZED_KEY = "WOODLAND-GENERATORS.Initialized";
 
@@ -19,7 +19,12 @@ describe("module", () => {
   beforeEach(() => {
     hooks = stubHooks();
     log = jest.spyOn(console, "log").mockImplementation(() => undefined);
-    loadIsolated(() => require("../src/module"));
+
+    // The module registers its hooks at import time, so a cached import would
+    // register nothing against the stub this test just installed.
+    jest.isolateModules(() => {
+      require("../src/module");
+    });
   });
 
   afterEach(() => {

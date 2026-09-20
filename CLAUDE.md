@@ -60,9 +60,13 @@ Configuration file shown in parentheses.
 
 Test files mirror the module under test within each package: tests for
 `packages/core/src/foo/bar.ts` live at `packages/core/test/foo/bar.test.ts`.
-Don't split tests by feature or scenario. Helpers shared between suites live in
-the package's `test/support/`. `packages/foundry-module/test/support/foundry.ts`
-stubs the `Hooks`, `game`, and `foundry` objects Foundry injects; extend it
+Don't split tests by feature or scenario. A file under `test/` that isn't a test
+is named for what it holds, not for being shared: no `support/`, `utils/`, or
+`helpers/` buckets.
+
+`foundry` is installed for every test file through Jest's `setupFiles`, at
+`packages/foundry-module/test/setup/foundry.ts`. The per-test `game` and `Hooks`
+stubs live in `packages/foundry-module/test/foundry-globals.ts`; extend that
 rather than adding a stub inside a suite.
 
 Behaviour needing a running Foundry goes in

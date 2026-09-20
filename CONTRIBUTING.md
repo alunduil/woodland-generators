@@ -98,7 +98,8 @@ list lives in `.pre-commit-config.yaml`.
 Test files mirror the module under test within each package. Tests for
 `packages/core/src/generators/name.ts` belong at
 `packages/core/test/generators/name.test.ts`. Don't split tests by feature or
-scenario. Helpers shared between suites live in the package's `test/support/`.
+scenario. A file under `test/` that isn't a test is named for what it holds, not
+for being shared.
 
 Jest runs no Foundry, so extend the shared stubs for the `Hooks`, `game`, and
 `foundry` objects Foundry injects rather than writing your own. Derive expected

@@ -3,42 +3,33 @@
 // SPDX-License-Identifier: MIT
 
 import en from "../../languages/en.json";
-import { loadIsolated, localizeWith, stubGame } from "../support/foundry";
+import GeneratorMenu from "../../src/applications/generator-menu";
+import { localizeWith, stubGame } from "../foundry-globals";
 
 const EMPTY_STATE = en["WOODLAND-GENERATORS.Menu.Empty"];
 
 // `_renderHTML` and `_replaceHTML` are protected; Foundry calls them, and here
 // the test does.
-interface MenuInstance {
+interface RenderPair {
   _renderHTML(): Promise<string>;
   _replaceHTML(result: string, content: HTMLElement): void;
 }
 
-interface MenuClass {
-  new (): MenuInstance;
-  DEFAULT_OPTIONS: { window: { title: string } };
-  register(namespace: string): void;
+function renderPair(): RenderPair {
+  return new GeneratorMenu() as unknown as RenderPair;
+}
+
+/** The submenu descriptor `register` hands to Foundry. */
+function registerSubmenu(): Record<string, unknown> {
+  const registerMenu = jest.fn();
+
+  stubGame({ settings: { registerMenu } });
+  GeneratorMenu.register("woodland-generators");
+
+  return registerMenu.mock.calls[0]?.[2] as Record<string, unknown>;
 }
 
 describe("GeneratorMenu", () => {
-  let GeneratorMenu: MenuClass;
-
-  beforeEach(() => {
-    GeneratorMenu = loadIsolated(
-      () => require("../../src/applications/generator-menu").default as MenuClass,
-    );
-  });
-
-  /** The submenu descriptor `register` hands to Foundry. */
-  function registerSubmenu(): Record<string, unknown> {
-    const registerMenu = jest.fn();
-
-    stubGame({ settings: { registerMenu } });
-    GeneratorMenu.register("woodland-generators");
-
-    return registerMenu.mock.calls[0]?.[2] as Record<string, unknown>;
-  }
-
   it("titles its window with a key the catalog defines", () => {
     expect(Object.keys(en)).toContain(GeneratorMenu.DEFAULT_OPTIONS.window.title);
   });
@@ -62,7 +53,7 @@ describe("GeneratorMenu", () => {
   it("renders the localized empty state into the window content", async () => {
     stubGame({ i18n: localizeWith(en) });
 
-    const menu = new GeneratorMenu();
+    const menu = renderPair();
     const content = { innerHTML: "" } as HTMLElement;
 
     menu._replaceHTML(await menu._renderHTML(), content);
