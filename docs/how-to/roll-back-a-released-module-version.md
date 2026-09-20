@@ -4,7 +4,7 @@
 
 - A published release carrying a broken module.
 - `gh` authenticated with write access to the repository.
-- The commit that introduced the breakage identified.
+- The SHA of the commit that introduced the breakage.
 
 ## Withdraw the release
 
@@ -46,7 +46,7 @@
    ```
 
 2. Commit with a conventional subject. The `Revert "..."` subject `git revert`
-   generates on its own fails the `commit-msg` hook:
+   writes on its own fails the `commit-msg` hook:
 
    ```bash
    git commit -m 'revert: <what the reverted commit did>'
@@ -57,6 +57,6 @@
 4. Merge the release pull request release-please opens. The new release becomes
    Latest, and worlds pick it up on their next update check.
 
-The withdrawn version number is spent. `.release-please-manifest.json` on `main`
-records it, and release-please counts forward from there. Cut a new version
-rather than editing that file to reissue the old one.
+Cut a new version rather than reissuing the withdrawn one.
+`.release-please-manifest.json` on `main` records the withdrawn number, and
+release-please counts forward from there.

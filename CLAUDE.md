@@ -110,9 +110,8 @@ Rationale and examples:
 
 ## Releases
 
-[docs/explanation/releases.md](docs/explanation/releases.md) covers the
-pipeline: what release-please tags, what the workflow attaches, and what the
-manifest URL commits the project to.
+[docs/explanation/releases.md](docs/explanation/releases.md) covers the release
+pipeline and what the manifest URL commits the project to.
 
 Don't hand-edit released CHANGELOG sections. Root `CHANGELOG.md` is frozen as
 historical record of the pre-workspace era; don't append to it.

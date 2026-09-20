@@ -136,11 +136,10 @@ chore(deps): bump typescript to 5.9.3
 
 ## Releases
 
-[How a release happens][releases] explains what merging a release pull request
-sets in motion: the tag release-please cuts for `packages/foundry-module`, the
-manifest and zip the workflow attaches to the GitHub Release, and what the
-manifest URL commits the project to. When a release ships broken, [Roll back a
-released module version][release-rollback] has the steps.
+[How a release happens][releases] covers what merging a release pull request
+does, and what the manifest URL then promises every world with the module
+installed. When a release ships broken, [Roll back a released module
+version][release-rollback] has the steps.
 
 ## Workflow and job names
 
