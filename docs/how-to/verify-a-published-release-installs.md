@@ -5,7 +5,7 @@
 - A release whose **Check the published release installs** job passed.
 - The `docker compose` harness working:
   [Verify the Foundry module loads with `docker compose`](verify-foundry-module-with-docker-compose.md)
-  covers the first-run `.env` and licensing.
+  covers seeding the Foundry build into the cache and licensing.
 
 ## Steps
 
@@ -31,11 +31,11 @@
 5. Open the browser console. The line `woodland-generators | initialized` on
    world load confirms the module loaded.
 
-6. Reset the harness:
+6. Replace the installed release with the link to the development build, then
+   stop the harness:
 
    ```bash
-   docker compose down -v
+   docker compose exec foundry rm -rf /data/Data/modules/woodland-generators
+   docker compose exec foundry ln -sfn /srv/module /data/Data/modules/woodland-generators
+   docker compose down
    ```
-
-   The next `docker compose up` needs `.env` again and restores the link to the
-   development build.
