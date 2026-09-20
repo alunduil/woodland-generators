@@ -152,10 +152,10 @@ jobs:
       - name: Build TypeScript
         run: pnpm run build
 
-      # `analyze:bundle` dry-runs by default so a contributor can read their
-      # bundle's weight without a Codecov account; only CI opts into the
-      # upload. Bundle analysis keys on the bundle name the script sets, not
-      # on the per-package flags the coverage uploads use.
+      # `analyze:bundle` dry-runs by default so contributors can weigh a
+      # bundle without a Codecov account. Identity is the bundle name it
+      # sets: bundle analysis has no equivalent of the `flags:` the coverage
+      # uploads carry.
       - name: Upload bundle analysis to Codecov
         run: >-
           pnpm --filter @woodland-generators/foundry-module run analyze:bundle
