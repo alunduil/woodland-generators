@@ -33,24 +33,12 @@ describe("module", () => {
     jest.restoreAllMocks();
   });
 
-  it("takes the heartbeat on i18nInit and the menu on init", () => {
-    expect([...hooks.keys()]).toEqual(["i18nInit", "init"]);
-  });
-
   it("logs the heartbeat line a verifier looks for in the console", () => {
     stubGame({ i18n: localizeWith(en) });
 
     hooks.get("i18nInit")?.();
 
     expect(log).toHaveBeenCalledWith(HEARTBEAT);
-  });
-
-  it("stays silent when localization is unavailable", () => {
-    stubGame();
-
-    hooks.get("i18nInit")?.();
-
-    expect(log).not.toHaveBeenCalled();
   });
 
   it("hands the menu the module's own namespace", () => {

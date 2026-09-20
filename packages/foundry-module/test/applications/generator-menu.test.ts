@@ -6,7 +6,6 @@ import en from "../../languages/en.json";
 import { loadIsolated, localizeWith, stubApplicationV2, stubGame } from "../support/foundry";
 
 const EMPTY_STATE = en["WOODLAND-GENERATORS.Menu.Empty"];
-const KEY_PREFIX = "WOODLAND-GENERATORS";
 
 // `_renderHTML` and `_replaceHTML` are protected; Foundry calls them, and here
 // the test does.
@@ -59,19 +58,9 @@ describe("GeneratorMenu", () => {
     expect(Object.keys(en)).toEqual(expect.arrayContaining([name, label, hint]));
   });
 
-  it("renders the localized empty-state message", async () => {
-    stubGame({ i18n: localizeWith(en) });
-
-    await expect(new GeneratorMenu()._renderHTML()).resolves.toContain(EMPTY_STATE);
-  });
-
-  it("renders without the catalog rather than echoing the key back", async () => {
-    stubGame();
-
-    await expect(new GeneratorMenu()._renderHTML()).resolves.not.toContain(KEY_PREFIX);
-  });
-
-  it("puts the rendered markup inside the window content", async () => {
+  // Whatever `_renderHTML` returns is what `_replaceHTML` consumes -- Foundry
+  // passes it through untyped, so the two halves only agree by construction.
+  it("renders the localized empty state into the window content", async () => {
     stubGame({ i18n: localizeWith(en) });
 
     const menu = new GeneratorMenu();

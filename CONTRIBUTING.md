@@ -108,6 +108,12 @@ base class while its class body evaluates, so install the `foundry` stub before
 the import that loads it. Derive expected strings from `module.json` and the
 language catalog, so a renamed ID or a dropped key fails the suite.
 
+Stubbing that thoroughly leaves behaviour no Jest test can reach: whether
+Foundry accepts a registration, renders a window, or closes one. Those live as
+numbered scenarios under `packages/foundry-module/test/manual/`, walked by hand
+against a live world. A change to that behaviour records its run in the pull
+request. Add a scenario when you add a surface Foundry owns.
+
 ## Commit messages
 
 This repository follows [Conventional Commits][conventional-commits]. The
