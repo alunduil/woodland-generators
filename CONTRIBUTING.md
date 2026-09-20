@@ -134,6 +134,14 @@ fix(core): respect the seed argument in name generation
 chore(deps): bump typescript to 5.9.3
 ```
 
+## Releases
+
+[How a release happens][releases] explains what merging a release pull request
+sets in motion: the tag release-please cuts for `packages/foundry-module`, the
+manifest and zip the workflow attaches to the GitHub Release, and what the
+manifest URL commits the project to. When a release ships broken, [Roll back a
+released module version][release-rollback] has the steps.
+
 ## Workflow and job names
 
 A workflow's `name:` says when it runs; a job's `name:` says what it produces.
@@ -242,5 +250,7 @@ maintainer merges the PR once it's approved.
 [help-wanted]:
   https://github.com/alunduil/woodland-generators/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22
 [release-please]: https://github.com/googleapis/release-please
+[release-rollback]: docs/how-to/roll-back-a-released-module-version.md
+[releases]: docs/explanation/releases.md
 [work-item-template]:
   https://github.com/alunduil/woodland-generators/issues/new?template=work-item.yml
