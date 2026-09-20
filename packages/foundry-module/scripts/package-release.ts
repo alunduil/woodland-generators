@@ -18,27 +18,14 @@ import { fileURLToPath } from "node:url";
 
 import { zipSync } from "fflate";
 
-const MANIFEST = "module.json";
+import { MANIFEST, type ModuleManifest, readJson, tagFor } from "./release";
+
 const ARCHIVE = "module.zip";
 const PACKAGE = "package.json";
 const OUT_DIR = "release";
 
-// release-please composes the tag from `component` and `tag-separator` in
-// release-please-config.json; this literal has to track both.
-const TAG_PREFIX = "foundry-module@";
-
-/** The subset of Foundry's manifest schema this script reads or writes. */
-interface ModuleManifest {
-  version: string;
-  url: string;
-  [field: string]: unknown;
-}
-
 /** Zip entries, keyed by the path each one lands at inside the archive. */
 type Payload = Record<string, Uint8Array>;
-
-const readJson = async <T>(path: string): Promise<T> =>
-  JSON.parse(await readFile(path, "utf8")) as T;
 
 /**
  * Foundry fetches `manifest` to decide whether a newer version exists, so it
@@ -126,7 +113,7 @@ const main = async (): Promise<void> => {
   const packageDir = resolve(fileURLToPath(import.meta.url), "../..");
 
   const manifest = await readJson<ModuleManifest>(join(packageDir, MANIFEST));
-  const tag = `${TAG_PREFIX}${manifest.version}`;
+  const tag = tagFor(manifest.version);
   assertTagNamesPayload(tag);
 
   // The package is `private: true`, so npm never reads `files` and this script

@@ -14,30 +14,30 @@
 // RELEASE_TAG, when set, is the version expected at the latest-release
 // pointer. Left unset, the checkout's own version is the subject.
 
-import { readFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { unzipSync } from "fflate";
+import { type Unzipped, unzipSync } from "fflate";
 
-const MANIFEST = "module.json";
+import { MANIFEST, type ModuleManifest, readJson, versionIn } from "./release";
 
-// Tracks the same release-please settings as package-release.ts.
-const TAG_PREFIX = "foundry-module@";
-
-/** The subset of Foundry's manifest schema this script reads. */
-interface ModuleManifest {
-  version: string;
-  url: string;
-  manifest: string;
-  download: string;
+/** The published manifest. Foundry fills in the fields the repository omits. */
+interface ServedManifest extends ModuleManifest {
+  manifest?: string;
+  download?: string;
   esmodules?: string[];
   styles?: string[];
   languages?: { path: string }[];
 }
 
-const readJson = async <T>(path: string): Promise<T> =>
-  JSON.parse(await readFile(path, "utf8")) as T;
+/** One release, as the network served it, before anything is checked. */
+interface PublishedRelease {
+  manifestUrl: string;
+  servedText: string;
+  served: ServedManifest;
+  archiveUrl: string;
+  archive: Unzipped;
+}
 
 const fetchOk = async (url: string, subject: string): Promise<Response> => {
   // A transport-level failure throws a bare "fetch failed" naming nothing.
@@ -52,24 +52,96 @@ const fetchOk = async (url: string, subject: string): Promise<Response> => {
   return response;
 };
 
+/**
+ * The version expected at the latest-release pointer: the tag CI is releasing,
+ * or the checkout's own version when the script is run by hand.
+ */
 const expectedVersion = (fallback: string): string => {
   const tag = process.env.RELEASE_TAG;
 
-  if (tag === undefined) return fallback;
+  return tag === undefined ? fallback : versionIn(tag);
+};
 
-  if (!tag.startsWith(TAG_PREFIX)) {
-    throw new Error(`RELEASE_TAG is ${tag}, which is not a ${TAG_PREFIX} tag.`);
+/** The one field the gathering below can't proceed without. */
+const archiveUrlIn = (served: ServedManifest, manifestUrl: string): string => {
+  if (served.download === undefined) {
+    throw new Error(`The manifest at ${manifestUrl} names no download URL.`);
   }
 
-  return tag.slice(TAG_PREFIX.length);
+  return served.download;
+};
+
+const fetchRelease = async (manifestUrl: string): Promise<PublishedRelease> => {
+  const servedText = await (await fetchOk(manifestUrl, "The manifest")).text();
+  const served = JSON.parse(servedText) as ServedManifest;
+  const archiveUrl = archiveUrlIn(served, manifestUrl);
+  const download = await fetchOk(archiveUrl, "The module archive");
+
+  return {
+    manifestUrl,
+    servedText,
+    served,
+    archiveUrl,
+    archive: unzipSync(new Uint8Array(await download.arrayBuffer())),
+  };
+};
+
+const assertServesVersion = ({ served }: PublishedRelease, expected: string): void => {
+  if (served.version !== expected) {
+    throw new Error(`The latest release serves ${served.version}, but ${expected} was released.`);
+  }
+};
+
+/**
+ * Installed worlds poll this field forever. A release that names anything else
+ * strands every world that takes it.
+ */
+const assertPollsItself = ({ served, manifestUrl }: PublishedRelease): void => {
+  if (served.manifest !== manifestUrl) {
+    throw new Error(
+      `The served manifest points updates at ${served.manifest}, not ${manifestUrl}.`,
+    );
+  }
+};
+
+/**
+ * Both assets are uploaded separately, so a stale one can land beside a fresh
+ * one. Foundry reads the served copy to decide and the packaged copy to run.
+ */
+const assertCopiesAgree = (release: PublishedRelease): void => {
+  const { archive, archiveUrl, servedText, manifestUrl } = release;
+  const packaged = archive[MANIFEST];
+
+  if (packaged === undefined) {
+    throw new Error(`${archiveUrl} unpacks without a ${MANIFEST} at its root.`);
+  }
+
+  if (Buffer.from(packaged).toString("utf8") !== servedText) {
+    throw new Error(`The ${MANIFEST} in ${archiveUrl} differs from the one at ${manifestUrl}.`);
+  }
 };
 
 /** Every path the manifest promises Foundry will find after unpacking. */
-const declaredPaths = (manifest: ModuleManifest): string[] => [
-  ...(manifest.esmodules ?? []),
-  ...(manifest.styles ?? []),
-  ...(manifest.languages ?? []).map((language) => language.path),
+const declaredPaths = (served: ServedManifest): string[] => [
+  ...(served.esmodules ?? []),
+  ...(served.styles ?? []),
+  ...(served.languages ?? []).map((language) => language.path),
 ];
+
+const assertDeclaredFilesPresent = ({ served, archive, archiveUrl }: PublishedRelease): void => {
+  const missing = declaredPaths(served).filter((path) => !(path in archive));
+
+  if (missing.length > 0) {
+    throw new Error(`${MANIFEST} declares ${missing.join(", ")}, absent from ${archiveUrl}.`);
+  }
+};
+
+const assertInstallable = (release: PublishedRelease, expected: string): void => {
+  assertServesVersion(release, expected);
+  assertPollsItself(release);
+  assertCopiesAgree(release);
+  assertDeclaredFilesPresent(release);
+};
 
 const main = async (): Promise<void> => {
   const packageDir = resolve(fileURLToPath(import.meta.url), "../..");
@@ -82,44 +154,7 @@ const main = async (): Promise<void> => {
   const expected = expectedVersion(version);
   const manifestUrl = `${url}/releases/latest/download/${MANIFEST}`;
 
-  const servedText = await (await fetchOk(manifestUrl, "The manifest")).text();
-  const served = JSON.parse(servedText) as ModuleManifest;
-
-  if (served.version !== expected) {
-    throw new Error(`The latest release serves ${served.version}, but ${expected} was released.`);
-  }
-
-  // Installed worlds poll this field forever. A release that names anything
-  // else strands every world that takes it.
-  if (served.manifest !== manifestUrl) {
-    throw new Error(
-      `The served manifest points updates at ${served.manifest}, not ${manifestUrl}.`,
-    );
-  }
-
-  const download = await fetchOk(served.download, "The module archive");
-  const archive = unzipSync(new Uint8Array(await download.arrayBuffer()));
-
-  const packaged = archive[MANIFEST];
-
-  if (packaged === undefined) {
-    throw new Error(`${served.download} unpacks without a ${MANIFEST} at its root.`);
-  }
-
-  // Both assets are uploaded separately, so a stale one can land beside a
-  // fresh one. Foundry reads the served copy to decide and the packaged copy
-  // to run.
-  if (Buffer.from(packaged).toString("utf8") !== servedText) {
-    throw new Error(
-      `The ${MANIFEST} in ${served.download} differs from the one at ${manifestUrl}.`,
-    );
-  }
-
-  const missing = declaredPaths(served).filter((path) => !(path in archive));
-
-  if (missing.length > 0) {
-    throw new Error(`${MANIFEST} declares ${missing.join(", ")}, absent from ${served.download}.`);
-  }
+  assertInstallable(await fetchRelease(manifestUrl), expected);
 
   console.log(`${expected} installs from ${manifestUrl}`);
 };
