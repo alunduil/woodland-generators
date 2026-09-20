@@ -27,10 +27,14 @@ file holds the scenarios; a run of them is evidence for one change.
    or
    [verify with `docker compose`](../../../../docs/how-to/verify-foundry-module-with-docker-compose.md).
 
-3. Open the browser console and leave it open. Several scenarios turn on it
-   staying quiet.
+3. Open the browser console and leave it open. Several scenarios turn on what it
+   reports. Filter it to `woodland-generators`: the heartbeat is a `console.log`
+   and an errors-only view hides it, and a game system can emit a steady stream
+   of its own deprecation notices at error level. Only an error naming this
+   module counts against a scenario.
 
-Scenarios 5 and 6 need a second user with a player role. Create one under **Game
+Scenarios 5 and 6 need a second user whose role is **Player**. Assistant
+inherits enough from the GM role to mask a failure. Create one under **Game
 Settings → Manage Users** and open it in a private window, so both sessions stay
 logged in at once.
 
@@ -58,7 +62,8 @@ body says no generators are available yet. Expect no console error.
 
 ## 4. The window closes and reopens
 
-Close the window with its header control. Then reopen it from the same button.
+Close the window with its header control, then reopen it from the same button.
+Run the cycle twice; a leaked instance usually shows on the second pass.
 
 Expect it to close without a console error, and to reopen rendering the same
 way. A second window appearing, or the reopened one rendering empty, means the
