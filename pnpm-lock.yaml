@@ -80,6 +80,10 @@ importers:
         version: 6.0.3
 
   packages/foundry-module:
+    dependencies:
+      '@woodland-generators/random':
+        specifier: workspace:*
+        version: link:../random
     devDependencies:
       '@league-of-foundry-developers/foundry-vtt-types':
         specifier: 13.346.0-beta.20250812191140
