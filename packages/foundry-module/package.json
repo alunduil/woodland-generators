@@ -18,6 +18,7 @@
   "scripts": {
     "build": "node esbuild.config.mjs",
     "build:watch": "node esbuild.config.mjs --watch",
+    "analyze:bundle": "bundle-analyzer dist --bundle-name=foundry-module --ignore-patterns '*.map' --dry-run",
     "clean": "rm -rf dist/",
     "install:dev": "node scripts/install-dev.mjs",
     "package": "tsx scripts/package-release.ts",
@@ -31,6 +32,7 @@
     "@woodland-generators/random": "workspace:*"
   },
   "devDependencies": {
+    "@codecov/bundle-analyzer": "2.0.1",
     "@league-of-foundry-developers/foundry-vtt-types": "13.346.0-beta.20250812191140",
     "@types/jest": "30.0.0",
     "@types/node": "24.13.5",

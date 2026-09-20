@@ -152,6 +152,18 @@ jobs:
       - name: Build TypeScript
         run: pnpm run build
 
+      # `analyze:bundle` dry-runs by default so contributors can weigh a
+      # bundle without a Codecov account. Identity is the bundle name it
+      # sets: bundle analysis has no equivalent of the `flags:` the coverage
+      # uploads carry.
+      - name: Upload bundle analysis to Codecov
+        run: >-
+          pnpm --filter @woodland-generators/foundry-module run analyze:bundle
+          --no-dry-run
+          --upload-token "$CODECOV_TOKEN"
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
       # release.yml runs this same script during a release. Running it here too
       # means a payload that won't assemble fails the pull request rather than
       # the release.
