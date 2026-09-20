@@ -6,24 +6,24 @@
 
 # Assembles the two assets a GitHub Release has to carry for Foundry to install
 # the module: module.json, served at the manifest URL players paste, and the zip
-# that manifest points at. Foundry unpacks the zip straight into
-# Data/modules/<id>, so every entry has to sit at the zip root.
+# that manifest points at.
 #
-# Set RELEASE_TAG to have the tag being published checked against module.json.
-# Left unset, the tag is derived, which is what lets CI run this on a branch.
+# Foundry unpacks the zip into Data/modules/<id>, so every entry sits at the zip
+# root.
+#
+# RELEASE_TAG, when set, is checked against module.json. Left unset, the tag is
+# derived from it, so CI can run this on a branch.
 
 set -euo pipefail
 
-# The manifest's name is fixed three times over: Foundry looks for it at the zip
-# root, the release serves it under that name, and the manifest URL ends in it.
 readonly MANIFEST=module.json
 readonly ARCHIVE=module.zip
 
 readonly OUT_DIR=release
 readonly PAYLOAD_DIR="${OUT_DIR}/payload"
 
-# release-please builds the tag from `component` and `tag-separator` in
-# release-please-config.json. Changing either there changes this.
+# release-please composes the tag from `component` and `tag-separator` in
+# release-please-config.json; this literal has to track both.
 readonly TAG_PREFIX=foundry-module@
 
 die() {
@@ -31,14 +31,14 @@ die() {
   exit 1
 }
 
-# `zip -sf` prints each entry indented under an "Archive contains:" header, and
-# an unindented total after them. Stripping the indent selects the entries.
+# `zip -sf` indents each entry under an "Archive contains:" header and prints an
+# unindented total after them.
 archive_entries() {
   zip -sf "$1" | sed -n 's/^  //p'
 }
 
-# release-please bumps package.json and module.json in the commit it tags, so
-# the two agreeing is the signal that the payload is the one being released.
+# release-please bumps module.json in the commit it tags. A disagreement means
+# the checkout is not the commit being released.
 assert_tag_names_this_payload() {
   local tag=$1
 
@@ -46,8 +46,8 @@ assert_tag_names_this_payload() {
     die "module.json packages ${tag}, but the release tag is ${RELEASE_TAG}."
 }
 
-# package.json `files` is where this package declares what it ships. Reading it
-# here keeps the zip from drifting from that declaration.
+# The package is `private: true`, so npm never reads `files` and this script is
+# its only consumer. An entry added there lands in the zip.
 stage_declared_files() {
   local entry
 
@@ -58,9 +58,9 @@ stage_declared_files() {
   done < <(jq -r '.files[]' package.json)
 }
 
-# Foundry fetches `manifest` to decide whether a newer version exists, so it has
-# to name the latest release; it then installs `download` from the manifest it
-# just fetched, so that names this release alone.
+# Foundry fetches `manifest` to decide whether a newer version exists, so it
+# names the latest release. It installs `download` from the manifest it just
+# fetched, so that names this release alone.
 write_release_manifest() {
   local tag=$1 repository_url=$2
 
@@ -74,8 +74,6 @@ archive_payload() {
   (cd "$PAYLOAD_DIR" && zip --quiet --recurse-paths "../${ARCHIVE}" .)
 }
 
-# Guards the zip being built from inside the payload rather than above it, which
-# is the difference between Foundry finding the manifest and rejecting the zip.
 assert_manifest_at_archive_root() {
   archive_entries "${OUT_DIR}/${ARCHIVE}" | grep -qx "$MANIFEST" ||
     die "${MANIFEST} is not at the zip root, so Foundry would reject the install."

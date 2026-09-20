@@ -152,9 +152,9 @@ jobs:
       - name: Build TypeScript
         run: pnpm run build
 
-      # The release job in release.yml runs this same script, where it first
-      # fires against a tag nobody can re-cut. Running it here means a payload
-      # that fails to assemble fails the pull request instead.
+      # release.yml runs this same script during a release. Running it here too
+      # means a payload that won't assemble fails the pull request rather than
+      # the release.
       - name: Assemble the module release assets
         run: pnpm --filter @woodland-generators/foundry-module run package
 

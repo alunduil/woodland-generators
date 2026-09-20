@@ -25,9 +25,8 @@ jobs:
       pull-requests: write
       issues: write
 
-    # release-please prefixes every output with the package path once a
-    # manifest config names one, so these have to be read by index and are
-    # republished here under names `needs` expressions can reach.
+    # release-please path-prefixes every output, so these can only be read by
+    # index.
     outputs:
       released: ${{ steps.release-please.outputs['packages/foundry-module--release_created'] }}
       tag: ${{ steps.release-please.outputs['packages/foundry-module--tag_name'] }}
@@ -39,9 +38,8 @@ jobs:
         with:
           token: ${{ secrets.PAT_TOKEN }}
 
-  # release-please opens the release, but leaves it empty. Foundry installs a
-  # module from a manifest URL naming a zip, so both have to hang off the
-  # release before the manifest URL resolves to anything installable.
+  # release-please opens the release and leaves it empty. Foundry installs from
+  # a manifest URL naming a zip, so both assets have to hang off it.
   publish-module:
     name: Attach the module to its GitHub Release
     runs-on: ubuntu-latest
@@ -51,8 +49,7 @@ jobs:
     permissions:
       contents: write
 
-    # Read twice: the packaging script checks it against module.json, and the
-    # upload names the release it attaches to.
+    # The packaging script reads this to check the tag against module.json.
     env:
       RELEASE_TAG: ${{ needs.release-please.outputs.tag }}
 
@@ -66,7 +63,7 @@ jobs:
         uses: ./.github/actions/setup-node-pnpm
 
       # esbuild resolves the sibling packages through their dist/, so the whole
-      # workspace builds before the module can bundle.
+      # workspace builds first.
       - name: Build every package
         run: pnpm run build
 
