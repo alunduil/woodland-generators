@@ -69,6 +69,12 @@ is named for what it holds, not for being shared: no `support/`, `utils/`, or
 stubs live in `packages/foundry-module/test/foundry-globals.ts`; extend that
 rather than adding a stub inside a suite.
 
+Take the narrowed `game` a function needs as a parameter, the way
+`GeneratorMenu.register` takes an `InitGame`. fvtt-types gates `game` members on
+lifecycle hooks and ships `InitGame`, `I18nInitGame`, `SetupGame`, and
+`ReadyGame` to name the point reached, so naming it removes a guard the tests
+would otherwise have to cover.
+
 Behaviour needing a running Foundry goes in
 `packages/foundry-module/test/manual/` as a numbered scenario, walked by hand
 and recorded in the pull request. #657 converts these to Playwright specs.
