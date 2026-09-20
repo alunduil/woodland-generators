@@ -1,8 +1,5 @@
 # How to verify a published release installs
 
-The `Release` workflow checks the assets a release serves. Loading them in a
-running world is the step it can't reach, because Foundry needs a license.
-
 ## Prerequisites
 
 - A release whose **Check the published release installs** job passed.

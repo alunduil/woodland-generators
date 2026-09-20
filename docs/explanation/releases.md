@@ -59,16 +59,14 @@ version.
 
 ## Checked where Foundry reads it
 
-Both checks so far run against a working tree. The `verify-release` job runs
-against the published release instead, reading it the way a world does: it
-fetches the manifest at the latest-release URL, downloads the zip that manifest
-names, unpacks it, and fails when the two disagree or when a file the manifest
-declares is absent.
+The checks so far run against a working tree. The `verify-release` job runs
+against the published release instead, reading it the way a world does and
+failing when the manifest and the zip disagree or when a file the manifest
+declares is missing.
 
-The release is already published by the time it runs, so a red run is a signal
-to [withdraw](../how-to/withdraw-a-broken-release.md), not a gate that held
-anything back. Loading the module in a world stays manual, because Foundry needs
-a license:
+The release is already published by then, so a red run is a signal to
+[withdraw](../how-to/withdraw-a-broken-release.md) rather than a gate. Loading
+the module in a world stays manual, because Foundry needs a license:
 [Verify a published release installs](../how-to/verify-a-published-release-installs.md).
 
 ## What the manifest URL promises

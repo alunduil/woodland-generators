@@ -2,10 +2,8 @@
 //
 // SPDX-License-Identifier: MIT
 
-// Walks the path a world takes to install the module: fetch the manifest URL,
-// download the zip that manifest names, unpack it, and confirm every file the
-// manifest promises is there. A release that fails here is one no world can
-// install, whatever the packaging step produced locally.
+// Reads a published release back the way a world installs it. A release that
+// fails here is one no world can install.
 //
 // Foundry needs a license, so the last step -- the module loading in a running
 // world -- stays manual:
@@ -21,7 +19,7 @@ import { type Unzipped, unzipSync } from "fflate";
 
 import { MANIFEST, type ModuleManifest, readJson, versionIn } from "./release";
 
-/** The published manifest. Foundry fills in the fields the repository omits. */
+/** A manifest as published: the repository's copy plus the two URLs written into it. */
 interface ServedManifest extends ModuleManifest {
   manifest?: string;
   download?: string;
@@ -52,17 +50,12 @@ const fetchOk = async (url: string, subject: string): Promise<Response> => {
   return response;
 };
 
-/**
- * The version expected at the latest-release pointer: the tag CI is releasing,
- * or the checkout's own version when the script is run by hand.
- */
 const expectedVersion = (fallback: string): string => {
   const tag = process.env.RELEASE_TAG;
 
   return tag === undefined ? fallback : versionIn(tag);
 };
 
-/** The one field the gathering below can't proceed without. */
 const archiveUrlIn = (served: ServedManifest, manifestUrl: string): string => {
   if (served.download === undefined) {
     throw new Error(`The manifest at ${manifestUrl} names no download URL.`);
@@ -92,10 +85,7 @@ const assertServesVersion = ({ served }: PublishedRelease, expected: string): vo
   }
 };
 
-/**
- * Installed worlds poll this field forever. A release that names anything else
- * strands every world that takes it.
- */
+/** Installed worlds poll this field forever; one naming anything else strands them. */
 const assertPollsItself = ({ served, manifestUrl }: PublishedRelease): void => {
   if (served.manifest !== manifestUrl) {
     throw new Error(
@@ -105,8 +95,8 @@ const assertPollsItself = ({ served, manifestUrl }: PublishedRelease): void => {
 };
 
 /**
- * Both assets are uploaded separately, so a stale one can land beside a fresh
- * one. Foundry reads the served copy to decide and the packaged copy to run.
+ * The two assets upload separately, so a stale one can land beside a fresh one.
+ * Foundry reads the served copy to decide and the packaged copy to run.
  */
 const assertCopiesAgree = (release: PublishedRelease): void => {
   const { archive, archiveUrl, servedText, manifestUrl } = release;
@@ -146,9 +136,9 @@ const assertInstallable = (release: PublishedRelease, expected: string): void =>
 const main = async (): Promise<void> => {
   const packageDir = resolve(fileURLToPath(import.meta.url), "../..");
 
-  // The checkout supplies the repository URL only. Everything asserted below
-  // comes off the network, so a wrong answer cannot pass by agreeing with the
-  // working tree.
+  // Only the repository URL comes from the checkout. Everything asserted comes
+  // off the network, so a wrong answer cannot pass by agreeing with the working
+  // tree.
   const { url, version } = await readJson<ModuleManifest>(join(packageDir, MANIFEST));
 
   const expected = expectedVersion(version);

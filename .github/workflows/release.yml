@@ -81,7 +81,7 @@ jobs:
 
   # A world installs from the manifest URL, never from this repository, so the
   # assets are checked where Foundry reads them rather than where they were
-  # built. Skipped along with publish-module when no release was cut.
+  # built.
   verify-release:
     name: Check the published release installs
     runs-on: ubuntu-latest

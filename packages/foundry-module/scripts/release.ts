@@ -2,10 +2,8 @@
 //
 // SPDX-License-Identifier: MIT
 
-// Vocabulary the two release scripts share: what the manifest is called, how a
-// release tag and a module version convert, and the slice of the manifest both
-// read. package-release.ts writes a release; verify-release.ts reads the same
-// release back off the network.
+// Vocabulary shared by package-release.ts, which writes a release, and
+// verify-release.ts, which reads the same release back off the network.
 
 import { readFile } from "node:fs/promises";
 
@@ -28,7 +26,6 @@ export const readJson = async <T>(path: string): Promise<T> =>
 /** The tag release-please pushes for a module version. */
 export const tagFor = (version: string): string => `${TAG_PREFIX}${version}`;
 
-/** The module version a release tag names. */
 export const versionIn = (tag: string): string => {
   if (!tag.startsWith(TAG_PREFIX)) {
     throw new Error(`${tag} is not a ${TAG_PREFIX} tag.`);
