@@ -1,79 +1,72 @@
 # How a release happens
 
 Woodland Generators releases one artifact: the Foundry module. Merging the
-release pull request runs the rest without further input, so this covers what
-that merge sets off and why each piece is there. For the steps to withdraw a
-release that shipped broken, see
+release pull request does the rest. This covers what that merge sets off and
+why. To withdraw a release that shipped broken, see
 [Roll back a released module version](../how-to/roll-back-a-released-module-version.md).
 
 ## One releasable package
 
-`release-please-config.json` lists a single package, `packages/foundry-module`.
+`release-please-config.json` lists one package, `packages/foundry-module`.
 `core` and `random` stay workspace-internal. The module bundles their compiled
-output, so neither carries a version anyone outside the repository can depend
-on, and nothing publishes to npm. The module's `CHANGELOG.md` is the only
-CHANGELOG release tooling writes.
+output, so neither needs a version of its own, and nothing publishes to npm.
 
 ## The release pull request
 
 Every push to `main` runs the `Release` workflow. release-please reads the
-conventional-commit subjects since the last release and keeps a pull request
-open carrying the version bump and CHANGELOG entries those commits imply. That
-pull request accumulates until someone merges it; no other action cuts a
+commit subjects since the last release and keeps a pull request open with the
+bump they imply. It accumulates until someone merges it. No other action cuts a
 release.
 
-Before 1.0 the version arithmetic is compressed. A breaking change bumps the
-minor version rather than the major one, and a `feat` bumps the minor as well.
-[CONTRIBUTING](../../CONTRIBUTING.md#commit-messages) lists the subjects that
-cut a release; commits of other types land without moving the version.
+Before 1.0 the arithmetic is compressed: a breaking change bumps the minor
+version, and so does a `feat`.
+[CONTRIBUTING](../../CONTRIBUTING.md#commit-messages) lists which subjects cut a
+release at all.
 
-Merging produces a single commit that writes the new version into the module's
-`package.json` and, through the `extra-files` entry, into `module.json`. The
-same commit updates `packages/foundry-module/CHANGELOG.md` and records the
-version in `.release-please-manifest.json`, which is release-please's memory of
-what it last released. release-please then tags that commit
-`foundry-module@x.y.z` and opens a GitHub Release against the tag.
+Merging produces one commit. That commit:
 
-The workflow hands release-please a personal access token instead of the default
-`GITHUB_TOKEN`. Tags and releases created with the default token don't trigger
-further workflow runs, which would strand the release with nothing reacting to
-it.
+- writes the new version into `package.json`, and into `module.json` through the
+  `extra-files` entry
+- updates `packages/foundry-module/CHANGELOG.md`
+- records the version in `.release-please-manifest.json`, release-please's
+  memory of what it last released
+
+release-please then tags the commit `foundry-module@x.y.z` and opens a GitHub
+Release against it.
+
+The workflow gives release-please a personal access token rather than the
+default `GITHUB_TOKEN`. Tags and releases created with the default token trigger
+no further workflow runs, which would leave the release with nothing to fill it.
 
 ## Two assets, because Foundry installs from a URL
 
-release-please opens the release empty. Foundry doesn't install from a
-repository. A user pastes a manifest URL into the setup screen, Foundry fetches
-that JSON, and Foundry installs the zip the JSON names. Both files have to hang
-off the release for the URL to mean anything.
+release-please opens the release empty. Foundry installs from a manifest URL
+rather than from a repository: it fetches that JSON, then downloads the zip the
+JSON names. Both files have to hang off the release.
 
-The `publish-module` job fills it in, building every package before it runs
-`package-release.ts`. Building the module alone would yield a partial bundle,
-because esbuild resolves the sibling packages through their `dist/`.
-
-The zip's contents come from the `files` array in the module's `package.json`.
-Foundry unpacks the archive straight into `Data/modules/woodland-generators`, so
-every entry sits at the zip root rather than under a directory.
+The `publish-module` job attaches them. It builds every package before running
+`package-release.ts`, because esbuild resolves the sibling packages through
+their `dist/`. The zip's contents come from the `files` array in `package.json`,
+flattened to the zip root, because Foundry unpacks the archive straight into
+`Data/modules/woodland-generators`.
 
 ## The tag and the payload have to agree
 
-`package-release.ts` derives the tag from the version in `module.json` and
-checks it against the tag the workflow is releasing. A mismatch fails the job.
-The script runs on any checkout, so without that check a stale working tree
-could produce a zip labelled with one version and attached to the release of
-another.
+`package-release.ts` checks the version in `module.json` against the tag being
+released and fails the job on a mismatch. The script runs on any checkout, so
+without that check a stale working tree could ship a zip labelled with the wrong
+version.
 
 ## What the manifest URL promises
 
-The `module.json` inside a release differs from the one checked into the
-repository. The packaging script rewrites two fields. `manifest` becomes
-`.../releases/latest/download/module.json`, and `download` becomes the zip
-attached to this release's tag.
+The `module.json` inside a release isn't the one in the repository. The
+packaging script rewrites two fields:
 
-The two fields point at different things on purpose. `download` names one
-release and never changes, so installing a given version stays reproducible.
-`manifest` names whatever GitHub currently treats as the latest release, and
-that URL is what every installed world polls when it checks for an update.
+- `download` names this release's zip. It never changes, so any given version
+  stays installable.
+- `manifest` names `releases/latest/download/module.json`. Every installed world
+  polls it for updates.
 
-Existing installs therefore follow the latest-release pointer, not the newest
-tag. Cutting a release publishes to every world that already has the module, and
-moving the pointer elsewhere takes a release back.
+Installs therefore follow the latest-release pointer, not the newest tag.
+Cutting a release publishes to every world that already has the module. Moving
+that pointer takes a release back.
