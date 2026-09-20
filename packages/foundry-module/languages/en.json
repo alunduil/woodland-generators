@@ -1,3 +1,8 @@
 {
-  "WOODLAND-GENERATORS.Initialized": "initialized"
+  "WOODLAND-GENERATORS.Initialized": "initialized",
+  "WOODLAND-GENERATORS.Menu.Name": "Woodland Generators",
+  "WOODLAND-GENERATORS.Menu.Label": "Open Generators",
+  "WOODLAND-GENERATORS.Menu.Hint": "Lists the generators this module offers.",
+  "WOODLAND-GENERATORS.Menu.Title": "Woodland Generators",
+  "WOODLAND-GENERATORS.Menu.Empty": "No generators are available yet."
 }

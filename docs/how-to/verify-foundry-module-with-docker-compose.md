@@ -7,44 +7,68 @@
 
 ## Steps
 
-1. On the first run only, create `.env` with a download link for the Foundry
-   build:
+1. Check whether the `foundry-data` volume already holds the build the pinned
+   image wants. The image tag in `docker-compose.yml` sets the version, and the
+   cache is keyed to it by filename:
 
    ```bash
-   cp .env.example .env
+   docker run --rm -v "$(basename "$PWD")_foundry-data:/data" \
+     --entrypoint sh felddy/foundryvtt -c 'ls /data/container_cache'
    ```
 
-   Set `FOUNDRY_RELEASE_URL` to a timed link from your Foundry account
-   (Purchased Software Licenses, OS set to "Node.js," timed URL button). It
-   expires, so generate it just before starting the container. Later runs reuse
-   the cached build and license from the `foundry-data` volume and need no
-   `.env`.
+   A matching `foundryvtt-<version>.zip` means you need nothing from your
+   Foundry account. Skip to step 3.
 
-2. Build the module bundle:
+2. Otherwise, get that build into the cache. From your Foundry account under
+   Purchased Software Licenses, set **Operating System to "Node.js"** and
+   download the zip. Then copy it in under the name the container expects:
+
+   ```bash
+   docker run --rm -v "$(basename "$PWD")_foundry-data:/data" \
+     -v /path/to/FoundryVTT-Node-<version>.zip:/src.zip:ro \
+     --entrypoint sh felddy/foundryvtt -c \
+     'cp /src.zip /data/container_cache/foundryvtt-<version>.zip &&
+      chown node:node /data/container_cache/foundryvtt-<version>.zip'
+   ```
+
+   Take the `Node.js` build, not `Linux`. Linux is the Electron desktop app: it
+   runs to roughly 240 MB and unpacks `chrome-sandbox` and `libGLESv2.so`. The
+   Node.js build is around 140 MB with `main.js` at its root. The container
+   accepts only the latter, and rejects the other with an obscure error.
+
+   To use a build whose version differs from the image's, put
+   `FOUNDRY_VERSION=<version>` in `.env`. The container warns about the mismatch
+   and proceeds.
+
+   Instead of the download, you can set `FOUNDRY_RELEASE_URL` in `.env` to a
+   timed link from the same page. It expires, so generate it immediately before
+   starting the container.
+
+3. Build the module bundle:
 
    ```bash
    pnpm --filter @woodland-generators/foundry-module build
    ```
 
-3. Start Foundry:
+4. Start Foundry:
 
    ```bash
    docker compose up
    ```
 
-4. Open <http://localhost:30000> and enter the license key if prompted. The
+5. Open <http://localhost:30000> and enter the license key if prompted. The
    module declares no system dependency, so any game system works; if you have
    none installed, go to **Game Systems → Install System**, search for
    **Worldbuilding** (Foundry's free, minimal system), install it, then create a
    world with it.
 
-5. Open or launch the world and enable **Woodland Generators** under _Manage
+6. Open or launch the world and enable **Woodland Generators** under _Manage
    Modules_.
 
-6. Open the browser console. The line `woodland-generators | initialized` on
+7. Open the browser console. The line `woodland-generators | initialized` on
    world load confirms the module loaded.
 
-7. Stop the harness, keeping the volume so the next run skips the download and
+8. Stop the harness, keeping the volume so the next run skips the download and
    licensing:
 
    ```bash

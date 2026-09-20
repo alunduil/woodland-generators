@@ -98,12 +98,19 @@ list lives in `.pre-commit-config.yaml`.
 Test files mirror the module under test within each package. Tests for
 `packages/core/src/generators/name.ts` belong at
 `packages/core/test/generators/name.test.ts`. Don't split tests by feature or
-scenario.
+scenario. A file under `test/` that isn't a test is named for what it holds, not
+for being shared.
 
-Jest runs no Foundry, so stub the `Hooks` and `game` objects Foundry injects
-when testing `packages/foundry-module`. Derive expected strings from
+Jest runs no Foundry. The `foundry` global arrives through Jest's `setupFiles`,
+so don't stub it. `game` and `Hooks` vary per test and have shared stubs to
+extend instead. Prefer a function that takes the narrowed `game` it needs, the
+way `GeneratorMenu.register` does, over one that reads the global: its test then
+builds a game rather than mutating one. Derive expected strings from
 `module.json` and the language catalog, so a renamed ID or a dropped key fails
 the suite.
+
+Behaviour that needs a running Foundry goes in the package's `test/manual/` as a
+numbered scenario, walked by hand and recorded in your pull request.
 
 ## Commit messages
 
