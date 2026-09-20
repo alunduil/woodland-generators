@@ -60,7 +60,24 @@ Configuration file shown in parentheses.
 
 Test files mirror the module under test within each package: tests for
 `packages/core/src/foo/bar.ts` live at `packages/core/test/foo/bar.test.ts`.
-Don't split tests by feature or scenario.
+Don't split tests by feature or scenario. A file under `test/` that isn't a test
+is named for what it holds, not for being shared: no `support/`, `utils/`, or
+`helpers/` buckets.
+
+`foundry` is installed for every test file through Jest's `setupFiles`, at
+`packages/foundry-module/test/setup/foundry.ts`. The per-test `game` and `Hooks`
+stubs live in `packages/foundry-module/test/foundry-globals.ts`; extend that
+rather than adding a stub inside a suite.
+
+Take the narrowed `game` a function needs as a parameter, the way
+`GeneratorMenu.register` takes an `InitGame`. fvtt-types gates `game` members on
+lifecycle hooks and ships `InitGame`, `I18nInitGame`, `SetupGame`, and
+`ReadyGame` to name the point reached, so naming it removes a guard the tests
+would otherwise have to cover.
+
+Behaviour needing a running Foundry goes in
+`packages/foundry-module/test/manual/` as a numbered scenario, walked by hand
+and recorded in the pull request. #657 converts these to Playwright specs.
 
 ## Commits
 

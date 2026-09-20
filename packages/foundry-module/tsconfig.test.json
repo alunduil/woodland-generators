@@ -7,6 +7,6 @@
     "noUnusedParameters": false,
     "types": ["@league-of-foundry-developers/foundry-vtt-types", "node", "jest"]
   },
-  "include": ["src/module.ts", "test/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*", "test/**/*"],
+  "exclude": ["node_modules", "dist", "src/manifest.ts"]
 }
