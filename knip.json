@@ -11,8 +11,12 @@
       "project": ["src/**/*.{ts,js}"]
     },
     "packages/foundry-module": {
-      "entry": ["src/manifest.ts", "test/**/*.test.ts"],
-      "project": ["src/**/*.ts"]
+      "entry": [
+        "src/manifest.ts",
+        "scripts/package-release.ts",
+        "test/**/*.test.ts"
+      ],
+      "project": ["src/**/*.ts", "scripts/**/*.ts"]
     },
     "packages/random": {
       "entry": ["src/index.ts", "test/**/*.test.ts"],
