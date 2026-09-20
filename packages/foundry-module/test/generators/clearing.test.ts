@@ -8,10 +8,9 @@ import {
   DENIZEN_SPECIES,
   FACTIONS,
   LOCAL_CHALLENGERS,
-  generateClearing,
-  type Clearing,
   type Faction,
-} from "../../src/generators/clearing";
+} from "../../src/generators/clearing-tables";
+import { generateClearing, type Clearing } from "../../src/generators/clearing";
 
 /** Seeds to sweep when an invariant has to hold for every clearing. */
 const SEEDS = Array.from({ length: 200 }, (_, index) => `clearing-${index}`);
