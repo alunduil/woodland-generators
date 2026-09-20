@@ -21,6 +21,7 @@
     "clean": "rm -rf dist/",
     "install:dev": "node scripts/install-dev.mjs",
     "package": "tsx scripts/package-release.ts",
+    "verify:release": "tsx scripts/verify-release.ts",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.scripts.json",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",

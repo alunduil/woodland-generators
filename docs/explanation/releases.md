@@ -7,9 +7,10 @@ why. For a release that shipped broken, see
 
 ## One releasable package
 
-`release-please-config.json` lists one package, `packages/foundry-module`.
-`core` and `random` stay workspace-internal. The module bundles their compiled
-output, so neither needs a version of its own, and nothing publishes to npm.
+`release-please-config.json` lists one package, `packages/foundry-module`. All
+three packages are `private`, so nothing publishes to npm. The release carries
+what esbuild bundles into `dist/`, which `core` and `random` reach only by being
+imported, so neither needs a version of its own.
 
 ## The release pull request
 
@@ -56,6 +57,18 @@ flattened to the zip root, because Foundry unpacks the archive straight into
 released and fails the job on a mismatch. The script runs on any checkout, so
 without that check a stale working tree could ship a zip labelled with the wrong
 version.
+
+## Checked where Foundry reads it
+
+The checks so far run against a working tree. The `verify-release` job runs
+against the published release instead, reading it the way a world does and
+failing when the manifest and the zip disagree or when a file the manifest
+declares is missing.
+
+The release is already published by then, so a red run is a signal to
+[withdraw](../how-to/withdraw-a-broken-release.md) rather than a gate. Loading
+the module in a world stays manual, because Foundry needs a license:
+[Verify a published release installs](../how-to/verify-a-published-release-installs.md).
 
 ## What the manifest URL promises
 
