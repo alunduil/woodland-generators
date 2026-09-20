@@ -32,7 +32,7 @@ export interface Clearing {
 
 export interface ClearingGeneratorOptions {
   seed: string;
-  /** The factions this woodland has in it; defaults to all of them. */
+  /** The factions in play in this Woodland; defaults to all of them. */
   factions?: Faction[];
   /** Overrides the ruler draw. */
   ruler?: Faction;
@@ -43,10 +43,10 @@ const MAX_FEATURES = 3;
 const MAX_INHABITANTS = 2;
 
 /**
- * Every faction unless `factions` narrows the roster.
+ * The factions in play, every faction unless `factions` narrows them.
  *
- * Throws when the roster is empty, or when it has no room for the ruler the
- * caller chose.
+ * Throws when none are in play, or when the ruler the caller chose is not
+ * among those that are.
  */
 function factionsInPlay({ factions, ruler }: ClearingGeneratorOptions): Faction[] {
   const inPlay = factions ?? [...FACTIONS];
