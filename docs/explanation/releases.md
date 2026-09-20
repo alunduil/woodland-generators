@@ -57,6 +57,20 @@ released and fails the job on a mismatch. The script runs on any checkout, so
 without that check a stale working tree could ship a zip labelled with the wrong
 version.
 
+## Checked where Foundry reads it
+
+Both checks so far run against a working tree. The `verify-release` job runs
+against the published release instead, reading it the way a world does: it
+fetches the manifest at the latest-release URL, downloads the zip that manifest
+names, unpacks it, and fails when the two disagree or when a file the manifest
+declares is absent.
+
+The release is already published by the time it runs, so a red run is a signal
+to [withdraw](../how-to/withdraw-a-broken-release.md), not a gate that held
+anything back. Loading the module in a world stays manual, because Foundry needs
+a license:
+[Verify a published release installs](../how-to/verify-a-published-release-installs.md).
+
 ## What the manifest URL promises
 
 The `module.json` inside a release isn't the one in the repository. The
