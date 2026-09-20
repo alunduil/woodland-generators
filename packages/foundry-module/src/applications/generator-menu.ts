@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-/* global foundry, game */
+/* global foundry, game, InitGame, I18nInitGame */
 
 const ICON = "fa-solid fa-tree";
 
@@ -29,9 +29,12 @@ export default class GeneratorMenu extends foundry.applications.api.ApplicationV
    *
    * `restricted` is Foundry's own GM gate, which saves the module a
    * `game.user.isGM` check of its own to keep correct.
+   *
+   * Takes the game rather than reaching for the global, so the caller is the
+   * one asserting that settings are registrable -- which is true from `init`.
    */
-  static register(namespace: string): void {
-    game.settings?.registerMenu(namespace, "generators", {
+  static register(game: InitGame, namespace: string): void {
+    game.settings.registerMenu(namespace, "generators", {
       name: "WOODLAND-GENERATORS.Menu.Name",
       label: "WOODLAND-GENERATORS.Menu.Label",
       hint: "WOODLAND-GENERATORS.Menu.Hint",
@@ -42,9 +45,9 @@ export default class GeneratorMenu extends foundry.applications.api.ApplicationV
   }
 
   protected override async _renderHTML(): Promise<string> {
-    const empty = game.i18n?.localize("WOODLAND-GENERATORS.Menu.Empty") ?? "";
+    const { i18n } = game as I18nInitGame;
 
-    return `<p class="notification info">${empty}</p>`;
+    return `<p class="notification info">${i18n.localize("WOODLAND-GENERATORS.Menu.Empty")}</p>`;
   }
 
   protected override _replaceHTML(result: string, content: HTMLElement): void {
