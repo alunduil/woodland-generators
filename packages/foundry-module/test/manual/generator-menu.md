@@ -91,5 +91,5 @@ surprise worth filing.
 | 3, 4     | Application opens, renders, and closes cleanly                 |
 | 5, 6     | Hidden from non-GM users                                       |
 
-Each scenario maps to one automated spec once a harness exists. #644 covers the
-real-Foundry container that would run them.
+These scenarios are an interim. #657 converts each one into a Playwright spec
+and retires this file; #644 builds the real-Foundry container those specs drive.
