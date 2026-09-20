@@ -7,6 +7,10 @@ import { Rng } from "@woodland-generators/random";
 /**
  * The factions contesting the Woodland.
  *
+ * The seven the roleplaying game supports: three in the Core Book and four
+ * more in Travelers & Outsiders. The board game's Marauder factions are
+ * absent because no roleplaying book carries them.
+ *
  * Stays fixed while the tables in this file stay swappable: a clearing's
  * ruler has to be a name the rest of the module recognises.
  */
@@ -18,8 +22,6 @@ export const FACTIONS = [
   "Corvid Conspiracy",
   "Lizard Cult",
   "Grand Duchy",
-  "Lord of the Hundreds",
-  "Keepers in Iron",
 ] as const;
 
 export type Faction = (typeof FACTIONS)[number];
