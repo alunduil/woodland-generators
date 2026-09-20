@@ -3,7 +3,8 @@
 // SPDX-License-Identifier: MIT
 
 /**
- * Stand-ins for the globals Foundry injects.
+ * Stand-ins for the per-test globals Foundry injects. `foundry` itself is
+ * installed for every test file by `test/setup/foundry.ts`.
  *
  * A test installs the members it needs and no others; leaving one out is how a
  * test reaches the module's guards.
@@ -31,16 +32,6 @@ export function stubHooks(): Map<string, () => void> {
   } as unknown as typeof Hooks;
 
   return registered;
-}
-
-/**
- * An Application subclass resolves its base class off `foundry` while its class
- * body evaluates, so this has to run before the import that loads it.
- */
-export function stubApplicationV2(): void {
-  globalThis.foundry = {
-    applications: { api: { ApplicationV2: class {} } },
-  } as unknown as typeof foundry;
 }
 
 /** Modules register their hooks at import time, so a cached import registers nothing. */

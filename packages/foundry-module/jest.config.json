@@ -2,6 +2,7 @@
   "displayName": "foundry-module",
   "preset": "ts-jest",
   "testEnvironment": "node",
+  "setupFiles": ["<rootDir>/test/setup/foundry.ts"],
   "clearMocks": true,
   "collectCoverageFrom": ["src/**/*.ts", "!src/**/*.d.ts", "!src/manifest.ts"],
   "testPathIgnorePatterns": ["/node_modules/", "/dist/", "/test/integration/"],

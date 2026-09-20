@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import en from "../../languages/en.json";
-import { loadIsolated, localizeWith, stubApplicationV2, stubGame } from "../support/foundry";
+import { loadIsolated, localizeWith, stubGame } from "../support/foundry";
 
 const EMPTY_STATE = en["WOODLAND-GENERATORS.Menu.Empty"];
 
@@ -24,7 +24,6 @@ describe("GeneratorMenu", () => {
   let GeneratorMenu: MenuClass;
 
   beforeEach(() => {
-    stubApplicationV2();
     GeneratorMenu = loadIsolated(
       () => require("../../src/applications/generator-menu").default as MenuClass,
     );

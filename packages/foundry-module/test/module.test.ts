@@ -4,13 +4,7 @@
 
 import en from "../languages/en.json";
 import manifest from "../module.json";
-import {
-  loadIsolated,
-  localizeWith,
-  stubApplicationV2,
-  stubGame,
-  stubHooks,
-} from "./support/foundry";
+import { loadIsolated, localizeWith, stubGame, stubHooks } from "./support/foundry";
 
 const INITIALIZED_KEY = "WOODLAND-GENERATORS.Initialized";
 
@@ -24,7 +18,6 @@ describe("module", () => {
 
   beforeEach(() => {
     hooks = stubHooks();
-    stubApplicationV2();
     log = jest.spyOn(console, "log").mockImplementation(() => undefined);
     loadIsolated(() => require("../src/module"));
   });
