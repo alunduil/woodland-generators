@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-/* global foundry, game, InitGame, I18nInitGame */
+/* global foundry, game */
 
 const ICON = "fa-solid fa-tree";
 
@@ -29,9 +29,6 @@ export default class GeneratorMenu extends foundry.applications.api.ApplicationV
    *
    * `restricted` is Foundry's own GM gate, which saves the module a
    * `game.user.isGM` check of its own to keep correct.
-   *
-   * Takes the game rather than reaching for the global, so the caller is the
-   * one asserting that settings are registrable -- which is true from `init`.
    */
   static register(game: InitGame, namespace: string): void {
     game.settings.registerMenu(namespace, "generators", {

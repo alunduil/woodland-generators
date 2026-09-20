@@ -2,16 +2,14 @@
 //
 // SPDX-License-Identifier: MIT
 
-/* global Hooks, game, I18nInitGame, InitGame */
+/* global Hooks, game */
 
 import GeneratorMenu from "./applications/generator-menu.js";
 
 const MODULE_ID = "woodland-generators";
 
 // i18nInit, not init: the translation catalog loads just before this hook, so
-// localize resolves the key rather than echoing it back. Naming the lifecycle
-// is what makes `i18n` defined here -- `game` is only optionally localized
-// until this hook has run.
+// localize resolves the key rather than echoing it back.
 Hooks.once("i18nInit", () => {
   const { i18n } = game as I18nInitGame;
 
