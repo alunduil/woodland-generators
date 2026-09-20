@@ -156,7 +156,6 @@ jobs:
       # the built directory instead. Bundle analysis keys on `--bundle-name`;
       # it has no equivalent of the per-package flags the coverage uploads use.
       - name: Upload bundle analysis to Codecov
-        continue-on-error: true
         working-directory: packages/foundry-module
         run: >-
           pnpm exec bundle-analyzer dist
