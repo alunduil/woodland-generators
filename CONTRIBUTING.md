@@ -98,15 +98,15 @@ list lives in `.pre-commit-config.yaml`.
 Test files mirror the module under test within each package. Tests for
 `packages/core/src/generators/name.ts` belong at
 `packages/core/test/generators/name.test.ts`. Don't split tests by feature or
-scenario. A package's `test/support/` is the one directory outside that rule:
-helpers shared between suites live there and mirror nothing.
+scenario. Helpers shared between suites are the exception: they live in the
+package's `test/support/`.
 
-Jest runs no Foundry, so `packages/foundry-module/test/support/foundry.ts`
-stands in for the `Hooks`, `game`, and `foundry` objects Foundry injects. Extend
-it rather than hand-rolling a stub in a suite. An Application subclass resolves
-its base class off `foundry` while its class body evaluates, so install that
-stub before the import that loads it. Derive expected strings from `module.json`
-and the language catalog, so a renamed ID or a dropped key fails the suite.
+Jest runs no Foundry. `packages/foundry-module/test/support/foundry.ts` stands
+in for the `Hooks`, `game`, and `foundry` objects Foundry injects; extend it
+rather than writing a stub inside a suite. An Application subclass resolves its
+base class while its class body evaluates, so install the `foundry` stub before
+the import that loads it. Derive expected strings from `module.json` and the
+language catalog, so a renamed ID or a dropped key fails the suite.
 
 ## Commit messages
 

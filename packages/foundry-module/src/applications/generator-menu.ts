@@ -4,15 +4,14 @@
 
 /* global foundry, game */
 
-// Worn by both the launcher button and the window it opens.
 const ICON = "fa-solid fa-tree";
 
 /**
  * The launcher listing the generators the module offers.
  *
- * Rendering goes straight to markup rather than through
- * `HandlebarsApplicationMixin`: a template would be a file to ship in
- * `module.json` and a path to resolve at runtime for one static string.
+ * Renders markup directly rather than through `HandlebarsApplicationMixin`,
+ * which would mean shipping a template file and resolving its path at runtime
+ * for one static string.
  */
 export default class GeneratorMenu extends foundry.applications.api.ApplicationV2 {
   static override DEFAULT_OPTIONS = {
@@ -28,7 +27,7 @@ export default class GeneratorMenu extends foundry.applications.api.ApplicationV
   /**
    * Add the launcher to Configure Settings → Module Settings.
    *
-   * `restricted` is Foundry's own GM gate, so the module carries no
+   * `restricted` is Foundry's own GM gate, which saves the module a
    * `game.user.isGM` check of its own to keep correct.
    */
   static register(namespace: string): void {

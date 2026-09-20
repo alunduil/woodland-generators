@@ -8,8 +8,8 @@ import { loadIsolated, localizeWith, stubApplicationV2, stubGame } from "../supp
 const EMPTY_STATE = en["WOODLAND-GENERATORS.Menu.Empty"];
 const KEY_PREFIX = "WOODLAND-GENERATORS";
 
-// `_renderHTML` and `_replaceHTML` are protected: Foundry calls them, and the
-// test stands in for Foundry.
+// `_renderHTML` and `_replaceHTML` are protected; Foundry calls them, and here
+// the test does.
 interface MenuInstance {
   _renderHTML(): Promise<string>;
   _replaceHTML(result: string, content: HTMLElement): void;
@@ -31,7 +31,7 @@ describe("GeneratorMenu", () => {
     );
   });
 
-  /** The submenu descriptor Foundry receives, as `register` hands it over. */
+  /** The submenu descriptor `register` hands to Foundry. */
   function registerSubmenu(): Record<string, unknown> {
     const registerMenu = jest.fn();
 

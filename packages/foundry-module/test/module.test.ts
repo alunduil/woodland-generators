@@ -53,8 +53,6 @@ describe("module", () => {
     expect(log).not.toHaveBeenCalled();
   });
 
-  // What the menu registers under that namespace belongs to the menu, and is
-  // covered in applications/generator-menu.test.ts.
   it("hands the menu the module's own namespace", () => {
     const registerMenu = jest.fn();
     stubGame({ settings: { registerMenu } });
