@@ -12,8 +12,7 @@ broken, see
 `core` and `random` stay workspace-internal. The module bundles their compiled
 output, so neither carries a version anyone outside the repository can depend
 on, and nothing publishes to npm. The module's `CHANGELOG.md` is the only
-CHANGELOG release tooling writes; the root one is a frozen record of the
-pre-workspace era.
+CHANGELOG release tooling writes.
 
 ## The release pull request
 
@@ -26,8 +25,9 @@ deciding to merge.
 Two settings govern the version arithmetic before 1.0. `bump-minor-pre-major`
 turns a breaking change into a minor bump rather than a major one.
 `bump-patch-for-minor-pre-major` stays false, so a `feat` commit still bumps the
-minor version. Only `feat`, `fix`, `perf`, and `revert` subjects produce a
-release; commits of other types land without moving the version.
+minor version. [CONTRIBUTING](../../CONTRIBUTING.md#commit-messages) lists the
+subjects that cut a release; commits of other types land without moving the
+version.
 
 Merging produces a single commit that writes the new version into the module's
 `package.json` and, through the `extra-files` entry, into `module.json`. The
@@ -56,15 +56,17 @@ package, and runs `package-release.ts`, which writes `release/module.json` and
 yield a partial bundle, because esbuild resolves the sibling packages through
 their `dist/`.
 
+The zip's contents come from the `files` array in the module's `package.json`.
+Foundry unpacks the archive straight into `Data/modules/woodland-generators`, so
+every entry sits at the zip root rather than under a directory.
+
+## The tag and the payload have to agree
+
 `package-release.ts` derives the tag from the version in `module.json` and
 checks it against the tag the workflow is releasing. A mismatch fails the job.
 The check earns its place because the script runs on any checkout: a stale
 working tree would otherwise produce a zip labelled with one version and
 attached to the release of another.
-
-The zip's contents come from the `files` array in the module's `package.json`.
-Foundry unpacks the archive straight into `Data/modules/woodland-generators`, so
-every entry sits at the zip root rather than under a directory.
 
 ## What the manifest URL promises
 
