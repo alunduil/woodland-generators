@@ -177,8 +177,11 @@ repos:
         language: system
         files: \.(js|jsx|ts|tsx)$
       - id: typecheck
+        # Each package names the projects it type-checks. Bare `tsc --noEmit`
+        # reads tsconfig.json and nothing beside it, which misses a package
+        # that has a second project.
         name: typecheck
-        entry: pnpm -r exec tsc --noEmit
+        entry: pnpm -r run typecheck
         language: system
         pass_filenames: false
         types: [ts]

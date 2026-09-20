@@ -152,6 +152,12 @@ jobs:
       - name: Build TypeScript
         run: pnpm run build
 
+      # release.yml runs this same script during a release. Running it here too
+      # means a payload that won't assemble fails the pull request rather than
+      # the release.
+      - name: Assemble the module release assets
+        run: pnpm --filter @woodland-generators/foundry-module run package
+
       - name: Upload build artifacts
         if: github.event_name == 'push'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7

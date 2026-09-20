@@ -20,7 +20,8 @@
     "build:watch": "node esbuild.config.mjs --watch",
     "clean": "rm -rf dist/",
     "install:dev": "node scripts/install-dev.mjs",
-    "typecheck": "tsc --noEmit",
+    "package": "tsx scripts/package-release.ts",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.scripts.json",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
     "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
@@ -30,6 +31,7 @@
     "@types/jest": "30.0.0",
     "@types/node": "24.13.5",
     "esbuild": "0.28.2",
+    "fflate": "0.8.3",
     "jest": "30.4.2",
     "jest-junit": "17.0.0",
     "ts-jest": "29.4.12",

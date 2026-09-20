@@ -74,6 +74,26 @@ module.exports = [
     },
   },
 
+  // TypeScript configuration for package-local scripts. Distinct from the root
+  // `scripts/**` block because flat-config `files` patterns resolve against
+  // this file's directory.
+  {
+    files: ["packages/*/scripts/**/*.ts"],
+    languageOptions: {
+      ...commonLanguageOptions,
+      parserOptions: {
+        ...commonLanguageOptions.parserOptions,
+        project: ["./packages/*/tsconfig.scripts.json"],
+      },
+      globals: commonNodeGlobals,
+    },
+    plugins: commonPlugins,
+    rules: {
+      ...commonRules,
+      "@typescript-eslint/explicit-function-return-type": "warn",
+    },
+  },
+
   // JavaScript configuration for package source files
   {
     files: ["packages/*/src/**/*.js"],
