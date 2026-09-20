@@ -9,6 +9,7 @@ yarn-error.log*
 dist/
 build/
 *.tsbuildinfo
+packages/foundry-module/release/
 
 # Environment files
 .env

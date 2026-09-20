@@ -20,6 +20,7 @@
     "build:watch": "node esbuild.config.mjs --watch",
     "clean": "rm -rf dist/",
     "install:dev": "node scripts/install-dev.mjs",
+    "package": "scripts/package-release.sh",
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
