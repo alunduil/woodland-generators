@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@types/jest": "30.0.0",
-    "@types/node": "24.13.5",
+    "@types/node": "24.13.6",
     "fast-check": "4.10.1",
     "jest": "30.4.2",
     "jest-junit": "17.0.0",
