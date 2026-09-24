@@ -48,7 +48,7 @@ Configuration file shown in parentheses.
   `packages/*/jest.config.json`); coverage configuration `codecov.yml`.
 - Lint / format, all via `pre-commit` (`.pre-commit-config.yaml`): `eslint`
   (`eslint.config.cjs`), `prettier` (`.prettierrc`), `markdownlint`
-  (`.markdownlint.json`), `yamllint` (`.yamllint.yaml`), `shellcheck`,
+  (`.markdownlint.yaml`), `yamllint` (`.yamllint.yaml`), `shellcheck`,
   `actionlint`, `tombi` for TOML, Vale prose (`.vale.ini`, `.vale/`), `lychee`
   link check (`lychee.toml`), `depcheck` (`.depcheckrc.json`), `reuse`
   licensing, `tsc` type-checking, and workspace/ADR validation (`scripts/`).
