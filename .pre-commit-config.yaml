@@ -40,8 +40,9 @@ repos:
         args: ["--fix=lf"]
 
       # JSON/YAML validation
+      # DevContainer and VS Code files use JSONC (JSON with comments)
       - id: check-json
-        exclude: '(\.devcontainer/.*\.json$|\.vscode/.*\.json$)' # DevContainer and VS Code files use JSONC (JSON with comments)
+        exclude: '(\.devcontainer/.*\.json$|\.vscode/.*\.json$)'
       - id: check-yaml
 
       # Other useful checks
@@ -68,7 +69,6 @@ repos:
     rev: v1.38.0
     hooks:
       - id: yamllint
-        args: ["-d", "relaxed"]
 
   # GitHub Actions workflow linting. actionlint owns workflow YAML validation
   # (schema, expression syntax, shellcheck integration); check-yaml and yamllint
