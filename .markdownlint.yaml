@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2025-2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
+---
+default: true
+
+# Commands and URLs in fenced blocks break when wrapped.
+MD013:
+  code_blocks: false
+
+# release-please repeats section headings under each version in package changelogs.
+MD024:
+  siblings_only: true
