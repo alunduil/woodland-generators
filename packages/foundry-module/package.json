@@ -40,7 +40,7 @@
     "fflate": "0.8.3",
     "jest": "30.4.2",
     "jest-junit": "17.0.0",
-    "ts-jest": "29.4.12",
+    "ts-jest": "29.4.13",
     "typescript": "6.0.3"
   }
 }
