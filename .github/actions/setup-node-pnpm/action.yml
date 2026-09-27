@@ -3,9 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 name: Setup Node.js + pnpm
-description: >-
-  Activate pnpm, install Node.js with pnpm cache, and install workspace
-  dependencies from the frozen lockfile.
+description: Install Node.js, pnpm, and the workspace's locked dependencies.
 
 inputs:
   node-version:
