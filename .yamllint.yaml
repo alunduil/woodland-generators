@@ -5,9 +5,13 @@
 ---
 extends: relaxed
 
+ignore: |
+  pnpm-lock.yaml
+
 rules:
   line-length:
     max: 120
+    level: error
   truthy:
     check-keys: false
   comments:
