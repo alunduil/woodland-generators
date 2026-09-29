@@ -22,7 +22,7 @@
     "@types/node": "24.19.0",
     "jest": "30.4.2",
     "jest-junit": "17.0.0",
-    "ts-jest": "29.4.13",
+    "ts-jest": "29.4.14",
     "typescript": "6.0.3"
   },
   "scripts": {
