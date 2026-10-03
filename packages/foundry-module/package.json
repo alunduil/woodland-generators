@@ -1,6 +1,6 @@
 {
   "name": "@woodland-generators/foundry-module",
-  "version": "0.0.0",
+  "version": "0.4.0",
   "description": "Foundry VTT module shell loading the Woodland Generators core into a live world",
   "author": "Alex Brandt",
   "license": "MIT",
