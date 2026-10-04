@@ -5,8 +5,7 @@ you've decided to accept it rather than upgrade.
 
 ## Prerequisites
 
-- The advisory's GitHub advisory ID, of the form `GHSA-xxxx-xxxx-xxxx`, from the
-  audit output.
+- The advisory's `GHSA-xxxx-xxxx-xxxx` ID from the audit output.
 - A reason the advisory doesn't apply or can't be fixed yet.
 
 ## Record the waiver
@@ -26,11 +25,10 @@ you've decided to accept it rather than upgrade.
    pnpm audit
    ```
 
-4. Dismiss the matching alert under **Security** > **Dependabot** with the same
-   reason, so both lists agree.
+4. Dependabot keeps its own waivers. Dismiss the matching alert under
+   **Security** > **Dependabot** with the same reason.
 
 ## Remove the waiver
 
-Delete the entry and its comment from `auditConfig` in `pnpm-workspace.yaml`
-once `pnpm-lock.yaml` resolves to a fixed release. Dependabot closes its alert
-on its own.
+Once `pnpm-lock.yaml` resolves to a fixed release, delete the entry and its
+comment from `auditConfig` in `pnpm-workspace.yaml`.
