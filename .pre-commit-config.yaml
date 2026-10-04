@@ -31,6 +31,10 @@ repos:
       - id: check-added-large-files
         args: ["--maxkb=1024"] # Prevent files larger than 1MB
       - id: check-case-conflict
+      - id: check-symlinks
+      - id: destroyed-symlinks
+      - id: no-commit-to-branch
+        args: [--branch, main]
 
       # File formatting
       - id: trailing-whitespace
