@@ -10,23 +10,32 @@ import manifest from "../module.json";
  * string. A manifest is read by more than Foundry, so hold each list field to
  * its array form.
  */
-type ListsAsArrays<T> = {
-  [K in keyof T]: [Extract<T[K], readonly unknown[]>] extends [never]
-    ? T[K]
-    : Extract<T[K], readonly unknown[] | null | undefined>;
-};
+type ArrayIfList<V> = [Extract<V, readonly unknown[]>] extends [never]
+  ? V
+  : Extract<V, readonly unknown[] | null | undefined>;
 
 /**
  * `license` is optional in Foundry's schema and required here, since a module
  * installs cleanly without one and tells the player nothing.
  */
-type Manifest = ListsAsArrays<foundry.packages.Module.CreateData> & { license: string };
+type Manifest = {
+  [K in keyof foundry.packages.Module.CreateData]: ArrayIfList<
+    foundry.packages.Module.CreateData[K]
+  >;
+} & {
+  license: string;
+};
 
 /**
- * `satisfies` checks excess properties only on a fresh object literal, and an
- * imported binding isn't one, so a misspelt key would otherwise pass silently.
+ * Inferring `M` captures every key the argument has, so one outside the schema
+ * meets `never` -- `satisfies` would skip excess-property checks on an imported
+ * binding.
  */
-export type ExactManifest<M> = Manifest & Record<Exclude<keyof M, keyof Manifest>, never>;
+export function checkManifest<M>(
+  candidate: M & Manifest & Record<Exclude<keyof M, keyof Manifest>, never>,
+): M {
+  return candidate;
+}
 
 /**
  * Type-only gate: the bundle never imports this, `tsc` just checks module.json
@@ -36,4 +45,4 @@ export type ExactManifest<M> = Manifest & Record<Exclude<keyof M, keyof Manifest
  * widens values to `string` -- so test/manifest.test.ts checks its form.
  * Whether the URL resolves is the weekly lychee run's job.
  */
-export default manifest satisfies ExactManifest<typeof manifest>;
+export default checkManifest(manifest);

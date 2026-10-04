@@ -3,27 +3,23 @@
 // SPDX-License-Identifier: MIT
 
 import manifest from "../module.json";
-import type { ExactManifest } from "../src/manifest";
+import { checkManifest } from "../src/manifest";
 
-// Each malformed manifest is a named binding rather than a fresh literal, so
-// `satisfies` sees it the way it sees the module.json import. The typecheck
-// hook fails on any `@ts-expect-error` that stops matching an error.
+// The typecheck hook fails on any `@ts-expect-error` that stops matching an
+// error.
 
-const misspeltKey = { ...manifest, esmodule: manifest.esmodules };
 // @ts-expect-error -- unknown top-level key
-void (misspeltKey satisfies ExactManifest<typeof misspeltKey>);
+checkManifest({ ...manifest, esmodule: manifest.esmodules });
 
-const authorsAsObject = { ...manifest, authors: { name: "Alex Brandt" } };
 // @ts-expect-error -- `authors` must be an array
-void (authorsAsObject satisfies ExactManifest<typeof authorsAsObject>);
+checkManifest({ ...manifest, authors: { name: "Alex Brandt" } });
 
-const esmodulesAsString = { ...manifest, esmodules: "dist/module.js" };
 // @ts-expect-error -- `esmodules` must be an array
-void (esmodulesAsString satisfies ExactManifest<typeof esmodulesAsString>);
+checkManifest({ ...manifest, esmodules: "dist/module.js" });
 
 const { license: _license, ...withoutLicense } = manifest;
 // @ts-expect-error -- `license` is required
-void (withoutLicense satisfies ExactManifest<typeof withoutLicense>);
+checkManifest(withoutLicense);
 
 describe("module.json", () => {
   // lychee extracts no bare path from JSON, so a relative license would go
