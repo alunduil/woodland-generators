@@ -70,3 +70,56 @@ jobs:
           content-filepath: ./lychee/out.md
           issue-number: ${{ steps.report.outputs.number }}
           labels: documentation, automated
+
+  # Dev-only advisories arrive through upstream chains we can't fix, so they
+  # surface here as an issue rather than blocking CI, which gates production
+  # dependencies only. Never fails the run.
+  dependency-audit-report:
+    name: Report advisories across every dependency
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Setup Node.js + pnpm
+        uses: ./.github/actions/setup-node-pnpm
+
+      - name: Audit every dependency
+        id: audit
+        run: |
+          if pnpm audit >audit.txt 2>&1; then
+            echo "found=false" >>"${GITHUB_OUTPUT}"
+          else
+            echo "found=true" >>"${GITHUB_OUTPUT}"
+          fi
+          {
+            echo '```text'
+            cat audit.txt
+            echo '```'
+          } >audit.md
+
+      # Reuse the open report if one exists so repeated findings update a
+      # single issue instead of filing a new one every week.
+      - name: Find existing report issue
+        if: steps.audit.outputs.found == 'true'
+        id: report
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          number=$(gh issue list --repo "${{ github.repository }}" --state open \
+            --search 'Dependency Audit Report in:title' --json number --jq '.[0].number // empty')
+          echo "number=${number}" >> "${GITHUB_OUTPUT}"
+
+      - name: Open or update issue on advisories
+        if: steps.audit.outputs.found == 'true'
+        uses: peter-evans/create-issue-from-file@fca9117c27cdc29c6c4db3b86c48e4115a786710 # v6.0.0
+        with:
+          title: Dependency Audit Report
+          content-filepath: ./audit.md
+          issue-number: ${{ steps.report.outputs.number }}
+          labels: dependencies, automated

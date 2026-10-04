@@ -180,6 +180,24 @@ jobs:
             packages/*/dist/
           retention-days: 7
 
+  # Production advisories come from our own dependency choices, so they block
+  # the line. Dev-only advisories arrive through upstream chains we can't fix
+  # and surface in Weekly's full-tree audit instead.
+  dependency-audit:
+    runs-on: ubuntu-latest
+    name: Audit production dependencies
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Setup Node.js + pnpm
+        uses: ./.github/actions/setup-node-pnpm
+
+      - name: Fail on high or critical advisories
+        run: pnpm audit --prod --audit-level=high
+
   pre-commit:
     runs-on: ubuntu-latest
     name: Run every pre-commit hook
