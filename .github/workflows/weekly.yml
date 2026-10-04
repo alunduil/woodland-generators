@@ -58,9 +58,7 @@ jobs:
           content-filepath: ./lychee/out.md
           labels: documentation, automated
 
-  # Dev-only advisories arrive through upstream chains we can't fix, so they
-  # surface here as an issue rather than blocking CI, which gates production
-  # dependencies only. Never fails the run.
+  # Reports the dev-only advisories that CI's production audit skips.
   dependency-audit-report:
     name: Report advisories across every dependency
     runs-on: ubuntu-latest

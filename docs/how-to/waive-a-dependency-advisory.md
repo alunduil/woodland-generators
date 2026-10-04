@@ -21,13 +21,11 @@ rather than upgrade. A waiver silences the advisory in both places.
 2. In `pnpm-workspace.yaml`, add a comment above the new `auditConfig` entry
    giving the reason.
 
-3. Confirm the audit no longer reports it:
+3. Confirm the audit lists it as ignored:
 
    ```bash
-   pnpm audit --prod --audit-level=high
+   pnpm audit
    ```
-
-4. Open a pull request with the change.
 
 ## Remove the waiver
 
