@@ -31,6 +31,10 @@ repos:
       - id: check-added-large-files
         args: ["--maxkb=1024"] # Prevent files larger than 1MB
       - id: check-case-conflict
+      - id: check-symlinks
+      - id: destroyed-symlinks
+      - id: no-commit-to-branch
+        args: [--branch, main]
 
       # File formatting
       - id: trailing-whitespace
@@ -174,6 +178,13 @@ repos:
             pnpm-lock\.yaml|
             \.vscode/.*\.json
           )$
+      - id: stylelint
+        # Stylelint ships no stylistic rules, so it never contends with
+        # prettier over layout.
+        name: stylelint
+        entry: pnpm exec stylelint --fix
+        language: system
+        types: [css]
       - id: eslint
         name: eslint
         entry: pnpm exec eslint --max-warnings=0 --fix

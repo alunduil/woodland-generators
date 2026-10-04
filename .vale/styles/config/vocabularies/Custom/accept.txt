@@ -34,6 +34,7 @@ DevContainer
 devcontainer
 ESLint
 GitHub
+Dependabot
 pre-commit
 Pre-commit
 rollup
