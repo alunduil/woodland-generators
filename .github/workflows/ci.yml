@@ -247,3 +247,25 @@ jobs:
         uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec # v1.0.5
         with:
           extra_args: --hook-stage manual --all-files tombi-lint-online
+
+  # Verified mode fails only on a credential TruffleHog confirms is live, so
+  # the gate needs no allowlist. It extends GitHub push protection, which
+  # matches known provider patterns only.
+  secrets:
+    runs-on: ubuntu-latest
+    name: Scan for live secrets
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          # TruffleHog scans the pushed commits, whose history a shallow clone
+          # lacks.
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Scan the pushed commits
+        uses: trufflesecurity/trufflehog@4dd8831c5f12599465d4d45c3c447b4018a34c85 # v3.97.9
+        with:
+          extra_args: --results=verified
