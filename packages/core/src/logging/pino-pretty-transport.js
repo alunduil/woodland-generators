@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-// Custom pino-pretty transport that handles multiline context formatting
+// pino-pretty, with a multiline `context` starting on its own line.
 module.exports = (opts) =>
   require("pino-pretty")({
     ...opts,

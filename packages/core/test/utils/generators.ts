@@ -5,8 +5,7 @@
 import fc from "fast-check";
 
 /**
- * Helper function to create a generator for unique pairs.
- * Generates an array of unique combinations (pairs) from a set of unique values.
+ * Every unordered pair of distinct values from one generated array.
  * Post-shrink, the unique-item count is guaranteed >= minLength (floor 2), so
  * shrinking can't collapse a property's input down to a single pair when the
  * caller asked for more.
@@ -22,7 +21,6 @@ export function uniquePairs<T>(
     .map((arr) => Array.from(new Set(arr)))
     .filter((arr) => arr.length >= minUnique)
     .map((arr) => {
-      // Unordered combinations: j = i + 1 avoids both (a, a) and the (b, a) of (a, b).
       const pairs: [T, T][] = [];
       for (let i = 0; i < arr.length; i++) {
         for (let j = i + 1; j < arr.length; j++) {

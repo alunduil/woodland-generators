@@ -98,7 +98,7 @@ describe("uniqueArray", () => {
   });
 
   it("should handle edge cases gracefully", () => {
-    // Test with a generator that might produce duplicates
+    // Three possible values force duplicates.
     const limitedIntGenerator = fc.integer({ min: 1, max: 3 });
     const result = fc.sample(uniqueArray(limitedIntGenerator, { minLength: 1, maxLength: 3 }), 10);
 

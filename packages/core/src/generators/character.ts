@@ -20,13 +20,13 @@ export interface CharacterGeneratorOptions extends GeneratorOptions {
   detailsChoices: Details;
   /** Demeanor trait choices the generator picks from */
   demeanorChoices: string[];
-  /** User-provided name (if provided, this will be used instead of generating) */
+  /** Used as-is instead of generating. */
   name?: string;
-  /** User-provided species (if provided, this will be used instead of generating) */
+  /** Used instead of generating; validated against `speciesChoices` unless they include "other". */
   species?: string;
-  /** User-provided details (if provided, these will be used instead of generating) */
+  /** Used instead of generating; validated against `detailsChoices`. */
   details?: Partial<Details>;
-  /** User-provided demeanor traits (if provided, these will be used instead of generating) */
+  /** Used instead of generating; validated against `demeanorChoices`. */
   demeanor?: string[];
 }
 

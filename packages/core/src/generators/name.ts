@@ -33,7 +33,7 @@ export const CHARACTER_NAMES = [
 ] as const;
 
 export interface NameGeneratorOptions extends GeneratorOptions {
-  /** User-provided name (if provided, this will be returned instead of generating) */
+  /** Used as-is instead of generating; not validated. */
   name?: string;
 }
 
@@ -50,7 +50,6 @@ export function generateName(options: NameGeneratorOptions): string {
 
   let result: string;
 
-  // If user provided a name, use it directly (no validation needed for names)
   if (options.name) {
     result = options.name;
   } else {

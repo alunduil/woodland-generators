@@ -10,9 +10,9 @@ import { Details } from "../details";
 import { generateMultipleFromChoices } from "./core";
 
 export interface DetailsGeneratorOptions extends GeneratorOptions {
-  /** Available detail choices from playbook */
+  /** The playbook's detail choices, per category. */
   choices: Details;
-  /** User-provided details (if provided, these will be used instead of generating) */
+  /** Used instead of generating, per category. Each detail must be one of `choices`. */
   details?: Partial<Details>;
 }
 

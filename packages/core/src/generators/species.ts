@@ -156,9 +156,9 @@ export const EXTENDED_WOODLAND_SPECIES = [
 ] as const;
 
 export interface SpeciesGeneratorOptions extends GeneratorOptions {
-  /** Species choices available for selection (from playbook) */
+  /** The playbook's species choices. */
   choices: string[];
-  /** Specific species to use (user override) */
+  /** Used instead of generating. Must be one of `choices` unless they include "other". */
   species?: string;
 }
 

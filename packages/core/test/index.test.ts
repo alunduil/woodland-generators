@@ -35,7 +35,7 @@ describe("Root module exports", () => {
         name: "Optional Name",
       };
 
-      // If we get here without TypeScript errors, the types are properly exported
+      // Compiling is the assertion: the types above must be exported.
     });
   });
 

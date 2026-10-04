@@ -9,7 +9,7 @@ import { generateDetails } from "../../src/generators/details";
 import { generateDemeanor } from "../../src/generators/demeanor";
 import { root } from "../../src/logging";
 
-// Mock only the functions while allowing constants to pass through safely
+// Mock the generator but keep the real constants.
 jest.mock("../../src/generators/species", (): typeof import("../../src/generators/species") => {
   const actualSpecies = jest.requireActual("../../src/generators/species");
   return {
@@ -134,7 +134,7 @@ describe("generateCharacter", () => {
       demeanor: ["Custom", "Demeanor"],
     });
 
-    // Verifies conditional parameter passing - only includes overrides when defined
+    // Each override reaches its generator only when defined.
     expect(mockGenerateName).toHaveBeenCalledWith({
       seed: "override-test",
       name: "Custom Name",

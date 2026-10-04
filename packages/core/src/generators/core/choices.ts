@@ -16,8 +16,8 @@ export function validateChoicesNonEmpty(category: string, choices: string[], log
 }
 
 /**
- * Generate random subset from available choices, with user override option
- * Validates user selection before using it
+ * A copy of `selection` when given, otherwise a random non-empty subset of
+ * `choices`. Throws when `choices` is empty or `selection` strays outside it.
  */
 export function generateSubsetFromChoices<T extends string>(
   category: string,
@@ -48,10 +48,7 @@ export function generateSubsetFromChoices<T extends string>(
   return rng.selectRandomSample(choices, count) as T[];
 }
 
-/**
- * Generate multiple categories of random selections from available choices
- * Validates all user selections before using them
- */
+/** `generateSubsetFromChoices` per category of `choices`. */
 export function generateMultipleFromChoices<T extends string, K extends string>(
   selections: Record<K, T[] | undefined>,
   choices: Record<K, T[]>,
@@ -69,8 +66,8 @@ export function generateMultipleFromChoices<T extends string, K extends string>(
 }
 
 /**
- * Generate a single random selection from available choices, with user override option
- * Validates user selection before using it
+ * `selection` when given, otherwise a random element of `choices`. Throws when
+ * `choices` is empty or omits `selection`.
  */
 export function generateSingleFromChoices<T extends string>(
   category: string,

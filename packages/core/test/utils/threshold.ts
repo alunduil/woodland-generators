@@ -3,8 +3,8 @@
 // SPDX-License-Identifier: MIT
 
 /**
- * Get expected collision rate threshold based on number of choices
- * Uses a simple lookup table based on empirical testing
+ * The fraction of seed pairs expected to give different outputs when generating
+ * from `count` choices. The values are empirical.
  */
 export function getCollisionThreshold(count: number): number {
   const thresholds = [

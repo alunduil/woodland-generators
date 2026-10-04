@@ -9,9 +9,9 @@ import { root } from "../logging";
 import { generateSubsetFromChoices } from "./core";
 
 export interface DemeanorGeneratorOptions extends GeneratorOptions {
-  /** Available demeanor choices from playbook */
+  /** The playbook's demeanor choices. */
   choices: string[];
-  /** User-provided demeanor traits (if provided, these will be used instead of generating) */
+  /** Used instead of generating. Each trait must be one of `choices`. */
   demeanor?: string[];
 }
 
