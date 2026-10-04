@@ -79,11 +79,13 @@ jobs:
       - name: Audit every dependency
         id: audit
         run: |
-          if pnpm audit >audit.txt 2>&1; then
-            echo "found=false" >>"${GITHUB_OUTPUT}"
-          else
-            echo "found=true" >>"${GITHUB_OUTPUT}"
-          fi
+          status=0
+          pnpm audit >audit.txt 2>&1 || status=$?
+          echo "exit_code=${status}" >>"${GITHUB_OUTPUT}"
+
+      - name: Format the audit as an issue body
+        if: steps.audit.outputs.exit_code != 0
+        run: |
           {
             echo '```text'
             cat audit.txt
@@ -91,7 +93,7 @@ jobs:
           } >audit.md
 
       - name: Open or update issue on advisories
-        if: steps.audit.outputs.found == 'true'
+        if: steps.audit.outputs.exit_code != 0
         uses: ./.github/actions/report-issue
         with:
           title: Dependency Audit Report
