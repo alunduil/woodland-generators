@@ -93,9 +93,10 @@ pnpm test                    # Jest suite
 Many hooks fix files in place, so re-stage anything they touch. The full hook
 list lives in `.pre-commit-config.yaml`.
 
-CI also fails a pull request when a production dependency carries a high or
-critical advisory. To accept one rather than upgrade, follow [Waive a dependency
-advisory][waive-advisory].
+The `Audit production dependencies` check fails when a production dependency
+carries a high or critical advisory, even if your pull request didn't touch
+dependencies. Say so in the pull request. A maintainer either merges the fix
+Renovate opens or [waives the advisory][waive-advisory].
 
 ## Tests
 
