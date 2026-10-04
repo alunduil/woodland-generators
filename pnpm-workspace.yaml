@@ -6,17 +6,18 @@ packages:
   - "packages/*"
 blockExoticSubdeps: false
 overrides:
-  # Neither tinymce nor showdown enters shipped code: foundry-vtt-types
-  # contributes them as types only, and Foundry VTT supplies both at runtime.
-  # tinymce sits past the declared ^6.8.5 because its XSS advisories resolve
-  # only in 7.x. showdown has no fixed release to pin to.
+  # tinymce never enters shipped code: foundry-vtt-types contributes it as
+  # types only, and Foundry VTT supplies it at runtime. It sits past the
+  # declared ^6.8.5 because its XSS advisories resolve only in 7.x.
   tinymce: 7.9.3
 allowBuilds:
   esbuild: true
   unrs-resolver: true
 auditConfig:
   ignoreGhsas:
-    # showdown: no fixed release exists, and it never ships (see overrides).
+    # showdown never enters shipped code: foundry-vtt-types contributes it as
+    # types only, and Foundry VTT supplies it at runtime. No fixed release
+    # exists.
     - GHSA-rmmh-p597-ppvv
     - GHSA-cr32-g25g-vxjj
     - GHSA-22g5-r2x5-97cx
