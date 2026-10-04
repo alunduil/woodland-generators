@@ -162,6 +162,13 @@ export interface SpeciesGeneratorOptions extends GeneratorOptions {
   species?: string;
 }
 
+/** A playbook offering "other" accepts any species the user names, listed or not. */
+function isCarteBlanche(
+  options: SpeciesGeneratorOptions,
+): options is SpeciesGeneratorOptions & { species: string } {
+  return Boolean(options.species) && options.choices.includes("other");
+}
+
 export function generateSpecies(options: SpeciesGeneratorOptions): string {
   const logger = root.child({
     generator: "species",
@@ -175,14 +182,9 @@ export function generateSpecies(options: SpeciesGeneratorOptions): string {
 
   const rng = new Rng(options.seed);
 
-  let selected: string;
-
-  // Handle carte blanche case first
-  if (options.species && options.choices.includes("other")) {
-    selected = options.species;
-  } else {
-    selected = generateSingleFromChoices("species", options.species, options.choices, rng, logger);
-  }
+  let selected = isCarteBlanche(options)
+    ? options.species
+    : generateSingleFromChoices("species", options.species, options.choices, rng, logger);
 
   if (selected === "other") {
     selected = generateSingleFromChoices(
