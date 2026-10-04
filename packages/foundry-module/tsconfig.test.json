@@ -8,5 +8,5 @@
     "types": ["@league-of-foundry-developers/foundry-vtt-types", "node", "jest"]
   },
   "include": ["src/**/*", "test/**/*"],
-  "exclude": ["node_modules", "dist", "src/manifest.ts"]
+  "exclude": ["node_modules", "dist"]
 }
