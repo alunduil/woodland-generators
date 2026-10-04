@@ -233,7 +233,7 @@ jobs:
   # matches known provider patterns only.
   secrets:
     runs-on: ubuntu-latest
-    name: Scan for verified secrets
+    name: Scan for live secrets
     timeout-minutes: 5
 
     steps:
