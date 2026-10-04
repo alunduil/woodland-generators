@@ -181,7 +181,7 @@ jobs:
           retention-days: 7
 
   # Production only: dev-only advisories arrive through upstream chains we
-  # can't fix, so Weekly reports them instead of blocking the line.
+  # can't fix, so they stay as Dependabot alerts instead of blocking the line.
   dependency-audit:
     runs-on: ubuntu-latest
     name: Audit production dependencies

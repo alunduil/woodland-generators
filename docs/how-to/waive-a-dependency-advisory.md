@@ -1,8 +1,7 @@
 # How to waive a dependency advisory
 
-Waive an advisory when it fails the `Audit production dependencies` check or
-appears in the weekly Dependency Audit Report, and you've decided to accept it
-rather than upgrade. A waiver silences the advisory in both places.
+Waive an advisory when it fails the `Audit production dependencies` check and
+you've decided to accept it rather than upgrade.
 
 ## Prerequisites
 
@@ -27,7 +26,11 @@ rather than upgrade. A waiver silences the advisory in both places.
    pnpm audit
    ```
 
+4. Dismiss the matching alert under **Security** > **Dependabot** with the same
+   reason, so both lists agree.
+
 ## Remove the waiver
 
 Delete the entry and its comment from `auditConfig` in `pnpm-workspace.yaml`
-once `pnpm-lock.yaml` resolves to a fixed release.
+once `pnpm-lock.yaml` resolves to a fixed release. Dependabot closes its alert
+on its own.
