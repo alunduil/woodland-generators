@@ -220,7 +220,7 @@ jobs:
       - name: Run default-stage hooks
         uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec # v1.0.5
         env:
-          # Push runs check out main itself, which no-commit-to-branch rejects.
+          # A push run checks out main, which no-commit-to-branch rejects.
           SKIP: no-commit-to-branch
 
       # A second invocation is what selects the manual stage, and it reuses
