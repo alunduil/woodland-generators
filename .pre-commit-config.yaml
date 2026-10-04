@@ -172,8 +172,8 @@ repos:
             \.vscode/.*\.json
           )$
       - id: stylelint
-        # Runs after prettier so it lints the formatted file. Stylelint has
-        # dropped its stylistic rules, so the two never disagree on layout.
+        # Stylelint ships no stylistic rules, so it never contends with
+        # prettier over layout.
         name: stylelint
         entry: pnpm exec stylelint --fix
         language: system
