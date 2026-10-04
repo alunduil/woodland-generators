@@ -2,5 +2,5 @@
 //
 // SPDX-License-Identifier: MIT
 
-export { getCollisionThreshold } from "./threshold";
+export { enoughPairsDiffer, getCollisionThreshold } from "./threshold";
 export { uniquePairs, uniqueArray } from "./generators";

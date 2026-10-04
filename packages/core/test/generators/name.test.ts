@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import { generateName, CHARACTER_NAMES } from "../../src/generators/name";
-import { getCollisionThreshold, uniquePairs } from "../utils";
+import { enoughPairsDiffer, getCollisionThreshold, uniquePairs } from "../utils";
 import fc from "fast-check";
 
 describe("generateName", () => {
@@ -23,25 +23,10 @@ describe("generateName", () => {
         fc.property(
           uniquePairs(fc.string(), { minLength: 5, maxLength: 15 }), // Ensure enough pairs for meaningful statistics
           (seedPairs) => {
-            const nameChoices = CHARACTER_NAMES;
-            const targetSuccessRate = getCollisionThreshold(nameChoices.length);
+            const targetSuccessRate = getCollisionThreshold(CHARACTER_NAMES.length);
             const targetCount = Math.ceil(seedPairs.length * targetSuccessRate);
 
-            let differentResults = 0;
-
-            for (const [seed1, seed2] of seedPairs) {
-              const name1 = generateName({ seed: seed1 });
-              const name2 = generateName({ seed: seed2 });
-
-              if (name1 !== name2) {
-                differentResults++;
-                if (differentResults >= targetCount) {
-                  break;
-                }
-              }
-            }
-
-            return differentResults >= targetCount;
+            return enoughPairsDiffer(seedPairs, targetCount, (seed) => generateName({ seed }));
           },
         ),
       );

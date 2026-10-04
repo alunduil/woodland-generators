@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import { generateSpecies, EXTENDED_WOODLAND_SPECIES } from "../../src/generators/species";
-import { getCollisionThreshold, uniquePairs, uniqueArray } from "../utils";
+import { enoughPairsDiffer, getCollisionThreshold, uniquePairs, uniqueArray } from "../utils";
 import fc from "fast-check";
 import { root } from "../../src/logging";
 
@@ -119,22 +119,9 @@ describe("generateSpecies", () => {
           const targetSuccessRate = getCollisionThreshold(EXTENDED_WOODLAND_SPECIES.length);
           const targetCount = Math.ceil(seedPairs.length * targetSuccessRate);
 
-          let differentResults = 0;
-
-          for (const [seed1, seed2] of seedPairs) {
-            const species1 = generateSpecies({ seed: seed1, choices });
-            const species2 = generateSpecies({ seed: seed2, choices });
-
-            if (species1 !== species2) {
-              differentResults++;
-
-              if (differentResults >= targetCount) {
-                break;
-              }
-            }
-          }
-
-          return differentResults >= targetCount;
+          return enoughPairsDiffer(seedPairs, targetCount, (seed) =>
+            generateSpecies({ seed, choices }),
+          );
         }),
       );
     });

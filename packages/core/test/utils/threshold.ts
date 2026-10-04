@@ -17,3 +17,27 @@ export function getCollisionThreshold(count: number): number {
 
   return thresholds.find((entry) => count <= entry.max)?.threshold ?? 0.9;
 }
+
+/**
+ * Whether `generate` gives different outputs for at least `targetCount` of the
+ * seed pairs. Outputs compare with `!==`, so map structured results to a string.
+ */
+export function enoughPairsDiffer<T>(
+  seedPairs: [string, string][],
+  targetCount: number,
+  generate: (seed: string) => T,
+): boolean {
+  let differing = 0;
+
+  for (const [seed1, seed2] of seedPairs) {
+    if (generate(seed1) !== generate(seed2)) {
+      differing++;
+
+      if (differing >= targetCount) {
+        break;
+      }
+    }
+  }
+
+  return differing >= targetCount;
+}
