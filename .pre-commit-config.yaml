@@ -50,6 +50,18 @@ repos:
       - id: check-shebang-scripts-are-executable
         exclude: '^packages/.*/src/.*\.ts$' # TypeScript source files with shebangs are compiled, not directly executed
 
+  # Credential scanning. A committed secret costs a history rewrite plus a
+  # rotation, so it is gated at commit time. Audited false positives live in
+  # .secrets.baseline, which also records the scan's file filters: the pnpm
+  # lockfile is excluded because its integrity hashes read as high-entropy
+  # secrets. Refresh it with `detect-secrets scan --baseline .secrets.baseline`
+  # and review new entries with `detect-secrets audit .secrets.baseline`.
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ["--baseline", ".secrets.baseline"]
+
   # Markdown linting
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.49.1
