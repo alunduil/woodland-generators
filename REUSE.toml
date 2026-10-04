@@ -3,7 +3,7 @@ version = 1
 # JSON and JSONC files cannot carry inline comment headers, so REUSE.toml
 # is the only way to declare their SPDX information.
 [[annotations]]
-path = ["**/*.json", ".prettierrc", ".secrets.baseline"]
+path = ["**/*.json", ".prettierrc"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2025-2026 Alex Brandt"
 SPDX-License-Identifier = "MIT"
