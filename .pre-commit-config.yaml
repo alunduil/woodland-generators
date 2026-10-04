@@ -31,8 +31,9 @@ repos:
       - id: check-added-large-files
         args: ["--maxkb=1024"] # Prevent files larger than 1MB
       - id: check-case-conflict
-      # SSH and TLS private keys have no provider pattern for push
-      # protection and no endpoint for TruffleHog to verify against.
+
+      # Secret checks. SSH and TLS private keys have no provider pattern for
+      # push protection and no endpoint for TruffleHog to verify against.
       - id: detect-private-key
 
       # File formatting

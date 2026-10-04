@@ -230,8 +230,7 @@ jobs:
 
   # Verified mode fails only on a credential TruffleHog confirms is live, so
   # the gate needs no allowlist. It extends GitHub push protection, which
-  # matches known provider patterns only. fetch-depth: 0 gives TruffleHog the
-  # commit range, so it scans the diff rather than a snapshot.
+  # matches known provider patterns only.
   secrets:
     runs-on: ubuntu-latest
     name: Scan for verified secrets
@@ -241,10 +240,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
+          # The commit range lets TruffleHog scan the diff, not a snapshot.
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Scan for verified secrets
+      - name: Scan the new commits with TruffleHog
         uses: trufflesecurity/trufflehog@4dd8831c5f12599465d4d45c3c447b4018a34c85 # v3.97.9
         with:
           extra_args: --results=verified
