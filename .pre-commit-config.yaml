@@ -171,6 +171,13 @@ repos:
             pnpm-lock\.yaml|
             \.vscode/.*\.json
           )$
+      - id: stylelint
+        # Runs after prettier so it lints the formatted file. Stylelint has
+        # dropped its stylistic rules, so the two never disagree on layout.
+        name: stylelint
+        entry: pnpm exec stylelint --fix
+        language: system
+        types: [css]
       - id: eslint
         name: eslint
         entry: pnpm exec eslint --max-warnings=0 --fix

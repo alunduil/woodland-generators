@@ -47,11 +47,12 @@ Configuration file shown in parentheses.
 - Test / coverage: Jest (`jest.config.json`, per-package
   `packages/*/jest.config.json`); coverage configuration `codecov.yml`.
 - Lint / format, all via `pre-commit` (`.pre-commit-config.yaml`): `eslint`
-  (`eslint.config.cjs`), `prettier` (`.prettierrc`), `markdownlint`
-  (`.markdownlint.yaml`), `yamllint` (`.yamllint.yaml`), `shellcheck`,
-  `actionlint`, `tombi` for TOML, Vale prose (`.vale.ini`, `.vale/`), `lychee`
-  link check (`lychee.toml`), `depcheck` (`.depcheckrc.json`), `reuse`
-  licensing, `tsc` type-checking, and workspace/ADR validation (`scripts/`).
+  (`eslint.config.cjs`), `prettier` (`.prettierrc`), `stylelint`
+  (`.stylelintrc.json`), `markdownlint` (`.markdownlint.yaml`), `yamllint`
+  (`.yamllint.yaml`), `shellcheck`, `actionlint`, `tombi` for TOML, Vale prose
+  (`.vale.ini`, `.vale/`), `lychee` link check (`lychee.toml`), `depcheck`
+  (`.depcheckrc.json`), `reuse` licensing, `tsc` type-checking, and
+  workspace/ADR validation (`scripts/`).
 - Development environment: `.devcontainer/`.
 - Dependency updates: Renovate (`renovate.json`); locally
   `pnpm run check:outdated` and `pnpm run update:deps`.
