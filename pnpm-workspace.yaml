@@ -14,3 +14,9 @@ overrides:
 allowBuilds:
   esbuild: true
   unrs-resolver: true
+auditConfig:
+  ignoreGhsas:
+    # showdown: no fixed release exists, and it never ships (see overrides).
+    - GHSA-rmmh-p597-ppvv
+    - GHSA-cr32-g25g-vxjj
+    - GHSA-22g5-r2x5-97cx
