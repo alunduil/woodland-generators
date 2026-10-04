@@ -180,6 +180,23 @@ jobs:
             packages/*/dist/
           retention-days: 7
 
+  # Production only: dev-only advisories arrive through upstream chains we
+  # can't fix, so they stay as Dependabot alerts instead of blocking the line.
+  dependency-audit:
+    runs-on: ubuntu-latest
+    name: Audit production dependencies
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Setup Node.js + pnpm
+        uses: ./.github/actions/setup-node-pnpm
+
+      - name: Fail on high or critical advisories
+        run: pnpm audit --prod --audit-level=high
+
   pre-commit:
     runs-on: ubuntu-latest
     name: Run every pre-commit hook

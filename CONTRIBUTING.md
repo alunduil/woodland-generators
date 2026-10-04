@@ -93,6 +93,11 @@ pnpm test                    # Jest suite
 Many hooks fix files in place, so re-stage anything they touch. The full hook
 list lives in `.pre-commit-config.yaml`.
 
+The `Audit production dependencies` check fails when a production dependency
+carries a high or critical advisory, even if your pull request didn't touch
+dependencies. Say so in the pull request. A maintainer either merges the fix
+Renovate opens or [waives the advisory][waive-advisory].
+
 ## Tests
 
 Test files mirror the module under test within each package. Tests for
@@ -258,5 +263,6 @@ maintainer merges the PR once it's approved.
 [release-please]: https://github.com/googleapis/release-please
 [release-withdraw]: docs/how-to/withdraw-a-broken-release.md
 [releases]: docs/explanation/releases.md
+[waive-advisory]: docs/how-to/waive-a-dependency-advisory.md
 [work-item-template]:
   https://github.com/alunduil/woodland-generators/issues/new?template=work-item.yml
