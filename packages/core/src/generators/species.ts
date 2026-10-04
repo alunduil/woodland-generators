@@ -155,9 +155,6 @@ export const EXTENDED_WOODLAND_SPECIES = [
   "american toad",
 ] as const;
 
-/**
- * Options for species generation
- */
 export interface SpeciesGeneratorOptions extends GeneratorOptions {
   /** Species choices available for selection (from playbook) */
   choices: string[];
@@ -165,9 +162,6 @@ export interface SpeciesGeneratorOptions extends GeneratorOptions {
   species?: string;
 }
 
-/**
- * Generate a random character species
- */
 export function generateSpecies(options: SpeciesGeneratorOptions): string {
   const logger = root.child({
     generator: "species",
@@ -187,11 +181,9 @@ export function generateSpecies(options: SpeciesGeneratorOptions): string {
   if (options.species && options.choices.includes("other")) {
     selected = options.species;
   } else {
-    // Standard validation/generation logic
     selected = generateSingleFromChoices("species", options.species, options.choices, rng, logger);
   }
 
-  // Handle "other" selection - expand to extended species
   if (selected === "other") {
     selected = generateSingleFromChoices(
       "extended species",

@@ -5,9 +5,6 @@
 import { Logger } from "pino";
 import { Rng } from "@woodland-generators/random";
 
-/**
- * Validate that choices array is non-empty
- */
 export function validateChoicesNonEmpty(category: string, choices: string[], logger: Logger): void {
   if (choices.length === 0) {
     logger.error({
@@ -29,10 +26,8 @@ export function generateSubsetFromChoices<T extends string>(
   rng: Rng,
   logger: Logger,
 ): T[] {
-  // Validate choices are non-empty
   validateChoicesNonEmpty(category, choices, logger);
 
-  // Validate user selection if provided
   if (selection) {
     const invalidItems = selection.filter((item) => !choices.includes(item));
     if (invalidItems.length > 0) {
@@ -49,7 +44,6 @@ export function generateSubsetFromChoices<T extends string>(
     return [...selection];
   }
 
-  // Generate 1 to all available random choices
   const count = rng.getRandomIntInclusive(1, choices.length);
   return rng.selectRandomSample(choices, count) as T[];
 }
@@ -85,10 +79,8 @@ export function generateSingleFromChoices<T extends string>(
   rng: Rng,
   logger: Logger,
 ): T {
-  // Validate choices are non-empty
   validateChoicesNonEmpty(category, choices, logger);
 
-  // Validate user selection if provided
   if (selection) {
     if (!choices.includes(selection)) {
       logger.error({

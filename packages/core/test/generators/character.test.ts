@@ -70,7 +70,6 @@ describe("generateCharacter", () => {
       seed: "test-seed",
     });
 
-    // Verifies coordination: calls both generators and assembles result
     expect(result).toEqual({
       name: "Test Character",
       playbook: "The Wanderer",

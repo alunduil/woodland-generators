@@ -30,9 +30,6 @@ export interface CharacterGeneratorOptions extends GeneratorOptions {
   demeanor?: string[];
 }
 
-/**
- * Generate a complete character from archetype + choice lists
- */
 export async function generateCharacter(options: CharacterGeneratorOptions): Promise<Character> {
   const logger = root.child({
     generator: "character",

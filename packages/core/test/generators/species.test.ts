@@ -12,7 +12,6 @@ describe("generateSpecies", () => {
 
     const species = generateSpecies({ seed, choices });
 
-    // Should be from the extended species list, not "other" itself
     expect(EXTENDED_WOODLAND_SPECIES).toContain(species);
   });
 

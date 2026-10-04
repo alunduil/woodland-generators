@@ -7,9 +7,6 @@ import { Rng } from "@woodland-generators/random";
 import { GeneratorOptions } from "./index";
 import { root } from "../logging";
 
-/**
- * Available character names for generation
- */
 export const CHARACTER_NAMES = [
   "Bramble",
   "Clover",
@@ -35,17 +32,11 @@ export const CHARACTER_NAMES = [
   "Zinnia",
 ] as const;
 
-/**
- * Options for name generation
- */
 export interface NameGeneratorOptions extends GeneratorOptions {
   /** User-provided name (if provided, this will be returned instead of generating) */
   name?: string;
 }
 
-/**
- * Generate a random character name
- */
 export function generateName(options: NameGeneratorOptions): string {
   const logger = root.child({
     generator: "name",
@@ -63,7 +54,6 @@ export function generateName(options: NameGeneratorOptions): string {
   if (options.name) {
     result = options.name;
   } else {
-    // Create seeded random generator for reproducible selection
     const rng = new Rng(options.seed);
     result = rng.selectRandomElement([...CHARACTER_NAMES]);
   }

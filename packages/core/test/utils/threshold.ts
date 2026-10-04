@@ -7,7 +7,6 @@
  * Uses a simple lookup table based on empirical testing
  */
 export function getCollisionThreshold(count: number): number {
-  // Simple lookup table - if we encounter flakiness, we can add a statistics library
   const thresholds = [
     { max: 10, threshold: 0.4 },
     { max: 25, threshold: 0.6 },

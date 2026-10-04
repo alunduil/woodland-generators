@@ -55,7 +55,6 @@ describe("generateSubsetFromChoices", () => {
 
           const result = generateSubsetFromChoices("test", userSelection, choices, rng, root);
 
-          // Should have same content but be different array instance
           return (
             JSON.stringify(result) === JSON.stringify(userSelection) && result !== userSelection
           );

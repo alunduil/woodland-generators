@@ -2,15 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-/**
- * Character generation interfaces and common types
- */
-
-/**
- * Common options for all generators
- */
 export interface GeneratorOptions {
-  /** Seed for reproducible random generation */
   seed: string;
 }
 

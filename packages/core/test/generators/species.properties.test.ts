@@ -23,7 +23,6 @@ describe("generateSpecies", () => {
           ),
           (seed, baseChoices) => {
             const choices = [...baseChoices, "other"];
-            // Test with a valid choice from the list
             const userSpecies = choices[0]!;
             const species = generateSpecies({ seed, choices, species: userSpecies });
             return species === userSpecies;
@@ -41,7 +40,6 @@ describe("generateSpecies", () => {
             { minLength: 1, maxLength: 5 },
           ),
           (seed, baseChoices) => {
-            // No "other" in choices - just base choices
             const userSpecies = baseChoices[0]!;
             const result = generateSpecies({ seed, choices: baseChoices, species: userSpecies });
             return result === userSpecies;
@@ -66,7 +64,6 @@ describe("generateSpecies", () => {
           (seed, [baseChoices, userSpecies]) => {
             const choices = [...baseChoices, "other"];
 
-            // When "other" is present, ANY user species should be accepted and returned as-is
             const result = generateSpecies({ seed, choices, species: userSpecies });
             return result === userSpecies;
           },
@@ -87,7 +84,6 @@ describe("generateSpecies", () => {
           (seed, baseChoices) => {
             const choices = [...baseChoices, "other"];
 
-            // When user selects "other", it should expand to extended species (not return literal "other")
             const result = generateSpecies({ seed, choices, species: "other" });
             return (EXTENDED_WOODLAND_SPECIES as readonly string[]).includes(result);
           },
@@ -120,7 +116,6 @@ describe("generateSpecies", () => {
       fc.assert(
         fc.property(uniquePairs(fc.string(), { minLength: 10, maxLength: 20 }), (seedPairs) => {
           const choices = ["other"];
-          // Calculate threshold - extended species has many choices, expect high variability
           const targetSuccessRate = getCollisionThreshold(EXTENDED_WOODLAND_SPECIES.length);
           const targetCount = Math.ceil(seedPairs.length * targetSuccessRate);
 

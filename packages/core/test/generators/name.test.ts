@@ -23,12 +23,10 @@ describe("generateName", () => {
         fc.property(
           uniquePairs(fc.string(), { minLength: 5, maxLength: 15 }), // Ensure enough pairs for meaningful statistics
           (seedPairs) => {
-            // Calculate threshold based on actual number of name choices
             const nameChoices = CHARACTER_NAMES;
             const targetSuccessRate = getCollisionThreshold(nameChoices.length);
             const targetCount = Math.ceil(seedPairs.length * targetSuccessRate);
 
-            // Count how many pairs produce different results
             let differentResults = 0;
 
             for (const [seed1, seed2] of seedPairs) {
@@ -37,15 +35,12 @@ describe("generateName", () => {
 
               if (name1 !== name2) {
                 differentResults++;
-
-                // Stop counting once we've met our target - no need to continue
                 if (differentResults >= targetCount) {
                   break;
                 }
               }
             }
 
-            // Return true if we met our target threshold
             return differentResults >= targetCount;
           },
         ),

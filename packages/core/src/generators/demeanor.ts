@@ -8,9 +8,6 @@ import { GeneratorOptions } from "./index";
 import { root } from "../logging";
 import { generateSubsetFromChoices } from "./core";
 
-/**
- * Options for demeanor generation
- */
 export interface DemeanorGeneratorOptions extends GeneratorOptions {
   /** Available demeanor choices from playbook */
   choices: string[];
@@ -18,9 +15,6 @@ export interface DemeanorGeneratorOptions extends GeneratorOptions {
   demeanor?: string[];
 }
 
-/**
- * Generate random character demeanor
- */
 export function generateDemeanor(options: DemeanorGeneratorOptions): string[] {
   const logger = root.child({
     generator: "demeanor",
@@ -35,7 +29,6 @@ export function generateDemeanor(options: DemeanorGeneratorOptions): string[] {
 
   const rng = new Rng(options.seed);
 
-  // Generate demeanor (user-provided or generated, with validation)
   const demeanor = generateSubsetFromChoices(
     "demeanor",
     options.demeanor,

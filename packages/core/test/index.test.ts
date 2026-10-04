@@ -18,7 +18,6 @@ describe("Root module exports", () => {
       expect(rootExports).toHaveProperty("generateCharacter");
       expect(typeof rootExports.generateCharacter).toBe("function");
 
-      // Test that related types are properly exported and usable
       const _character: Character = {
         name: "Test Character",
         playbook: "Test Playbook",
