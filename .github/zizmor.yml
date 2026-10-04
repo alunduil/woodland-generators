@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
+rules:
+  # Same-repository `./` references stay: they are already exempt from SHA
+  # pinning, and actionlint must parse the `$/` syntax before it can replace
+  # them.
+  self-repository:
+    disable: true
