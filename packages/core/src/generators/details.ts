@@ -9,19 +9,13 @@ import { root } from "../logging";
 import { Details } from "../details";
 import { generateMultipleFromChoices } from "./core";
 
-/**
- * Options for details generation
- */
 export interface DetailsGeneratorOptions extends GeneratorOptions {
-  /** Available detail choices from playbook */
+  /** The playbook's detail choices, per category. */
   choices: Details;
-  /** User-provided details (if provided, these will be used instead of generating) */
+  /** Used instead of generating, per category. Each detail must be one of `choices`. */
   details?: Partial<Details>;
 }
 
-/**
- * Generate random character details
- */
 export function generateDetails(options: DetailsGeneratorOptions): Details {
   const logger = root.child({
     generator: "details",
@@ -36,7 +30,6 @@ export function generateDetails(options: DetailsGeneratorOptions): Details {
 
   const rng = new Rng(options.seed);
 
-  // Generate details for each category (user-provided or generated, with validation)
   const generated = generateMultipleFromChoices(
     {
       pronouns: options.details?.pronouns,

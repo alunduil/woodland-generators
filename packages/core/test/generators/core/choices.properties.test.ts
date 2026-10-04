@@ -12,7 +12,7 @@ import {
 } from "../../../src/generators/core";
 import { root } from "../../../src/logging";
 import fc from "fast-check";
-import { getCollisionThreshold, uniquePairs, uniqueArray } from "../../utils";
+import { enoughPairsDiffer, getCollisionThreshold, uniquePairs, uniqueArray } from "../../utils";
 
 describe("validateChoicesNonEmpty", () => {
   beforeEach(() => {
@@ -55,7 +55,6 @@ describe("generateSubsetFromChoices", () => {
 
           const result = generateSubsetFromChoices("test", userSelection, choices, rng, root);
 
-          // Should have same content but be different array instance
           return (
             JSON.stringify(result) === JSON.stringify(userSelection) && result !== userSelection
           );
@@ -145,25 +144,11 @@ describe("generateSubsetFromChoices", () => {
           const threshold = getCollisionThreshold(totalCombinations);
           const targetCount = Math.max(1, Math.floor(seedPairs.length * threshold));
 
-          let differentResults = 0;
-
-          for (const [seed1, seed2] of seedPairs) {
-            const rng1 = new Rng(seed1);
-            const rng2 = new Rng(seed2);
-
-            const result1 = generateSubsetFromChoices("test", undefined, choices, rng1, root);
-            const result2 = generateSubsetFromChoices("test", undefined, choices, rng2, root);
-
-            if (JSON.stringify(result1) !== JSON.stringify(result2)) {
-              differentResults++;
-
-              if (differentResults >= targetCount) {
-                break;
-              }
-            }
-          }
-
-          return differentResults >= targetCount;
+          return enoughPairsDiffer(seedPairs, targetCount, (seed) =>
+            JSON.stringify(
+              generateSubsetFromChoices("test", undefined, choices, new Rng(seed), root),
+            ),
+          );
         },
       ),
     );
@@ -299,25 +284,9 @@ describe("generateSingleFromChoices", () => {
           const targetSuccessRate = getCollisionThreshold(choices.length);
           const targetCount = Math.ceil(seedPairs.length * targetSuccessRate);
 
-          let differentResults = 0;
-
-          for (const [seed1, seed2] of seedPairs) {
-            const rng1 = new Rng(seed1);
-            const rng2 = new Rng(seed2);
-
-            const result1 = generateSingleFromChoices("test", undefined, choices, rng1, root);
-            const result2 = generateSingleFromChoices("test", undefined, choices, rng2, root);
-
-            if (result1 !== result2) {
-              differentResults++;
-
-              if (differentResults >= targetCount) {
-                break;
-              }
-            }
-          }
-
-          return differentResults >= targetCount;
+          return enoughPairsDiffer(seedPairs, targetCount, (seed) =>
+            generateSingleFromChoices("test", undefined, choices, new Rng(seed), root),
+          );
         },
       ),
     );

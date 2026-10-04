@@ -2,8 +2,4 @@
 //
 // SPDX-License-Identifier: MIT
 
-/**
- * Details domain module
- */
-
 export type { Details } from "./types";

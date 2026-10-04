@@ -18,7 +18,6 @@ describe("Root module exports", () => {
       expect(rootExports).toHaveProperty("generateCharacter");
       expect(typeof rootExports.generateCharacter).toBe("function");
 
-      // Test that related types are properly exported and usable
       const _character: Character = {
         name: "Test Character",
         playbook: "Test Playbook",
@@ -36,7 +35,7 @@ describe("Root module exports", () => {
         name: "Optional Name",
       };
 
-      // If we get here without TypeScript errors, the types are properly exported
+      // Compiling is the assertion: the types above must be exported.
     });
   });
 

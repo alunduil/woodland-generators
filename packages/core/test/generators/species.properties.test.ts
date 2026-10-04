@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import { generateSpecies, EXTENDED_WOODLAND_SPECIES } from "../../src/generators/species";
-import { getCollisionThreshold, uniquePairs, uniqueArray } from "../utils";
+import { enoughPairsDiffer, getCollisionThreshold, uniquePairs, uniqueArray } from "../utils";
 import fc from "fast-check";
 import { root } from "../../src/logging";
 
@@ -23,7 +23,6 @@ describe("generateSpecies", () => {
           ),
           (seed, baseChoices) => {
             const choices = [...baseChoices, "other"];
-            // Test with a valid choice from the list
             const userSpecies = choices[0]!;
             const species = generateSpecies({ seed, choices, species: userSpecies });
             return species === userSpecies;
@@ -41,7 +40,6 @@ describe("generateSpecies", () => {
             { minLength: 1, maxLength: 5 },
           ),
           (seed, baseChoices) => {
-            // No "other" in choices - just base choices
             const userSpecies = baseChoices[0]!;
             const result = generateSpecies({ seed, choices: baseChoices, species: userSpecies });
             return result === userSpecies;
@@ -66,7 +64,6 @@ describe("generateSpecies", () => {
           (seed, [baseChoices, userSpecies]) => {
             const choices = [...baseChoices, "other"];
 
-            // When "other" is present, ANY user species should be accepted and returned as-is
             const result = generateSpecies({ seed, choices, species: userSpecies });
             return result === userSpecies;
           },
@@ -87,7 +84,6 @@ describe("generateSpecies", () => {
           (seed, baseChoices) => {
             const choices = [...baseChoices, "other"];
 
-            // When user selects "other", it should expand to extended species (not return literal "other")
             const result = generateSpecies({ seed, choices, species: "other" });
             return (EXTENDED_WOODLAND_SPECIES as readonly string[]).includes(result);
           },
@@ -120,26 +116,12 @@ describe("generateSpecies", () => {
       fc.assert(
         fc.property(uniquePairs(fc.string(), { minLength: 10, maxLength: 20 }), (seedPairs) => {
           const choices = ["other"];
-          // Calculate threshold - extended species has many choices, expect high variability
           const targetSuccessRate = getCollisionThreshold(EXTENDED_WOODLAND_SPECIES.length);
           const targetCount = Math.ceil(seedPairs.length * targetSuccessRate);
 
-          let differentResults = 0;
-
-          for (const [seed1, seed2] of seedPairs) {
-            const species1 = generateSpecies({ seed: seed1, choices });
-            const species2 = generateSpecies({ seed: seed2, choices });
-
-            if (species1 !== species2) {
-              differentResults++;
-
-              if (differentResults >= targetCount) {
-                break;
-              }
-            }
-          }
-
-          return differentResults >= targetCount;
+          return enoughPairsDiffer(seedPairs, targetCount, (seed) =>
+            generateSpecies({ seed, choices }),
+          );
         }),
       );
     });
