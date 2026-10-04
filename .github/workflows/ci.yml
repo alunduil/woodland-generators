@@ -219,6 +219,9 @@ jobs:
       # another by tag fails the run at resolution, before any step executes.
       - name: Run default-stage hooks
         uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec # v1.0.5
+        env:
+          # A push run checks out main, which no-commit-to-branch rejects.
+          SKIP: no-commit-to-branch
 
       # A second invocation is what selects the manual stage, and it reuses
       # the hook environment the step above provisioned and cached. See
