@@ -240,7 +240,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          # The commit range lets TruffleHog scan the diff, not a snapshot.
+          # TruffleHog scans the pushed commits, whose history a shallow clone
+          # lacks.
           fetch-depth: 0
           persist-credentials: false
 

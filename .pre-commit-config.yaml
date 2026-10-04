@@ -32,10 +32,6 @@ repos:
         args: ["--maxkb=1024"] # Prevent files larger than 1MB
       - id: check-case-conflict
 
-      # Secret checks. SSH and TLS private keys have no provider pattern for
-      # push protection and no endpoint for TruffleHog to verify against.
-      - id: detect-private-key
-
       # File formatting
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
@@ -53,6 +49,9 @@ repos:
       - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
         exclude: '^packages/.*/src/.*\.ts$' # TypeScript source files with shebangs are compiled, not directly executed
+      # SSH and TLS private keys have no provider pattern for push protection
+      # and no endpoint for TruffleHog to verify against.
+      - id: detect-private-key
 
   # Markdown linting
   - repo: https://github.com/igorshubovych/markdownlint-cli
