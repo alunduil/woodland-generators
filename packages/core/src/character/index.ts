@@ -2,7 +2,4 @@
 //
 // SPDX-License-Identifier: MIT
 
-/**
- * Character domain exports
- */
 export * from "./types";

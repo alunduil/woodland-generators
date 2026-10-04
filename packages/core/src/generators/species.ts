@@ -155,19 +155,20 @@ export const EXTENDED_WOODLAND_SPECIES = [
   "american toad",
 ] as const;
 
-/**
- * Options for species generation
- */
 export interface SpeciesGeneratorOptions extends GeneratorOptions {
-  /** Species choices available for selection (from playbook) */
+  /** The playbook's species choices. */
   choices: string[];
-  /** Specific species to use (user override) */
+  /** Used instead of generating. Must be one of `choices` unless they include "other". */
   species?: string;
 }
 
-/**
- * Generate a random character species
- */
+/** A playbook offering "other" accepts any species the user names, listed or not. */
+function isCarteBlanche(
+  options: SpeciesGeneratorOptions,
+): options is SpeciesGeneratorOptions & { species: string } {
+  return Boolean(options.species) && options.choices.includes("other");
+}
+
 export function generateSpecies(options: SpeciesGeneratorOptions): string {
   const logger = root.child({
     generator: "species",
@@ -181,17 +182,10 @@ export function generateSpecies(options: SpeciesGeneratorOptions): string {
 
   const rng = new Rng(options.seed);
 
-  let selected: string;
+  let selected = isCarteBlanche(options)
+    ? options.species
+    : generateSingleFromChoices("species", options.species, options.choices, rng, logger);
 
-  // Handle carte blanche case first
-  if (options.species && options.choices.includes("other")) {
-    selected = options.species;
-  } else {
-    // Standard validation/generation logic
-    selected = generateSingleFromChoices("species", options.species, options.choices, rng, logger);
-  }
-
-  // Handle "other" selection - expand to extended species
   if (selected === "other") {
     selected = generateSingleFromChoices(
       "extended species",
