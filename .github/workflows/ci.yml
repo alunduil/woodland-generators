@@ -217,10 +217,10 @@ jobs:
 
       # SHA pinning is transitive: an action whose own action.yml references
       # another by tag fails the run at resolution, before any step executes.
-      # Push runs check out main itself, which no-commit-to-branch rejects.
       - name: Run default-stage hooks
         uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec # v1.0.5
         env:
+          # Push runs check out main itself, which no-commit-to-branch rejects.
           SKIP: no-commit-to-branch
 
       # A second invocation is what selects the manual stage, and it reuses
