@@ -5,8 +5,7 @@
 import manifest from "../module.json";
 import { checkManifest } from "../src/manifest";
 
-// The typecheck hook fails on any `@ts-expect-error` that stops matching an
-// error.
+// Jest ignores type errors; the typecheck hook enforces these cases.
 
 // @ts-expect-error -- unknown top-level key
 checkManifest({ ...manifest, esmodule: manifest.esmodules });
@@ -22,8 +21,7 @@ const { license: _license, ...withoutLicense } = manifest;
 checkManifest(withoutLicense);
 
 describe("module.json", () => {
-  // lychee extracts no bare path from JSON, so a relative license would go
-  // unchecked; LICENSES/ ships no per-package copy for one to point at.
+  // lychee skips bare paths in JSON, and no per-package license file exists.
   it("declares its license as an https URL", () => {
     expect(new URL(manifest.license).protocol).toBe("https:");
   });
