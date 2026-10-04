@@ -3,8 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 rules:
-  # Same-repository `./` references stay: they are already exempt from SHA
-  # pinning, and actionlint must parse the `$/` syntax before it can replace
-  # them.
+  # actionlint rejects the `$/` syntax this audit asks for, so same-repository
+  # actions keep `./` references.
   self-repository:
     disable: true

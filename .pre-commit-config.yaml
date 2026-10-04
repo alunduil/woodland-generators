@@ -85,9 +85,9 @@ repos:
     hooks:
       - id: actionlint
 
-  # GitHub Actions security audits. unpinned-uses rejects any `uses:` not
-  # pinned to a full commit SHA. Renovate's digest pinning misses refs that are
-  # version-named branches rather than tags, so it can't be relied on (see #473).
+  # GitHub Actions security audits. unpinned-uses requires every `uses:` to pin
+  # a full commit SHA. Renovate pins tag refs only, so a ref to a version-named
+  # branch stays unpinned without this hook.
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
     rev: v1.30.1
     hooks:
