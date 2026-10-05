@@ -7,7 +7,6 @@
 # Install lychee link checker
 #
 # Downloads and installs a pre-built lychee binary (much faster than compiling from source).
-# Used by both development containers (.devcontainer/post-create.sh) and CI/CD (.github/workflows/ci.yml).
 #
 # Environments:
 # - GitHub Actions: installs to ~/.local/bin, already on the runner's PATH

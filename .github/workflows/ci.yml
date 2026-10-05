@@ -219,8 +219,7 @@ jobs:
       - name: Setup Node.js + pnpm
         uses: ./.github/actions/setup-node-pnpm
 
-      # Keyed on the whole installer so a Renovate bump of LYCHEE_VERSION
-      # misses the cache and installs the new release.
+      # The version pin lives in the installer, so a bump changes the key.
       - name: Restore the lychee binary
         id: lychee-binary
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
