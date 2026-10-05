@@ -16,7 +16,7 @@ interface GameStub {
 }
 
 export function stubGame(members: GameStub = {}): void {
-  globalThis.game = members as unknown as typeof game;
+  Object.assign(globalThis, { game: members });
 }
 
 /** Foundry's own localize echoes back a key it can't resolve. */
@@ -27,9 +27,9 @@ export function localizeWith(catalog: Record<string, string>): NonNullable<GameS
 export function stubHooks(): Map<string, () => void> {
   const registered = new Map<string, () => void>();
 
-  globalThis.Hooks = {
-    once: (hook: string, callback: () => void) => registered.set(hook, callback),
-  } as unknown as typeof Hooks;
+  Object.assign(globalThis, {
+    Hooks: { once: (hook: string, callback: () => void) => registered.set(hook, callback) },
+  });
 
   return registered;
 }
