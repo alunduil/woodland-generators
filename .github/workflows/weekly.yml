@@ -37,6 +37,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
       # Reads lychee.toml from the repo root, so the #288 resilience tuning
       # (retry_wait_time, cache_exclude_status, accept list) applies here too.

@@ -3,11 +3,10 @@
 // SPDX-License-Identifier: MIT
 
 /**
- * Get expected collision rate threshold based on number of choices
- * Uses a simple lookup table based on empirical testing
+ * The fraction of seed pairs expected to give different outputs when generating
+ * from `count` choices. The values are empirical.
  */
 export function getCollisionThreshold(count: number): number {
-  // Simple lookup table - if we encounter flakiness, we can add a statistics library
   const thresholds = [
     { max: 10, threshold: 0.4 },
     { max: 25, threshold: 0.6 },
@@ -17,4 +16,28 @@ export function getCollisionThreshold(count: number): number {
   ];
 
   return thresholds.find((entry) => count <= entry.max)?.threshold ?? 0.9;
+}
+
+/**
+ * Whether `generate` gives different outputs for at least `targetCount` of the
+ * seed pairs. Outputs compare with `!==`, so map structured results to a string.
+ */
+export function enoughPairsDiffer<T>(
+  seedPairs: [string, string][],
+  targetCount: number,
+  generate: (seed: string) => T,
+): boolean {
+  let differing = 0;
+
+  for (const [seed1, seed2] of seedPairs) {
+    if (generate(seed1) !== generate(seed2)) {
+      differing++;
+
+      if (differing >= targetCount) {
+        break;
+      }
+    }
+  }
+
+  return differing >= targetCount;
 }
