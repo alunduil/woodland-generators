@@ -219,7 +219,16 @@ jobs:
       - name: Setup Node.js + pnpm
         uses: ./.github/actions/setup-node-pnpm
 
+      # The version pin lives in the installer, so a bump changes the key.
+      - name: Restore the lychee binary
+        id: lychee-binary
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ~/.local/bin/lychee
+          key: lychee-binary-${{ hashFiles('scripts/install-lychee.sh') }}
+
       - name: Install lychee
+        if: steps.lychee-binary.outputs.cache-hit != 'true'
         run: ./scripts/install-lychee.sh
 
       # `key` and `restore-keys` have to share a prefix or every run misses the
