@@ -2,16 +2,15 @@
 //
 // SPDX-License-Identifier: MIT
 
-// Rejects a third-party composite action whose own action.yml, at any depth,
-// references another action by tag or branch. GitHub's sha_pinning_required
-// applies transitively and fails the run at action resolution, before any
-// step executes; zizmor's unpinned-uses only sees refs written in this repo.
+// Rejects a third-party composite action that, at any depth, references
+// another action by tag or branch. GitHub's sha_pinning_required applies
+// transitively and fails the run before any step executes. zizmor's
+// unpinned-uses only sees refs written in this repository.
 //
-// zizmor already requires every top-level ref to be a full SHA, and the
-// action.yml behind a SHA never changes, so a result only changes when a ref
-// in .github/ does. Upstream files come from raw.githubusercontent.com, which
-// needs no token. Without network access the check fails rather than passing
-// unchecked; `SKIP=validate-action-pins` bypasses it locally and CI still runs it.
+// zizmor pins every top-level ref to a full SHA, and the action.yml behind a
+// SHA never changes, so checking when .github/ changes is complete. The check
+// needs network access and fails without it. raw.githubusercontent.com
+// needs no token.
 
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -31,7 +30,7 @@ function usesRefs(content: string): string[] {
   return [...content.matchAll(USES_RE)].map((match) => match[1] ?? "");
 }
 
-// Local (`./`) and `docker://` refs carry no nested action references.
+// Local actions are scanned on disk; `docker://` images have no action.yml.
 function parseRemote(uses: string): RemoteRef | undefined {
   if (uses.startsWith("./") || uses.startsWith("docker://")) return undefined;
   const at = uses.lastIndexOf("@");
@@ -72,8 +71,7 @@ function isPinned(action: RemoteRef): boolean {
   return SHA_RE.test(action.ref);
 }
 
-// `path` runs from the local file to `action`'s own uses string. Top-level
-// refs arrive already pinned: zizmor reports the unpinned ones.
+// `path` runs from the local file to `action`'s own uses string.
 async function nestedPinErrors(
   action: RemoteRef,
   path: string[],
