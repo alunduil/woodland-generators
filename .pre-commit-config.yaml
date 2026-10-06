@@ -231,3 +231,11 @@ repos:
         language: system
         pass_filenames: false
         files: ^(docs/adr/.*\.md|scripts/validate-adrs\.ts)$
+      # Needs network to read upstream action.yml files; see the script header
+      # for the offline behaviour.
+      - id: validate-action-pins
+        name: validate-action-pins
+        entry: pnpm exec tsx scripts/validate-action-pins.ts
+        language: system
+        pass_filenames: false
+        files: ^(\.github/(workflows/[^/]+|actions/[^/]+/action)\.ya?ml|scripts/validate-action-pins\.ts)$
