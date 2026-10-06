@@ -68,42 +68,58 @@ function localFiles(): string[] {
   ];
 }
 
-const errors: string[] = [];
-const visited = new Set<string>();
+function isPinned(action: RemoteRef): boolean {
+  return SHA_RE.test(action.ref);
+}
 
-async function descend(uses: string, chain: string[]): Promise<void> {
-  const action = parseRemote(uses);
-  if (!action || !SHA_RE.test(action.ref) || visited.has(uses)) return;
+// `path` runs from the local file to `action`'s own uses string. Top-level
+// refs arrive already pinned: zizmor reports the unpinned ones.
+async function nestedPinErrors(
+  action: RemoteRef,
+  path: string[],
+  visited: Set<string>,
+): Promise<string[]> {
+  const uses = path.at(-1) ?? "";
+  if (visited.has(uses)) return [];
   visited.add(uses);
 
   let content: string;
   try {
     content = await fetchActionFile(action);
   } catch (error) {
-    errors.push(`${[...chain, uses].join(" -> ")}: could not fetch: ${String(error)}`);
-    return;
+    return [`${path.join(" -> ")}: could not fetch: ${String(error)}`];
   }
-  if (!COMPOSITE_RE.test(content)) return;
+  if (!COMPOSITE_RE.test(content)) return [];
 
+  const errors: string[] = [];
   for (const nested of usesRefs(content)) {
     const nestedAction = parseRemote(nested);
     if (!nestedAction) continue;
-    if (!SHA_RE.test(nestedAction.ref)) {
-      errors.push(
-        `${[...chain, uses, nested].join(" -> ")}: not pinned to a full-length commit SHA`,
-      );
+    const nestedPath = [...path, nested];
+    if (!isPinned(nestedAction)) {
+      errors.push(`${nestedPath.join(" -> ")}: not pinned to a full-length commit SHA`);
       continue;
     }
-    await descend(nested, [...chain, uses]);
+    errors.push(...(await nestedPinErrors(nestedAction, nestedPath, visited)));
   }
+  return errors;
+}
+
+async function collectErrors(visited: Set<string>): Promise<string[]> {
+  const errors: string[] = [];
+  for (const file of localFiles()) {
+    for (const uses of usesRefs(readFileSync(file, "utf-8"))) {
+      const action = parseRemote(uses);
+      if (!action || !isPinned(action)) continue;
+      errors.push(...(await nestedPinErrors(action, [file, uses], visited)));
+    }
+  }
+  return errors;
 }
 
 async function main(): Promise<void> {
-  for (const file of localFiles()) {
-    for (const uses of usesRefs(readFileSync(file, "utf-8"))) {
-      await descend(uses, [file]);
-    }
-  }
+  const visited = new Set<string>();
+  const errors = await collectErrors(visited);
 
   if (errors.length > 0) {
     console.error("Nested action pin validation failed:");
