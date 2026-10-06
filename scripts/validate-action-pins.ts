@@ -20,6 +20,7 @@ const USES_RE = /^\s*(?:-\s+)?uses:\s*["']?([^\s"'#]+)/gm;
 const COMPOSITE_RE = /^\s+using:\s*["']?composite["']?\s*(?:#.*)?$/m;
 
 interface RemoteRef {
+  uses: string;
   owner: string;
   repo: string;
   path: string;
@@ -36,7 +37,7 @@ function parseRemote(uses: string): RemoteRef | undefined {
   const at = uses.lastIndexOf("@");
   if (at === -1) return undefined;
   const [owner = "", repo = "", ...path] = uses.slice(0, at).split("/");
-  return { owner, repo, path: path.join("/"), ref: uses.slice(at + 1) };
+  return { uses, owner, repo, path: path.join("/"), ref: uses.slice(at + 1) };
 }
 
 async function fetchActionFile(action: RemoteRef): Promise<string> {
@@ -71,21 +72,20 @@ function isPinned(action: RemoteRef): boolean {
   return SHA_RE.test(action.ref);
 }
 
-// `path` runs from the local file to `action`'s own uses string.
 async function nestedPinErrors(
   action: RemoteRef,
-  path: string[],
+  parents: string[],
   visited: Set<string>,
 ): Promise<string[]> {
-  const uses = path.at(-1) ?? "";
-  if (visited.has(uses)) return [];
-  visited.add(uses);
+  if (visited.has(action.uses)) return [];
+  visited.add(action.uses);
+  const chain = [...parents, action.uses];
 
   let content: string;
   try {
     content = await fetchActionFile(action);
   } catch (error) {
-    return [`${path.join(" -> ")}: could not fetch: ${String(error)}`];
+    return [`${chain.join(" -> ")}: could not fetch: ${String(error)}`];
   }
   if (!COMPOSITE_RE.test(content)) return [];
 
@@ -93,12 +93,11 @@ async function nestedPinErrors(
   for (const nested of usesRefs(content)) {
     const nestedAction = parseRemote(nested);
     if (!nestedAction) continue;
-    const nestedPath = [...path, nested];
     if (!isPinned(nestedAction)) {
-      errors.push(`${nestedPath.join(" -> ")}: not pinned to a full-length commit SHA`);
+      errors.push(`${[...chain, nested].join(" -> ")}: not pinned to a full-length commit SHA`);
       continue;
     }
-    errors.push(...(await nestedPinErrors(nestedAction, nestedPath, visited)));
+    errors.push(...(await nestedPinErrors(nestedAction, chain, visited)));
   }
   return errors;
 }
@@ -109,7 +108,7 @@ async function collectErrors(visited: Set<string>): Promise<string[]> {
     for (const uses of usesRefs(readFileSync(file, "utf-8"))) {
       const action = parseRemote(uses);
       if (!action || !isPinned(action)) continue;
-      errors.push(...(await nestedPinErrors(action, [file, uses], visited)));
+      errors.push(...(await nestedPinErrors(action, [file], visited)));
     }
   }
   return errors;
