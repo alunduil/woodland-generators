@@ -6,15 +6,9 @@ import en from "../../languages/en.json";
 import GeneratorMenu from "../../src/applications/generator-menu";
 import { localizeWith, stubGame } from "../foundry-globals";
 
-// `_renderHTML` and `_replaceHTML` are protected; Foundry calls them, and here
-// the test does.
-interface RenderPair {
-  _renderHTML(): Promise<string>;
-  _replaceHTML(result: string, content: HTMLElement): void;
-}
-
-function renderPair(): RenderPair {
-  return new GeneratorMenu() as unknown as RenderPair;
+// `_renderHTML` is protected; Foundry calls it, and here the test does.
+async function renderedMarkup(): Promise<string> {
+  return (new GeneratorMenu() as unknown as { _renderHTML(): Promise<string> })._renderHTML();
 }
 
 /** The submenu descriptor `register` hands to Foundry. */
@@ -45,17 +39,10 @@ describe("GeneratorMenu", () => {
     expect(Object.keys(en)).toEqual(expect.arrayContaining([name, label, hint]));
   });
 
-  // Whatever `_renderHTML` returns is what `_replaceHTML` consumes -- Foundry
-  // passes it through untyped, so the two halves only agree by construction.
   it("lists the clearing generator under a localized label", async () => {
     stubGame({ i18n: localizeWith(en) });
 
-    const menu = renderPair();
-    const content = { innerHTML: "" } as HTMLElement;
-
-    menu._replaceHTML(await menu._renderHTML(), content);
-
-    expect(content.innerHTML).toContain(en["WOODLAND-GENERATORS.Menu.Clearing"]);
+    expect(await renderedMarkup()).toContain(en["WOODLAND-GENERATORS.Menu.Clearing"]);
   });
 
   // Foundry dispatches a click on `[data-action]` to the action of that name,
@@ -63,7 +50,7 @@ describe("GeneratorMenu", () => {
   it("wires every rendered button to an action it registers", async () => {
     stubGame({ i18n: localizeWith(en) });
 
-    const html = await renderPair()._renderHTML();
+    const html = await renderedMarkup();
     const rendered = [...html.matchAll(/data-action="([^"]+)"/g)].map(([, action]) => action);
 
     expect(rendered).not.toHaveLength(0);

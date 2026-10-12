@@ -2,27 +2,20 @@
 //
 // SPDX-License-Identifier: MIT
 
-/* global foundry, game */
+/* global game */
 
 import { MODULE_ID } from "../module-id.js";
 import ClearingDialog from "./clearing-dialog.js";
+import MarkupApplication from "./markup-application.js";
 
-const ICON = "fa-solid fa-tree";
-
-/**
- * The launcher listing the generators the module offers.
- *
- * Renders markup directly rather than through `HandlebarsApplicationMixin`,
- * which would mean shipping a template file and resolving its path at runtime
- * for one static string.
- */
-export default class GeneratorMenu extends foundry.applications.api.ApplicationV2 {
+/** The launcher listing the generators the module offers. */
+export default class GeneratorMenu extends MarkupApplication {
   static override DEFAULT_OPTIONS = {
     id: "woodland-generators-menu",
     classes: ["woodland-generators", "generator-menu"],
     window: {
       title: "WOODLAND-GENERATORS.Menu.Title",
-      icon: ICON,
+      icon: MarkupApplication.ICON,
     },
     position: { width: 480 },
     actions: {
@@ -41,7 +34,7 @@ export default class GeneratorMenu extends foundry.applications.api.ApplicationV
       name: "WOODLAND-GENERATORS.Menu.Name",
       label: "WOODLAND-GENERATORS.Menu.Label",
       hint: "WOODLAND-GENERATORS.Menu.Hint",
-      icon: ICON,
+      icon: MarkupApplication.ICON,
       type: GeneratorMenu,
       restricted: true,
     });
@@ -51,9 +44,5 @@ export default class GeneratorMenu extends foundry.applications.api.ApplicationV
     const { i18n } = game as I18nInitGame;
 
     return `<button type="button" data-action="clearing">${i18n.localize("WOODLAND-GENERATORS.Menu.Clearing")}</button>`;
-  }
-
-  protected override _replaceHTML(result: string, content: HTMLElement): void {
-    content.innerHTML = result;
   }
 }

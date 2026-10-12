@@ -8,15 +8,9 @@ import type { Faction } from "../../src/generators/clearing-tables";
 import { generateClearings, type Clearing } from "../../src/generators/clearing";
 import { localizeWith, stubGame } from "../foundry-globals";
 
-// `_renderHTML` and `_replaceHTML` are protected; Foundry calls them, and here
-// the test does.
-interface RenderPair {
-  _renderHTML(): Promise<string>;
-  _replaceHTML(result: string, content: HTMLElement): void;
-}
-
-function renderPair(): RenderPair {
-  return new ClearingDialog() as unknown as RenderPair;
+// `_renderHTML` is protected; Foundry calls it, and here the test does.
+async function renderedMarkup(): Promise<string> {
+  return (new ClearingDialog() as unknown as { _renderHTML(): Promise<string> })._renderHTML();
 }
 
 /** Submit the form as Foundry would, with the fields already parsed. */
@@ -50,12 +44,7 @@ describe("ClearingDialog", () => {
   it("renders every label from the catalog", async () => {
     stubGame({ i18n: localizeWith(en) });
 
-    const dialog = renderPair();
-    const content = { innerHTML: "" } as HTMLElement;
-
-    dialog._replaceHTML(await dialog._renderHTML(), content);
-
-    expect(content.innerHTML).not.toContain("WOODLAND-GENERATORS.");
+    expect(await renderedMarkup()).not.toContain("WOODLAND-GENERATORS.");
   });
 
   it.each([0, -1, 1.5, null])("refuses a count of %p", async (count) => {
