@@ -1,7 +1,7 @@
 {
   "id": "woodland-generators",
   "title": "Woodland Generators",
-  "description": "Unofficial generators for Root: The Tabletop RPG, integrated into Foundry VTT. Not affiliated with or authorized by Magpie Games or Leder Games.",
+  "description": "Unofficial generators for Root: The Tabletop RPG, integrated into Foundry VTT. Not affiliated with, endorsed by, or authorized by Magpie Games or Leder Games.",
   "version": "0.0.0",
   "compatibility": {
     "minimum": "14",
