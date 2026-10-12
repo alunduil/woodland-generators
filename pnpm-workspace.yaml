@@ -11,8 +11,8 @@ overrides:
   # declared ^6.8.5 because its XSS advisories resolve only in 7.x.
   tinymce: 7.9.3
 allowBuilds:
-  # The install script only compiles when build-from-source is requested;
-  # prebuilt binaries arrive as per-platform optional dependencies.
+  # Prebuilt binaries ship in per-platform optional packages. The install
+  # script compiles only when npm_config_build_from_source is true.
   "@parcel/watcher": false
   esbuild: true
   unrs-resolver: true
