@@ -5,6 +5,7 @@
 /* global foundry, game */
 
 import { MODULE_ID } from "../module-id.js";
+import ClearingDialog from "./clearing-dialog.js";
 
 const ICON = "fa-solid fa-tree";
 
@@ -24,6 +25,9 @@ export default class GeneratorMenu extends foundry.applications.api.ApplicationV
       icon: ICON,
     },
     position: { width: 480 },
+    actions: {
+      clearing: (): void => void new ClearingDialog().render({ force: true }),
+    },
   };
 
   /**
@@ -46,7 +50,7 @@ export default class GeneratorMenu extends foundry.applications.api.ApplicationV
   protected override async _renderHTML(): Promise<string> {
     const { i18n } = game as I18nInitGame;
 
-    return `<p class="notification info">${i18n.localize("WOODLAND-GENERATORS.Menu.Empty")}</p>`;
+    return `<button type="button" data-action="clearing">${i18n.localize("WOODLAND-GENERATORS.Menu.Clearing")}</button>`;
   }
 
   protected override _replaceHTML(result: string, content: HTMLElement): void {

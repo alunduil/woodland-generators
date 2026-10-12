@@ -6,8 +6,6 @@ import en from "../../languages/en.json";
 import GeneratorMenu from "../../src/applications/generator-menu";
 import { localizeWith, stubGame } from "../foundry-globals";
 
-const EMPTY_STATE = en["WOODLAND-GENERATORS.Menu.Empty"];
-
 // `_renderHTML` and `_replaceHTML` are protected; Foundry calls them, and here
 // the test does.
 interface RenderPair {
@@ -49,7 +47,7 @@ describe("GeneratorMenu", () => {
 
   // Whatever `_renderHTML` returns is what `_replaceHTML` consumes -- Foundry
   // passes it through untyped, so the two halves only agree by construction.
-  it("renders the localized empty state into the window content", async () => {
+  it("lists the clearing generator under a localized label", async () => {
     stubGame({ i18n: localizeWith(en) });
 
     const menu = renderPair();
@@ -57,6 +55,20 @@ describe("GeneratorMenu", () => {
 
     menu._replaceHTML(await menu._renderHTML(), content);
 
-    expect(content.innerHTML).toContain(EMPTY_STATE);
+    expect(content.innerHTML).toContain(en["WOODLAND-GENERATORS.Menu.Clearing"]);
+  });
+
+  // Foundry dispatches a click on `[data-action]` to the action of that name,
+  // and ignores one with no action registered.
+  it("wires every rendered button to an action it registers", async () => {
+    stubGame({ i18n: localizeWith(en) });
+
+    const html = await renderPair()._renderHTML();
+    const rendered = [...html.matchAll(/data-action="([^"]+)"/g)].map(([, action]) => action);
+
+    expect(rendered).not.toHaveLength(0);
+    expect(Object.keys(GeneratorMenu.DEFAULT_OPTIONS.actions)).toEqual(
+      expect.arrayContaining(rendered),
+    );
   });
 });
