@@ -23,9 +23,7 @@ const FIELD = new foundry.data.fields.SetField(
 );
 
 declare global {
-  interface SettingConfig {
-    ["woodland-generators.factions"]: typeof FIELD;
-  }
+  interface SettingConfig extends Record<`${typeof MODULE_ID}.${typeof KEY}`, typeof FIELD> {}
 }
 
 /**
