@@ -41,10 +41,19 @@ describe("module", () => {
 
   it("hands the menu the module's own namespace", () => {
     const registerMenu = jest.fn();
-    stubGame({ settings: { registerMenu } });
+    stubGame({ settings: { registerMenu, register: jest.fn() } });
 
     hooks.get("init")?.();
 
     expect(registerMenu).toHaveBeenCalledWith(manifest.id, expect.any(String), expect.any(Object));
+  });
+
+  it("registers the factions in play under the module's own namespace", () => {
+    const register = jest.fn();
+    stubGame({ settings: { registerMenu: jest.fn(), register } });
+
+    hooks.get("init")?.();
+
+    expect(register).toHaveBeenCalledWith(manifest.id, "factions", expect.any(Object));
   });
 });

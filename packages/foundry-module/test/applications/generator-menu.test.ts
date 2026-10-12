@@ -23,10 +23,7 @@ function renderPair(): RenderPair {
 function registerSubmenu(): Record<string, unknown> {
   const registerMenu = jest.fn();
 
-  GeneratorMenu.register(
-    { settings: { registerMenu } } as unknown as InitGame,
-    "woodland-generators",
-  );
+  GeneratorMenu.register({ settings: { registerMenu } } as unknown as InitGame);
 
   return registerMenu.mock.calls[0]?.[2] as Record<string, unknown>;
 }
