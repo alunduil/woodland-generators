@@ -4,5 +4,7 @@
   "WOODLAND-GENERATORS.Menu.Label": "Open Generators",
   "WOODLAND-GENERATORS.Menu.Hint": "Lists the generators this module offers.",
   "WOODLAND-GENERATORS.Menu.Title": "Woodland Generators",
-  "WOODLAND-GENERATORS.Menu.Empty": "No generators are available yet."
+  "WOODLAND-GENERATORS.Menu.Empty": "No generators are available yet.",
+  "WOODLAND-GENERATORS.Settings.Factions.Name": "Factions in Play",
+  "WOODLAND-GENERATORS.Settings.Factions.Hint": "The factions contesting this world's Woodland. Generators draw rulers and challengers only from these."
 }

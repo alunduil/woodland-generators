@@ -5,8 +5,8 @@
 /* global Hooks, game */
 
 import GeneratorMenu from "./applications/generator-menu.js";
-
-const MODULE_ID = "woodland-generators";
+import { MODULE_ID } from "./module-id.js";
+import { registerFactions } from "./settings/factions.js";
 
 // i18nInit, not init: the translation catalog loads just before this hook, so
 // localize resolves the key rather than echoing it back.
@@ -18,4 +18,5 @@ Hooks.once("i18nInit", () => {
 
 Hooks.once("init", () => {
   GeneratorMenu.register(game as InitGame, MODULE_ID);
+  registerFactions(game as InitGame);
 });

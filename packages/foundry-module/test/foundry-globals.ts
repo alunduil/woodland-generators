@@ -12,7 +12,7 @@
 
 interface GameStub {
   i18n?: { localize: (key: string) => string };
-  settings?: { registerMenu: jest.Mock };
+  settings?: { registerMenu?: jest.Mock; register?: jest.Mock; get?: jest.Mock };
 }
 
 export function stubGame(members: GameStub = {}): void {
