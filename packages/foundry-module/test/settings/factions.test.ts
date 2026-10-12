@@ -39,7 +39,6 @@ describe("registerFactions", () => {
     expect(registration().type.element.options.choices).toEqual(FACTIONS);
   });
 
-  // Foundry lets only a GM change a world setting, and lists it only for one.
   it("keeps one answer per world, in Module Settings", () => {
     expect(registration()).toMatchObject({ scope: "world", config: true });
   });

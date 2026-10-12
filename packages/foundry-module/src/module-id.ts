@@ -2,10 +2,5 @@
 //
 // SPDX-License-Identifier: MIT
 
-/**
- * The module's `id` in module.json, and the namespace its settings live in.
- *
- * A literal type, because fvtt-types keys a setting's value type on
- * `"<namespace>.<key>"`.
- */
+/** The module's `id` in module.json, and the namespace its settings live in. */
 export const MODULE_ID = "woodland-generators";

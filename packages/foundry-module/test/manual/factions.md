@@ -70,5 +70,3 @@ to fail, and the GM's selection to stay as scenario 2 left it.
 | 2        | A GM sets the factions in play once per world                 |
 | 3        | None; it keeps `generateClearing` from receiving an empty set |
 | 4        | Only a GM can change it                                       |
-
-That generators respect this setting is #664's to show.

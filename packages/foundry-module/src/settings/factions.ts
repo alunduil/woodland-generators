@@ -9,10 +9,7 @@ import { MODULE_ID } from "../module-id.js";
 
 const KEY = "factions";
 
-/**
- * `choices` keeps a stored value a subset of `FACTIONS`. `validate` refuses a
- * Woodland with nobody in it, which `generateClearing` would refuse to rule.
- */
+/** `validate` refuses an empty set, because `generateClearing` throws on one. */
 const FIELD = new foundry.data.fields.SetField(
   new foundry.data.fields.StringField({ required: true, blank: false, choices: FACTIONS }),
   {
@@ -27,12 +24,11 @@ declare global {
 }
 
 /**
- * The factions in play, a property of the campaign's Woodland rather than of
- * one generated clearing, so a GM answers once per world.
+ * The factions in play belong to the campaign's Woodland, so a GM sets them
+ * once per world.
  *
- * `scope: "world"` is the GM gate: Foundry lets only a user with
- * `SETTINGS_MODIFY` change a world setting, and settings take no `restricted`
- * flag of their own.
+ * A setting has no `restricted` flag. `scope: "world"` is the GM gate: only a
+ * user with `SETTINGS_MODIFY` can change a world setting.
  */
 export function registerFactions(game: InitGame): void {
   game.settings.register(MODULE_ID, KEY, {
@@ -46,11 +42,11 @@ export function registerFactions(game: InitGame): void {
 }
 
 /**
- * The factions in play, in the shape `ClearingGeneratorOptions.factions` takes.
+ * The factions in play, as `ClearingGeneratorOptions.factions` takes them.
  *
- * fvtt-types types a `DataField` setting's value as everything the field
- * accepts on assignment, `null` and keyed objects included. The stored value
- * is a collection of `choices`, and `default` stands in until a GM saves one.
+ * fvtt-types widens a `DataField` setting's value to whatever the field accepts
+ * on assignment, `null` included. Foundry stores a collection of `choices`, or
+ * `default` until a GM saves one.
  */
 export function readFactions(game: ReadyGame): Faction[] {
   return [...(game.settings.get(MODULE_ID, KEY) as Iterable<Faction>)];
