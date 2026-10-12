@@ -4,6 +4,8 @@
 
 /* global foundry, game */
 
+import { MODULE_ID } from "../module-id.js";
+
 const ICON = "fa-solid fa-tree";
 
 /**
@@ -30,8 +32,8 @@ export default class GeneratorMenu extends foundry.applications.api.ApplicationV
    * `restricted` is Foundry's own GM gate, which saves the module a
    * `game.user.isGM` check of its own to keep correct.
    */
-  static register(game: InitGame, namespace: string): void {
-    game.settings.registerMenu(namespace, "generators", {
+  static register(game: InitGame): void {
+    game.settings.registerMenu(MODULE_ID, "generators", {
       name: "WOODLAND-GENERATORS.Menu.Name",
       label: "WOODLAND-GENERATORS.Menu.Label",
       hint: "WOODLAND-GENERATORS.Menu.Hint",

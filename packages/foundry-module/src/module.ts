@@ -17,6 +17,6 @@ Hooks.once("i18nInit", () => {
 });
 
 Hooks.once("init", () => {
-  GeneratorMenu.register(game as InitGame, MODULE_ID);
+  GeneratorMenu.register(game as InitGame);
   registerFactions(game as InitGame);
 });
