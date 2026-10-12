@@ -5,6 +5,9 @@ Built output is an ESM bundle that Foundry loads as a module. The loaded module
 registers under the ID `woodland-generators` and logs a localized heartbeat to
 the browser console once Foundry initializes its localization.
 
+This module is unofficial. Neither Magpie Games nor Leder Games affiliates with,
+endorses, or authorizes it.
+
 ## Build
 
 ```bash
