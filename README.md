@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![codecov](https://codecov.io/github/alunduil/woodland-generators/graph/badge.svg?token=WR4ZQLMJMB)](https://codecov.io/github/alunduil/woodland-generators)
 
-Generators for Root: The Tabletop RPG.
+Unofficial generators for Root: The Tabletop RPG.
 
 **By [Alex Brandt](https://github.com/alunduil)**
 
@@ -79,4 +79,9 @@ Please search existing issues and discussions before making new ones.
 You may copy, change, and share Woodland Generators with credit under the MIT
 License. See the [LICENSE](LICENSE) file for details.
 
-Root: The Tabletop RPG belongs to Leder Games.
+Woodland Generators is an unofficial project, not affiliated with, endorsed by,
+or authorized by Magpie Games or Leder Games.
+
+Magpie Games owns the text and design of Root: The Roleplaying Game. Leder Games
+owns Root: A Game of Woodland Might and Right, the Root art, and the Leder Games
+logo.
