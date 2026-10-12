@@ -10,17 +10,16 @@ import { MODULE_ID } from "../module-id.js";
 const KEY = "factions";
 
 /**
- * Refuses to save a Woodland with nobody in it, which `generateClearing`
- * would refuse to rule.
+ * `choices` keeps a stored value a subset of `FACTIONS`. `validate` refuses a
+ * Woodland with nobody in it, which `generateClearing` would refuse to rule.
  */
-export function hasAFaction(value: Iterable<unknown>): boolean {
-  return [...value].length > 0;
-}
-
-/** `choices` keeps a stored value a subset of `FACTIONS`. */
 const FIELD = new foundry.data.fields.SetField(
   new foundry.data.fields.StringField({ required: true, blank: false, choices: FACTIONS }),
-  { required: true, nullable: false, validate: hasAFaction },
+  {
+    required: true,
+    nullable: false,
+    validate: (value: Iterable<unknown>): boolean => [...value].length > 0,
+  },
 );
 
 declare global {

@@ -4,7 +4,7 @@
 
 import en from "../../languages/en.json";
 import { FACTIONS } from "../../src/generators/clearing-tables";
-import { hasAFaction, readFactions, registerFactions } from "../../src/settings/factions";
+import { readFactions, registerFactions } from "../../src/settings/factions";
 
 /** Where the test stub's fields keep what they were built with. */
 interface StubField {
@@ -50,18 +50,12 @@ describe("registerFactions", () => {
     expect(Object.keys(en)).toEqual(expect.arrayContaining([name, hint]));
   });
 
-  it("validates a save with hasAFaction", () => {
-    expect(registration().type.options.validate).toBe(hasAFaction);
-  });
-});
-
-describe("hasAFaction", () => {
   it("refuses a Woodland with nobody in it", () => {
-    expect(hasAFaction([])).toBe(false);
+    expect(registration().type.options.validate?.([])).toBe(false);
   });
 
   it("accepts a single faction", () => {
-    expect(hasAFaction(new Set(["Marquisate"]))).toBe(true);
+    expect(registration().type.options.validate?.(new Set(["Marquisate"]))).toBe(true);
   });
 });
 
