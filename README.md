@@ -79,8 +79,8 @@ Please search existing issues and discussions before making new ones.
 You may copy, change, and share Woodland Generators with credit under the MIT
 License. See the [LICENSE](LICENSE) file for details.
 
-Woodland Generators is an unofficial fan project. Not affiliated with, endorsed
-by, or authorized by Magpie Games or Leder Games.
+Woodland Generators is an unofficial project, not affiliated with, endorsed by,
+or authorized by Magpie Games or Leder Games.
 
 Magpie Games owns the text and design of Root: The Roleplaying Game. Leder Games
 owns Root: A Game of Woodland Might and Right, the Root art, and the Leder Games
