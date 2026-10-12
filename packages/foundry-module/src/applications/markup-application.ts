@@ -11,7 +11,7 @@
  * and resolving its path at runtime for markup this small.
  */
 export default abstract class MarkupApplication extends foundry.applications.api.ApplicationV2 {
-  /** The module's mark, on every window and menu entry it adds. */
+  /** The icon on every window and menu entry the module adds. */
   static readonly ICON = "fa-solid fa-tree";
 
   protected abstract override _renderHTML(): Promise<string>;

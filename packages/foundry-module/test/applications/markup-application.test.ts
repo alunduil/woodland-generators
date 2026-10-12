@@ -20,7 +20,6 @@ interface RenderPair {
 }
 
 describe("MarkupApplication", () => {
-  // Foundry passes whatever `_renderHTML` returns to `_replaceHTML` untyped.
   it("writes the rendered markup into the window content", async () => {
     const probe = new Probe() as unknown as RenderPair;
     const content = { innerHTML: "" } as HTMLElement;

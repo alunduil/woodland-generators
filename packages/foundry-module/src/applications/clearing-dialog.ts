@@ -9,7 +9,7 @@ import { MODULE_ID } from "../module-id.js";
 import { readFactions } from "../settings/factions.js";
 import MarkupApplication from "./markup-application.js";
 
-/** What a GM asked the dialog for, once the form has passed its checks. */
+/** A submission that passed its checks: `count` is a whole number of at least one. */
 interface ClearingRequest {
   count: number;
   seed: string;
@@ -32,7 +32,6 @@ function parseRequest(
   return { count, seed };
 }
 
-/** Draws a batch of clearings from the factions in play. */
 async function generate(
   _event: Event,
   _form: HTMLFormElement,
@@ -47,8 +46,8 @@ async function generate(
 /**
  * Asks how many clearings to draw and from what seed.
  *
- * The factions in play come from the world setting rather than a field here,
- * because they belong to the campaign, not to one batch.
+ * The factions in play come from the world setting, since they belong to the
+ * campaign.
  */
 export default class ClearingDialog extends MarkupApplication {
   static override DEFAULT_OPTIONS = {
@@ -64,8 +63,8 @@ export default class ClearingDialog extends MarkupApplication {
   };
 
   /**
-   * The seed starts random, so a GM who leaves it alone still gets a batch,
-   * and the field shows what to reuse to draw that batch again.
+   * The seed starts random, so the field always shows what to reuse to redraw
+   * the batch.
    */
   protected override async _renderHTML(): Promise<string> {
     const { i18n } = game as I18nInitGame;
@@ -78,7 +77,6 @@ export default class ClearingDialog extends MarkupApplication {
       </footer>`;
   }
 
-  /** A required, labelled input, laid out the way Foundry's stylesheet expects. */
   #field(name: string, label: string, attributes: string): string {
     const id = `${this.id}-${name}`;
 

@@ -50,8 +50,8 @@ Expect the logged batch to match the first one field for field.
 
 Open the dialog, set the count to 0, and click **Generate**.
 
-Expect the browser to refuse the field. Then remove the `min` attribute from the
-count input in the inspector, and click **Generate** again. Expect an error
+Expect the browser to block the submission. Then remove the `min` attribute from
+the count input in the inspector, and click **Generate** again. Expect an error
 notification saying to generate at least one clearing, the dialog to stay open,
 and nothing logged.
 
