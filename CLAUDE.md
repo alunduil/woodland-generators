@@ -88,6 +88,9 @@ non-conventional subjects at `git commit` time. The active type list lives in
 the `pr-title.yml` workflow. `release-please` bumps the version from `feat`,
 `fix`, `perf`, and `revert`; the other prefixes cut no release.
 
+Mark `!` or `BREAKING CHANGE:` only on a change a Foundry world or its GM
+notices after upgrading.
+
 Type and scope rules with examples:
 [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages).
 
