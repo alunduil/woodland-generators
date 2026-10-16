@@ -134,9 +134,20 @@ Common prefixes:
 - `perf:` - performance improvement
 - `chore:` - tooling, build, or maintenance work
 
-Append `!` after the type (for example, `feat!:`) or include a
-`BREAKING CHANGE:` footer for changes that bump the major version (or minor,
-while pre-1.0).
+Mark a breaking change by appending `!` after the type (for example, `feat!:`)
+or including a `BREAKING CHANGE:` footer. A breaking change bumps the major
+version (or minor, while pre-1.0), and release-please lists it under ⚠ BREAKING
+CHANGES whatever its type.
+
+A change is breaking when a Foundry world or its GM notices it after upgrading:
+
+- A world setting is removed or renamed.
+- Saved data a previous version wrote no longer loads.
+- A Foundry core version is no longer supported.
+
+Contributor tooling never breaks a world. Raising the Node or pnpm floor,
+changing CI, or reworking the build isn't breaking, even when the change touches
+a file inside a package.
 
 Examples:
 
