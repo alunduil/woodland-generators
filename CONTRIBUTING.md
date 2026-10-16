@@ -146,9 +146,8 @@ Contributor tooling never breaks a world. Raising the Node or pnpm floor,
 changing CI, or reworking the build isn't breaking, even when the change touches
 a file inside a package.
 
-A breaking change bumps the major version (or minor, while pre-1.0).
-release-please lists it under ⚠ BREAKING CHANGES whatever its type, so a `ci!`
-or `chore!` commit still reaches the release notes.
+A breaking change bumps the major version (or minor, while pre-1.0), and
+release-please lists it in the release notes whatever its type.
 
 Examples:
 
