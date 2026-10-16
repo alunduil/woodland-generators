@@ -40,3 +40,30 @@ jobs:
             revert
             style
             test
+
+      - name: Checkout release-please config
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+          sparse-checkout: release-please-config.json
+          sparse-checkout-cone-mode: false
+
+      # A breaking marker bumps the version and lands under BREAKING CHANGES
+      # even on a type release-please hides, so the changelog would announce a
+      # break it never explains. Refactors can still remove something a world
+      # relies on.
+      - name: Reject breaking marker on hidden types
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+          BREAKABLE_HIDDEN_TYPES: refactor
+        run: |
+          [[ $TITLE =~ ^([a-z]+)(\([^\)]*\))?!: ]] || exit 0
+          type=${BASH_REMATCH[1]}
+          if jq -e --arg type "$type" '
+            ($ENV.BREAKABLE_HIDDEN_TYPES | split(" ") | index($type) | not)
+            and (.["changelog-sections"] | any(.type == $type and .hidden))
+          ' release-please-config.json > /dev/null; then
+            echo "::error::'$type!' marks a breaking change on a type hidden" \
+              "from the changelog. Drop the '!' or use a visible type."
+            exit 1
+          fi
