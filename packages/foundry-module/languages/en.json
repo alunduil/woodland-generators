@@ -4,7 +4,12 @@
   "WOODLAND-GENERATORS.Menu.Label": "Open Generators",
   "WOODLAND-GENERATORS.Menu.Hint": "Lists the generators this module offers.",
   "WOODLAND-GENERATORS.Menu.Title": "Woodland Generators",
-  "WOODLAND-GENERATORS.Menu.Empty": "No generators are available yet.",
+  "WOODLAND-GENERATORS.Menu.Clearing": "Clearings",
+  "WOODLAND-GENERATORS.Clearing.Title": "Generate Clearings",
+  "WOODLAND-GENERATORS.Clearing.Count": "Number of Clearings",
+  "WOODLAND-GENERATORS.Clearing.Seed": "Seed",
+  "WOODLAND-GENERATORS.Clearing.Generate": "Generate",
+  "WOODLAND-GENERATORS.Clearing.CountTooLow": "Generate at least one clearing.",
   "WOODLAND-GENERATORS.Settings.Factions.Name": "Factions in Play",
   "WOODLAND-GENERATORS.Settings.Factions.Hint": "The factions contesting this world's Woodland. Generators draw rulers and challengers only from these."
 }
