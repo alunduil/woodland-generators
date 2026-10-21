@@ -46,11 +46,10 @@ function multiplyHarm(harm: HarmInflicted, multiplier: number): HarmInflicted {
 }
 
 /**
- * Treat `count` NPCs who resemble `member` as a single mob: every harm track
- * gains boxes and every harm inflicted is multiplied, both by size band.
+ * Scale an average `member` into a mob of `count` NPCs by the Core Book's
+ * size bands (ch. 8, "NPC Groups").
  *
- * @throws {RangeError} When `count` is not an integer of at least 5, the
- *   smallest mob.
+ * @throws {RangeError} When `count` is not a whole number of at least 5.
  */
 export function scaleMob(member: MobMember, count: number): Mob {
   const band = bandFor(count);
