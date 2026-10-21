@@ -28,26 +28,21 @@ describe("scaleMob", () => {
   });
 
   it.each([
-    [5, 3, 2],
-    [11, 5, 3],
-    [21, 7, 4],
-  ])("should scale %i average denizens to %i boxes and %i-injury", (count, boxes, injury) => {
-    expect(scaleMob(DENIZEN, count)).toMatchObject({
-      harmTracks: { injury: boxes, exhaustion: boxes, wear: boxes, morale: boxes },
-      harmInflicted: { injury },
-    });
-  });
-
-  it.each([
-    [5, 5, 4],
-    [11, 7, 6],
-    [21, 9, 8],
-  ])("should scale %i soldiers to %i boxes and %i-injury", (count, boxes, injury) => {
-    expect(scaleMob(SOLDIER, count)).toMatchObject({
-      harmTracks: { injury: boxes, exhaustion: boxes, wear: boxes, morale: boxes },
-      harmInflicted: { injury },
-    });
-  });
+    ["denizens", DENIZEN, 5, 3, 2],
+    ["denizens", DENIZEN, 11, 5, 3],
+    ["denizens", DENIZEN, 21, 7, 4],
+    ["soldiers", SOLDIER, 5, 5, 4],
+    ["soldiers", SOLDIER, 11, 7, 6],
+    ["soldiers", SOLDIER, 21, 9, 8],
+  ])(
+    "should scale %s to the book's example at %i members",
+    (_name, member, count, boxes, injury) => {
+      expect(scaleMob(member, count)).toMatchObject({
+        harmTracks: { injury: boxes, exhaustion: boxes, wear: boxes, morale: boxes },
+        harmInflicted: { injury },
+      });
+    },
+  );
 
   it("should scale each track from its own size", () => {
     const member: MobMember = {
