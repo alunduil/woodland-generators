@@ -120,7 +120,7 @@ Name a workflow for when it runs and a job for what it produces:
 Branch protection matches the job `name:` alone as the status-check context, not
 `Workflow / Job`, so job names must be unique repo-wide and legible standing
 alone. A matrix emits one context per cell, so a matrix that must be required
-gets a stable aggregator job to target instead: `ci.yml`'s `all-tests`.
+gets a stable aggregator job to target instead: `ci.yml`'s `ci-results`.
 
 Give a workflow its own file only when its `on:` differs. `permissions`,
 `concurrency`, `env`, and `defaults` all scope per job, so set them on a job

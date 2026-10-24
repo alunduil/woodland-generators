@@ -186,7 +186,7 @@ inside an existing file.
 
 A matrix emits one status context per cell, so those names change shape whenever
 the matrix does. Where one has to be required, add a job that depends on the
-matrix and require that instead, as `all-tests` does in `ci.yml`.
+matrix and require that instead, as `ci-results` does in `ci.yml`.
 
 Names that work:
 
