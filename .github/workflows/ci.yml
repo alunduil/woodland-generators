@@ -132,7 +132,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     if: ${{ always() }}
-    name: Confirm every test leg passed
+    name: Check CI results
     timeout-minutes: 5
 
     steps:
