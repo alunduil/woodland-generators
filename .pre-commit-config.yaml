@@ -18,7 +18,7 @@ exclude: |
     build/.*|
     \.git/.*|
     \.vale/.*|
-    CHANGELOG\.md
+    (.*/)?CHANGELOG\.md
   )$
 
 repos:
