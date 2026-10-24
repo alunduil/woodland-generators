@@ -159,10 +159,11 @@ chore(deps): bump typescript to 5.9.3
 
 ## Releases
 
-[How a release happens][releases] covers what merging a release pull request
-does, and what the manifest URL then promises every world with the module
-installed. When a release ships broken, [Withdraw a broken
-release][release-withdraw] has the steps.
+Releases ship weekly: every Friday the `Weekly` workflow merges the open release
+pull request if its required checks pass. [How a release happens][releases]
+covers what merging a release pull request does, and what the manifest URL then
+promises every world with the module installed. When a release ships broken,
+[Withdraw a broken release][release-withdraw] has the steps.
 
 ## Workflow and job names
 
