@@ -58,7 +58,7 @@ below it. Expect prose in all three, not keys like
 Click the launcher button.
 
 Expect a window titled Woodland Generators, carrying the module's icon, whose
-body says no generators are available yet. Expect no console error.
+body lists a Clearings button. Expect no console error.
 
 ## 4. The window closes and reopens
 
