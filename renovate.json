@@ -12,6 +12,7 @@
   "reviewers": ["alunduil"],
   "minimumReleaseAge": "3 days",
   "osvVulnerabilityAlerts": true,
+  "platformAutomerge": false,
   "pre-commit": {
     "enabled": true
   },
