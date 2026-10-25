@@ -11,9 +11,9 @@ on:
 permissions:
   contents: read
 
-# No concurrency group: Renovate pushes and renames a pull request seconds
-# apart, and a run cancelled on the head commit holds Renovate's automerge,
-# which waits for every check run to succeed.
+# Superseded runs finish rather than cancel. Renovate renames a pull request
+# seconds after pushing to it, and a cancelled check run on the head commit
+# blocks Renovate's automerge.
 
 jobs:
   pr-title:
