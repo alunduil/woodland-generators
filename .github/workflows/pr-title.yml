@@ -11,9 +11,9 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+# No concurrency group: Renovate pushes and renames a pull request seconds
+# apart, and a run cancelled on the head commit holds Renovate's automerge,
+# which waits for every check run to succeed.
 
 jobs:
   pr-title:
