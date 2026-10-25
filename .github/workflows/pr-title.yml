@@ -11,9 +11,9 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+# Superseded runs finish rather than cancel. Renovate renames a pull request
+# seconds after pushing to it, and a cancelled check run on the head commit
+# blocks Renovate's automerge.
 
 jobs:
   pr-title:
