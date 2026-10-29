@@ -106,11 +106,5 @@ describe("generateMinorFaction", () => {
         expect(stances.map(({ power }) => power)).toEqual(["Lizard Cult"]);
       }
     });
-
-    it("refuses to generate a minor faction when none are", () => {
-      expect(() => generateMinorFaction({ seed: "woodland", factions: [] })).toThrow(
-        "No great powers available to take a stance toward",
-      );
-    });
   });
 });

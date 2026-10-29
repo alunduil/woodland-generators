@@ -8,7 +8,6 @@ import {
   CLEARING_FEATURES,
   CONFLICT_SUBJECTS,
   DENIZEN_SPECIES,
-  FACTIONS,
   LOCAL_CHALLENGERS,
   type Challenger,
   type ClearingFeature,
@@ -16,6 +15,7 @@ import {
   type DenizenSpecies,
   type Faction,
 } from "./clearing-tables.js";
+import { factionsInPlay } from "./factions-in-play.js";
 
 /** The trouble the clearing is in. */
 interface Conflict {
@@ -42,26 +42,6 @@ const MAX_FEATURES = 3;
 
 const MAX_INHABITANTS = 2;
 
-/**
- * The factions in play, every faction unless `factions` narrows them.
- *
- * Throws when none are in play, or when the ruler the caller chose is not
- * among those that are.
- */
-function factionsInPlay({ factions, ruler }: ClearingGeneratorOptions): Faction[] {
-  const inPlay = factions ?? [...FACTIONS];
-
-  if (inPlay.length === 0) {
-    throw new Error("No factions available to rule the clearing");
-  }
-
-  if (ruler && !inPlay.includes(ruler)) {
-    throw new Error(`Invalid ruler provided: "${ruler}". Available choices: ${inPlay.join(", ")}.`);
-  }
-
-  return inPlay;
-}
-
 /** Draw one to `most` distinct entries from `table`. */
 function drawAtLeastOne<T>(rng: Rng, table: readonly T[], most: number): T[] {
   return rng.selectRandomSample(table, rng.getRandomIntInclusive(1, most));
@@ -84,9 +64,18 @@ function drawConflict(rng: Rng, inPlay: Faction[], ruler: Faction): Conflict {
  *
  * Supplying `ruler` skips that draw, so the rest of the clearing differs from
  * what the same seed produces without it.
+ *
+ * Throws when no factions are in play, or when `ruler` is not among them.
  */
 export function generateClearing(options: ClearingGeneratorOptions): Clearing {
-  const inPlay = factionsInPlay(options);
+  const inPlay = factionsInPlay(options.factions);
+
+  if (options.ruler && !inPlay.includes(options.ruler)) {
+    throw new Error(
+      `Invalid ruler provided: "${options.ruler}". Available choices: ${inPlay.join(", ")}.`,
+    );
+  }
+
   const rng = new Rng(options.seed);
   const ruler = options.ruler ?? rng.selectRandomElement(inPlay);
 

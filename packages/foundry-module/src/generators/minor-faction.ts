@@ -4,7 +4,8 @@
 
 import { Rng } from "@woodland-generators/random";
 
-import { FACTIONS, type Faction } from "./clearing-tables.js";
+import { type Faction } from "./clearing-tables.js";
+import { factionsInPlay } from "./factions-in-play.js";
 import {
   MINOR_FACTION_AIMS,
   MINOR_FACTION_KINDS,
@@ -79,12 +80,7 @@ function drawStances(rng: Rng, inPlay: Faction[]): Stance[] {
  * stance toward at least one.
  */
 export function generateMinorFaction(options: MinorFactionGeneratorOptions): MinorFaction {
-  const inPlay = options.factions ?? [...FACTIONS];
-
-  if (inPlay.length === 0) {
-    throw new Error("No great powers available to take a stance toward");
-  }
-
+  const inPlay = factionsInPlay(options.factions);
   const rng = new Rng(options.seed);
   const kind = rng.selectRandomElement(MINOR_FACTION_KINDS);
 
