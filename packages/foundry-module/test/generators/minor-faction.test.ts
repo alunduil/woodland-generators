@@ -48,7 +48,7 @@ describe("generateMinorFaction", () => {
     }
   });
 
-  it("titles the name with the faction's kind", () => {
+  it("titles the name with its kind", () => {
     for (const { name, kind } of minorFactions()) {
       expect(name.toLowerCase().endsWith(` ${kind}`)).toBe(true);
     }

@@ -11,17 +11,17 @@
  * What sort of outfit it is.
  *
  * An entry qualifies when it names a group that operates at clearing scale and
- * reads as a title, since it closes the faction's name.
+ * reads as a title, since it closes the outfit's name.
  */
 export const MINOR_FACTION_KINDS = ["guild", "gang", "cult", "company", "crew"] as const;
 
 export type MinorFactionKind = (typeof MINOR_FACTION_KINDS)[number];
 
 /**
- * The adjective opening a faction's name.
+ * The adjective opening an outfit's name.
  *
  * An entry qualifies when it shares no word with a great power's name, so a
- * minor faction never reads as one.
+ * outfit never reads as one.
  */
 export const NAME_DESCRIPTORS = [
   "Crooked",
@@ -41,7 +41,7 @@ export const NAME_DESCRIPTORS = [
 ] as const;
 
 /**
- * The emblem a faction's name is built around.
+ * The emblem an outfit's name is built around.
  *
  * An entry qualifies when it is an everyday Woodland object or creature and
  * shares no word with a great power's name.
@@ -64,7 +64,7 @@ export const NAME_EMBLEMS = [
 ] as const;
 
 /**
- * What the faction is after in its clearing.
+ * What the outfit is after in its clearing.
  *
  * An entry qualifies when a table can tell whether it has been achieved.
  */
@@ -84,7 +84,7 @@ export const MINOR_FACTION_AIMS = [
 export type MinorFactionAim = (typeof MINOR_FACTION_AIMS)[number];
 
 /**
- * How the faction pursues its aim.
+ * How the outfit pursues its aim.
  *
  * An entry qualifies when it suggests a scene the vagabonds can walk into.
  */
@@ -104,9 +104,9 @@ export const MINOR_FACTION_METHODS = [
 export type MinorFactionMethod = (typeof MINOR_FACTION_METHODS)[number];
 
 /**
- * What gives the faction its grip on the clearing.
+ * What gives the outfit its grip on the clearing.
  *
- * An entry qualifies when taking it away would break the faction's hold.
+ * An entry qualifies when taking it away would break the outfit's hold.
  */
 export const MINOR_FACTION_LEVERAGE = [
   "the only ferry across the river",
@@ -124,9 +124,9 @@ export const MINOR_FACTION_LEVERAGE = [
 export type MinorFactionLeverage = (typeof MINOR_FACTION_LEVERAGE)[number];
 
 /**
- * How the faction stands toward a great power.
+ * How the outfit stands toward a great power.
  *
- * An entry qualifies when it implies what the faction does when that power's
+ * An entry qualifies when it implies what the outfit does when that power's
  * soldiers walk into the clearing.
  */
 export const MINOR_FACTION_POSTURES = [

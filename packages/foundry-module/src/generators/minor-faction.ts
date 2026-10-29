@@ -23,7 +23,6 @@ import {
 
 /** How a minor faction stands toward one great power. */
 interface Stance {
-  /** The great power the stance is toward. */
   power: Faction;
   /** What the minor faction does about that power. */
   posture: MinorFactionPosture;
