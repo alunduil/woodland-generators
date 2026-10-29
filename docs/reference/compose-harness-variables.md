@@ -1,6 +1,6 @@
 # Compose harness variables
 
-The variables `docker-compose.yml` reads to download and license Foundry. Every
+The variables `docker-compose.yml` reads to install and configure Foundry. Every
 variable is optional: a `foundry-data` volume that already holds the pinned
 build and its license runs with none of them. For variables the image accepts
 beyond these, see the
