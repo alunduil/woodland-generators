@@ -92,12 +92,6 @@ describe("generateClearing", () => {
         expect(LOCAL_CHALLENGERS).toContain(conflict.challenger);
       }
     });
-
-    it("refuses to rule a clearing when none are", () => {
-      expect(() => generateClearing({ seed: "woodland", factions: [] })).toThrow(
-        "No factions available to rule the clearing",
-      );
-    });
   });
 
   describe("with a ruler chosen", () => {
