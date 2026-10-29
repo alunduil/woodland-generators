@@ -21,8 +21,9 @@
    Foundry account. Skip to step 4.
 
 2. Otherwise, give the container your Foundry credentials so it downloads the
-   build and applies the license itself. Create a credentials file outside the
-   checkout, so every worktree shares it, defining:
+   build and applies the license itself. Create `foundry.env` in the
+   repository's shared git directory, `git rev-parse --git-common-dir`, so every
+   worktree uses it and git never tracks it. Define:
    - `FOUNDRY_USERNAME`
    - `FOUNDRY_PASSWORD`
    - `FOUNDRY_LICENSE_KEY`
@@ -71,13 +72,14 @@
 5. Start Foundry. With a 1Password credentials file:
 
    ```bash
-   op run --env-file /path/to/credentials.env -- docker compose up
+   op run --env-file "$(git rev-parse --git-common-dir)/foundry.env" -- \
+     docker compose up
    ```
 
    With a plaintext credentials file:
 
    ```bash
-   docker compose --env-file /path/to/credentials.env up
+   docker compose --env-file "$(git rev-parse --git-common-dir)/foundry.env" up
    ```
 
    `--env-file` replaces `.env` in the checkout as the source of these values.
