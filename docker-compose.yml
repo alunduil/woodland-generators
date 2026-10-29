@@ -6,6 +6,10 @@
 # Local Foundry VTT harness for verifying packages/foundry-module/.
 # See packages/foundry-module/README.md for setup and usage.
 
+# Every checkout drives one harness: `up` from another checkout replaces the
+# running container, which would otherwise collide on the port and volume.
+name: woodland-generators
+
 services:
   foundry:
     image: felddy/foundryvtt:14.369.1@sha256:2ddf90080c605ebafaaabc4fbfb6bea3cc84d20ad181ce39420e4f86e664a484
@@ -34,3 +38,5 @@ services:
 
 volumes:
   foundry-data:
+    # Shared by every checkout so the cached build and license carry over.
+    name: woodland-generators_foundry-data
