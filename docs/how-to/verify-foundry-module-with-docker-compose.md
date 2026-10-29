@@ -8,6 +8,8 @@
 
 ## Steps
 
+Starting Foundry from any checkout replaces a harness running from another.
+
 1. Build the module bundle:
 
    ```bash
@@ -19,7 +21,7 @@
    cache is keyed to it by filename:
 
    ```bash
-   docker run --rm -v "$(basename "$PWD")_foundry-data:/data" \
+   docker run --rm -v woodland-generators_foundry-data:/data \
      --entrypoint sh felddy/foundryvtt -c 'ls /data/container_cache'
    ```
 
@@ -57,7 +59,7 @@
    container expects:
 
    ```bash
-   docker run --rm -v "$(basename "$PWD")_foundry-data:/data" \
+   docker run --rm -v woodland-generators_foundry-data:/data \
      -v /path/to/FoundryVTT-Node-<version>.zip:/src.zip:ro \
      --entrypoint sh felddy/foundryvtt -c \
      'cp /src.zip /data/container_cache/foundryvtt-<version>.zip &&
