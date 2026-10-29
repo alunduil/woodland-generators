@@ -78,11 +78,11 @@
    docker compose up
    ```
 
-5. Open <http://localhost:30000> and enter the license key if prompted. The
-   module declares no system dependency, so any game system works; if you have
-   none installed, go to **Game Systems → Install System**, search for
-   **Worldbuilding** (Foundry's free, minimal system), install it, then create a
-   world with it.
+5. Open <http://localhost:30000>. On a fresh volume, accept the license
+   agreement, and enter the license key if prompted. The module declares no
+   system dependency, so any game system works; if you have none installed, go
+   to **Game Systems → Install System**, search for **Worldbuilding** (Foundry's
+   free, minimal system), install it, then create a world with it.
 
 6. Open or launch the world and enable **Woodland Generators** under _Manage
    Modules_.
