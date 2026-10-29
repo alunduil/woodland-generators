@@ -36,7 +36,7 @@ export class Rng {
   }
 
   /** Pick a single element uniformly at random. */
-  selectRandomElement<T>(elements: T[]): T {
+  selectRandomElement<T>(elements: readonly T[]): T {
     if (elements.length === 0) {
       throw new Error("Cannot select an element from an empty array");
     }
@@ -51,7 +51,7 @@ export class Rng {
    * Positions are sampled rather than values, so a pool holding the same value
    * twice can yield that value twice.
    */
-  selectRandomSample<T>(elements: T[], count: number): T[] {
+  selectRandomSample<T>(elements: readonly T[], count: number): T[] {
     if (count < 0) {
       throw new Error(`Cannot sample a negative number of elements: ${count}`);
     }

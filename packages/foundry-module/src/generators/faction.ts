@@ -53,8 +53,8 @@ export interface FactionGeneratorOptions {
 const MAX_STANCES = 2;
 
 function drawName(rng: Rng, kind: FactionKind): string {
-  const descriptor = rng.selectRandomElement([...NAME_DESCRIPTORS]);
-  const emblem = rng.selectRandomElement([...NAME_EMBLEMS]);
+  const descriptor = rng.selectRandomElement(NAME_DESCRIPTORS);
+  const emblem = rng.selectRandomElement(NAME_EMBLEMS);
   const title = kind.charAt(0).toUpperCase() + kind.slice(1);
 
   return `The ${descriptor} ${emblem} ${title}`;
@@ -68,7 +68,7 @@ function drawStances(rng: Rng, inPlay: Faction[]): Stance[] {
 
   return powers.map((power) => ({
     power,
-    posture: rng.selectRandomElement([...FACTION_POSTURES]),
+    posture: rng.selectRandomElement(FACTION_POSTURES),
   }));
 }
 
@@ -86,14 +86,14 @@ export function generateFaction(options: FactionGeneratorOptions): MinorFaction 
   }
 
   const rng = new Rng(options.seed);
-  const kind = rng.selectRandomElement([...FACTION_KINDS]);
+  const kind = rng.selectRandomElement(FACTION_KINDS);
 
   return {
     name: drawName(rng, kind),
     kind,
-    aim: rng.selectRandomElement([...FACTION_AIMS]),
-    method: rng.selectRandomElement([...FACTION_METHODS]),
-    leverage: rng.selectRandomElement([...FACTION_LEVERAGE]),
+    aim: rng.selectRandomElement(FACTION_AIMS),
+    method: rng.selectRandomElement(FACTION_METHODS),
+    leverage: rng.selectRandomElement(FACTION_LEVERAGE),
     stances: drawStances(rng, inPlay),
   };
 }

@@ -64,7 +64,7 @@ function factionsInPlay({ factions, ruler }: ClearingGeneratorOptions): Faction[
 
 /** Draw one to `most` distinct entries from `table`. */
 function drawAtLeastOne<T>(rng: Rng, table: readonly T[], most: number): T[] {
-  return rng.selectRandomSample([...table], rng.getRandomIntInclusive(1, most));
+  return rng.selectRandomSample(table, rng.getRandomIntInclusive(1, most));
 }
 
 function drawConflict(rng: Rng, inPlay: Faction[], ruler: Faction): Conflict {
@@ -75,7 +75,7 @@ function drawConflict(rng: Rng, inPlay: Faction[], ruler: Faction): Conflict {
 
   return {
     challenger: rng.selectRandomElement(challengers),
-    over: rng.selectRandomElement([...CONFLICT_SUBJECTS]),
+    over: rng.selectRandomElement(CONFLICT_SUBJECTS),
   };
 }
 
