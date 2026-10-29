@@ -105,9 +105,9 @@ export function generateWoodland({ seed }: WoodlandGeneratorOptions): Woodland {
 
     let newPaths = 0;
     for (let remaining = pathCount - neighbours.size; remaining > 0; remaining--) {
-      // Joining closes one unfinished path and draws none, so it has to leave
-      // one open for the clearings still to place.
-      const canJoin = stillToPlace === 0 || unfinished.length - 1 + newPaths + (remaining - 1) > 0;
+      // Counts every later path as drawn, since each of those may join too.
+      const openIfJoined = unfinished.length - 1 + newPaths + (remaining - 1);
+      const canJoin = stillToPlace === 0 || openIfJoined > 0;
       const joined = canJoin
         ? takeUnfinished(rng, unfinished, (other) => !neighbours.has(other))
         : undefined;
