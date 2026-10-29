@@ -78,6 +78,49 @@ export const DENIZEN_SPECIES = [
 export type DenizenSpecies = (typeof DENIZEN_SPECIES)[number];
 
 /**
+ * Species that can be a clearing's majority population.
+ *
+ * The Core Book's three. Birds never qualify because they spread evenly across
+ * the Woodland.
+ */
+export const DOMINANT_COMMUNITIES = [
+  "foxes",
+  "mice",
+  "rabbits",
+] as const satisfies readonly DenizenSpecies[];
+
+export type DominantCommunity = (typeof DOMINANT_COMMUNITIES)[number];
+
+/**
+ * What a clearing is called.
+ *
+ * Needs at least as many entries as a Woodland has clearings, since no name
+ * repeats within one.
+ */
+export const CLEARING_NAMES = [
+  "Bramblegate",
+  "Thistledown",
+  "Mossbank",
+  "Hazelmere",
+  "Copperbrook",
+  "Larkspur Crossing",
+  "Foxglove Rise",
+  "Elderwick",
+  "Stillwater",
+  "Hollowell",
+  "Burdock Green",
+  "Wrenfield",
+  "Cinderbrook",
+  "Saltmarsh Landing",
+  "Fernwhistle",
+  "Ravensgill",
+  "Highbriar",
+  "Mallow Ford",
+] as const;
+
+export type ClearingName = (typeof CLEARING_NAMES)[number];
+
+/**
  * Parties that contest a clearing without flying a faction's banner.
  *
  * Keeps the challenger pool populated when the ruler is the only faction in
