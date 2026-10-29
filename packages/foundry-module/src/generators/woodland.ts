@@ -90,7 +90,7 @@ export function generateWoodland({ seed }: WoodlandGeneratorOptions): Woodland {
 
   for (const name of rng.selectRandomSample([...CLEARING_NAMES], CLEARING_COUNT)) {
     const community = drawCommunity(rng, clearings);
-    const toPlace = CLEARING_COUNT - clearings.length - 1;
+    const stillToPlace = CLEARING_COUNT - clearings.length - 1;
     const neighbours = new Set<ClearingName>();
 
     const arrival = takeUnfinished(rng, unfinished);
@@ -99,15 +99,15 @@ export function generateWoodland({ seed }: WoodlandGeneratorOptions): Woodland {
     }
 
     let pathCount = rollPathCount(rng);
-    while (toPlace > 0 && unfinished.length === 0 && pathCount === neighbours.size) {
+    while (stillToPlace > 0 && unfinished.length === 0 && pathCount === neighbours.size) {
       pathCount = rollPathCount(rng);
     }
 
-    let drawn = 0;
+    let newPaths = 0;
     for (let remaining = pathCount - neighbours.size; remaining > 0; remaining--) {
       // Joining closes one unfinished path and draws none, so it has to leave
       // one open for the clearings still to place.
-      const canJoin = toPlace === 0 || unfinished.length - 1 + drawn + (remaining - 1) > 0;
+      const canJoin = stillToPlace === 0 || unfinished.length - 1 + newPaths + (remaining - 1) > 0;
       const joined = canJoin
         ? takeUnfinished(rng, unfinished, (other) => !neighbours.has(other))
         : undefined;
@@ -115,13 +115,13 @@ export function generateWoodland({ seed }: WoodlandGeneratorOptions): Woodland {
       if (joined) {
         neighbours.add(joined);
       } else {
-        drawn++;
+        newPaths++;
       }
     }
 
     clearings.push({ name, community });
     paths.push(...[...neighbours].map((neighbour): Path => [neighbour, name]));
-    unfinished.push(...Array<ClearingName>(drawn).fill(name));
+    unfinished.push(...Array<ClearingName>(newPaths).fill(name));
   }
 
   return { clearings, paths, unfinishedPaths: unfinished };
