@@ -6,9 +6,8 @@
 # Local Foundry VTT harness for verifying packages/foundry-module/.
 # See packages/foundry-module/README.md for setup and usage.
 
-# A fixed project name makes every checkout, worktrees included, drive one
-# harness: `up` from another checkout replaces the container rather than
-# starting a second one on the same port and volume.
+# Every checkout drives one harness: `up` from another checkout replaces the
+# running container, which would otherwise collide on the port and volume.
 name: woodland-generators
 
 services:
@@ -39,6 +38,5 @@ services:
 
 volumes:
   foundry-data:
-    # Shared by every checkout so the cached build and license follow the
-    # contributor between worktrees.
+    # Shared by every checkout so the cached build and license carry over.
     name: woodland-generators_foundry-data

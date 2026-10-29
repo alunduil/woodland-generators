@@ -56,8 +56,8 @@
    docker compose up
    ```
 
-   Every checkout shares one harness. If another checkout's harness is running,
-   this replaces its container with this checkout's build.
+   If the harness is already running from another checkout, this replaces it
+   with this checkout's build.
 
 5. Open <http://localhost:30000> and enter the license key if prompted. The
    module declares no system dependency, so any game system works; if you have
