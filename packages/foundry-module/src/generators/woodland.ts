@@ -62,7 +62,7 @@ function drawCommunity(rng: Rng, placed: WoodlandClearing[]): DominantCommunity 
 function takeUnfinished(
   rng: Rng,
   unfinished: ClearingName[],
-  eligible: (name: ClearingName) => boolean,
+  eligible: (name: ClearingName) => boolean = () => true,
 ): ClearingName | undefined {
   const indices = unfinished.flatMap((name, index) => (eligible(name) ? [index] : []));
 
@@ -93,7 +93,7 @@ export function generateWoodland({ seed }: WoodlandGeneratorOptions): Woodland {
     const toPlace = CLEARING_COUNT - clearings.length - 1;
     const neighbours = new Set<ClearingName>();
 
-    const arrival = takeUnfinished(rng, unfinished, () => true);
+    const arrival = takeUnfinished(rng, unfinished);
     if (arrival) {
       neighbours.add(arrival);
     }
