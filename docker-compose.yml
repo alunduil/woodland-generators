@@ -23,6 +23,12 @@ services:
       CONTAINER_PRESERVE_CONFIG: "true"
       # Run link-module.sh from /srv/patches (outside /data) at startup.
       CONTAINER_PATCHES: "/srv/patches"
+    configs:
+      # The image reads credentials from this file ahead of its environment.
+      # Copied into the container rather than set as variables, they stay out
+      # of `docker inspect`.
+      - source: foundry-credentials
+        target: /run/secrets/config.json
     volumes:
       - foundry-data:/data
       # Mount the package outside /data; the container patch symlinks it into
@@ -34,3 +40,16 @@ services:
 
 volumes:
   foundry-data:
+
+# A config, not a secret: outside Swarm, Compose builds a secret from one
+# variable's whole value, and the image wants these four combined as JSON. A
+# value containing `"` or `\` breaks the JSON.
+configs:
+  foundry-credentials:
+    content: |
+      {
+        "foundry_username": "${FOUNDRY_USERNAME:-}",
+        "foundry_password": "${FOUNDRY_PASSWORD:-}",
+        "foundry_license_key": "${FOUNDRY_LICENSE_KEY:-}",
+        "foundry_admin_key": "${FOUNDRY_ADMIN_KEY:-}"
+      }
