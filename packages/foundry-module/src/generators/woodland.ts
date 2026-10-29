@@ -48,7 +48,6 @@ function rollPathCount(rng: Rng): number {
   return 5;
 }
 
-/** Reroll the path count until it exceeds `floor`. */
 function rollPathCountAbove(rng: Rng, floor: number): number {
   let pathCount = rollPathCount(rng);
   while (pathCount <= floor) {
@@ -58,7 +57,7 @@ function rollPathCountAbove(rng: Rng, floor: number): number {
   return pathCount;
 }
 
-/** Drawing only from communities below the cap is rerolling a full one. */
+/** The Core Book's reroll of a full community, as one draw. */
 function drawCommunity(rng: Rng, placed: WoodlandClearing[]): DominantCommunity {
   const available = DOMINANT_COMMUNITIES.filter(
     (community) =>
@@ -115,7 +114,7 @@ export function generateWoodland({ seed }: WoodlandGeneratorOptions): Woodland {
 
     let newPaths = 0;
     for (let remaining = pathCount - neighbours.size; remaining > 0; remaining--) {
-      // Counts every later path as drawn, since each of those may join too.
+      // Assumes every later path is drawn; a later join checks this guard again.
       const openIfJoined = unfinished.length - 1 + newPaths + (remaining - 1);
       const canJoin = stillToPlace === 0 || openIfJoined > 0;
       const joined = canJoin
