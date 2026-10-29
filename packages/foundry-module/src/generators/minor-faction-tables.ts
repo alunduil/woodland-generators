@@ -13,9 +13,9 @@
  * An entry qualifies when it names a group that operates at clearing scale and
  * reads as a title, since it closes the faction's name.
  */
-export const FACTION_KINDS = ["guild", "gang", "cult", "company", "crew"] as const;
+export const MINOR_FACTION_KINDS = ["guild", "gang", "cult", "company", "crew"] as const;
 
-export type FactionKind = (typeof FACTION_KINDS)[number];
+export type MinorFactionKind = (typeof MINOR_FACTION_KINDS)[number];
 
 /**
  * The adjective opening a faction's name.
@@ -68,7 +68,7 @@ export const NAME_EMBLEMS = [
  *
  * An entry qualifies when a table can tell whether it has been achieved.
  */
-export const FACTION_AIMS = [
+export const MINOR_FACTION_AIMS = [
   "control the toll at the crossing",
   "drive a rival outfit out of the clearing",
   "corner the market in salt",
@@ -81,14 +81,14 @@ export const FACTION_AIMS = [
   "recover a relic stolen from their founder",
 ] as const;
 
-export type FactionAim = (typeof FACTION_AIMS)[number];
+export type MinorFactionAim = (typeof MINOR_FACTION_AIMS)[number];
 
 /**
  * How the faction pursues its aim.
  *
  * An entry qualifies when it suggests a scene the vagabonds can walk into.
  */
-export const FACTION_METHODS = [
+export const MINOR_FACTION_METHODS = [
   "bribery",
   "blackmail",
   "sabotage at night",
@@ -101,14 +101,14 @@ export const FACTION_METHODS = [
   "patient favour-trading",
 ] as const;
 
-export type FactionMethod = (typeof FACTION_METHODS)[number];
+export type MinorFactionMethod = (typeof MINOR_FACTION_METHODS)[number];
 
 /**
  * What gives the faction its grip on the clearing.
  *
  * An entry qualifies when taking it away would break the faction's hold.
  */
-export const FACTION_LEVERAGE = [
+export const MINOR_FACTION_LEVERAGE = [
   "the only ferry across the river",
   "the ledger of every debt in the clearing",
   "the granary keys",
@@ -121,7 +121,7 @@ export const FACTION_LEVERAGE = [
   "the denizens' faith",
 ] as const;
 
-export type FactionLeverage = (typeof FACTION_LEVERAGE)[number];
+export type MinorFactionLeverage = (typeof MINOR_FACTION_LEVERAGE)[number];
 
 /**
  * How the faction stands toward a great power.
@@ -129,7 +129,7 @@ export type FactionLeverage = (typeof FACTION_LEVERAGE)[number];
  * An entry qualifies when it implies what the faction does when that power's
  * soldiers walk into the clearing.
  */
-export const FACTION_POSTURES = [
+export const MINOR_FACTION_POSTURES = [
   "openly allied with",
   "secretly paid by",
   "openly defiant of",
@@ -140,4 +140,4 @@ export const FACTION_POSTURES = [
   "sworn to undermine",
 ] as const;
 
-export type FactionPosture = (typeof FACTION_POSTURES)[number];
+export type MinorFactionPosture = (typeof MINOR_FACTION_POSTURES)[number];

@@ -6,26 +6,26 @@ import { Rng } from "@woodland-generators/random";
 
 import { FACTIONS, type Faction } from "./clearing-tables.js";
 import {
-  FACTION_AIMS,
-  FACTION_KINDS,
-  FACTION_LEVERAGE,
-  FACTION_METHODS,
-  FACTION_POSTURES,
+  MINOR_FACTION_AIMS,
+  MINOR_FACTION_KINDS,
+  MINOR_FACTION_LEVERAGE,
+  MINOR_FACTION_METHODS,
+  MINOR_FACTION_POSTURES,
   NAME_DESCRIPTORS,
   NAME_EMBLEMS,
-  type FactionAim,
-  type FactionKind,
-  type FactionLeverage,
-  type FactionMethod,
-  type FactionPosture,
-} from "./faction-tables.js";
+  type MinorFactionAim,
+  type MinorFactionKind,
+  type MinorFactionLeverage,
+  type MinorFactionMethod,
+  type MinorFactionPosture,
+} from "./minor-faction-tables.js";
 
 /** How a minor faction stands toward one great power. */
 interface Stance {
   /** The great power the stance is toward. */
   power: Faction;
   /** What the minor faction does about that power. */
-  posture: FactionPosture;
+  posture: MinorFactionPosture;
 }
 
 /** An outfit operating beneath the great powers at clearing scale. */
@@ -33,18 +33,18 @@ export interface MinorFaction {
   /** What the clearing calls the outfit. */
   name: string;
   /** What sort of outfit it is. */
-  kind: FactionKind;
+  kind: MinorFactionKind;
   /** What it is after in its clearing. */
-  aim: FactionAim;
+  aim: MinorFactionAim;
   /** How it pursues that aim. */
-  method: FactionMethod;
+  method: MinorFactionMethod;
   /** What gives it a grip on the clearing. */
-  leverage: FactionLeverage;
+  leverage: MinorFactionLeverage;
   /** Its posture toward each great power it deals with, never the same power twice. */
   stances: Stance[];
 }
 
-export interface FactionGeneratorOptions {
+export interface MinorFactionGeneratorOptions {
   seed: string;
   /** The great powers in play in this Woodland; defaults to all of them. */
   factions?: Faction[];
@@ -52,7 +52,7 @@ export interface FactionGeneratorOptions {
 
 const MAX_STANCES = 2;
 
-function drawName(rng: Rng, kind: FactionKind): string {
+function drawName(rng: Rng, kind: MinorFactionKind): string {
   const descriptor = rng.selectRandomElement(NAME_DESCRIPTORS);
   const emblem = rng.selectRandomElement(NAME_EMBLEMS);
   const title = kind.charAt(0).toUpperCase() + kind.slice(1);
@@ -68,7 +68,7 @@ function drawStances(rng: Rng, inPlay: Faction[]): Stance[] {
 
   return powers.map((power) => ({
     power,
-    posture: rng.selectRandomElement(FACTION_POSTURES),
+    posture: rng.selectRandomElement(MINOR_FACTION_POSTURES),
   }));
 }
 
@@ -78,7 +78,7 @@ function drawStances(rng: Rng, inPlay: Faction[]): Stance[] {
  * Throws when no great powers are in play, since every minor faction takes a
  * stance toward at least one.
  */
-export function generateFaction(options: FactionGeneratorOptions): MinorFaction {
+export function generateMinorFaction(options: MinorFactionGeneratorOptions): MinorFaction {
   const inPlay = options.factions ?? [...FACTIONS];
 
   if (inPlay.length === 0) {
@@ -86,14 +86,14 @@ export function generateFaction(options: FactionGeneratorOptions): MinorFaction 
   }
 
   const rng = new Rng(options.seed);
-  const kind = rng.selectRandomElement(FACTION_KINDS);
+  const kind = rng.selectRandomElement(MINOR_FACTION_KINDS);
 
   return {
     name: drawName(rng, kind),
     kind,
-    aim: rng.selectRandomElement(FACTION_AIMS),
-    method: rng.selectRandomElement(FACTION_METHODS),
-    leverage: rng.selectRandomElement(FACTION_LEVERAGE),
+    aim: rng.selectRandomElement(MINOR_FACTION_AIMS),
+    method: rng.selectRandomElement(MINOR_FACTION_METHODS),
+    leverage: rng.selectRandomElement(MINOR_FACTION_LEVERAGE),
     stances: drawStances(rng, inPlay),
   };
 }
