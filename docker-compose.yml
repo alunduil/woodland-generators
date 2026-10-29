@@ -6,6 +6,10 @@
 # Local Foundry VTT harness for verifying packages/foundry-module/.
 # See packages/foundry-module/README.md for setup and usage.
 
+# A fixed project name gives every checkout, worktrees included, the same
+# foundry-data volume, so the cached build and license follow the contributor.
+name: woodland-generators
+
 services:
   foundry:
     image: felddy/foundryvtt:14.369.1@sha256:2ddf90080c605ebafaaabc4fbfb6bea3cc84d20ad181ce39420e4f86e664a484

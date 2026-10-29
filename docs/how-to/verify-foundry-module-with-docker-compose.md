@@ -12,7 +12,7 @@
    cache is keyed to it by filename:
 
    ```bash
-   docker run --rm -v "$(basename "$PWD")_foundry-data:/data" \
+   docker run --rm -v woodland-generators_foundry-data:/data \
      --entrypoint sh felddy/foundryvtt -c 'ls /data/container_cache'
    ```
 
@@ -24,7 +24,7 @@
    download the zip. Then copy it in under the name the container expects:
 
    ```bash
-   docker run --rm -v "$(basename "$PWD")_foundry-data:/data" \
+   docker run --rm -v woodland-generators_foundry-data:/data \
      -v /path/to/FoundryVTT-Node-<version>.zip:/src.zip:ro \
      --entrypoint sh felddy/foundryvtt -c \
      'cp /src.zip /data/container_cache/foundryvtt-<version>.zip &&
@@ -55,6 +55,9 @@
    ```bash
    docker compose up
    ```
+
+   Every checkout shares one harness. If another checkout's harness is running,
+   this replaces its container with this checkout's build.
 
 5. Open <http://localhost:30000> and enter the license key if prompted. The
    module declares no system dependency, so any game system works; if you have
