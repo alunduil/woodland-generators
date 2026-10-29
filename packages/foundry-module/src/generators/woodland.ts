@@ -48,6 +48,16 @@ function rollPathCount(rng: Rng): number {
   return 5;
 }
 
+/** Reroll the path count until it exceeds `floor`. */
+function rollPathCountAbove(rng: Rng, floor: number): number {
+  let pathCount = rollPathCount(rng);
+  while (pathCount <= floor) {
+    pathCount = rollPathCount(rng);
+  }
+
+  return pathCount;
+}
+
 /** Drawing only from communities below the cap is rerolling a full one. */
 function drawCommunity(rng: Rng, placed: WoodlandClearing[]): DominantCommunity {
   const available = DOMINANT_COMMUNITIES.filter(
@@ -98,10 +108,10 @@ export function generateWoodland({ seed }: WoodlandGeneratorOptions): Woodland {
       neighbours.add(arrival);
     }
 
-    let pathCount = rollPathCount(rng);
-    while (stillToPlace > 0 && unfinished.length === 0 && pathCount === neighbours.size) {
-      pathCount = rollPathCount(rng);
-    }
+    const mustLeaveOneOpen = stillToPlace > 0 && unfinished.length === 0;
+    const pathCount = mustLeaveOneOpen
+      ? rollPathCountAbove(rng, neighbours.size)
+      : rollPathCount(rng);
 
     let newPaths = 0;
     for (let remaining = pathCount - neighbours.size; remaining > 0; remaining--) {
