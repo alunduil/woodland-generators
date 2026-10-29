@@ -99,6 +99,3 @@
 
    Use `docker compose down -v` only to start fresh; it deletes the cached build
    and license, so the next run needs credentials or a placed build again.
-
-For the variables the harness reads, see
-[Compose harness variables](../reference/compose-harness-variables.md).
