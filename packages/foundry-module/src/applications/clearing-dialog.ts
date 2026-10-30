@@ -4,8 +4,8 @@
 
 /* global foundry, game */
 
+import { createClearingDocuments } from "../documents/clearing.js";
 import { generateClearings } from "../generators/clearing.js";
-import { MODULE_ID } from "../module-id.js";
 import { readFactions } from "../settings/factions.js";
 import MarkupApplication from "./markup-application.js";
 
@@ -47,7 +47,9 @@ async function generate(
   const ready = game as ReadyGame;
   const request = parseRequest(formData, ready.i18n);
 
-  console.log(`${MODULE_ID} |`, generateClearings({ ...request, factions: readFactions(ready) }));
+  const clearings = generateClearings({ ...request, factions: readFactions(ready) });
+
+  await createClearingDocuments(clearings, ready.i18n);
 }
 
 /**

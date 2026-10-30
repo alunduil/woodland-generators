@@ -19,6 +19,9 @@ Follow [Before you start](generator-menu.md#before-you-start) in the generator
 menu scenarios: build the bundle, bring up a world with the module enabled, and
 keep the console open, filtered to `woodland-generators`.
 
+Each submission writes documents into the world. Use a throwaway world, or
+delete what a scenario creates before the next.
+
 Open the generator menu from **Game Settings → Configure Settings → Module
 Settings** as the GM.
 
@@ -38,14 +41,15 @@ Narrow the factions in play to Marquisate and Lizard Cult, as
 does. Open the dialog, set the count to 3 and the seed to `woodland`, and click
 **Generate**.
 
-Expect the dialog to close, and the console to log three clearings after
-`woodland-generators |`. Expect every `ruler` to be Marquisate or Lizard Cult.
+Expect the dialog to close, and three new Journal entries in the Journal
+directory. Expect each to name Marquisate or Lizard Cult as its ruler.
 
 ## 3. The same seed redraws the same batch
 
 Repeat scenario 2 with the same count and seed.
 
-Expect the logged batch to match the first one field for field.
+Expect three more Journal entries, each matching its counterpart from scenario 2
+field for field.
 
 ## 4. A count below one is refused
 
@@ -54,7 +58,7 @@ Open the dialog, set the count to 0, and click **Generate**.
 Expect the browser to block the submission. Then remove the `min` attribute from
 the count input in the inspector, and click **Generate** again. Expect an error
 notification saying to generate at least one clearing, the dialog to stay open,
-and nothing logged.
+and no new Journal entry or Scene.
 
 ## Coverage
 
