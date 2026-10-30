@@ -50,8 +50,8 @@ Right-click the Scene from scenario 1 in the Scenes directory and choose
 **Configure**.
 
 Expect its journal field to name the Journal entry from scenario 1. Close the
-configuration, view the Scene, and expect a plain coloured background in place
-of a map.
+configuration, view the Scene, and expect Foundry's default background with no
+image in place of a map.
 
 ## 4. The Journal entry reaches its Scene
 

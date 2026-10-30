@@ -6,9 +6,6 @@
 
 import type { Clearing } from "../generators/clearing.js";
 
-/** Stands in for a map until the GM sets a background image. */
-const PLACEHOLDER_BACKGROUND = "#4a5d3a";
-
 interface Pair {
   journalId: string;
   sceneId: string;
@@ -50,7 +47,8 @@ function renderJournal({ sceneId, clearing }: Pair, i18n: ReadyGame["i18n"]): st
  * entry's link to its Scene is only a reference: Foundry answers a click on a
  * Scene link by opening that Scene's journal, which is the entry itself.
  *
- * Scenes stay out of the navigation bar, so a batch doesn't crowd it.
+ * Scenes start without a background image, a placeholder until the GM sets a
+ * map, and stay out of the navigation bar, so a batch doesn't crowd it.
  */
 export async function createClearingDocuments(
   clearings: readonly Clearing[],
@@ -83,7 +81,6 @@ export async function createClearingDocuments(
       name: clearing.name,
       journal: journalId,
       navigation: false,
-      backgroundColor: PLACEHOLDER_BACKGROUND,
     })),
     { keepId: true },
   );
