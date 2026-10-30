@@ -21,7 +21,7 @@ keep the console open, filtered to `woodland-generators`.
 
 Use a throwaway world. Every scenario writes Scenes and Journal entries into it.
 
-## 1. A clearing lands in both directories
+## 1. A clearing appears in both directories
 
 Open the generator menu from **Game Settings → Configure Settings → Module
 Settings** as the GM, and start a timer. Click **Clearings**, leave the count at

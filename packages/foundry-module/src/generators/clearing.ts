@@ -136,7 +136,7 @@ function renderJournal(clearing: Clearing, sceneId: string, i18n: ReadyGame["i18
 }
 
 /**
- * Plan the Journal entry and Scene a clearing lands as, linked to each other.
+ * Plan a clearing's Journal entry and Scene, linked to each other.
  *
  * Foundry answers a click on a Scene link by opening that Scene's journal, so
  * the entry's link to its own Scene names the Scene but doesn't open it.
@@ -168,9 +168,9 @@ export function planClearing(
 }
 
 /**
- * Create the Journal entry and Scene each clearing lands as.
+ * Create each clearing's Journal entry and Scene in the world.
  *
- * Foundry creates one document type per call, so the pairs split by type.
+ * Foundry creates one document type per call, so this splits the pairs by type.
  * Foundry replaces a document's `_id` on creation unless told to keep it, which
  * would leave every planned link dangling.
  */
