@@ -65,12 +65,13 @@ export default class ClearingDialog extends MarkupApplication {
    */
   protected override async _renderHTML(): Promise<string> {
     const { i18n } = game as I18nInitGame;
+    const label = (key: string): string => i18n.localize(`WOODLAND-GENERATORS.Clearing.${key}`);
 
     return `
-      ${this.#field("count", i18n.localize("WOODLAND-GENERATORS.Clearing.Count"), 'type="number" value="1" min="1" step="1"')}
-      ${this.#field("seed", i18n.localize("WOODLAND-GENERATORS.Clearing.Seed"), `type="text" value="${foundry.utils.randomID()}"`)}
+      ${this.#field("count", label("Count"), 'type="number" value="1" min="1" step="1"')}
+      ${this.#field("seed", label("Seed"), `type="text" value="${foundry.utils.randomID()}"`)}
       <footer class="form-footer">
-        <button type="submit"><i class="fa-solid fa-dice"></i> ${i18n.localize("WOODLAND-GENERATORS.Clearing.Generate")}</button>
+        <button type="submit"><i class="fa-solid fa-dice"></i> ${label("Generate")}</button>
       </footer>`;
   }
 
