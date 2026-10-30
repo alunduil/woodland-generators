@@ -82,16 +82,12 @@ export function generateClearing(options: ClearingGeneratorOptions): Clearing {
   const rng = new Rng(options.seed);
   const ruler = options.ruler ?? rng.selectRandomElement(inPlay);
 
-  const features = drawAtLeastOne(rng, CLEARING_FEATURES, MAX_FEATURES);
-  const inhabitants = drawAtLeastOne(rng, DENIZEN_SPECIES, MAX_INHABITANTS);
-  const conflict = drawConflict(rng, inPlay, ruler);
-
   return {
-    name: rng.selectRandomElement(CLEARING_NAMES),
-    features,
-    inhabitants,
+    features: drawAtLeastOne(rng, CLEARING_FEATURES, MAX_FEATURES),
+    inhabitants: drawAtLeastOne(rng, DENIZEN_SPECIES, MAX_INHABITANTS),
     ruler,
-    conflict,
+    conflict: drawConflict(rng, inPlay, ruler),
+    name: rng.selectRandomElement(CLEARING_NAMES),
   };
 }
 
