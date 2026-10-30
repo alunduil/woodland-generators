@@ -21,9 +21,8 @@ exclude: |
     CHANGELOG\.md
   )$
 
-# nodeenv resolves its default "latest" from nodejs.org, so a prerelease at the
-# top of that index breaks every node hook's install. The repo already pins
-# Node through the devcontainer and CI, so the hooks use that one.
+# Hooks run on the Node that builds the project, not whatever nodejs.org lists
+# as latest.
 default_language_version:
   node: system
 
