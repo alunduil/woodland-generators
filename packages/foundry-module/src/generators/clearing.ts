@@ -124,7 +124,7 @@ function renderJournal(clearing: Clearing, sceneId: string, i18n: ReadyGame["i18
     `<p>${label("Ruler")} ${clearing.ruler}</p>`,
     heading("Features"),
     list(clearing.features),
-    heading("Inhabitants"),
+    heading("Denizens"),
     list(clearing.inhabitants),
     heading("Conflict"),
     `<p>${label("Challenger")} ${clearing.conflict.challenger}</p>`,

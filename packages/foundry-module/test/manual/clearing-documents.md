@@ -36,7 +36,7 @@ in the console.
 
 Open the Journal entry from scenario 1.
 
-Expect, in order: the ruling faction, a Features list, an Inhabitants list, a
+Expect, in order: the ruling faction, a Features list, a Denizens list, a
 Conflict section naming the challenger and what's at stake, and a link carrying
 the Scene's name. Expect prose in every label, not keys like
 `WOODLAND-GENERATORS.Clearing.Journal.Ruler`.
