@@ -26,9 +26,10 @@ Settings** as the GM.
 
 Click **Clearings** in the generator menu.
 
-Expect a window titled Generate Clearings with a Number of Clearings field set
-to 1, a Seed field holding a random value, and a Generate button. Expect prose
-in every label, not keys like `WOODLAND-GENERATORS.Clearing.Seed`.
+Expect a window titled Generate Clearings, carrying the module's icon, with a
+Number of Clearings field set to 1, a Seed field holding a random value, and a
+Generate button. Expect prose in every label, not keys like
+`WOODLAND-GENERATORS.Clearing.Seed`.
 
 ## 2. A batch draws from the factions in play
 

@@ -9,13 +9,12 @@ import { MODULE_ID } from "../module-id.js";
 import { readFactions } from "../settings/factions.js";
 import MarkupApplication from "./markup-application.js";
 
-/** A submission that passed its checks: `count` is a whole number of at least one. */
+/** A validated submission: `count` is a whole number of at least one. */
 interface ClearingRequest {
   count: number;
   seed: string;
 }
 
-/** The attributes a field's `<input>` takes beyond its id and name. */
 interface InputAttributes {
   type: "number" | "text";
   value: number | string;
