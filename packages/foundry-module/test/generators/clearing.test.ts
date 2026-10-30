@@ -28,6 +28,10 @@ function clearings(options: { factions?: Faction[] } = {}): Clearing[] {
   return SEEDS.map((seed) => generateClearing({ seed, ...options }));
 }
 
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
 describe("generateClearing", () => {
   it.each(["woodland", "rooston", "", "🌲"])("repeats itself for seed %p", (seed) => {
     expect(generateClearing({ seed })).toEqual(generateClearing({ seed }));
@@ -156,10 +160,6 @@ function plan(): { journal: JournalData; scene: SceneData; content: string } {
 }
 
 describe("planClearing", () => {
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
   it("names the Journal entry and the Scene for the clearing", () => {
     const { journal, scene } = plan();
 
@@ -206,10 +206,6 @@ describe("planClearing", () => {
 });
 
 describe("createClearings", () => {
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
   const batch = generateClearings({ count: 3, seed: "woodland" });
 
   it("keeps each Scene with its own Journal entry across the split by type", async () => {
