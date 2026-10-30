@@ -53,11 +53,8 @@ export default class ClearingDialog extends MarkupApplication {
   static override DEFAULT_OPTIONS = {
     id: "woodland-generators-clearing",
     tag: "form",
-    classes: ["woodland-generators", "clearing-dialog"],
-    window: {
-      title: "WOODLAND-GENERATORS.Clearing.Title",
-      icon: MarkupApplication.ICON,
-    },
+    classes: ["clearing-dialog"],
+    window: { title: "WOODLAND-GENERATORS.Clearing.Title" },
     position: { width: 360 },
     form: { handler: generate, submitOnChange: false, closeOnSubmit: true },
   };

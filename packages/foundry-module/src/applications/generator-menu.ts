@@ -12,11 +12,8 @@ import MarkupApplication from "./markup-application.js";
 export default class GeneratorMenu extends MarkupApplication {
   static override DEFAULT_OPTIONS = {
     id: "woodland-generators-menu",
-    classes: ["woodland-generators", "generator-menu"],
-    window: {
-      title: "WOODLAND-GENERATORS.Menu.Title",
-      icon: MarkupApplication.ICON,
-    },
+    classes: ["generator-menu"],
+    window: { title: "WOODLAND-GENERATORS.Menu.Title" },
     position: { width: 480 },
     actions: {
       clearing: (): void => void new ClearingDialog().render({ force: true }),

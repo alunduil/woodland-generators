@@ -4,6 +4,8 @@
 
 /* global foundry */
 
+import { MODULE_ID } from "../module-id.js";
+
 /**
  * An Application that renders a markup string straight into its window.
  *
@@ -13,6 +15,15 @@
 export default abstract class MarkupApplication extends foundry.applications.api.ApplicationV2 {
   /** The icon on every window and menu entry the module adds. */
   static readonly ICON = "fa-solid fa-tree";
+
+  /**
+   * Foundry merges a subclass's `DEFAULT_OPTIONS` into these, concatenating
+   * `classes`, so a subclass declares only what sets it apart.
+   */
+  static override DEFAULT_OPTIONS: foundry.applications.api.ApplicationV2.DefaultOptions = {
+    classes: [MODULE_ID],
+    window: { icon: MarkupApplication.ICON },
+  };
 
   protected abstract override _renderHTML(): Promise<string>;
 
