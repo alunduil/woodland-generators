@@ -86,3 +86,19 @@ export function generateClearing(options: ClearingGeneratorOptions): Clearing {
     conflict: drawConflict(rng, inPlay, ruler),
   };
 }
+
+interface ClearingBatchOptions extends ClearingGeneratorOptions {
+  count: number;
+}
+
+/**
+ * Generate `count` clearings, deterministically on `options.seed`.
+ *
+ * Clearing `n`, counting from one, is `generateClearing` on the seed
+ * `${seed}-${n}`, so any one clearing in a batch redraws on its own.
+ */
+export function generateClearings({ count, seed, ...options }: ClearingBatchOptions): Clearing[] {
+  return Array.from({ length: count }, (_, index) =>
+    generateClearing({ ...options, seed: `${seed}-${index + 1}` }),
+  );
+}

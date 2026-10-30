@@ -3,20 +3,13 @@
 // SPDX-License-Identifier: MIT
 
 import en from "../../languages/en.json";
+import ClearingDialog from "../../src/applications/clearing-dialog";
 import GeneratorMenu from "../../src/applications/generator-menu";
 import { localizeWith, stubGame } from "../foundry-globals";
 
-const EMPTY_STATE = en["WOODLAND-GENERATORS.Menu.Empty"];
-
-// `_renderHTML` and `_replaceHTML` are protected; Foundry calls them, and here
-// the test does.
-interface RenderPair {
-  _renderHTML(): Promise<string>;
-  _replaceHTML(result: string, content: HTMLElement): void;
-}
-
-function renderPair(): RenderPair {
-  return new GeneratorMenu() as unknown as RenderPair;
+// `_renderHTML` is protected; Foundry calls it, and here the test does.
+async function renderedMarkup(): Promise<string> {
+  return (new GeneratorMenu() as unknown as { _renderHTML(): Promise<string> })._renderHTML();
 }
 
 /** The submenu descriptor `register` hands to Foundry. */
@@ -47,16 +40,32 @@ describe("GeneratorMenu", () => {
     expect(Object.keys(en)).toEqual(expect.arrayContaining([name, label, hint]));
   });
 
-  // Whatever `_renderHTML` returns is what `_replaceHTML` consumes -- Foundry
-  // passes it through untyped, so the two halves only agree by construction.
-  it("renders the localized empty state into the window content", async () => {
+  it("lists the clearing generator under a localized label", async () => {
     stubGame({ i18n: localizeWith(en) });
 
-    const menu = renderPair();
-    const content = { innerHTML: "" } as HTMLElement;
+    expect(await renderedMarkup()).toContain(en["WOODLAND-GENERATORS.Menu.Clearing"]);
+  });
 
-    menu._replaceHTML(await menu._renderHTML(), content);
+  it("opens the clearing dialog from its clearing action", () => {
+    const render = jest.spyOn(ClearingDialog.prototype, "render");
 
-    expect(content.innerHTML).toContain(EMPTY_STATE);
+    GeneratorMenu.DEFAULT_OPTIONS.actions.clearing();
+
+    expect(render).toHaveBeenCalledWith({ force: true });
+    expect(render.mock.contexts[0]).toBeInstanceOf(ClearingDialog);
+  });
+
+  // Foundry dispatches a click on `[data-action]` to the action of that name,
+  // and ignores one with no action registered.
+  it("wires every rendered button to an action it registers", async () => {
+    stubGame({ i18n: localizeWith(en) });
+
+    const html = await renderedMarkup();
+    const rendered = [...html.matchAll(/data-action="([^"]+)"/g)].map(([, action]) => action);
+
+    expect(rendered).not.toHaveLength(0);
+    expect(Object.keys(GeneratorMenu.DEFAULT_OPTIONS.actions)).toEqual(
+      expect.arrayContaining(rendered),
+    );
   });
 });
