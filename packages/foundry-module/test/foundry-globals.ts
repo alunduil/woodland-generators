@@ -40,13 +40,15 @@ export interface CreatedDocuments {
   Scene: jest.Mock;
 }
 
-/**
- * Stub the world document classes a generator creates, and draw distinct IDs
- * so a test can tell which document a link points at.
- */
-export function stubDocuments(): CreatedDocuments {
+/** Draw distinct IDs, so a test can tell which document a link points at. */
+export function stubRandomID(): void {
   let drawn = 0;
   jest.spyOn(foundry.utils, "randomID").mockImplementation(() => `id${++drawn}`);
+}
+
+/** Stub the world document classes a generator creates. */
+export function stubDocuments(): CreatedDocuments {
+  stubRandomID();
 
   const created = {
     JournalEntry: jest.fn().mockResolvedValue([]),

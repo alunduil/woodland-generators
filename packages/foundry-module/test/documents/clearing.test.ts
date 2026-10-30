@@ -3,9 +3,9 @@
 // SPDX-License-Identifier: MIT
 
 import en from "../../languages/en.json";
-import { createClearingDocuments } from "../../src/documents/clearing";
+import { createClearingDocuments, planClearingDocuments } from "../../src/documents/clearing";
 import { generateClearings, type Clearing } from "../../src/generators/clearing";
-import { localizeWith, stubDocuments, type CreatedDocuments } from "../foundry-globals";
+import { localizeWith, stubDocuments, stubRandomID } from "../foundry-globals";
 
 interface JournalData {
   _id: string;
@@ -19,22 +19,19 @@ interface SceneData {
   journal: string;
 }
 
+const i18n = localizeWith(en) as ReadyGame["i18n"];
+
 const clearings = generateClearings({ count: 3, seed: "woodland" });
 
-async function create(batch: readonly Clearing[] = clearings): Promise<CreatedDocuments> {
-  const created = stubDocuments();
+function plan(batch: readonly Clearing[] = clearings): {
+  journals: JournalData[];
+  scenes: SceneData[];
+} {
+  stubRandomID();
 
-  await createClearingDocuments(batch, localizeWith(en) as ReadyGame["i18n"]);
+  const { journals, scenes } = planClearingDocuments(batch, i18n);
 
-  return created;
-}
-
-function journals(created: CreatedDocuments): JournalData[] {
-  return created.JournalEntry.mock.calls[0]?.[0] as JournalData[];
-}
-
-function scenes(created: CreatedDocuments): SceneData[] {
-  return created.Scene.mock.calls[0]?.[0] as SceneData[];
+  return { journals: journals as JournalData[], scenes: scenes as SceneData[] };
 }
 
 function content(journal: JournalData | undefined): string {
@@ -45,44 +42,34 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-describe("createClearingDocuments", () => {
-  it("creates a Journal entry and a Scene named for each clearing", async () => {
-    const created = await create();
+describe("planClearingDocuments", () => {
+  it("plans a Journal entry and a Scene named for each clearing", () => {
+    const { journals, scenes } = plan();
     const names = clearings.map(({ name }) => name);
 
-    expect(journals(created).map(({ name }) => name)).toEqual(names);
-    expect(scenes(created).map(({ name }) => name)).toEqual(names);
+    expect(journals.map(({ name }) => name)).toEqual(names);
+    expect(scenes.map(({ name }) => name)).toEqual(names);
   });
 
-  // Without `keepId`, Foundry discards the drawn IDs and every link dangles.
-  it("keeps the IDs the links point at", async () => {
-    const created = await create();
+  it("links each Scene to its own Journal entry", () => {
+    const { journals, scenes } = plan();
 
-    expect(created.JournalEntry).toHaveBeenCalledWith(expect.anything(), { keepId: true });
-    expect(created.Scene).toHaveBeenCalledWith(expect.anything(), { keepId: true });
+    expect(scenes.map(({ journal }) => journal)).toEqual(journals.map(({ _id }) => _id));
   });
 
-  it("links each Scene to its own Journal entry", async () => {
-    const created = await create();
+  it("links each Journal entry to its own Scene", () => {
+    const { journals, scenes } = plan();
 
-    expect(scenes(created).map(({ journal }) => journal)).toEqual(
-      journals(created).map(({ _id }) => _id),
-    );
-  });
-
-  it("links each Journal entry to its own Scene", async () => {
-    const created = await create();
-
-    journals(created).forEach((journal, index) => {
-      const scene = scenes(created)[index];
+    journals.forEach((journal, index) => {
+      const scene = scenes[index];
 
       expect(content(journal)).toContain(`@UUID[Scene.${scene?._id}]{${scene?.name}}`);
     });
   });
 
-  it("writes every generated field into the Journal entry", async () => {
+  it("writes every generated field into the Journal entry", () => {
     const [clearing] = clearings;
-    const text = content(journals(await create(clearings.slice(0, 1)))[0]);
+    const text = content(plan(clearings.slice(0, 1)).journals[0]);
 
     for (const field of [
       clearing?.ruler,
@@ -95,15 +82,27 @@ describe("createClearingDocuments", () => {
     }
   });
 
-  it("labels the Journal entry from the catalog", async () => {
-    expect(content(journals(await create())[0])).not.toContain("WOODLAND-GENERATORS.");
+  it("labels the Journal entry from the catalog", () => {
+    expect(content(plan().journals[0])).not.toContain("WOODLAND-GENERATORS.");
   });
 
-  it("ends the Journal entry with the unofficial notice", async () => {
-    const text = content(journals(await create())[0]);
+  it("ends the Journal entry with the unofficial notice", () => {
+    const text = content(plan().journals[0]);
 
     expect(
       text.endsWith(`<p><em>${en["WOODLAND-GENERATORS.Clearing.Journal.Notice"]}</em></p>`),
     ).toBe(true);
+  });
+});
+
+describe("createClearingDocuments", () => {
+  // Without `keepId`, Foundry discards the planned IDs and every link dangles.
+  it("keeps the IDs the links point at", async () => {
+    const created = stubDocuments();
+
+    await createClearingDocuments(clearings, i18n);
+
+    expect(created.JournalEntry).toHaveBeenCalledWith(expect.anything(), { keepId: true });
+    expect(created.Scene).toHaveBeenCalledWith(expect.anything(), { keepId: true });
   });
 });

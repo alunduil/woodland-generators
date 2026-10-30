@@ -37,11 +37,14 @@ function renderJournal({ sceneId, clearing }: Pair, i18n: ReadyGame["i18n"]): st
   ].join("\n");
 }
 
+/** The creation data for a batch of clearings, each document naming its partner by ID. */
+interface ClearingDocuments {
+  journals: JournalEntry.CreateData[];
+  scenes: Scene.CreateData[];
+}
+
 /**
- * Create a Journal entry and a Scene for each clearing, linked to each other.
- *
- * The IDs are drawn up front and kept on creation, so each document can name
- * its partner without a second round trip to update it.
+ * Plan a Journal entry and a Scene for each clearing, linked to each other.
  *
  * The Scene reaches its Journal entry through its `journal` field. The Journal
  * entry's link to its Scene is only a reference: Foundry answers a click on a
@@ -50,18 +53,18 @@ function renderJournal({ sceneId, clearing }: Pair, i18n: ReadyGame["i18n"]): st
  * Scenes start without a background image, a placeholder until the GM sets a
  * map, and stay out of the navigation bar, so a batch doesn't crowd it.
  */
-export async function createClearingDocuments(
+export function planClearingDocuments(
   clearings: readonly Clearing[],
   i18n: ReadyGame["i18n"],
-): Promise<void> {
+): ClearingDocuments {
   const pairs: Pair[] = clearings.map((clearing) => ({
     journalId: foundry.utils.randomID(),
     sceneId: foundry.utils.randomID(),
     clearing,
   }));
 
-  await foundry.documents.JournalEntry.createDocuments(
-    pairs.map((pair) => ({
+  return {
+    journals: pairs.map((pair) => ({
       _id: pair.journalId,
       name: pair.clearing.name,
       pages: [
@@ -72,16 +75,27 @@ export async function createClearingDocuments(
         },
       ],
     })),
-    { keepId: true },
-  );
-
-  await foundry.documents.Scene.createDocuments(
-    pairs.map(({ sceneId, journalId, clearing }) => ({
+    scenes: pairs.map(({ sceneId, journalId, clearing }) => ({
       _id: sceneId,
       name: clearing.name,
       journal: journalId,
       navigation: false,
     })),
-    { keepId: true },
-  );
+  };
+}
+
+/**
+ * Create the planned documents for each clearing.
+ *
+ * The planned IDs are kept on creation, so each document can name its partner
+ * without a second round trip to update it.
+ */
+export async function createClearingDocuments(
+  clearings: readonly Clearing[],
+  i18n: ReadyGame["i18n"],
+): Promise<void> {
+  const { journals, scenes } = planClearingDocuments(clearings, i18n);
+
+  await foundry.documents.JournalEntry.createDocuments(journals, { keepId: true });
+  await foundry.documents.Scene.createDocuments(scenes, { keepId: true });
 }
