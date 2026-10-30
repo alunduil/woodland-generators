@@ -6,11 +6,13 @@ import { Rng } from "@woodland-generators/random";
 
 import {
   CLEARING_FEATURES,
+  CLEARING_NAMES,
   CONFLICT_SUBJECTS,
   DENIZEN_SPECIES,
   LOCAL_CHALLENGERS,
   type Challenger,
   type ClearingFeature,
+  type ClearingName,
   type ConflictSubject,
   type DenizenSpecies,
   type Faction,
@@ -24,6 +26,7 @@ interface Conflict {
 }
 
 export interface Clearing {
+  name: ClearingName;
   features: ClearingFeature[];
   inhabitants: DenizenSpecies[];
   ruler: Faction;
@@ -79,11 +82,16 @@ export function generateClearing(options: ClearingGeneratorOptions): Clearing {
   const rng = new Rng(options.seed);
   const ruler = options.ruler ?? rng.selectRandomElement(inPlay);
 
+  const features = drawAtLeastOne(rng, CLEARING_FEATURES, MAX_FEATURES);
+  const inhabitants = drawAtLeastOne(rng, DENIZEN_SPECIES, MAX_INHABITANTS);
+  const conflict = drawConflict(rng, inPlay, ruler);
+
   return {
-    features: drawAtLeastOne(rng, CLEARING_FEATURES, MAX_FEATURES),
-    inhabitants: drawAtLeastOne(rng, DENIZEN_SPECIES, MAX_INHABITANTS),
+    name: rng.selectRandomElement(CLEARING_NAMES),
+    features,
+    inhabitants,
     ruler,
-    conflict: drawConflict(rng, inPlay, ruler),
+    conflict,
   };
 }
 
@@ -95,7 +103,8 @@ interface ClearingBatchOptions extends ClearingGeneratorOptions {
  * Generate `count` clearings, deterministically on `options.seed`.
  *
  * Clearing `n`, counting from one, is `generateClearing` on the seed
- * `${seed}-${n}`, so any one clearing in a batch redraws on its own.
+ * `${seed}-${n}`, so any one clearing in a batch redraws on its own. The price
+ * is that two clearings in a batch can share a name.
  */
 export function generateClearings({ count, seed, ...options }: ClearingBatchOptions): Clearing[] {
   return Array.from({ length: count }, (_, index) =>
