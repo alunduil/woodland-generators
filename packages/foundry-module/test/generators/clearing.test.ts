@@ -10,7 +10,7 @@ import {
   LOCAL_CHALLENGERS,
   type Faction,
 } from "../../src/generators/clearing-tables";
-import { generateClearing, type Clearing } from "../../src/generators/clearing";
+import { generateClearing, generateClearings, type Clearing } from "../../src/generators/clearing";
 
 /** Seeds to sweep when an invariant has to hold for every clearing. */
 const SEEDS = Array.from({ length: 200 }, (_, index) => `clearing-${index}`);
@@ -106,5 +106,17 @@ describe("generateClearing", () => {
         generateClearing({ seed: "woodland", factions: ["Marquisate"], ruler: "Lizard Cult" }),
       ).toThrow('Invalid ruler provided: "Lizard Cult". Available choices: Marquisate.');
     });
+  });
+});
+
+describe("generateClearings", () => {
+  it.each([1, 3])("draws %p clearings", (count) => {
+    expect(generateClearings({ seed: "woodland", count })).toHaveLength(count);
+  });
+
+  it("draws clearing n on its own seed, so it redraws alone", () => {
+    const batch = generateClearings({ seed: "woodland", count: 3, factions: ["Marquisate"] });
+
+    expect(batch[2]).toEqual(generateClearing({ seed: "woodland-3", factions: ["Marquisate"] }));
   });
 });
