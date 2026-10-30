@@ -21,6 +21,12 @@ exclude: |
     CHANGELOG\.md
   )$
 
+# nodeenv resolves its default "latest" from nodejs.org, so a prerelease at the
+# top of that index breaks every node hook's install. The repo already pins
+# Node through the devcontainer and CI, so the hooks use that one.
+default_language_version:
+  node: system
+
 repos:
   # Standard pre-commit hooks for common file issues
   - repo: https://github.com/pre-commit/pre-commit-hooks
