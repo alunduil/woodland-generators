@@ -4,8 +4,7 @@
 
 /* global foundry, game */
 
-import { createClearingDocuments } from "../documents/clearing.js";
-import { generateClearings } from "../generators/clearing.js";
+import { createClearings, generateClearings } from "../generators/clearing.js";
 import { readFactions } from "../settings/factions.js";
 import MarkupApplication from "./markup-application.js";
 
@@ -49,7 +48,7 @@ async function generate(
 
   const clearings = generateClearings({ ...request, factions: readFactions(ready) });
 
-  await createClearingDocuments(clearings, ready.i18n);
+  await createClearings(clearings, ready.i18n);
 }
 
 /**
