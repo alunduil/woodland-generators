@@ -19,8 +19,8 @@ Follow [Before you start](generator-menu.md#before-you-start) in the generator
 menu scenarios: build the bundle, bring up a world with the module enabled, and
 keep the console open, filtered to `woodland-generators`.
 
-Each submission writes documents into the world. Use a throwaway world, or
-delete what a scenario creates before the next.
+Use a throwaway world, or delete what each scenario creates before the next.
+Every submission writes documents into the world.
 
 Open the generator menu from **Game Settings → Configure Settings → Module
 Settings** as the GM.

@@ -7,9 +7,9 @@ SPDX-License-Identifier: MIT
 # Manual scenarios for clearing Scenes and Journal entries
 
 What a submitted clearing dialog must leave in a live Foundry world. The Jest
-suite checks the creation data handed to Foundry against stubs; it can't check
-that Foundry keeps the IDs, files the documents in their directories, or follows
-the links between them.
+suite checks the creation data the module plans; it can't check that Foundry
+keeps the IDs, files the documents in their directories, or follows the links
+between them.
 
 Record results in the pull request that changes this behaviour, not here.
 
@@ -57,9 +57,9 @@ image in place of a map.
 
 Hover the Scene link in the Journal entry from scenario 1, then click it.
 
-Expect the link to resolve to the Scene, not to render as broken. Foundry opens
-a Scene's journal when its link is clicked, so expect the click to bring the
-same Journal entry forward.
+Expect the link to resolve to the Scene, not to render as broken. Expect the
+click to bring the same Journal entry forward: Foundry opens a Scene's journal
+when its link is clicked.
 
 ## 5. A batch pairs each Scene with its own Journal entry
 
@@ -68,7 +68,7 @@ Scene.
 
 Expect every Scene to name its own Journal entry, and every Journal entry's link
 to resolve to its own Scene. Two clearings in a batch can share a name; when
-they do, expect each pair to point at each other, not across.
+they do, compare document IDs rather than names.
 
 ## Coverage
 

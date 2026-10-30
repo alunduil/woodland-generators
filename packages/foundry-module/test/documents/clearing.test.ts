@@ -96,7 +96,6 @@ describe("planClearingDocuments", () => {
 });
 
 describe("createClearingDocuments", () => {
-  // Without `keepId`, Foundry discards the planned IDs and every link dangles.
   it("keeps the IDs the links point at", async () => {
     const created = stubDocuments();
 

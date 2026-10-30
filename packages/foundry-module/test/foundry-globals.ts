@@ -34,7 +34,6 @@ export function stubHooks(): Map<string, () => void> {
   return registered;
 }
 
-/** The `createDocuments` mock standing in for each document class. */
 export interface CreatedDocuments {
   JournalEntry: jest.Mock;
   Scene: jest.Mock;
@@ -46,7 +45,6 @@ export function stubRandomID(): void {
   jest.spyOn(foundry.utils, "randomID").mockImplementation(() => `id${++drawn}`);
 }
 
-/** Stub the world document classes a generator creates. */
 export function stubDocuments(): CreatedDocuments {
   stubRandomID();
 

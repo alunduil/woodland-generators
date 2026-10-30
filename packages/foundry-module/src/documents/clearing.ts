@@ -37,7 +37,6 @@ function renderJournal({ sceneId, clearing }: Pair, i18n: ReadyGame["i18n"]): st
   ].join("\n");
 }
 
-/** The creation data for a batch of clearings, each document naming its partner by ID. */
 interface ClearingDocuments {
   journals: JournalEntry.CreateData[];
   scenes: Scene.CreateData[];
@@ -46,12 +45,11 @@ interface ClearingDocuments {
 /**
  * Plan a Journal entry and a Scene for each clearing, linked to each other.
  *
- * The Scene reaches its Journal entry through its `journal` field. The Journal
- * entry's link to its Scene is only a reference: Foundry answers a click on a
- * Scene link by opening that Scene's journal, which is the entry itself.
+ * Foundry answers a click on a Scene link by opening that Scene's journal, so
+ * the entry's link to its own Scene names the Scene but doesn't open it.
  *
- * Scenes start without a background image, a placeholder until the GM sets a
- * map, and stay out of the navigation bar, so a batch doesn't crowd it.
+ * Scenes have no background image until the GM sets a map. They stay out of
+ * the navigation bar so a batch doesn't crowd it.
  */
 export function planClearingDocuments(
   clearings: readonly Clearing[],
@@ -87,8 +85,8 @@ export function planClearingDocuments(
 /**
  * Create the planned documents for each clearing.
  *
- * The planned IDs are kept on creation, so each document can name its partner
- * without a second round trip to update it.
+ * Foundry replaces a document's `_id` on creation unless told to keep it, which
+ * would leave every planned link dangling.
  */
 export async function createClearingDocuments(
   clearings: readonly Clearing[],
