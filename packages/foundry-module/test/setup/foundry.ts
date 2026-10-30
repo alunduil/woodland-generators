@@ -28,7 +28,15 @@ class SetField extends DataField {
 }
 
 globalThis.foundry = {
-  applications: { api: { ApplicationV2: class {} } },
+  applications: {
+    api: {
+      ApplicationV2: class {
+        render(): Promise<this> {
+          return Promise.resolve(this);
+        }
+      },
+    },
+  },
   data: { fields: { SetField, StringField: DataField } },
   utils: { randomID: () => "stubbedRandomID" },
 } as unknown as typeof foundry;

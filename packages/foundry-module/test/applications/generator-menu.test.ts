@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import en from "../../languages/en.json";
+import ClearingDialog from "../../src/applications/clearing-dialog";
 import GeneratorMenu from "../../src/applications/generator-menu";
 import { localizeWith, stubGame } from "../foundry-globals";
 
@@ -43,6 +44,15 @@ describe("GeneratorMenu", () => {
     stubGame({ i18n: localizeWith(en) });
 
     expect(await renderedMarkup()).toContain(en["WOODLAND-GENERATORS.Menu.Clearing"]);
+  });
+
+  it("opens the clearing dialog from its clearing action", () => {
+    const render = jest.spyOn(ClearingDialog.prototype, "render");
+
+    GeneratorMenu.DEFAULT_OPTIONS.actions.clearing();
+
+    expect(render).toHaveBeenCalledWith({ force: true });
+    expect(render.mock.contexts[0]).toBeInstanceOf(ClearingDialog);
   });
 
   // Foundry dispatches a click on `[data-action]` to the action of that name,
