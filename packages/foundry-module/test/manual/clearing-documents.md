@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 # Manual scenarios for clearing Scenes and Journal entries
 
 What a submitted clearing dialog must leave in a live Foundry world. The Jest
-suite checks the creation data the module plans; it can't check that Foundry
+suite checks the creation data the module builds; it can't check that Foundry
 keeps the IDs, files the documents in their directories, or follows the links
 between them.
 
