@@ -23,7 +23,7 @@ precedence = "aggregate"
 SPDX-FileCopyrightText = "2025-2026 Alex Brandt"
 SPDX-License-Identifier = "MIT"
 
-# Version files hold a bare version, which a comment header would corrupt.
+# .node-version holds a bare version, which a comment header would corrupt.
 [[annotations]]
 path = ".node-version"
 precedence = "aggregate"

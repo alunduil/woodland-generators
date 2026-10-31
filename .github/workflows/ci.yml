@@ -267,8 +267,7 @@ jobs:
         with:
           extra_args: --hook-stage manual --all-files tombi-lint-online
 
-  # Commits formatter fixes to a Renovate branch so the checks above re-run on
-  # them. lychee only checks, so the hooks need no setup beyond Node.
+  # lychee only checks, so the hooks need no `setup`.
   fix-renovate-hooks:
     name: Fix hooks on the Renovate branch
     # yamllint disable-line rule:line-length
