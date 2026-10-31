@@ -13,6 +13,9 @@
   "minimumReleaseAge": "3 days",
   "osvVulnerabilityAlerts": true,
   "platformAutomerge": false,
+  "gitIgnoredAuthors": [
+    "342169994+alunduil-hook-fix[bot]@users.noreply.github.com"
+  ],
   "pre-commit": {
     "enabled": true
   },
