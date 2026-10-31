@@ -9,9 +9,15 @@ import { MODULE_ID } from "../module-id.js";
 
 const KEY = "factions";
 
+/**
+ * Foundry uses an array's indices as option values, so a record keys each
+ * option by the stored name.
+ */
+const CHOICES = Object.fromEntries(FACTIONS.map((faction) => [faction, faction]));
+
 /** `validate` refuses an empty set, because `generateClearing` throws on one. */
 const FIELD = new foundry.data.fields.SetField(
-  new foundry.data.fields.StringField({ required: true, blank: false, choices: FACTIONS }),
+  new foundry.data.fields.StringField({ required: true, blank: false, choices: CHOICES }),
   {
     required: true,
     nullable: false,
