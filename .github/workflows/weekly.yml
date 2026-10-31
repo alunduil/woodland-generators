@@ -72,3 +72,49 @@ jobs:
           content-filepath: ./lychee/out.md
           issue-number: ${{ steps.report.outputs.number }}
           labels: documentation, automated
+
+  # The token's owner is an admin, and admins bypass the required-checks
+  # ruleset, so the merge API would accept a red pull request. The job checks
+  # the ruleset's contexts itself before merging.
+  release-pr:
+    name: Merge the pending release PR
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions: {}
+
+    steps:
+      # A merge with the default GITHUB_TOKEN starts no push run, so the
+      # Release workflow would never tag it.
+      - name: Merge the release PR once its required checks pass
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          pr=$(gh api "repos/${REPO}/pulls?state=open&base=main&per_page=100" \
+            --jq '[.[] | select(any(.labels[]; .name == "autorelease: pending"))][0]
+                  // empty | "\(.number) \(.head.sha) \(.title)"')
+          if [[ -z "${pr}" ]]; then
+            echo "No pending release PR."
+            exit 0
+          fi
+          read -r number sha title <<< "${pr}"
+
+          required=$(gh api "repos/${REPO}/rules/branches/main" \
+            --jq '.[] | select(.type == "required_status_checks")
+                  | .parameters.required_status_checks[].context' | sort -u)
+          if [[ -z "${required}" ]]; then
+            echo "::error::main has no required status checks to gate the merge on."
+            exit 1
+          fi
+          passed=$(gh api --paginate "repos/${REPO}/commits/${sha}/check-runs?per_page=100" \
+            --jq '.check_runs[] | select(.conclusion == "success") | .name' | sort -u)
+          missing=$(comm -23 <(echo "${required}") <(echo "${passed}"))
+          if [[ -n "${missing}" ]]; then
+            echo "::notice::Release PR #${number} not merged; required checks not passed: ${missing//$'\n'/, }"
+            exit 0
+          fi
+
+          # Pinning the sha refuses the merge if release-please pushed after
+          # the checks were read.
+          gh api --method PUT "repos/${REPO}/pulls/${number}/merge" \
+            -f merge_method=squash -f sha="${sha}" -f commit_title="${title} (#${number})"
