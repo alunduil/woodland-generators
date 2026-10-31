@@ -267,6 +267,18 @@ jobs:
         with:
           extra_args: --hook-stage manual --all-files tombi-lint-online
 
+  # lychee only checks, so the hooks need no `setup`.
+  fix-renovate-hooks:
+    name: Fix hooks on the Renovate branch
+    # yamllint disable-line rule:line-length
+    uses: alunduil/renovate-config/.github/workflows/fix-renovate-hooks.yml@ff872063ec22851e3a0e9d331a631fe61df40f57 # main
+    permissions:
+      contents: read
+      id-token: write
+    with:
+      node-version-file: .node-version
+      hook-runner: pre-commit
+
   # Verified mode fails only on a credential TruffleHog confirms is live, so
   # the gate needs no allowlist. It extends GitHub push protection, which
   # matches known provider patterns only.
