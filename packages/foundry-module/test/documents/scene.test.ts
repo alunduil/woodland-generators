@@ -7,7 +7,7 @@ import { generateClearing } from "../../src/generators/clearing";
 
 describe("clearingScene", () => {
   const clearing = generateClearing({ seed: "woodland" });
-  const scene = clearingScene(clearing, { id: "scene", journalId: "journal" });
+  const scene = clearingScene(clearing, { journal: "journal", scene: "scene" });
 
   it("names the Scene for the clearing", () => {
     expect(scene.name).toBe(clearing.name);

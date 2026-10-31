@@ -12,7 +12,7 @@ import type { Clearing } from "../generators/clearing.js";
  */
 export function clearingScene(
   clearing: Clearing,
-  { id, journalId }: { id: string; journalId: string },
+  ids: { journal: string; scene: string },
 ): Scene.CreateData {
-  return { _id: id, name: clearing.name, journal: journalId, navigation: false };
+  return { _id: ids.scene, name: clearing.name, journal: ids.journal, navigation: false };
 }

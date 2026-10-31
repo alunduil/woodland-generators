@@ -52,13 +52,9 @@ async function createClearings(
   i18n: ReadyGame["i18n"],
 ): Promise<void> {
   const pairs = clearings.map((clearing) => {
-    const journalId = foundry.utils.randomID();
-    const sceneId = foundry.utils.randomID();
+    const ids = { journal: foundry.utils.randomID(), scene: foundry.utils.randomID() };
 
-    return [
-      clearingJournalEntry(clearing, { id: journalId, sceneId }, i18n),
-      clearingScene(clearing, { id: sceneId, journalId }),
-    ] as const;
+    return [clearingJournalEntry(clearing, ids, i18n), clearingScene(clearing, ids)] as const;
   });
 
   await foundry.documents.JournalEntry.createDocuments(

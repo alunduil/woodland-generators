@@ -17,7 +17,7 @@ describe("clearingJournalEntry", () => {
   const clearing = generateClearing({ seed: "woodland" });
   const journal = clearingJournalEntry(
     clearing,
-    { id: "journal", sceneId: "scene" },
+    { journal: "journal", scene: "scene" },
     localizeWith(en) as ReadyGame["i18n"],
   ) as unknown as JournalData;
   const content = journal.pages[0]?.text.content ?? "";

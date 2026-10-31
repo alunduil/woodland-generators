@@ -28,8 +28,23 @@ function stubWorld(factions: Faction[]): CreatedDocuments {
   return stubDocuments();
 }
 
-function createdNames(created: CreatedDocuments): string[] {
-  return (created.JournalEntry.mock.calls[0]?.[0] as { name: string }[]).map(({ name }) => name);
+interface JournalData {
+  _id: string;
+  name: string;
+  pages: { text: { content: string } }[];
+}
+
+interface SceneData {
+  _id: string;
+  journal: string;
+}
+
+function createdJournals(created: CreatedDocuments): JournalData[] {
+  return created.JournalEntry.mock.calls[0]?.[0] as JournalData[];
+}
+
+function createdScenes(created: CreatedDocuments): SceneData[] {
+  return created.Scene.mock.calls[0]?.[0] as SceneData[];
 }
 
 afterEach(() => {
@@ -63,7 +78,7 @@ describe("ClearingDialog", () => {
 
     await submit({ count: 3, seed: "woodland" });
 
-    expect(createdNames(created)).toEqual(
+    expect(createdJournals(created).map(({ name }) => name)).toEqual(
       generateClearings({ count: 3, seed: "woodland", factions }).map(({ name }) => name),
     );
   });
@@ -73,11 +88,8 @@ describe("ClearingDialog", () => {
 
     await submit({ count: 3, seed: "woodland" });
 
-    const journals = created.JournalEntry.mock.calls[0]?.[0] as {
-      _id: string;
-      pages: { text: { content: string } }[];
-    }[];
-    const scenes = created.Scene.mock.calls[0]?.[0] as { _id: string; journal: string }[];
+    const journals = createdJournals(created);
+    const scenes = createdScenes(created);
 
     expect(scenes.map(({ journal }) => journal)).toEqual(journals.map(({ _id }) => _id));
     journals.forEach(({ pages }, index) => {

@@ -11,19 +11,20 @@ function list(items: readonly string[]): string {
 function renderClearing(clearing: Clearing, sceneId: string, i18n: ReadyGame["i18n"]): string {
   const localize = (key: string): string =>
     i18n.localize(`WOODLAND-GENERATORS.Clearing.Journal.${key}`);
-  const label = (key: string): string => `<strong>${localize(key)}:</strong>`;
+  const field = (key: string, value: string): string =>
+    `<p><strong>${localize(key)}:</strong> ${value}</p>`;
   const heading = (key: string): string => `<h2>${localize(key)}</h2>`;
 
   return [
-    `<p>${label("Ruler")} ${clearing.ruler}</p>`,
+    field("Ruler", clearing.ruler),
     heading("Features"),
     list(clearing.features),
     heading("Denizens"),
     list(clearing.inhabitants),
     heading("Conflict"),
-    `<p>${label("Challenger")} ${clearing.conflict.challenger}</p>`,
-    `<p>${label("Stake")} ${clearing.conflict.over}</p>`,
-    `<p>${label("Scene")} @UUID[Scene.${sceneId}]{${clearing.name}}</p>`,
+    field("Challenger", clearing.conflict.challenger),
+    field("Stake", clearing.conflict.over),
+    field("Scene", `@UUID[Scene.${sceneId}]{${clearing.name}}`),
     "<hr>",
     `<p><em>${localize("Notice")}</em></p>`,
   ].join("\n");
@@ -37,17 +38,17 @@ function renderClearing(clearing: Clearing, sceneId: string, i18n: ReadyGame["i1
  */
 export function clearingJournalEntry(
   clearing: Clearing,
-  { id, sceneId }: { id: string; sceneId: string },
+  ids: { journal: string; scene: string },
   i18n: ReadyGame["i18n"],
 ): JournalEntry.CreateData {
   return {
-    _id: id,
+    _id: ids.journal,
     name: clearing.name,
     pages: [
       {
         name: clearing.name,
         type: "text",
-        text: { content: renderClearing(clearing, sceneId, i18n) },
+        text: { content: renderClearing(clearing, ids.scene, i18n) },
       },
     ],
   };
