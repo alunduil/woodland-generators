@@ -10,6 +10,14 @@
   "WOODLAND-GENERATORS.Clearing.Seed": "Seed",
   "WOODLAND-GENERATORS.Clearing.Generate": "Generate",
   "WOODLAND-GENERATORS.Clearing.CountTooLow": "Generate at least one clearing.",
+  "WOODLAND-GENERATORS.Clearing.Journal.Ruler": "Ruler",
+  "WOODLAND-GENERATORS.Clearing.Journal.Features": "Features",
+  "WOODLAND-GENERATORS.Clearing.Journal.Denizens": "Denizens",
+  "WOODLAND-GENERATORS.Clearing.Journal.Conflict": "Conflict",
+  "WOODLAND-GENERATORS.Clearing.Journal.Challenger": "Challenger",
+  "WOODLAND-GENERATORS.Clearing.Journal.Stake": "At stake",
+  "WOODLAND-GENERATORS.Clearing.Journal.Scene": "Scene",
+  "WOODLAND-GENERATORS.Clearing.Journal.Notice": "Unofficial content for Root: The Tabletop RPG. Not affiliated with, endorsed by, or authorized by Magpie Games or Leder Games.",
   "WOODLAND-GENERATORS.Settings.Factions.Name": "Factions in Play",
   "WOODLAND-GENERATORS.Settings.Factions.Hint": "The factions contesting this world's Woodland. Generators draw rulers and challengers only from these."
 }

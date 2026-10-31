@@ -4,6 +4,7 @@
 
 import {
   CLEARING_FEATURES,
+  CLEARING_NAMES,
   CONFLICT_SUBJECTS,
   DENIZEN_SPECIES,
   FACTIONS,
@@ -32,6 +33,7 @@ describe("generateClearing", () => {
 
   it("draws every field from its own table", () => {
     for (const clearing of clearings()) {
+      expect(CLEARING_NAMES).toContain(clearing.name);
       expect(FACTIONS).toContain(clearing.ruler);
       expect(CLEARING_FEATURES).toEqual(expect.arrayContaining(clearing.features));
       expect(DENIZEN_SPECIES).toEqual(expect.arrayContaining(clearing.inhabitants));

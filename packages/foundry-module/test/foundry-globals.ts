@@ -33,3 +33,28 @@ export function stubHooks(): Map<string, () => void> {
 
   return registered;
 }
+
+export interface CreatedDocuments {
+  JournalEntry: jest.Mock;
+  Scene: jest.Mock;
+}
+
+/** Draws distinct IDs, so a test can tell which document a link points at. */
+export function stubDocuments(): CreatedDocuments {
+  let drawn = 0;
+  jest.spyOn(foundry.utils, "randomID").mockImplementation(() => `id${++drawn}`);
+
+  const created = {
+    JournalEntry: jest.fn().mockResolvedValue([]),
+    Scene: jest.fn().mockResolvedValue([]),
+  };
+
+  Object.assign(foundry, {
+    documents: {
+      JournalEntry: { createDocuments: created.JournalEntry },
+      Scene: { createDocuments: created.Scene },
+    },
+  });
+
+  return created;
+}

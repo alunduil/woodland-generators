@@ -5,8 +5,8 @@
 import en from "../../languages/en.json";
 import ClearingDialog from "../../src/applications/clearing-dialog";
 import type { Faction } from "../../src/generators/clearing-tables";
-import { generateClearings, type Clearing } from "../../src/generators/clearing";
-import { localizeWith, stubGame } from "../foundry-globals";
+import { generateClearings } from "../../src/generators/clearing";
+import { localizeWith, stubDocuments, stubGame, type CreatedDocuments } from "../foundry-globals";
 
 // `_renderHTML` is protected; Foundry calls it, and here the test does.
 async function renderedMarkup(): Promise<string> {
@@ -21,15 +21,30 @@ async function submit(fields: { count: number | null; seed: string }): Promise<v
   await handler(new Event("submit"), {} as HTMLFormElement, formData);
 }
 
-/** Stub the world with these factions in play, and capture what a submit logs. */
-function stubWorld(factions: Faction[]): jest.SpyInstance {
+/** Stub the world with these factions in play, and capture what a submit creates. */
+function stubWorld(factions: Faction[]): CreatedDocuments {
   stubGame({ i18n: localizeWith(en), settings: { get: jest.fn().mockReturnValue(factions) } });
 
-  return jest.spyOn(console, "log").mockImplementation(() => undefined);
+  return stubDocuments();
 }
 
-function logged(log: jest.SpyInstance): Clearing[] {
-  return log.mock.calls[0]?.[1] as Clearing[];
+interface JournalData {
+  _id: string;
+  name: string;
+  pages: { text: { content: string } }[];
+}
+
+interface SceneData {
+  _id: string;
+  journal: string;
+}
+
+function createdJournals(created: CreatedDocuments): JournalData[] {
+  return created.JournalEntry.mock.calls[0]?.[0] as JournalData[];
+}
+
+function createdScenes(created: CreatedDocuments): SceneData[] {
+  return created.Scene.mock.calls[0]?.[0] as SceneData[];
 }
 
 afterEach(() => {
@@ -48,21 +63,46 @@ describe("ClearingDialog", () => {
   });
 
   it.each([0, -1, 1.5, null])("refuses a count of %p", async (count) => {
-    const log = stubWorld(["Marquisate"]);
+    const created = stubWorld(["Marquisate"]);
 
     await expect(submit({ count, seed: "woodland" })).rejects.toThrow(
       en["WOODLAND-GENERATORS.Clearing.CountTooLow"],
     );
-    expect(log).not.toHaveBeenCalled();
+    expect(created.JournalEntry).not.toHaveBeenCalled();
+    expect(created.Scene).not.toHaveBeenCalled();
   });
 
-  it("draws the batch the seed names from the factions in play", async () => {
-    const log = stubWorld(["Marquisate", "Lizard Cult"]);
+  it("creates the batch the seed names from the factions in play", async () => {
+    const factions: Faction[] = ["Marquisate", "Lizard Cult"];
+    const created = stubWorld(factions);
 
     await submit({ count: 3, seed: "woodland" });
 
-    expect(logged(log)).toEqual(
-      generateClearings({ count: 3, seed: "woodland", factions: ["Marquisate", "Lizard Cult"] }),
+    expect(createdJournals(created).map(({ name }) => name)).toEqual(
+      generateClearings({ count: 3, seed: "woodland", factions }).map(({ name }) => name),
     );
+  });
+
+  it("keeps each Scene with its own Journal entry across the split by type", async () => {
+    const created = stubWorld(["Marquisate"]);
+
+    await submit({ count: 3, seed: "woodland" });
+
+    const journals = createdJournals(created);
+    const scenes = createdScenes(created);
+
+    expect(scenes.map(({ journal }) => journal)).toEqual(journals.map(({ _id }) => _id));
+    journals.forEach(({ pages }, index) => {
+      expect(pages[0]?.text.content).toContain(`@UUID[Scene.${scenes[index]?._id}]`);
+    });
+  });
+
+  it("keeps the IDs the links point at", async () => {
+    const created = stubWorld(["Marquisate"]);
+
+    await submit({ count: 1, seed: "woodland" });
+
+    expect(created.JournalEntry).toHaveBeenCalledWith(expect.anything(), { keepId: true });
+    expect(created.Scene).toHaveBeenCalledWith(expect.anything(), { keepId: true });
   });
 });
