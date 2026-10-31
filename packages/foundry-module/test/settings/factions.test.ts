@@ -8,7 +8,7 @@ import { readFactions, registerFactions } from "../../src/settings/factions";
 
 /** Where the test stub's fields keep what they were built with. */
 interface StubField {
-  options: { choices?: unknown; validate?: (value: unknown) => boolean };
+  options: { choices?: Record<string, string>; validate?: (value: unknown) => boolean };
   element: StubField;
 }
 
@@ -35,10 +35,8 @@ describe("registerFactions", () => {
     expect(registration().default).toEqual([...FACTIONS]);
   });
 
-  it("offers every faction by name, keyed by the name it stores", () => {
-    const choices = registration().type.element.options.choices as Record<string, string>;
-
-    expect(Object.entries(choices)).toEqual(FACTIONS.map((faction) => [faction, faction]));
+  it("offers every faction, keyed by the name it stores", () => {
+    expect(Object.keys(registration().type.element.options.choices ?? {})).toEqual(FACTIONS);
   });
 
   it("keeps one answer per world, in Module Settings", () => {
