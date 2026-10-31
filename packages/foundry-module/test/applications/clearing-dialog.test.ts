@@ -67,4 +67,30 @@ describe("ClearingDialog", () => {
       generateClearings({ count: 3, seed: "woodland", factions }).map(({ name }) => name),
     );
   });
+
+  it("keeps each Scene with its own Journal entry across the split by type", async () => {
+    const created = stubWorld(["Marquisate"]);
+
+    await submit({ count: 3, seed: "woodland" });
+
+    const journals = created.JournalEntry.mock.calls[0]?.[0] as {
+      _id: string;
+      pages: { text: { content: string } }[];
+    }[];
+    const scenes = created.Scene.mock.calls[0]?.[0] as { _id: string; journal: string }[];
+
+    expect(scenes.map(({ journal }) => journal)).toEqual(journals.map(({ _id }) => _id));
+    journals.forEach(({ pages }, index) => {
+      expect(pages[0]?.text.content).toContain(`@UUID[Scene.${scenes[index]?._id}]`);
+    });
+  });
+
+  it("keeps the IDs the links point at", async () => {
+    const created = stubWorld(["Marquisate"]);
+
+    await submit({ count: 1, seed: "woodland" });
+
+    expect(created.JournalEntry).toHaveBeenCalledWith(expect.anything(), { keepId: true });
+    expect(created.Scene).toHaveBeenCalledWith(expect.anything(), { keepId: true });
+  });
 });

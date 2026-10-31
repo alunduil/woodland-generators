@@ -4,7 +4,9 @@
 
 /* global foundry, game */
 
-import { createClearings, generateClearings } from "../generators/clearing.js";
+import { clearingJournalEntry } from "../documents/journal-entry.js";
+import { clearingScene } from "../documents/scene.js";
+import { generateClearings, type Clearing } from "../generators/clearing.js";
 import { readFactions } from "../settings/factions.js";
 import MarkupApplication from "./markup-application.js";
 
@@ -36,6 +38,37 @@ function parseRequest(
   }
 
   return { count, seed };
+}
+
+/**
+ * Create each clearing's Journal entry and Scene, linked to each other.
+ *
+ * Foundry creates one document type per call, so this splits the pairs by type.
+ * Foundry replaces a document's `_id` on creation unless told to keep it, which
+ * would leave every link dangling.
+ */
+async function createClearings(
+  clearings: readonly Clearing[],
+  i18n: ReadyGame["i18n"],
+): Promise<void> {
+  const pairs = clearings.map((clearing) => {
+    const journalId = foundry.utils.randomID();
+    const sceneId = foundry.utils.randomID();
+
+    return [
+      clearingJournalEntry(clearing, { id: journalId, sceneId }, i18n),
+      clearingScene(clearing, { id: sceneId, journalId }),
+    ] as const;
+  });
+
+  await foundry.documents.JournalEntry.createDocuments(
+    pairs.map(([journal]) => journal),
+    { keepId: true },
+  );
+  await foundry.documents.Scene.createDocuments(
+    pairs.map(([, scene]) => scene),
+    { keepId: true },
+  );
 }
 
 async function generate(

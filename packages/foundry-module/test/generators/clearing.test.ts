@@ -2,7 +2,6 @@
 //
 // SPDX-License-Identifier: MIT
 
-import en from "../../languages/en.json";
 import {
   CLEARING_FEATURES,
   CLEARING_NAMES,
@@ -12,14 +11,7 @@ import {
   LOCAL_CHALLENGERS,
   type Faction,
 } from "../../src/generators/clearing-tables";
-import {
-  createClearings,
-  generateClearing,
-  generateClearings,
-  planClearing,
-  type Clearing,
-} from "../../src/generators/clearing";
-import { localizeWith, stubDocuments, stubRandomID } from "../foundry-globals";
+import { generateClearing, generateClearings, type Clearing } from "../../src/generators/clearing";
 
 /** Seeds to sweep when an invariant has to hold for every clearing. */
 const SEEDS = Array.from({ length: 200 }, (_, index) => `clearing-${index}`);
@@ -27,10 +19,6 @@ const SEEDS = Array.from({ length: 200 }, (_, index) => `clearing-${index}`);
 function clearings(options: { factions?: Faction[] } = {}): Clearing[] {
   return SEEDS.map((seed) => generateClearing({ seed, ...options }));
 }
-
-afterEach(() => {
-  jest.restoreAllMocks();
-});
 
 describe("generateClearing", () => {
   it.each(["woodland", "rooston", "", "🌲"])("repeats itself for seed %p", (seed) => {
@@ -132,100 +120,5 @@ describe("generateClearings", () => {
     const batch = generateClearings({ seed: "woodland", count: 3, factions: ["Marquisate"] });
 
     expect(batch[2]).toEqual(generateClearing({ seed: "woodland-3", factions: ["Marquisate"] }));
-  });
-});
-
-interface JournalData {
-  _id: string;
-  name: string;
-  pages: { name: string; text: { content: string } }[];
-}
-
-interface SceneData {
-  _id: string;
-  name: string;
-  journal: string;
-}
-
-const i18n = localizeWith(en) as ReadyGame["i18n"];
-
-const [clearing] = generateClearings({ count: 1, seed: "woodland" }) as [Clearing];
-
-function plan(): { journal: JournalData; scene: SceneData; content: string } {
-  stubRandomID();
-
-  const [journal, scene] = planClearing(clearing, i18n) as unknown as [JournalData, SceneData];
-
-  return { journal, scene, content: journal.pages[0]?.text.content ?? "" };
-}
-
-describe("planClearing", () => {
-  it("names the Journal entry and the Scene for the clearing", () => {
-    const { journal, scene } = plan();
-
-    expect([journal.name, scene.name]).toEqual([clearing.name, clearing.name]);
-  });
-
-  it("links the Scene to its Journal entry", () => {
-    const { journal, scene } = plan();
-
-    expect(scene.journal).toBe(journal._id);
-  });
-
-  it("links the Journal entry to its Scene", () => {
-    const { scene, content } = plan();
-
-    expect(content).toContain(`@UUID[Scene.${scene._id}]{${scene.name}}`);
-  });
-
-  it("writes every generated field into the Journal entry", () => {
-    const { content } = plan();
-
-    for (const field of [
-      clearing.ruler,
-      ...clearing.features,
-      ...clearing.inhabitants,
-      clearing.conflict.challenger,
-      clearing.conflict.over,
-    ]) {
-      expect(content).toContain(field);
-    }
-  });
-
-  it("labels the Journal entry from the catalog", () => {
-    expect(plan().content).not.toContain("WOODLAND-GENERATORS.");
-  });
-
-  it("ends the Journal entry with the unofficial notice", () => {
-    expect(
-      plan().content.endsWith(
-        `<p><em>${en["WOODLAND-GENERATORS.Clearing.Journal.Notice"]}</em></p>`,
-      ),
-    ).toBe(true);
-  });
-});
-
-describe("createClearings", () => {
-  const batch = generateClearings({ count: 3, seed: "woodland" });
-
-  it("keeps each Scene with its own Journal entry across the split by type", async () => {
-    const created = stubDocuments();
-
-    await createClearings(batch, i18n);
-
-    const journals = created.JournalEntry.mock.calls[0]?.[0] as JournalData[];
-    const scenes = created.Scene.mock.calls[0]?.[0] as SceneData[];
-
-    expect(journals.map(({ name }) => name)).toEqual(batch.map(({ name }) => name));
-    expect(scenes.map(({ journal }) => journal)).toEqual(journals.map(({ _id }) => _id));
-  });
-
-  it("keeps the IDs the links point at", async () => {
-    const created = stubDocuments();
-
-    await createClearings(batch, i18n);
-
-    expect(created.JournalEntry).toHaveBeenCalledWith(expect.anything(), { keepId: true });
-    expect(created.Scene).toHaveBeenCalledWith(expect.anything(), { keepId: true });
   });
 });

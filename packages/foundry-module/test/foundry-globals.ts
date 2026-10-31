@@ -39,14 +39,10 @@ export interface CreatedDocuments {
   Scene: jest.Mock;
 }
 
-/** Draw distinct IDs, so a test can tell which document a link points at. */
-export function stubRandomID(): void {
+/** Draws distinct IDs, so a test can tell which document a link points at. */
+export function stubDocuments(): CreatedDocuments {
   let drawn = 0;
   jest.spyOn(foundry.utils, "randomID").mockImplementation(() => `id${++drawn}`);
-}
-
-export function stubDocuments(): CreatedDocuments {
-  stubRandomID();
 
   const created = {
     JournalEntry: jest.fn().mockResolvedValue([]),
