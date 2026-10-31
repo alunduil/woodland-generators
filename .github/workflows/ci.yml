@@ -207,7 +207,7 @@ jobs:
 
   pre-commit:
     runs-on: ubuntu-latest
-    name: Run every pre-commit hook
+    name: Run pre-commit hooks
     timeout-minutes: 10
 
     steps:
