@@ -21,6 +21,11 @@ exclude: |
     CHANGELOG\.md
   )$
 
+# Hooks run on the Node that builds the project, not whatever nodejs.org lists
+# as latest.
+default_language_version:
+  node: system
+
 repos:
   # Standard pre-commit hooks for common file issues
   - repo: https://github.com/pre-commit/pre-commit-hooks
