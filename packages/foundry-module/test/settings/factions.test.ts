@@ -35,8 +35,10 @@ describe("registerFactions", () => {
     expect(registration().default).toEqual([...FACTIONS]);
   });
 
-  it("offers every faction to choose from", () => {
-    expect(registration().type.element.options.choices).toEqual(FACTIONS);
+  it("offers every faction by name, keyed by the name it stores", () => {
+    const choices = registration().type.element.options.choices as Record<string, string>;
+
+    expect(Object.entries(choices)).toEqual(FACTIONS.map((faction) => [faction, faction]));
   });
 
   it("keeps one answer per world, in Module Settings", () => {
