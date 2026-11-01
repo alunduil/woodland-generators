@@ -18,7 +18,7 @@ concurrency:
 jobs:
   release-please:
     name: Tag foundry-module releases
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 10
     permissions:
       contents: write
@@ -42,7 +42,7 @@ jobs:
   # a manifest URL naming a zip, so both assets have to hang off it.
   publish-module:
     name: Attach the module to its GitHub Release
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: release-please
     if: ${{ needs.release-please.outputs.released == 'true' }}
     timeout-minutes: 15
@@ -85,7 +85,7 @@ jobs:
   # built.
   verify-release:
     name: Check the published release installs
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: [release-please, publish-module]
     timeout-minutes: 10
 
