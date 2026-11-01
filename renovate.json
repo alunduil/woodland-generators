@@ -1,24 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:best-practices",
-    "security:openssf-scorecard",
-    "customManagers:githubActionsVersions",
+    "github>alunduil/renovate-config:application",
     ":automergeMinor",
     ":automergeDigest"
   ],
-  "timezone": "Europe/London",
-  "labels": ["dependencies", "automated"],
-  "reviewers": ["alunduil"],
-  "minimumReleaseAge": "3 days",
-  "osvVulnerabilityAlerts": true,
+  "addLabels": ["automated"],
   "platformAutomerge": false,
-  "gitIgnoredAuthors": [
-    "342169994+alunduil-hook-fix[bot]@users.noreply.github.com"
-  ],
-  "pre-commit": {
-    "enabled": true
-  },
   "customManagers": [
     {
       "customType": "regex",
@@ -30,20 +18,6 @@
     }
   ],
   "packageRules": [
-    {
-      "description": "Exempt update types that cannot carry a release timestamp from the bake period; without this they stall forever on a pending stability check and no PR is ever opened",
-      "matchUpdateTypes": [
-        "pin",
-        "pinDigest",
-        "digest",
-        "lockFileMaintenance",
-        "lockfileUpdate",
-        "rollback",
-        "bump",
-        "replacement"
-      ],
-      "minimumReleaseAge": null
-    },
     {
       "matchManagers": ["npm"],
       "addLabels": ["npm"]
