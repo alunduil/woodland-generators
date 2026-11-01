@@ -38,8 +38,8 @@ precedence = "aggregate"
 SPDX-FileCopyrightText = "2025-2026 Alex Brandt"
 SPDX-License-Identifier = "MIT"
 
-# Lock files managed by pnpm and mise. Annotating in-band would be churned by every
-# dependency update.
+# Lock files managed by pnpm and mise. Annotating in-band would be churned by
+# every dependency update.
 [[annotations]]
 path = ["pnpm-lock.yaml", "mise.lock"]
 precedence = "aggregate"
