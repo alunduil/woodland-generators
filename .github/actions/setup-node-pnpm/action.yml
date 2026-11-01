@@ -7,9 +7,9 @@ description: Install Node.js, pnpm, and the workspace's locked dependencies.
 
 inputs:
   node-version:
-    description: Node.js version passed to actions/setup-node.
+    description: Node.js version passed to actions/setup-node; overrides .node-version.
     required: false
-    default: "lts/*"
+    default: ""
 
 runs:
   using: composite
@@ -21,6 +21,7 @@ runs:
       uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
       with:
         node-version: ${{ inputs.node-version }}
+        node-version-file: .node-version
         cache: "pnpm"
 
     - name: Rewrite GitHub SSH URLs to HTTPS
