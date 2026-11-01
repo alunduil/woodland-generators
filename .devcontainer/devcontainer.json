@@ -52,8 +52,8 @@
   "postCreateCommand": ".devcontainer/post-create.sh",
   // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root
   "remoteUser": "node",
-  // Shims put mise's tools on PATH for git hooks too, which run outside an
-  // activated shell.
+  // Git hooks run outside an activated shell, so they find mise's tools
+  // through the shims.
   "remoteEnv": {
     "PATH": "/home/node/.local/share/mise/shims:${containerEnv:PATH}"
   }

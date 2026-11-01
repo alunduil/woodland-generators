@@ -226,8 +226,7 @@ jobs:
 
       # `key` and `restore-keys` have to share a prefix or every run misses the
       # cache silently, so derive it once here rather than writing it twice.
-      # The prefix asks the installed binary for its version, so only a lychee
-      # bump or a lychee.toml edit discards the cached results.
+      # Only a lychee version or config change discards the cached results.
       - name: Derive the lychee cache prefix
         id: lychee-cache
         run: echo "prefix=lychee-$(lychee --version | cut -d' ' -f2)-${{ hashFiles('lychee.toml') }}" >>"$GITHUB_OUTPUT"

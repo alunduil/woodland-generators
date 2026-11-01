@@ -14,9 +14,8 @@ inputs:
 runs:
   using: composite
   steps:
-    # pnpm comes first so setup-node's `cache: pnpm` can find its store. Node
-    # stays with setup-node, because mise cannot resolve the matrix's nvm
-    # aliases such as `lts/-1`.
+    # setup-node's `cache: pnpm` needs pnpm on PATH. setup-node installs Node
+    # because mise cannot resolve nvm aliases such as `lts/-1`.
     - name: Setup pnpm
       uses: jdx/mise-action@6612f0ef07ed2a736cd1e00a94a065522dd41195 # v5.2.5
       with:

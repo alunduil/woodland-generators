@@ -42,8 +42,9 @@ Run `corepack enable` once, then:
 Prefer these over `curl`, manual API calls, or first-principles scripts.
 Configuration file shown in parentheses.
 
-- Package manager: pnpm, workspace pinned via `packageManager`
-  (`pnpm-workspace.yaml`); `corepack enable` once.
+- Package manager: pnpm, pinned in `packageManager` and `mise.toml`
+  (`pnpm-workspace.yaml`); `corepack enable` or `mise install` once.
+- Pinned CLI tools: mise (`mise.toml`, `mise.lock`).
 - Test / coverage: Jest (`jest.config.json`, per-package
   `packages/*/jest.config.json`); coverage configuration `codecov.yml`.
 - Lint / format, all via `pre-commit` (`.pre-commit-config.yaml`): `eslint`
