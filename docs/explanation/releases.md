@@ -16,8 +16,14 @@ imported, so neither needs a version of its own.
 
 Every push to `main` runs the `Release` workflow. release-please reads the
 commit subjects since the last release and keeps a pull request open with the
-bump they imply. It accumulates until someone merges it. No other action cuts a
-release.
+bump they imply. No other action cuts a release.
+
+The `Weekly` workflow merges that pull request every Friday once the checks
+`main` requires have passed on it. A week with no releasable commits has no pull
+request to merge, so it releases nothing. Dispatching `Weekly` by hand cuts an
+off-cycle release the same way. The merge checks those results itself because
+the token it merges with belongs to an admin, and admins bypass the branch rule
+that would otherwise refuse a failing pull request.
 
 Before 1.0 the arithmetic is compressed: a breaking change bumps the minor
 version, and so does a `feat`.
