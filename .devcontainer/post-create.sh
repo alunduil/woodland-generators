@@ -17,8 +17,10 @@ corepack prepare --activate
 echo "📦 Installing project dependencies..."
 pnpm install --frozen-lockfile
 
-# Install lychee for link checking
-"$(dirname "${BASH_SOURCE[0]}")/../scripts/install-lychee.sh"
+# Install lychee for link checking, at the version and checksum in mise.lock
+echo "🔗 Installing lychee via mise..."
+mise trust
+mise install github:lycheeverse/lychee
 
 # Configure git safe directory
 echo "🔧 Configuring git safe directory..."

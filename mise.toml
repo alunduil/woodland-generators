@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+# SPDX-License-Identifier: MIT
+
+[settings]
+idiomatic_version_file_enable_tools = ["node"]
+locked = true
+lockfile_platforms = ["linux-x64"]
+
+[tools]
+# The musl build, because the gnu one needs glibc 2.38+ and the Debian 12
+# devcontainer ships 2.36. aqua offers only the gnu build.
+"github:lycheeverse/lychee" = { version = "0.24.2", version_prefix = "lychee-v", matching = "musl" }
+pnpm = "11.28.9"

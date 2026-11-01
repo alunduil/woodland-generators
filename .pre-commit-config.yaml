@@ -137,11 +137,9 @@ repos:
         types_or: [markdown, rst, plain-text]
         args: ["--config=.vale.ini", "--minAlertLevel=error"]
 
-  # Lychee link checker. Uses the system-installed binary (provisioned by
-  # scripts/install-lychee.sh in the devcontainer and CI) rather than the
-  # upstream hook's precompiled binary, which links against GLIBC 2.38 and
-  # fails to run on Debian 12 hosts shipping GLIBC 2.36. The pinned version
-  # lives in scripts/install-lychee.sh and is Renovate-tracked from there.
+  # Lychee link checker. Uses the binary mise installs from mise.toml rather
+  # than the upstream hook's precompiled binary, which links against GLIBC
+  # 2.38 and fails to run on Debian 12 hosts shipping GLIBC 2.36.
   #
   # --offline restricts the gate to internal/relative links: fast, deterministic,
   # and safe to block on. External URLs rot from time and third parties, not the

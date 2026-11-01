@@ -7,17 +7,13 @@
   ],
   "addLabels": ["automated"],
   "platformAutomerge": false,
-  "customManagers": [
-    {
-      "customType": "regex",
-      "description": "Read `# renovate:` annotations above shell `*_VERSION=` pins so a new pin needs an annotation rather than a manager of its own",
-      "managerFilePatterns": ["scripts/*"],
-      "matchStrings": [
-        "# renovate: datasource=(?<datasource>[a-zA-Z0-9-._]+?) depName=(?<depName>[^\\s]+?)(?: packageName=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?\\s+[A-Za-z0-9_]+?_VERSION=\"(?<currentValue>.+?)\""
-      ]
-    }
-  ],
   "packageRules": [
+    {
+      "description": "Bump the mise.toml and packageManager pnpm pins in one PR so they cannot drift",
+      "matchDepNames": ["pnpm"],
+      "matchDepTypes": ["packageManager", "tools"],
+      "groupName": "pnpm"
+    },
     {
       "matchManagers": ["npm"],
       "addLabels": ["npm"]

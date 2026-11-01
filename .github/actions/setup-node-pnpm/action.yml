@@ -14,8 +14,13 @@ inputs:
 runs:
   using: composite
   steps:
+    # pnpm comes first so setup-node's `cache: pnpm` can find its store. Node
+    # stays with setup-node, because mise cannot resolve the matrix's nvm
+    # aliases such as `lts/-1`.
     - name: Setup pnpm
-      uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      uses: jdx/mise-action@6612f0ef07ed2a736cd1e00a94a065522dd41195 # v5.2.5
+      with:
+        install_args: pnpm
 
     - name: Setup Node.js
       uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
