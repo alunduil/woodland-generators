@@ -18,7 +18,7 @@ exclude: |
     build/.*|
     \.git/.*|
     \.vale/.*|
-    CHANGELOG\.md
+    (.*/)?CHANGELOG\.md
   )$
 
 # Hooks run on the Node that builds the project, not whatever nodejs.org lists
