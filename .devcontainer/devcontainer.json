@@ -1,6 +1,6 @@
 {
   "name": "Woodland Generators Dev Container",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:4-22-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:4-22-bookworm@sha256:59e8c044af4ed4795967188c3d0b9bc677f42d42b0ff41f98c8be5333defeb64",
   // Features to install
   "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {},
