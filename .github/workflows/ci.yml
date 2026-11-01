@@ -219,25 +219,17 @@ jobs:
       - name: Setup Node.js + pnpm
         uses: ./.github/actions/setup-node-pnpm
 
-      # The version pin lives in the installer, so a bump changes the key.
-      - name: Restore the lychee binary
-        id: lychee-binary
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: ~/.local/bin/lychee
-          key: lychee-binary-${{ hashFiles('scripts/install-lychee.sh') }}
-
       - name: Install lychee
-        if: steps.lychee-binary.outputs.cache-hit != 'true'
-        run: ./scripts/install-lychee.sh
+        uses: jdx/mise-action@6612f0ef07ed2a736cd1e00a94a065522dd41195 # v5.2.5
+        with:
+          install_args: github:lycheeverse/lychee
 
       # `key` and `restore-keys` have to share a prefix or every run misses the
-      # cache silently, so derive it once here rather than writing the hash
-      # twice. `hashFiles` needs the workspace, which rules out a job-level
-      # `env`: that resolves before the checkout above.
+      # cache silently, so derive it once here rather than writing it twice.
+      # Only a lychee version or config change discards the cached results.
       - name: Derive the lychee cache prefix
         id: lychee-cache
-        run: echo "prefix=lychee-${{ hashFiles('scripts/install-lychee.sh', 'lychee.toml') }}" >>"$GITHUB_OUTPUT"
+        run: echo "prefix=lychee-$(lychee --version | cut -d' ' -f2)-${{ hashFiles('lychee.toml') }}" >>"$GITHUB_OUTPUT"
 
       # Persist lychee's URL→status cache across CI runs so unchanged links
       # don't re-hit the network every PR. lychee's own max_cache_age (1d)

@@ -18,7 +18,9 @@ echo "📦 Installing project dependencies..."
 pnpm install --frozen-lockfile
 
 # Install lychee for link checking
-"$(dirname "${BASH_SOURCE[0]}")/../scripts/install-lychee.sh"
+echo "🔗 Installing lychee..."
+mise trust
+mise install github:lycheeverse/lychee
 
 # Configure git safe directory
 echo "🔧 Configuring git safe directory..."
