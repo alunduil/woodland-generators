@@ -11,4 +11,4 @@ lockfile_platforms = ["linux-x64"]
 # github: for the musl build. aqua ships only the gnu build, which needs glibc
 # 2.38+, and the Debian 12 devcontainer has 2.36.
 "github:lycheeverse/lychee" = { version = "0.24.2", version_prefix = "lychee-v", matching = "musl" }
-pnpm = "11.28.9"
+pnpm = "12.16.1"
