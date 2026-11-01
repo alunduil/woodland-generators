@@ -37,7 +37,7 @@ jobs:
       DAYS_BEFORE_CLOSE: 14
 
     steps:
-      - uses: actions/stale@4391f3da665fdf50b6810c1a66712fb9ba21aa93 # v11
+      - uses: actions/stale@4391f3da665fdf50b6810c1a66712fb9ba21aa93 # v11.0.0
         with:
           # Disabling only the marking leg would leave an issue that already
           # carries the label eligible for closing.

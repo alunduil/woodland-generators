@@ -57,10 +57,10 @@ importers:
         specifier: workspace:*
         version: link:../random
       pino:
-        specifier: ^10.0.0
+        specifier: 10.4.0
         version: 10.4.0
       pino-pretty:
-        specifier: ^13.1.1
+        specifier: 13.2.0
         version: 13.2.0
     devDependencies:
       '@types/jest':
@@ -125,7 +125,7 @@ importers:
   packages/random:
     dependencies:
       pure-rand:
-        specifier: ^8.4.1
+        specifier: 8.4.2
         version: 8.4.2
     devDependencies:
       '@types/jest':
