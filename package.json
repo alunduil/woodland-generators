@@ -15,7 +15,7 @@
     "@types/node": "26.6.6",
     "@typescript-eslint/eslint-plugin": "8.72.1",
     "@typescript-eslint/parser": "8.72.1",
-    "eslint": "10.13.0",
+    "eslint": "10.14.0",
     "jest": "30.5.2",
     "knip": "6.44.0",
     "npm-check-updates": "23.1.1",
