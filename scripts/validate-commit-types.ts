@@ -21,9 +21,7 @@ function readRepoFile(path: string): string {
 }
 
 function declaredTypes(): string[] {
-  const config = JSON.parse(
-    readRepoFile("release-please-config.json"),
-  ) as ReleasePleaseConfig;
+  const config = JSON.parse(readRepoFile("release-please-config.json")) as ReleasePleaseConfig;
   return config["changelog-sections"].map((section) => section.type);
 }
 
