@@ -15,6 +15,17 @@
       "groupName": "pnpm"
     },
     {
+      "description": "CI never starts Foundry, so a new build can break the module with every check green",
+      "matchDepNames": ["felddy/foundryvtt"],
+      "automerge": false,
+      "prBodyNotes": [
+        "**Before merging this Foundry build:**",
+        "- [ ] Walk the scenarios in `packages/foundry-module/test/manual/` against it",
+        "- [ ] Check that `compatibility.verified` in `packages/foundry-module/module.json` matches it",
+        "- [ ] Check that `@league-of-foundry-developers/foundry-vtt-types` tracks it"
+      ]
+    },
+    {
       "matchManagers": ["npm"],
       "addLabels": ["npm"]
     },
