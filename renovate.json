@@ -15,7 +15,7 @@
       "groupName": "pnpm"
     },
     {
-      "description": "Hold Foundry image updates for review because CI never starts Foundry, so a new build can break the module with every check green",
+      "description": "CI never starts Foundry, so a new build can break the module with every check green",
       "matchDepNames": ["felddy/foundryvtt"],
       "automerge": false,
       "prBodyNotes": [
