@@ -7,10 +7,10 @@ why. For a release that shipped broken, see
 
 ## One releasable package
 
-`release-please-config.json` lists one package, `packages/foundry-module`. All
-three packages are `private`, so nothing publishes to npm. The release carries
-what esbuild bundles into `dist/`, which `core` and `random` reach only by being
-imported, so neither needs a version of its own.
+`release-please-config.json` lists one package, `packages/foundry-module`. Both
+packages are `private`, so nothing publishes to npm. The release carries what
+esbuild bundles into `dist/`, which `random` reaches only by being imported, so
+it needs no version of its own.
 
 ## The release pull request
 

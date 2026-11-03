@@ -27,14 +27,12 @@ Typos and formatting fixes need no issue at all - see
 
 ## Project layout
 
-Three packages live under `packages/`:
+Two packages live under `packages/`:
 
-- **`@woodland-generators/core`** - the generator algorithms. No user interface,
-  no input or output beyond logging. Most generator work lands here.
-- **`@woodland-generators/foundry-module`** - a Foundry VTT module that loads
-  core into a live world.
-- **`@woodland-generators/random`** - the seeded randomness core draws from. A
-  new foundational capability gets its own package alongside it.
+- **`@woodland-generators/foundry-module`** - the Foundry VTT module and its
+  generators. Most generator work lands here.
+- **`@woodland-generators/random`** - the seeded randomness the generators draw
+  from. A new foundational capability gets its own package alongside it.
 
 Repository-wide docs sit in `docs/`, organized by
 [Diátaxis](https://diataxis.fr): how-to guides in `docs/how-to/`, architecture
@@ -73,7 +71,7 @@ decisions in `docs/adr/`.
 4. **Development workflow** - rebuild and retest as you edit:
 
    ```bash
-   pnpm --filter @woodland-generators/core build:watch
+   pnpm --filter @woodland-generators/foundry-module build:watch
    pnpm run test:watch
    ```
 
@@ -101,10 +99,10 @@ Renovate opens or [waives the advisory][waive-advisory].
 ## Tests
 
 Test files mirror the module under test within each package. Tests for
-`packages/core/src/generators/name.ts` belong at
-`packages/core/test/generators/name.test.ts`. Don't split tests by feature or
-scenario. A file under `test/` that isn't a test is named for what it holds, not
-for being shared.
+`packages/foundry-module/src/generators/name.ts` belong at
+`packages/foundry-module/test/generators/name.test.ts`. Don't split tests by
+feature or scenario. A file under `test/` that isn't a test is named for what it
+holds, not for being shared.
 
 Jest runs no Foundry. The `foundry` global arrives through Jest's `setupFiles`,
 so don't stub it. `game` and `Hooks` vary per test and have shared stubs to
@@ -153,7 +151,7 @@ Examples:
 
 ```text
 feat: add character demeanor generation
-fix(core): respect the seed argument in name generation
+fix(foundry-module): respect the seed argument in name generation
 chore(deps): bump typescript to 5.9.3
 ```
 

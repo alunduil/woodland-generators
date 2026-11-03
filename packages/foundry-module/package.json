@@ -1,7 +1,7 @@
 {
   "name": "@woodland-generators/foundry-module",
   "version": "0.0.0",
-  "description": "Foundry VTT module shell loading the Woodland Generators core into a live world",
+  "description": "Foundry VTT module generating Root: The Tabletop RPG resources in a live world",
   "author": "Alex Brandt",
   "license": "MIT",
   "private": true,
@@ -29,7 +29,9 @@
     "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
   },
   "dependencies": {
-    "@woodland-generators/random": "workspace:*"
+    "@woodland-generators/random": "workspace:*",
+    "pino": "10.4.0",
+    "pino-pretty": "13.2.0"
   },
   "devDependencies": {
     "@codecov/bundle-analyzer": "2.0.1",
@@ -37,6 +39,7 @@
     "@types/jest": "30.0.0",
     "@types/node": "26.6.6",
     "esbuild": "0.28.2",
+    "fast-check": "4.10.2",
     "fflate": "0.8.3",
     "jest": "30.5.2",
     "jest-junit": "17.0.0",

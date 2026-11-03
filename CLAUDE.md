@@ -7,16 +7,18 @@ Audience: AI coding assistants. Humans use [CONTRIBUTING.md](CONTRIBUTING.md).
 A pnpm workspace of TypeScript packages for generating Root: The Tabletop RPG
 resources.
 
-- `packages/core` (`@woodland-generators/core`): the library implementing the
-  generators. Public API exported from `src/index.ts`, compiled to `dist/`.
-- `packages/foundry-module` (`@woodland-generators/foundry-module`): a Foundry
-  VTT module shell that loads core into a live world; entry `src/module.ts`.
+- `packages/foundry-module` (`@woodland-generators/foundry-module`): the Foundry
+  VTT module and its generators; entry `src/module.ts`.
 - `packages/random` (`@woodland-generators/random`): seeded randomness (`Rng`,
-  `hashSeed`). `core` depends on it; it depends on nothing in the workspace.
+  `hashSeed`). `foundry-module` depends on it; it depends on nothing in the
+  workspace.
 
-`core` is a catch-all being split; `random` is the first carve-out. Give a new
-foundational capability its own package and address it by its package name. Each
-package exports what it owns.
+`src/logging` runs `pino` through a Node worker transport and reads `__dirname`
+at import, so code the bundle reaches can't import it. Only tests reach it
+today, through the character generators.
+
+`random` is a carve-out. Give a new foundational capability its own package and
+address it by its package name. Each package exports what it owns.
 
 A cross-package change needs `pnpm run build` before a type-check sees it.
 Packages resolve each other through `dist/`, so `tsc --noEmit` against a stale
@@ -31,9 +33,9 @@ README: there is no `bin`, `cli.ts`, or `cli` script, so don't reach for
 Run `corepack enable` once, then:
 
 - `pnpm run build`: build every package (`pnpm -r build`).
-- `pnpm --filter @woodland-generators/core build:watch`: `tsc --watch` for
-  incremental core development.
-- `pnpm test`: Jest suite (root configuration runs the `core` project only).
+- `pnpm --filter @woodland-generators/foundry-module build:watch`: esbuild in
+  watch mode for incremental module development.
+- `pnpm test`: Jest suite across every package.
 - `pre-commit run --all-files`: gates every PR. Authoritative hook list:
   `.pre-commit-config.yaml`.
 
@@ -61,10 +63,10 @@ Configuration file shown in parentheses.
 ## Tests
 
 Test files mirror the module under test within each package: tests for
-`packages/core/src/foo/bar.ts` live at `packages/core/test/foo/bar.test.ts`.
-Don't split tests by feature or scenario. A file under `test/` that isn't a test
-is named for what it holds, not for being shared: no `support/`, `utils/`, or
-`helpers/` buckets.
+`packages/foundry-module/src/foo/bar.ts` live at
+`packages/foundry-module/test/foo/bar.test.ts`. Don't split tests by feature or
+scenario. A file under `test/` that isn't a test is named for what it holds, not
+for being shared: no `support/`, `utils/`, or `helpers/` buckets.
 
 `foundry` is installed for every test file through Jest's `setupFiles`, at
 `packages/foundry-module/test/setup/foundry.ts`. The per-test `game` and `Hooks`

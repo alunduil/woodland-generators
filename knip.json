@@ -6,17 +6,15 @@
       "project": ["scripts/**/*.ts"],
       "ignoreDependencies": ["jest", "prettier", "tsx"]
     },
-    "packages/core": {
-      "entry": ["src/logging/pino-pretty-transport.js", "test/**/*.test.ts"],
-      "project": ["src/**/*.{ts,js}"]
-    },
     "packages/foundry-module": {
       "entry": [
+        "src/index.ts",
         "src/manifest.ts",
+        "src/logging/pino-pretty-transport.js",
         "scripts/package-release.ts",
         "test/**/*.test.ts"
       ],
-      "project": ["src/**/*.ts", "scripts/**/*.ts"]
+      "project": ["src/**/*.{ts,js}", "scripts/**/*.ts"]
     },
     "packages/random": {
       "entry": ["src/index.ts", "test/**/*.test.ts"],

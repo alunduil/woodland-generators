@@ -22,7 +22,7 @@
     "skipLibCheck": true,
     "removeComments": true,
     "newLine": "lf",
-    "types": ["@league-of-foundry-developers/foundry-vtt-types"]
+    "types": ["@league-of-foundry-developers/foundry-vtt-types", "node"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
