@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { enoughPairsDiffer, getCollisionThreshold } from "./threshold";
+import { enoughPairsDiffer, getCollisionThreshold } from "./seed-collisions";
 
 describe("getCollisionThreshold", () => {
   it("should calculate appropriate thresholds based on name count", () => {

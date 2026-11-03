@@ -3,7 +3,8 @@
 // SPDX-License-Identifier: MIT
 
 import { generateSpecies, EXTENDED_WOODLAND_SPECIES } from "../../src/generators/species";
-import { enoughPairsDiffer, getCollisionThreshold, uniquePairs, uniqueArray } from "../utils";
+import { uniqueArray, uniquePairs } from "../arbitraries";
+import { enoughPairsDiffer, getCollisionThreshold } from "../seed-collisions";
 import fc from "fast-check";
 import { root } from "../../src/logging";
 

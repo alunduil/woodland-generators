@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { uniqueArray, uniquePairs } from "./generators";
+import { uniqueArray, uniquePairs } from "./arbitraries";
 import fc from "fast-check";
 
 describe("uniquePairs", () => {

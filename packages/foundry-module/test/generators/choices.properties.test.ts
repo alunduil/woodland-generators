@@ -12,7 +12,8 @@ import {
 } from "../../src/generators/choices";
 import { root } from "../../src/logging";
 import fc from "fast-check";
-import { enoughPairsDiffer, getCollisionThreshold, uniquePairs, uniqueArray } from "../utils";
+import { uniqueArray, uniquePairs } from "../arbitraries";
+import { enoughPairsDiffer, getCollisionThreshold } from "../seed-collisions";
 
 describe("validateChoicesNonEmpty", () => {
   beforeEach(() => {
