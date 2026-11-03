@@ -125,6 +125,7 @@ conventional subjects. [release-please][release-please] releases the Foundry
 module from `feat`, `fix`, `perf`, and `revert` commits. Other prefixes cut no
 release.
 
+`changelog-sections` in `release-please-config.json` lists every accepted type.
 Common prefixes:
 
 - `feat:` - new user-facing feature (minor version bump)

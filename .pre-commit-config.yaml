@@ -165,13 +165,14 @@ repos:
 
   # Conventional Commits validation - runs at the commit-msg stage to reject
   # non-conventional commit subjects. Requires `--hook-type commit-msg` at
-  # install time.
+  # install time. Change a type in release-please-config.json's
+  # changelog-sections first; validate-commit-types fails until args match.
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v4.5.0
     hooks:
       - id: conventional-pre-commit
         stages: [commit-msg]
-        args: []
+        args: [build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test]
 
   # Project-local hooks. Versions live in package.json devDependencies, so
   # there is nothing for Renovate's pre-commit manager to track here. These
@@ -233,3 +234,9 @@ repos:
         language: system
         pass_filenames: false
         files: ^(docs/adr/.*\.md|scripts/validate-adrs\.ts)$
+      - id: validate-commit-types
+        name: validate-commit-types
+        entry: pnpm exec tsx scripts/validate-commit-types.ts
+        language: system
+        pass_filenames: false
+        files: ^(\.pre-commit-config\.yaml|release-please-config\.json|scripts/validate-commit-types\.ts)$
