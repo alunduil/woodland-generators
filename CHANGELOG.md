@@ -6,7 +6,7 @@ The format follows [Keep a CHANGELOG](https://keepachangelog.com/en/1.1.0/), and
 this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.2.0](https://github.com/alunduil/woodland-generators/compare/woodland-generators-v0.1.0...woodland-generators-v0.2.0) (2026-05-04)
+## [0.2.0](https://github.com/alunduil/woodland-generators/releases/tag/woodland-generators-v0.2.0) (2026-05-04)
 
 
 ### Added
