@@ -15,6 +15,17 @@
       "groupName": "pnpm"
     },
     {
+      "description": "Hold Foundry image updates for review because CI never starts Foundry, so a new build can break the module with every check green",
+      "matchDepNames": ["felddy/foundryvtt"],
+      "automerge": false,
+      "prBodyNotes": [
+        "**Before merging this Foundry build:**",
+        "- [ ] Walk the scenarios in `packages/foundry-module/test/manual/` against it",
+        "- [ ] Check that `compatibility.verified` in `packages/foundry-module/module.json` matches it",
+        "- [ ] Check that `@league-of-foundry-developers/foundry-vtt-types` tracks it"
+      ]
+    },
+    {
       "matchManagers": ["npm"],
       "addLabels": ["npm"]
     },
@@ -29,14 +40,6 @@
     {
       "matchManagers": ["devcontainer"],
       "addLabels": ["devcontainer"]
-    },
-    {
-      "description": "CI never starts Foundry, so a new build can change behaviour the module depends on while every check stays green",
-      "matchDepNames": ["felddy/foundryvtt"],
-      "automerge": false,
-      "prBodyNotes": [
-        "**Before merging this Foundry build:**\n\n- [ ] Walk the scenarios in `packages/foundry-module/test/manual/` against it\n- [ ] Check that `compatibility.verified` in `packages/foundry-module/module.json` matches it\n- [ ] Check that `@league-of-foundry-developers/foundry-vtt-types` tracks it"
-      ]
     }
   ]
 }
