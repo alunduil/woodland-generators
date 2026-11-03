@@ -45,6 +45,8 @@ decisions in `docs/adr/`.
 - **Use pnpm** - the repository runs as a pnpm workspace; npm and yarn won't
   produce a working install. Run `corepack enable` once on Node 20 or newer; the
   pinned pnpm version comes from `package.json#packageManager`.
+- **Install `jq`** - the `commit-msg` hook reads the accepted commit types with
+  it and rejects every commit when `jq` is missing
 - **Keep strict typing** - `tsc --noEmit` runs as a check and has to pass
 - **Run the checks** before submitting - see [Checks](#checks) below
 - **Keep PRs focused** - one feature or fix per PR
