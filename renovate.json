@@ -29,6 +29,14 @@
     {
       "matchManagers": ["devcontainer"],
       "addLabels": ["devcontainer"]
+    },
+    {
+      "description": "CI never starts Foundry, so a new build can change behaviour the module depends on while every check stays green",
+      "matchDepNames": ["felddy/foundryvtt"],
+      "automerge": false,
+      "prBodyNotes": [
+        "**Before merging this Foundry build:**\n\n- [ ] Walk the scenarios in `packages/foundry-module/test/manual/` against it\n- [ ] Check that `compatibility.verified` in `packages/foundry-module/module.json` matches it\n- [ ] Check that `@league-of-foundry-developers/foundry-vtt-types` tracks it"
+      ]
     }
   ]
 }
