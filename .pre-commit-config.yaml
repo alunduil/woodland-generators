@@ -124,7 +124,7 @@ repos:
   # via inline SPDX headers or REUSE.toml annotations. The hook runs
   # `reuse lint` against the whole tree on every commit.
   - repo: https://github.com/fsfe/reuse-tool
-    rev: v6.2.0
+    rev: v6.3.0
     hooks:
       - id: reuse
 
