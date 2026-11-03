@@ -166,9 +166,8 @@ repos:
   # Conventional Commits validation - runs at the commit-msg stage to reject
   # non-conventional commit subjects. Requires `--hook-type commit-msg` at
   # install time. Local because upstream's hook takes its types as static args
-  # and these come from release-please-config.json. jq's -e and the && fail the
-  # hook on a missing list; an empty argument list would select upstream's
-  # defaults.
+  # and these come from release-please-config.json. The hook must fail on an
+  # empty type list, because upstream reads no arguments as its own defaults.
   - repo: local
     hooks:
       - id: conventional-pre-commit
