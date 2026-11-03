@@ -4,8 +4,8 @@
 
 import { Rng } from "@woodland-generators/random";
 
-import { GeneratorOptions } from "./index";
-import { root } from "../logging";
+import { root } from "../logging/index.js";
+import type { GeneratorOptions } from "./options.js";
 
 export const CHARACTER_NAMES = [
   "Bramble",

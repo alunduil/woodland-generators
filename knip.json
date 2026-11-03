@@ -8,7 +8,6 @@
     },
     "packages/foundry-module": {
       "entry": [
-        "src/index.ts",
         "src/manifest.ts",
         "src/logging/pino-pretty-transport.js",
         "scripts/package-release.ts",

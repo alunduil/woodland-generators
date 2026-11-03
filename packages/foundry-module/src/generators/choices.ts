@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { Logger } from "pino";
+import type { Logger } from "pino";
 import { Rng } from "@woodland-generators/random";
 
 export function validateChoicesNonEmpty(category: string, choices: string[], logger: Logger): void {

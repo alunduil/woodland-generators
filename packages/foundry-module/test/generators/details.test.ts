@@ -2,8 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { DetailsGeneratorOptions, generateDetails } from "../../src/generators/details";
-import { Details } from "../../src/details";
+import { Details, DetailsGeneratorOptions, generateDetails } from "../../src/generators/details";
 import { root } from "../../src/logging";
 
 const CHOICES: Details = {

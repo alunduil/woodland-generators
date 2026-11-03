@@ -2,4 +2,6 @@
 //
 // SPDX-License-Identifier: MIT
 
-export type { Details } from "./types";
+export interface GeneratorOptions {
+  seed: string;
+}

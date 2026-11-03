@@ -4,9 +4,9 @@
 
 import { Rng } from "@woodland-generators/random";
 
-import { GeneratorOptions } from "./index";
-import { root } from "../logging";
-import { generateSingleFromChoices } from "./core";
+import { root } from "../logging/index.js";
+import { generateSingleFromChoices } from "./choices.js";
+import type { GeneratorOptions } from "./options.js";
 
 /**
  * Extended list of woodland animals compatible with Root's ecosystem

@@ -9,10 +9,10 @@ import {
   generateSubsetFromChoices,
   generateSingleFromChoices,
   generateMultipleFromChoices,
-} from "../../../src/generators/core";
-import { root } from "../../../src/logging";
+} from "../../src/generators/choices";
+import { root } from "../../src/logging";
 import fc from "fast-check";
-import { enoughPairsDiffer, getCollisionThreshold, uniquePairs, uniqueArray } from "../../utils";
+import { enoughPairsDiffer, getCollisionThreshold, uniquePairs, uniqueArray } from "../utils";
 
 describe("validateChoicesNonEmpty", () => {
   beforeEach(() => {
