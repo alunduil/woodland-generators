@@ -22,7 +22,7 @@ describe("generateSpecies", () => {
       EXTENDED_WOODLAND_SPECIES.forEach((species) => {
         expect(typeof species).toBe("string");
         expect(species.length).toBeGreaterThan(0);
-        expect(species.trim()).toBe(species); // No leading/trailing whitespace
+        expect(species.trim()).toBe(species);
       });
     });
 

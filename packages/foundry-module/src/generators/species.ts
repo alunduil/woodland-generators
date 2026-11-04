@@ -4,36 +4,21 @@
 
 import { Rng } from "@woodland-generators/random";
 
-import { GeneratorOptions } from "./index";
-import { root } from "../logging";
-import { generateSingleFromChoices } from "./core";
+import { root } from "../logging/index.js";
+import { generateSingleFromChoices } from "./choices.js";
+import type { GeneratorOptions } from "./options.js";
 
 /**
- * Extended list of woodland animals compatible with Root's ecosystem
- * Used when "other" is selected as a species option
+ * Woodland animals a playbook's "other" species option draws from.
  *
  * This curated list follows Root RPG guidelines:
  * - No larger than wolf-sized (bears, moose, deer are NPCs/mysteries)
  * - Primarily mammals and birds for anthropomorphic consistency
  * - Land-based woodland dwellers (no purely aquatic species)
  * - No insects (scale and anthropomorphic issues)
- *
- * Each category represents different ecological niches within the Woodland:
- *
- * **Canopy Dwellers** - Arboreal specialists living in tree-tops
- * **Understory Inhabitants** - Mid-level forest dwellers
- * **Ground Foragers** - Forest floor specialists
- * **Burrow Dwellers** - Underground and den-based species
- * **Woodland Edge** - Species near clearings and forest borders
- * **Nocturnal Specialists** - Night-active woodland creatures
- * **Small Predators** - Appropriately-sized woodland hunters
- * **Woodland Birds** - Traditional forest bird species
- *
- * When a playbook includes "other" as a species option and it gets
- * randomly selected, the generator will pick from this Root-appropriate list.
  */
 export const EXTENDED_WOODLAND_SPECIES = [
-  // Canopy Dwellers - Arboreal specialists
+  // Canopy Dwellers
   "squirrel",
   "flying squirrel",
   "chipmunk",
@@ -50,7 +35,7 @@ export const EXTENDED_WOODLAND_SPECIES = [
   "tanager",
   "oriole",
 
-  // Understory Inhabitants - Mid-level forest species
+  // Understory Inhabitants
   "cardinal",
   "robin",
   "thrush",
@@ -67,7 +52,7 @@ export const EXTENDED_WOODLAND_SPECIES = [
   "porcupine",
   "pine marten",
 
-  // Ground Foragers - Forest floor specialists
+  // Ground Foragers
   "vole",
   "shrew",
   "mole",
@@ -80,7 +65,7 @@ export const EXTENDED_WOODLAND_SPECIES = [
   "wood thrush",
   "veery",
 
-  // Burrow Dwellers - Underground specialists
+  // Burrow Dwellers
   "badger",
   "marmot",
   "prairie dog",
@@ -93,7 +78,7 @@ export const EXTENDED_WOODLAND_SPECIES = [
   "deer mouse",
   "white-footed mouse",
 
-  // Woodland Edge - Stream and clearing border species
+  // Woodland Edge
   "beaver",
   "muskrat",
   "otter",
@@ -107,7 +92,7 @@ export const EXTENDED_WOODLAND_SPECIES = [
   "painted turtle",
   "box turtle",
 
-  // Nocturnal Specialists - Night-active woodland creatures
+  // Nocturnal Specialists
   "owl",
   "screech owl",
   "barred owl",
@@ -120,7 +105,7 @@ export const EXTENDED_WOODLAND_SPECIES = [
   "skunk",
   "least weasel",
 
-  // Small Predators - Appropriately-sized woodland hunters (wolf-sized or smaller)
+  // Small Predators
   "weasel",
   "stoat",
   "ermine",
@@ -130,7 +115,7 @@ export const EXTENDED_WOODLAND_SPECIES = [
   "red fox",
   "gray fox",
 
-  // Woodland Birds - Traditional forest bird species
+  // Woodland Birds
   "grouse",
   "ruffed grouse",
   "partridge",
@@ -143,7 +128,7 @@ export const EXTENDED_WOODLAND_SPECIES = [
   "nutcracker",
   "hummingbird",
 
-  // Amphibians - Woodland moisture specialists (anthropomorphic-friendly)
+  // Amphibians
   "salamander",
   "newt",
   "red-backed salamander",

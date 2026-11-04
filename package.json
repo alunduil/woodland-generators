@@ -1,7 +1,7 @@
 {
   "name": "woodland-generators",
   "version": "0.2.0",
-  "description": "Workspace orchestrator for the Woodland Generators monorepo (core, foundry-module).",
+  "description": "Workspace orchestrator for the Woodland Generators monorepo (foundry-module, random).",
   "author": "Alex Brandt",
   "license": "MIT",
   "private": true,

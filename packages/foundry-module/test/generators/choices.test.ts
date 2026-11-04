@@ -9,8 +9,8 @@ import {
   generateSubsetFromChoices,
   generateSingleFromChoices,
   generateMultipleFromChoices,
-} from "../../../src/generators/core";
-import { root } from "../../../src/logging";
+} from "../../src/generators/choices";
+import { root } from "../../src/logging";
 
 describe("generateSubsetFromChoices", () => {
   beforeEach(() => {

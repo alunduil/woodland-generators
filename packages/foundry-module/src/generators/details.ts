@@ -4,10 +4,15 @@
 
 import { Rng } from "@woodland-generators/random";
 
-import { GeneratorOptions } from "./index";
-import { root } from "../logging";
-import { Details } from "../details";
-import { generateMultipleFromChoices } from "./core";
+import { root } from "../logging/index.js";
+import { generateMultipleFromChoices } from "./choices.js";
+import type { GeneratorOptions } from "./options.js";
+
+export interface Details {
+  pronouns: string[];
+  appearance: string[];
+  accessories: string[];
+}
 
 export interface DetailsGeneratorOptions extends GeneratorOptions {
   /** The playbook's detail choices, per category. */

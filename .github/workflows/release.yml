@@ -63,8 +63,8 @@ jobs:
       - name: Setup Node.js + pnpm
         uses: ./.github/actions/setup-node-pnpm
 
-      # esbuild resolves the sibling packages through their dist/, so the whole
-      # workspace builds first.
+      # esbuild resolves random through its dist/, so the whole workspace builds
+      # first.
       - name: Build every package
         run: pnpm run build
 

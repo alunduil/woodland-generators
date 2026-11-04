@@ -2,23 +2,26 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { generateSpecies } from "./species";
-import { generateName } from "./name";
-import { generateDetails } from "./details";
-import { generateDemeanor } from "./demeanor";
-import { GeneratorOptions } from "./index";
-import { Character } from "../character";
-import { Details } from "../details";
-import { root } from "../logging";
+import { root } from "../logging/index.js";
+import { generateDemeanor } from "./demeanor.js";
+import { generateDetails, type Details } from "./details.js";
+import { generateName } from "./name.js";
+import type { GeneratorOptions } from "./options.js";
+import { generateSpecies } from "./species.js";
+
+export interface Character {
+  name: string;
+  playbook: string;
+  species: string;
+  details: Details;
+  demeanor: string[];
+}
 
 export interface CharacterGeneratorOptions extends GeneratorOptions {
   /** Archetype label written onto the generated character (e.g., "The Ranger") */
   archetype: string;
-  /** Species choices the generator picks from */
   speciesChoices: string[];
-  /** Per-category detail choices the generator picks from */
   detailsChoices: Details;
-  /** Demeanor trait choices the generator picks from */
   demeanorChoices: string[];
   /** Used as-is instead of generating. */
   name?: string;

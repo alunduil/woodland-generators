@@ -7,10 +7,10 @@ why. For a release that shipped broken, see
 
 ## One releasable package
 
-`release-please-config.json` lists one package, `packages/foundry-module`. All
-three packages are `private`, so nothing publishes to npm. The release carries
-what esbuild bundles into `dist/`, which `core` and `random` reach only by being
-imported, so neither needs a version of its own.
+`release-please-config.json` lists one package, `packages/foundry-module`. Both
+packages are `private`, so nothing publishes to npm. The release carries what
+esbuild bundles into `dist/`, which `random` reaches only by being imported, so
+it needs no version of its own.
 
 ## The release pull request
 
@@ -46,9 +46,9 @@ rather than from a repository: it fetches that JSON, then downloads the zip the
 JSON names. Both files have to hang off the release.
 
 The `publish-module` job attaches them. It builds every package before running
-`package-release.ts`, because esbuild resolves the sibling packages through
-their `dist/`. The zip's contents come from the `files` array in `package.json`,
-flattened to the zip root, because Foundry unpacks the archive straight into
+`package-release.ts`, because esbuild resolves `random` through its `dist/`. The
+zip's contents come from the `files` array in `package.json`, flattened to the
+zip root, because Foundry unpacks the archive straight into
 `Data/modules/woodland-generators`.
 
 ## The tag and the payload have to agree

@@ -3,7 +3,8 @@
 // SPDX-License-Identifier: MIT
 
 import { generateName, CHARACTER_NAMES } from "../../src/generators/name";
-import { enoughPairsDiffer, getCollisionThreshold, uniquePairs } from "../utils";
+import { uniquePairs } from "../arbitraries";
+import { enoughPairsDiffer, getCollisionThreshold } from "../seed-collisions";
 import fc from "fast-check";
 
 describe("generateName", () => {

@@ -39,8 +39,8 @@ body:
         Concrete changes required. Be specific enough that a contributor can
         start without ambiguity.
       placeholder: |
-        - Change A in `packages/core`
-        - Change B in `packages/foundry-module`
+        - Change A in `packages/foundry-module`
+        - Change B in `docs/`
     validations:
       required: true
 

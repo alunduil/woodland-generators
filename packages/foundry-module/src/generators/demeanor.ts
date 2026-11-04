@@ -4,9 +4,9 @@
 
 import { Rng } from "@woodland-generators/random";
 
-import { GeneratorOptions } from "./index";
-import { root } from "../logging";
-import { generateSubsetFromChoices } from "./core";
+import { root } from "../logging/index.js";
+import { generateSubsetFromChoices } from "./choices.js";
+import type { GeneratorOptions } from "./options.js";
 
 export interface DemeanorGeneratorOptions extends GeneratorOptions {
   /** The playbook's demeanor choices. */
