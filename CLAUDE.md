@@ -87,8 +87,9 @@ and recorded in the pull request. #657 converts these to Playwright specs.
 
 Subjects must follow [Conventional Commits][conventional-commits]. The
 `commit-msg` git hook (`compilerla/conventional-pre-commit`) rejects
-non-conventional subjects at `git commit` time. The active type list lives in
-the `pr-title.yml` workflow. `release-please` bumps the version from `feat`,
+non-conventional subjects at `git commit` time. The hook and the `PR Title`
+workflow both read their types from `changelog-sections` in
+`release-please-config.json`. `release-please` bumps the version from `feat`,
 `fix`, `perf`, and `revert`; the other prefixes cut no release.
 
 Mark `!` or `BREAKING CHANGE:` only on a change a Foundry world or its GM

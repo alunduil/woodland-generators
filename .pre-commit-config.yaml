@@ -165,13 +165,19 @@ repos:
 
   # Conventional Commits validation - runs at the commit-msg stage to reject
   # non-conventional commit subjects. Requires `--hook-type commit-msg` at
-  # install time.
-  - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v4.5.0
+  # install time. Local because upstream's hook takes its types as static args
+  # and these come from release-please-config.json. The hook must fail on an
+  # empty type list, because upstream reads no arguments as its own defaults.
+  - repo: local
     hooks:
       - id: conventional-pre-commit
+        name: conventional-pre-commit
+        language: python
+        additional_dependencies: [conventional-pre-commit==4.5.0]
         stages: [commit-msg]
-        args: []
+        entry: >-
+          bash -c 'types=$(jq -re ".[\"changelog-sections\"][].type"
+          release-please-config.json) && conventional-pre-commit $types "$1"' --
 
   # Project-local hooks. Versions live in package.json devDependencies, so
   # there is nothing for Renovate's pre-commit manager to track here. These

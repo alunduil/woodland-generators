@@ -43,6 +43,8 @@ decisions in `docs/adr/`.
 - **Use pnpm** - the repository runs as a pnpm workspace; npm and yarn won't
   produce a working install. Run `corepack enable` once on Node 20 or newer; the
   pinned pnpm version comes from `package.json#packageManager`.
+- **Install `jq`** - the `commit-msg` hook needs it and rejects every commit
+  without it
 - **Keep strict typing** - `tsc --noEmit` runs as a check and has to pass
 - **Run the checks** before submitting - see [Checks](#checks) below
 - **Keep PRs focused** - one feature or fix per PR
@@ -123,6 +125,7 @@ conventional subjects. [release-please][release-please] releases the Foundry
 module from `feat`, `fix`, `perf`, and `revert` commits. Other prefixes cut no
 release.
 
+`changelog-sections` in `release-please-config.json` lists every accepted type.
 Common prefixes:
 
 - `feat:` - new user-facing feature (minor version bump)
