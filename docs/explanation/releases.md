@@ -46,9 +46,9 @@ rather than from a repository: it fetches that JSON, then downloads the zip the
 JSON names. Both files have to hang off the release.
 
 The `publish-module` job attaches them. It builds every package before running
-`package-release.ts`, because esbuild resolves the sibling packages through
-their `dist/`. The zip's contents come from the `files` array in `package.json`,
-flattened to the zip root, because Foundry unpacks the archive straight into
+`package-release.ts`, because esbuild resolves `random` through its `dist/`. The
+zip's contents come from the `files` array in `package.json`, flattened to the
+zip root, because Foundry unpacks the archive straight into
 `Data/modules/woodland-generators`.
 
 ## The tag and the payload have to agree

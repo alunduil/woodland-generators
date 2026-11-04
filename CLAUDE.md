@@ -13,12 +13,12 @@ resources.
   `hashSeed`). `foundry-module` depends on it; it depends on nothing in the
   workspace.
 
-`src/logging` runs `pino` through a Node worker transport and reads `__dirname`
-at import, so code the bundle reaches can't import it. Only tests reach it
-today, through the character generators.
+`src/logging` is Node-only: it runs `pino` through a worker transport and reads
+`__dirname` at import. The character generators import it, so bundled code can't
+import them.
 
-`random` is a carve-out. Give a new foundational capability its own package and
-address it by its package name. Each package exports what it owns.
+Give a new foundational capability its own package and address it by its package
+name. Each package exports what it owns.
 
 A cross-package change needs `pnpm run build` before a type-check sees it.
 Packages resolve each other through `dist/`, so `tsc --noEmit` against a stale
@@ -33,8 +33,8 @@ README: there is no `bin`, `cli.ts`, or `cli` script, so don't reach for
 Run `corepack enable` once, then:
 
 - `pnpm run build`: build every package (`pnpm -r build`).
-- `pnpm --filter @woodland-generators/foundry-module build:watch`: esbuild in
-  watch mode for incremental module development.
+- `pnpm --filter @woodland-generators/foundry-module build:watch`: rebuild the
+  module on change.
 - `pnpm test`: Jest suite across every package.
 - `pre-commit run --all-files`: gates every PR. Authoritative hook list:
   `.pre-commit-config.yaml`.

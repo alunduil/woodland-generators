@@ -30,7 +30,7 @@ Typos and formatting fixes need no issue at all - see
 Two packages live under `packages/`:
 
 - **`@woodland-generators/foundry-module`** - the Foundry VTT module and its
-  generators. Most generator work lands here.
+  generators.
 - **`@woodland-generators/random`** - the seeded randomness the generators draw
   from. A new foundational capability gets its own package alongside it.
 

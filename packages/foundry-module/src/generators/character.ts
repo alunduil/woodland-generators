@@ -20,11 +20,8 @@ export interface Character {
 export interface CharacterGeneratorOptions extends GeneratorOptions {
   /** Archetype label written onto the generated character (e.g., "The Ranger") */
   archetype: string;
-  /** Species choices the generator picks from */
   speciesChoices: string[];
-  /** Per-category detail choices the generator picks from */
   detailsChoices: Details;
-  /** Demeanor trait choices the generator picks from */
   demeanorChoices: string[];
   /** Used as-is instead of generating. */
   name?: string;

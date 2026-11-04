@@ -12,7 +12,7 @@ Unofficial generators for Root: The Tabletop RPG.
 A pnpm workspace of two TypeScript packages:
 
 - **`@woodland-generators/foundry-module`**: a Foundry VTT module and its
-  generators, which produce results from a seed phrase.
+  generators.
 - **`@woodland-generators/random`**: the seeded randomness the generators draw
   from, so a seed phrase reproduces the same result.
 

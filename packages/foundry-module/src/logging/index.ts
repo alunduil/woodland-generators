@@ -12,7 +12,7 @@ export const root = pino({
     options: {
       colorize: true,
       translateTime: "yyyy-mm-dd HH:MM:ss",
-      ignore: "pid,hostname", // Hide only noisy system fields
+      ignore: "pid,hostname",
       hideObject: false,
       singleLine: false,
     },
