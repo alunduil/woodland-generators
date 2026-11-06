@@ -8,9 +8,11 @@
   "changelog-path": "CHANGELOG.md",
   "changelog-sections": [
     { "type": "feat", "section": "Added" },
-    { "type": "fix", "section": "Fixed" },
     { "type": "perf", "section": "Changed" },
+    { "type": "deprecate", "section": "Deprecated" },
     { "type": "revert", "section": "Removed" },
+    { "type": "fix", "section": "Fixed" },
+    { "type": "security", "section": "Security" },
     { "type": "refactor", "section": "Changed", "hidden": true },
     { "type": "docs", "section": "Changed", "hidden": true },
     { "type": "chore", "section": "Changed", "hidden": true },

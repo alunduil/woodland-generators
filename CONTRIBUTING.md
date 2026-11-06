@@ -122,18 +122,25 @@ numbered scenario, walked by hand and recorded in your pull request.
 This repository follows [Conventional Commits][conventional-commits]. The
 `commit-msg` git hook and the `PR Title` GitHub Actions check both enforce
 conventional subjects. [release-please][release-please] releases the Foundry
-module from `feat`, `fix`, `perf`, and `revert` commits. Other prefixes cut no
-release.
+module from `feat`, `fix`, `perf`, `revert`, `deprecate`, and `security`
+commits. Other prefixes cut no release.
 
 `changelog-sections` in `release-please-config.json` lists every accepted type.
 Common prefixes:
 
 - `feat:` - new user-facing feature (minor version bump)
 - `fix:` - bug fix (patch version bump)
+- `security:` - fix for a vulnerability (patch version bump)
+- `deprecate:` - feature that a later release removes (patch version bump)
 - `docs:` - documentation only
 - `refactor:` - code change that neither fixes a bug nor adds a feature
 - `perf:` - performance improvement
 - `chore:` - tooling, build, or maintenance work
+
+Semantic Versioning calls for a minor version bump on a deprecation, but
+release-please raises the minor version only for `feat`. To get one, release the
+`deprecate:` commit alongside a `feat:` commit, or add a `Release-As:` footer
+naming the version.
 
 A change is breaking when a Foundry world or its GM notices it after upgrading.
 Mark it by appending `!` after the type (for example, `feat!:`) or including a

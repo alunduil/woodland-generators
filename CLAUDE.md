@@ -90,7 +90,8 @@ Subjects must follow [Conventional Commits][conventional-commits]. The
 non-conventional subjects at `git commit` time. The hook and the `PR Title`
 workflow both read their types from `changelog-sections` in
 `release-please-config.json`. `release-please` bumps the version from `feat`,
-`fix`, `perf`, and `revert`; the other prefixes cut no release.
+`fix`, `perf`, `revert`, `deprecate`, and `security`; the other prefixes cut no
+release.
 
 Mark `!` or `BREAKING CHANGE:` only on a change a Foundry world or its GM
 notices after upgrading.
