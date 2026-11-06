@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { Rng } from "../src/rng";
+import { Rng } from "../../src/random/rng";
 
 const POOL = ["ash", "birch", "cedar", "dogwood", "elm", "fir"];
 

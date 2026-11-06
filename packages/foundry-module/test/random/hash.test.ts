@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { hashSeed } from "../src/hash";
+import { hashSeed } from "../../src/random/hash";
 
 describe("hashSeed", () => {
   // The reference vectors are ASCII, where the UTF-16 code units hashSeed

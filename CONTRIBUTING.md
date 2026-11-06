@@ -1,8 +1,8 @@
 # Contributing to Woodland Generators
 
 Thank you for your interest in contributing! Woodland Generators is a pnpm
-workspace of TypeScript packages that generate resources for Root: The Tabletop
-RPG.
+workspace holding a TypeScript package that generates resources for Root: The
+Tabletop RPG.
 
 These guidelines help get your work reviewed quickly.
 
@@ -27,12 +27,9 @@ Typos and formatting fixes need no issue at all - see
 
 ## Project layout
 
-Two packages live under `packages/`:
-
-- **`@woodland-generators/foundry-module`** - the Foundry VTT module and its
-  generators.
-- **`@woodland-generators/random`** - the seeded randomness the generators draw
-  from. A new foundational capability gets its own package alongside it.
+One package lives under `packages/`: `@woodland-generators/foundry-module`, the
+Foundry VTT module and its generators. New code goes inside it. Extract a
+package only when a consumer outside the module needs the code.
 
 Repository-wide docs sit in `docs/`, organized by
 [Diátaxis](https://diataxis.fr): how-to guides in `docs/how-to/`, architecture
@@ -58,7 +55,7 @@ decisions in `docs/adr/`.
    pnpm install
    ```
 
-2. **Build both packages**:
+2. **Build the module**:
 
    ```bash
    pnpm run build

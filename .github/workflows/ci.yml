@@ -38,7 +38,7 @@ jobs:
             slug: lts-1
           - version: "lts/*"
             slug: lts
-        package: [foundry-module, random]
+        package: [foundry-module]
 
     steps:
       - name: Checkout code
@@ -92,7 +92,7 @@ jobs:
           - version: "lts/*"
             slug: lts
             coverage: true
-        package: [foundry-module, random]
+        package: [foundry-module]
 
     steps:
       - name: Checkout code

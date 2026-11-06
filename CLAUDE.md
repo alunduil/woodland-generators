@@ -4,25 +4,18 @@ Audience: AI coding assistants. Humans use [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Project overview
 
-A pnpm workspace of TypeScript packages for generating Root: The Tabletop RPG
-resources.
-
-- `packages/foundry-module` (`@woodland-generators/foundry-module`): the Foundry
-  VTT module and its generators; entry `src/module.ts`.
-- `packages/random` (`@woodland-generators/random`): seeded randomness (`Rng`,
-  `hashSeed`). `foundry-module` depends on it; it depends on nothing in the
-  workspace.
+A pnpm workspace with one TypeScript package for generating Root: The Tabletop
+RPG resources: `packages/foundry-module`
+(`@woodland-generators/foundry-module`), the Foundry VTT module and its
+generators. Its entry is `src/module.ts`, and `src/random` holds the seeded
+randomness (`Rng`, `hashSeed`).
 
 `src/logging` is Node-only: it runs `pino` through a worker transport and reads
 `__dirname` at import. The character generators import it, so bundled code can't
 import them.
 
-Give a new foundational capability its own package and address it by its package
-name. Each package exports what it owns.
-
-A cross-package change needs `pnpm run build` before a type-check sees it.
-Packages resolve each other through `dist/`, so `tsc --noEmit` against a stale
-sibling reports a missing export rather than a real error.
+Code lives inline in `foundry-module`. Extract a package only when a consumer
+outside it needs the code.
 
 No CLI binary is wired up at HEAD despite the `woodland-gen` framing in the
 README: there is no `bin`, `cli.ts`, or `cli` script, so don't reach for
