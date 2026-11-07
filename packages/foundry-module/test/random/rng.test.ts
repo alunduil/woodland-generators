@@ -7,8 +7,8 @@ import { Rng } from "../../src/random/rng";
 const POOL = ["ash", "birch", "cedar", "dogwood", "elm", "fir"];
 
 describe("Rng", () => {
-  // A GM reproduces a result by re-entering its seed, so a seed's stream has to
-  // survive a change of PRNG, hash, or bundling.
+  // A GM reproduces a result by re-entering its seed, so these draws change
+  // only on purpose.
   it.each([
     ["woodland", [241, 241, 342, 965, 392], ["fir", "dogwood", "ash"]],
     ["ñandú 🦊", [60, 699, 315, 56, 196], ["elm", "birch", "dogwood"]],

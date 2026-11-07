@@ -27,9 +27,9 @@ Typos and formatting fixes need no issue at all - see
 
 ## Project layout
 
-One package lives under `packages/`: `@woodland-generators/foundry-module`, the
-Foundry VTT module and its generators. New code goes inside it. Extract a
-package only when a consumer outside the module needs the code.
+`packages/foundry-module` holds the Foundry VTT module and its generators. Put
+new code there. Extract a package only when code outside the module needs to
+import it.
 
 Repository-wide docs sit in `docs/`, organized by
 [Diátaxis](https://diataxis.fr): how-to guides in `docs/how-to/`, architecture
@@ -97,7 +97,7 @@ Renovate opens or [waives the advisory][waive-advisory].
 
 ## Tests
 
-Test files mirror the module under test within each package. Tests for
+Test files mirror the module under test. Tests for
 `packages/foundry-module/src/generators/name.ts` belong at
 `packages/foundry-module/test/generators/name.test.ts`. Don't split tests by
 feature or scenario. A file under `test/` that isn't a test is named for what it
@@ -111,8 +111,9 @@ builds a game rather than mutating one. Derive expected strings from
 `module.json` and the language catalog, so a renamed ID or a dropped key fails
 the suite.
 
-Behaviour that needs a running Foundry goes in the package's `test/manual/` as a
-numbered scenario, walked by hand and recorded in your pull request.
+Behaviour that needs a running Foundry goes in
+`packages/foundry-module/test/manual/` as a numbered scenario, walked by hand
+and recorded in your pull request.
 
 ## Commit messages
 
@@ -142,7 +143,7 @@ Mark it by appending `!` after the type (for example, `feat!:`) or including a
 
 Contributor tooling never breaks a world. Raising the Node or pnpm floor,
 changing CI, or reworking the build isn't breaking, even when the change touches
-a file inside a package.
+a file under `packages/foundry-module`.
 
 A breaking change bumps the major version (or minor, while pre-1.0), and
 release-please lists it in the release notes whatever its type.

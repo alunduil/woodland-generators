@@ -9,15 +9,15 @@ Unofficial generators for Root: The Tabletop RPG.
 
 ## What this project is
 
-A pnpm workspace holding `@woodland-generators/foundry-module`, a Foundry VTT
-module and its generators. A seed phrase reproduces the same result.
+A Foundry VTT module, `@woodland-generators/foundry-module`, whose generators
+give the same result for the same seed phrase.
 
 Track progress on the
 [milestones page](https://github.com/alunduil/woodland-generators/milestones).
 
 ## Installation
 
-The package isn't published, so the workspace runs from a clone.
+The package isn't on npm, so the workspace runs from a clone.
 
 You need:
 
