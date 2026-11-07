@@ -109,7 +109,7 @@ repos:
   # The alias is the selector: every other hook defaults to all stages, so
   # `--hook-stage manual` alone reruns the whole config.
   - repo: https://github.com/tombi-toml/tombi-pre-commit
-    rev: v1.9.9
+    rev: v1.10.0
     hooks:
       - id: tombi-format
         args: ["--offline"]
