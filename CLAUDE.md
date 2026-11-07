@@ -4,25 +4,16 @@ Audience: AI coding assistants. Humans use [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Project overview
 
-A pnpm workspace of TypeScript packages for generating Root: The Tabletop RPG
-resources.
-
-- `packages/foundry-module` (`@woodland-generators/foundry-module`): the Foundry
-  VTT module and its generators; entry `src/module.ts`.
-- `packages/random` (`@woodland-generators/random`): seeded randomness (`Rng`,
-  `hashSeed`). `foundry-module` depends on it; it depends on nothing in the
-  workspace.
+A pnpm workspace whose package, `packages/foundry-module`
+(`@woodland-generators/foundry-module`), is the Foundry VTT module and its
+generators for Root: The Tabletop RPG. Its entry is `src/module.ts`.
 
 `src/logging` is Node-only: it runs `pino` through a worker transport and reads
 `__dirname` at import. The character generators import it, so bundled code can't
 import them.
 
-Give a new foundational capability its own package and address it by its package
-name. Each package exports what it owns.
-
-A cross-package change needs `pnpm run build` before a type-check sees it.
-Packages resolve each other through `dist/`, so `tsc --noEmit` against a stale
-sibling reports a missing export rather than a real error.
+Put new code in `foundry-module`. Extract a package only when code outside the
+module needs to import it.
 
 No CLI binary is wired up at HEAD despite the `woodland-gen` framing in the
 README: there is no `bin`, `cli.ts`, or `cli` script, so don't reach for
@@ -32,10 +23,10 @@ README: there is no `bin`, `cli.ts`, or `cli` script, so don't reach for
 
 Run `corepack enable` once, then:
 
-- `pnpm run build`: build every package (`pnpm -r build`).
+- `pnpm run build`: build the module.
 - `pnpm --filter @woodland-generators/foundry-module build:watch`: rebuild the
   module on change.
-- `pnpm test`: Jest suite across every package.
+- `pnpm test`: run the Jest suite.
 - `pre-commit run --all-files`: gates every PR. Authoritative hook list:
   `.pre-commit-config.yaml`.
 
@@ -47,8 +38,9 @@ Configuration file shown in parentheses.
 - Package manager: pnpm, pinned in `packageManager` and `mise.toml`
   (`pnpm-workspace.yaml`); `corepack enable` or `mise install` once.
 - Pinned CLI tools: mise (`mise.toml`, `mise.lock`).
-- Test / coverage: Jest (`jest.config.json`, per-package
-  `packages/*/jest.config.json`); coverage configuration `codecov.yml`.
+- Test / coverage: Jest (`jest.config.json`,
+  `packages/foundry-module/jest.config.json`); coverage configuration
+  `codecov.yml`.
 - Lint / format, all via `pre-commit` (`.pre-commit-config.yaml`): `eslint`
   (`eslint.config.cjs`), `prettier` (`.prettierrc`), `stylelint`
   (`.stylelintrc.json`), `markdownlint` (`.markdownlint.yaml`), `yamllint`
@@ -62,7 +54,7 @@ Configuration file shown in parentheses.
 
 ## Tests
 
-Test files mirror the module under test within each package: tests for
+Test files mirror the module under test: tests for
 `packages/foundry-module/src/foo/bar.ts` live at
 `packages/foundry-module/test/foo/bar.test.ts`. Don't split tests by feature or
 scenario. A file under `test/` that isn't a test is named for what it holds, not

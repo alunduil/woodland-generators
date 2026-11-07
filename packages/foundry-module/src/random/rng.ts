@@ -6,7 +6,7 @@ import { uniformInt } from "pure-rand/distribution/uniformInt";
 import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 import type { RandomGenerator } from "pure-rand/types/RandomGenerator";
 
-import { hashSeed } from "./hash";
+import { hashSeed } from "./hash.js";
 
 /**
  * Seedable random helper over pure-rand.

@@ -2,8 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { Rng } from "@woodland-generators/random";
-
+import { Rng } from "../random/rng.js";
 import {
   CLEARING_NAMES,
   DOMINANT_COMMUNITIES,

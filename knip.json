@@ -14,10 +14,6 @@
         "test/**/*.test.ts"
       ],
       "project": ["src/**/*.{ts,js}", "scripts/**/*.ts"]
-    },
-    "packages/random": {
-      "entry": ["src/index.ts", "test/**/*.test.ts"],
-      "project": ["src/**/*.ts"]
     }
   }
 }

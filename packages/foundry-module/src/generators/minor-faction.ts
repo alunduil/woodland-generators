@@ -2,8 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { Rng } from "@woodland-generators/random";
-
+import { Rng } from "../random/rng.js";
 import { type Faction } from "./clearing-tables.js";
 import { factionsInPlay } from "./factions-in-play.js";
 import {

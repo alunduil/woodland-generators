@@ -2,9 +2,8 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { Rng } from "@woodland-generators/random";
-
 import { root } from "../logging/index.js";
+import { Rng } from "../random/rng.js";
 import { generateSingleFromChoices } from "./choices.js";
 import type { GeneratorOptions } from "./options.js";
 

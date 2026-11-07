@@ -2,18 +2,21 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { Rng } from "../src/rng";
+import { Rng } from "../../src/random/rng";
 
 const POOL = ["ash", "birch", "cedar", "dogwood", "elm", "fir"];
 
 describe("Rng", () => {
-  it("replays the same draws for the same seed", () => {
-    const draws = (): number[] => {
-      const rng = new Rng("woodland");
-      return [0, 1, 2, 3, 4].map(() => rng.getRandomIntInclusive(0, 1000));
-    };
+  // A GM reproduces a result by re-entering its seed, so these draws change
+  // only on purpose.
+  it.each([
+    ["woodland", [241, 241, 342, 965, 392], ["fir", "dogwood", "ash"]],
+    ["ñandú 🦊", [60, 699, 315, 56, 196], ["elm", "birch", "dogwood"]],
+  ])("replays the recorded draws for %p", (seed, ints, sample) => {
+    const rng = new Rng(seed);
 
-    expect(draws()).toEqual(draws());
+    expect([0, 1, 2, 3, 4].map(() => rng.getRandomIntInclusive(0, 1000))).toEqual(ints);
+    expect(rng.selectRandomSample(POOL, 3)).toEqual(sample);
   });
 
   it("draws differently for different seeds", () => {
