@@ -119,19 +119,24 @@ and recorded in your pull request.
 
 This repository follows [Conventional Commits][conventional-commits]. The
 `commit-msg` git hook and the `PR Title` GitHub Actions check both enforce
-conventional subjects. [release-please][release-please] releases the Foundry
-module from `feat`, `fix`, `perf`, and `revert` commits. Other prefixes cut no
-release.
+conventional subjects.
 
-`changelog-sections` in `release-please-config.json` lists every accepted type.
-Common prefixes:
+Pick the type for what a GM sees. A type shown with a section cuts a release and
+appears under that section in the release notes. A type with no section does
+neither. Common prefixes:
 
-- `feat:` - new user-facing feature (minor version bump)
-- `fix:` - bug fix (patch version bump)
+- `feat:` - new user-facing feature (Added)
+- `perf:` - performance improvement (Changed)
+- `deprecate:` - feature that a later release removes (Deprecated)
+- `revert:` - undoes an earlier change (Removed)
+- `fix:` - bug fix (Fixed)
+- `security:` - fix for a vulnerability (Security)
 - `docs:` - documentation only
 - `refactor:` - code change that neither fixes a bug nor adds a feature
-- `perf:` - performance improvement
 - `chore:` - tooling, build, or maintenance work
+
+A `deprecate:` commit alone cuts a patch release. For a minor, ship it with a
+`feat:` commit or add a `Release-As:` footer naming the version.
 
 A change is breaking when a Foundry world or its GM notices it after upgrading.
 Mark it by appending `!` after the type (for example, `feat!:`) or including a
@@ -145,8 +150,8 @@ Contributor tooling never breaks a world. Raising the Node or pnpm floor,
 changing CI, or reworking the build isn't breaking, even when the change touches
 a file under `packages/foundry-module`.
 
-A breaking change bumps the major version (or minor, while pre-1.0), and
-release-please lists it in the release notes whatever its type.
+The `PR Title` check rejects `!` on a type with no section, except `refactor`,
+because the release notes would announce a break they never explain.
 
 Examples:
 
@@ -270,7 +275,6 @@ maintainer merges the PR once it's approved.
   https://github.com/alunduil/woodland-generators/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22
 [help-wanted]:
   https://github.com/alunduil/woodland-generators/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22
-[release-please]: https://github.com/googleapis/release-please
 [release-withdraw]: docs/how-to/withdraw-a-broken-release.md
 [releases]: docs/explanation/releases.md
 [waive-advisory]: docs/how-to/waive-a-dependency-advisory.md

@@ -20,8 +20,12 @@ release.
 
 Before 1.0 the arithmetic is compressed: a breaking change bumps the minor
 version, and so does a `feat`.
-[CONTRIBUTING](../../CONTRIBUTING.md#commit-messages) lists which subjects cut a
-release at all.
+
+Only a commit that reaches the release notes cuts a release: a breaking change,
+or a type that `changelog-sections` in `release-please-config.json` doesn't mark
+`hidden`. Marking a type `hidden` stops it releasing, not only its entry.
+[CONTRIBUTING](../../CONTRIBUTING.md#commit-messages) says which section each
+common type lands in.
 
 Merging produces one commit. That commit:
 
