@@ -89,8 +89,8 @@ Subjects must follow [Conventional Commits][conventional-commits]. The
 `commit-msg` git hook (`compilerla/conventional-pre-commit`) rejects
 non-conventional subjects at `git commit` time. The hook and the `PR Title`
 workflow both read their types from `changelog-sections` in
-`release-please-config.json`. `release-please` bumps the version from the types
-it doesn't mark `hidden`; the others cut no release.
+`release-please-config.json`. `release-please` bumps the version only for types
+`changelog-sections` doesn't mark `hidden`.
 
 Mark `!` or `BREAKING CHANGE:` only on a change a Foundry world or its GM
 notices after upgrading.

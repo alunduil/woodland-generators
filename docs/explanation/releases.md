@@ -22,10 +22,9 @@ release.
 Before 1.0 the arithmetic is compressed: a breaking change bumps the minor
 version, and so does a `feat`.
 
-Only a commit that reaches the release notes cuts a release. release-please
-keeps a commit when its type has a `changelog-sections` entry in
-`release-please-config.json` not marked `hidden`, or when it's breaking. With
-nothing kept, the notes are empty and release-please skips the release.
+Only a commit that reaches the release notes cuts a release: a breaking change,
+or a type that `changelog-sections` in `release-please-config.json` doesn't mark
+`hidden`. Marking a type `hidden` stops it releasing, not only its entry.
 [CONTRIBUTING](../../CONTRIBUTING.md#commit-messages) says which section each
 common type lands in.
 

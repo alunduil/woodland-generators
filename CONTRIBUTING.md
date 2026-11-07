@@ -123,8 +123,9 @@ This repository follows [Conventional Commits][conventional-commits]. The
 `commit-msg` git hook and the `PR Title` GitHub Actions check both enforce
 conventional subjects.
 
-Pick the type for what a GM sees. A type that lands in a section of the release
-notes cuts a release; the others don't. Common prefixes:
+Pick the type for what a GM sees. A type shown with a section cuts a release and
+appears under that section in the release notes. A type with no section does
+neither. Common prefixes:
 
 - `feat:` - new user-facing feature (Added)
 - `perf:` - performance improvement (Changed)
@@ -132,10 +133,9 @@ notes cuts a release; the others don't. Common prefixes:
 - `revert:` - undoes an earlier change (Removed)
 - `fix:` - bug fix (Fixed)
 - `security:` - fix for a vulnerability (Security)
-- `docs:` - documentation only (not in the release notes)
-- `refactor:` - code change that neither fixes a bug nor adds a feature (not in
-  the release notes)
-- `chore:` - tooling, build, or maintenance work (not in the release notes)
+- `docs:` - documentation only
+- `refactor:` - code change that neither fixes a bug nor adds a feature
+- `chore:` - tooling, build, or maintenance work
 
 A `deprecate:` commit alone cuts a patch release. For a minor, ship it with a
 `feat:` commit or add a `Release-As:` footer naming the version.
@@ -152,8 +152,8 @@ Contributor tooling never breaks a world. Raising the Node or pnpm floor,
 changing CI, or reworking the build isn't breaking, even when the change touches
 a file inside a package.
 
-The `PR Title` check rejects `!` on a type outside the release notes, except
-`refactor`. The notes would announce a break they never explain.
+The `PR Title` check rejects `!` on a type with no section, except `refactor`,
+because the release notes would announce a break they never explain.
 
 Examples:
 
