@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: MIT
 
 import { Rng } from "../random/rng.js";
-
 import {
   CLEARING_NAMES,
   DOMINANT_COMMUNITIES,

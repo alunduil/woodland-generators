@@ -2,9 +2,8 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { Rng } from "../random/rng.js";
-
 import { root } from "../logging/index.js";
+import { Rng } from "../random/rng.js";
 import type { GeneratorOptions } from "./options.js";
 
 export const CHARACTER_NAMES = [

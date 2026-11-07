@@ -2,8 +2,6 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { Rng } from "../../src/random/rng";
-
 import {
   validateChoicesNonEmpty,
   generateSubsetFromChoices,
@@ -11,6 +9,7 @@ import {
   generateMultipleFromChoices,
 } from "../../src/generators/choices";
 import { root } from "../../src/logging";
+import { Rng } from "../../src/random/rng";
 
 describe("generateSubsetFromChoices", () => {
   beforeEach(() => {

@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import type { Logger } from "pino";
+
 import { Rng } from "../random/rng.js";
 
 export function validateChoicesNonEmpty(category: string, choices: string[], logger: Logger): void {
