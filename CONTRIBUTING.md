@@ -123,23 +123,22 @@ This repository follows [Conventional Commits][conventional-commits]. The
 `commit-msg` git hook and the `PR Title` GitHub Actions check both enforce
 conventional subjects.
 
-`changelog-sections` in `release-please-config.json` lists every accepted type.
-[release-please][release-please] releases the Foundry module from the types it
-doesn't mark `hidden`. Other types cut no release. Common prefixes:
+Pick the type for what a GM sees. A type that lands in a section of the release
+notes cuts a release; the others don't. Common prefixes:
 
-- `feat:` - new user-facing feature (minor version bump)
-- `fix:` - bug fix (patch version bump)
-- `perf:` - performance improvement (patch version bump)
-- `security:` - fix for a vulnerability (patch version bump)
-- `deprecate:` - feature that a later release removes (patch version bump)
-- `docs:` - documentation only
-- `refactor:` - code change that neither fixes a bug nor adds a feature
-- `chore:` - tooling, build, or maintenance work
+- `feat:` - new user-facing feature (Added)
+- `perf:` - performance improvement (Changed)
+- `deprecate:` - feature that a later release removes (Deprecated)
+- `revert:` - undoes an earlier change (Removed)
+- `fix:` - bug fix (Fixed)
+- `security:` - fix for a vulnerability (Security)
+- `docs:` - documentation only (not in the release notes)
+- `refactor:` - code change that neither fixes a bug nor adds a feature (not in
+  the release notes)
+- `chore:` - tooling, build, or maintenance work (not in the release notes)
 
-Semantic Versioning calls for a minor version bump on a deprecation, but
-release-please raises the minor version only for `feat`. To get one, release the
-`deprecate:` commit alongside a `feat:` commit, or add a `Release-As:` footer
-naming the version.
+A `deprecate:` commit alone cuts a patch release. For a minor, ship it with a
+`feat:` commit or add a `Release-As:` footer naming the version.
 
 A change is breaking when a Foundry world or its GM notices it after upgrading.
 Mark it by appending `!` after the type (for example, `feat!:`) or including a
@@ -153,8 +152,8 @@ Contributor tooling never breaks a world. Raising the Node or pnpm floor,
 changing CI, or reworking the build isn't breaking, even when the change touches
 a file inside a package.
 
-A breaking change bumps the major version (or minor, while pre-1.0), and
-release-please lists it in the release notes whatever its type.
+The `PR Title` check rejects `!` on a type outside the release notes, except
+`refactor`. The notes would announce a break they never explain.
 
 Examples:
 
@@ -278,7 +277,6 @@ maintainer merges the PR once it's approved.
   https://github.com/alunduil/woodland-generators/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22
 [help-wanted]:
   https://github.com/alunduil/woodland-generators/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22
-[release-please]: https://github.com/googleapis/release-please
 [release-withdraw]: docs/how-to/withdraw-a-broken-release.md
 [releases]: docs/explanation/releases.md
 [waive-advisory]: docs/how-to/waive-a-dependency-advisory.md
