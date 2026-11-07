@@ -244,7 +244,7 @@ jobs:
       # SHA pinning is transitive: an action whose own action.yml references
       # another by tag fails the run at resolution, before any step executes.
       - name: Run default-stage hooks
-        uses: tox-dev/action-pre-commit-uv@ae5b217f46f65d48b20a76b902d7950c745171af # v1.1.1
+        uses: tox-dev/action-pre-commit-uv@9316eafda3550b0365575c60b9f53725a81d0cfd # v1.1.2
         env:
           # A push run checks out main, which no-commit-to-branch rejects.
           SKIP: no-commit-to-branch
@@ -253,7 +253,7 @@ jobs:
       # the hook environment the step above provisioned and cached. See
       # .pre-commit-config.yaml for why that stage exists.
       - name: Validate TOML against published schemas
-        uses: tox-dev/action-pre-commit-uv@ae5b217f46f65d48b20a76b902d7950c745171af # v1.1.1
+        uses: tox-dev/action-pre-commit-uv@9316eafda3550b0365575c60b9f53725a81d0cfd # v1.1.2
         with:
           extra_args: --hook-stage manual --all-files tombi-lint-online
 
