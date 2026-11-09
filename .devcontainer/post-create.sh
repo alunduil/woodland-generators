@@ -10,7 +10,7 @@ echo "🚀 Setting up Woodland Generators development environment..."
 
 # Activate pnpm via corepack (version pinned by package.json#packageManager)
 echo "📦 Activating pnpm via corepack..."
-corepack enable
+sudo corepack enable
 corepack prepare --activate
 
 # Install project dependencies
