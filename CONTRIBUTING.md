@@ -135,6 +135,28 @@ neither. Common prefixes:
 - `refactor:` - code change that neither fixes a bug nor adds a feature
 - `chore:` - tooling, build, or maintenance work
 
+The squashed pull request title becomes the commit subject. For a type shown
+with a section, that subject is the release-notes entry a GM reads, and nobody
+edits it at release time. Write the title for a GM:
+
+- Say what changed in the GM's world, not how the code changed.
+- Leave off the `foundry-module` scope. Every release-notes entry comes from
+  that package, so the scope repeats on each entry and tells a GM nothing.
+
+Instead of:
+
+```text
+feat(foundry-module): bundle a manifest-declared stylesheet
+fix(foundry-module): respect the seed argument in name generation
+```
+
+Write:
+
+```text
+chore: bundle a manifest-declared stylesheet
+fix: give the same name for the same seed
+```
+
 A `deprecate:` commit alone cuts a patch release. For a minor, ship it with a
 `feat:` commit or add a `Release-As:` footer naming the version.
 
@@ -157,7 +179,6 @@ Examples:
 
 ```text
 feat: add character demeanor generation
-fix(foundry-module): respect the seed argument in name generation
 chore(deps): bump typescript to 5.9.3
 ```
 
