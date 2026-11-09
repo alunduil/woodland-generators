@@ -135,6 +135,16 @@ neither. Common prefixes:
 - `refactor:` - code change that neither fixes a bug nor adds a feature
 - `chore:` - tooling, build, or maintenance work
 
+A `deprecate:` commit alone cuts a patch release. For a minor, ship it with a
+`feat:` commit or add a `Release-As:` footer naming the version.
+
+Examples:
+
+```text
+feat: add character demeanor generation
+chore(deps): bump typescript to 5.9.3
+```
+
 The squashed pull request title becomes the commit subject. For a type shown
 with a section, that subject is the release-notes entry a GM reads, and nobody
 edits it at release time. Write the title for a GM:
@@ -157,9 +167,6 @@ chore: bundle a manifest-declared stylesheet
 fix: give the same name for the same seed
 ```
 
-A `deprecate:` commit alone cuts a patch release. For a minor, ship it with a
-`feat:` commit or add a `Release-As:` footer naming the version.
-
 A change is breaking when a Foundry world or its GM notices it after upgrading.
 Mark it by appending `!` after the type (for example, `feat!:`) or including a
 `BREAKING CHANGE:` footer. Breaking changes include:
@@ -174,13 +181,6 @@ a file under `packages/foundry-module`.
 
 The `PR Title` check rejects `!` on a type with no section, except `refactor`,
 because the release notes would announce a break they never explain.
-
-Examples:
-
-```text
-feat: add character demeanor generation
-chore(deps): bump typescript to 5.9.3
-```
 
 ## Releases
 
