@@ -146,11 +146,10 @@ chore(deps): bump typescript to 5.9.3
 ```
 
 Write the pull request title for a GM. For a type shown with a section, the
-squashed title becomes the release-notes entry word for word:
-
-- Say what changed in the GM's world, not how the code changed.
-- Leave off the `foundry-module` scope. Every release-notes entry comes from
-  that package, so the scope repeats on each entry and tells a GM nothing.
+squashed title becomes the release-notes entry word for word, so say what
+changed in the GM's world, not how the code changed. The `PR Title` check
+rejects the `foundry-module` scope: every entry comes from that package, so the
+scope tells a GM nothing.
 
 Instead of:
 
