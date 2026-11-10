@@ -8,6 +8,7 @@
     "ghcr.io/devcontainers-extra/features/shellcheck:1": {},
     "ghcr.io/devcontainers-extra/features/mise:1": {},
     "ghcr.io/devcontainers-extra/features/pre-commit:2": {},
+    // Match the vale rev in .pre-commit-config.yaml.
     "ghcr.io/shinepukur/devcontainer-features/vale:1": { "version": "3.26.0" }
   },
   // Configure tool-specific properties
@@ -52,8 +53,8 @@
   "postCreateCommand": ".devcontainer/post-create.sh",
   // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root
   "remoteUser": "node",
-  // Git hooks and postCreateCommand run outside a login shell, so they find
-  // mise's tools through the shims and pre-commit through py-utils.
+  // Git hooks and postCreateCommand skip the login shell that would otherwise
+  // put these on PATH.
   "remoteEnv": {
     "PATH": "/home/node/.local/share/mise/shims:/usr/local/py-utils/bin:${containerEnv:PATH}"
   }

@@ -145,9 +145,8 @@ feat: add character demeanor generation
 chore(deps): bump typescript to 5.9.3
 ```
 
-The squashed pull request title becomes the commit subject. For a type shown
-with a section, that subject is the release-notes entry a GM reads, and nobody
-edits it at release time. Write the title for a GM:
+Write the pull request title for a GM. For a type shown with a section, the
+squashed title becomes the release-notes entry word for word:
 
 - Say what changed in the GM's world, not how the code changed.
 - Leave off the `foundry-module` scope. Every release-notes entry comes from
