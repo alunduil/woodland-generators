@@ -138,6 +138,33 @@ neither. Common prefixes:
 A `deprecate:` commit alone cuts a patch release. For a minor, ship it with a
 `feat:` commit or add a `Release-As:` footer naming the version.
 
+Examples:
+
+```text
+feat: add character demeanor generation
+chore(deps): bump typescript to 5.9.3
+```
+
+Write the pull request title for a GM. For a type shown with a section, the
+squashed title becomes the release-notes entry word for word, so say what
+changed in the GM's world, not how the code changed. The `PR Title` check
+rejects the `foundry-module` scope: every entry comes from that package, so the
+scope tells a GM nothing.
+
+Instead of:
+
+```text
+feat(foundry-module): bundle a manifest-declared stylesheet
+fix(foundry-module): respect the seed argument in name generation
+```
+
+Write:
+
+```text
+chore: bundle a manifest-declared stylesheet
+fix: give the same name for the same seed
+```
+
 A change is breaking when a Foundry world or its GM notices it after upgrading.
 Mark it by appending `!` after the type (for example, `feat!:`) or including a
 `BREAKING CHANGE:` footer. Breaking changes include:
@@ -152,14 +179,6 @@ a file under `packages/foundry-module`.
 
 The `PR Title` check rejects `!` on a type with no section, except `refactor`,
 because the release notes would announce a break they never explain.
-
-Examples:
-
-```text
-feat: add character demeanor generation
-fix(foundry-module): respect the seed argument in name generation
-chore(deps): bump typescript to 5.9.3
-```
 
 ## Releases
 

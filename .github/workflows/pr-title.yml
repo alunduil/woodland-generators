@@ -45,6 +45,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           types: ${{ steps.commit-types.outputs.types }}
+          # Every release-notes entry comes from foundry-module, so the scope
+          # repeats on each entry and tells a GM nothing.
+          disallowScopes: foundry-module
 
       # A breaking marker bumps the version and lands under BREAKING CHANGES
       # even on a type release-please hides, so the changelog would announce a
