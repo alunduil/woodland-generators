@@ -7,9 +7,7 @@
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers-extra/features/shellcheck:1": {},
     "ghcr.io/devcontainers-extra/features/mise:1": {},
-    "ghcr.io/devcontainers-extra/features/pre-commit:2": {},
-    // Match the vale rev in .pre-commit-config.yaml.
-    "ghcr.io/shinepukur/devcontainer-features/vale:1": { "version": "3.26.0" }
+    "ghcr.io/devcontainers-extra/features/pre-commit:2": {}
   },
   // Configure tool-specific properties
   "customizations": {

@@ -128,23 +128,19 @@ repos:
     hooks:
       - id: reuse
 
-  # Prose linting with Vale
-  - repo: https://github.com/errata-ai/vale
-    rev: v3.26.0
+  # mise.toml pins these hooks' binaries.
+  - repo: local
     hooks:
       - id: vale
+        name: vale
+        entry: vale
+        language: system
         files: \.(md|rst|txt)$
         types_or: [markdown, rst, plain-text]
         args: ["--config=.vale.ini", "--minAlertLevel=error"]
 
-  # Lychee link checker, run from mise's binary: the upstream hook's binary
-  # needs GLIBC 2.38, and Debian 12 ships 2.36.
-  #
-  # --offline restricts the gate to internal/relative links: fast, deterministic,
-  # and safe to block on. External URLs rot from time and third parties, not the
-  # diff, so they are checked weekly by weekly.yml instead (see #336).
-  - repo: local
-    hooks:
+      # --offline checks internal links only, so an external site's outage
+      # can't fail a commit. weekly.yml checks external links.
       - id: lychee
         name: lychee
         entry: lychee --config=lychee.toml --no-progress --offline
