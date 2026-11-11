@@ -17,7 +17,6 @@ corepack prepare --activate
 echo "📦 Installing project dependencies..."
 pnpm install --frozen-lockfile
 
-# Install the tools pinned in mise.toml
 echo "🧰 Installing mise tools..."
 mise trust
 mise install
