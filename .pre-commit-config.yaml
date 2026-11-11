@@ -128,10 +128,10 @@ repos:
     hooks:
       - id: reuse
 
-  # Prose linting with Vale, run from mise's binary so mise.toml holds the only
-  # version pin.
+  # These hooks run mise's binaries, so mise.toml holds their only version pin.
   - repo: local
     hooks:
+      # Prose linting with Vale
       - id: vale
         name: vale
         entry: vale
@@ -140,14 +140,13 @@ repos:
         types_or: [markdown, rst, plain-text]
         args: ["--config=.vale.ini", "--minAlertLevel=error"]
 
-  # Lychee link checker, run from mise's binary: the upstream hook's binary
-  # needs GLIBC 2.38, and Debian 12 ships 2.36.
-  #
-  # --offline restricts the gate to internal/relative links: fast, deterministic,
-  # and safe to block on. External URLs rot from time and third parties, not the
-  # diff, so they are checked weekly by weekly.yml instead (see #336).
-  - repo: local
-    hooks:
+      # Lychee link checker. The upstream hook's binary needs GLIBC 2.38, and
+      # Debian 12 ships 2.36.
+      #
+      # --offline restricts the gate to internal/relative links: fast,
+      # deterministic, and safe to block on. External URLs rot from time and
+      # third parties, not the diff, so they are checked weekly by weekly.yml
+      # instead (see #336).
       - id: lychee
         name: lychee
         entry: lychee --config=lychee.toml --no-progress --offline
