@@ -128,11 +128,14 @@ repos:
     hooks:
       - id: reuse
 
-  # Prose linting with Vale
-  - repo: https://github.com/errata-ai/vale
-    rev: v3.26.0
+  # Prose linting with Vale, run from mise's binary so mise.toml holds the only
+  # version pin.
+  - repo: local
     hooks:
       - id: vale
+        name: vale
+        entry: vale
+        language: system
         files: \.(md|rst|txt)$
         types_or: [markdown, rst, plain-text]
         args: ["--config=.vale.ini", "--minAlertLevel=error"]

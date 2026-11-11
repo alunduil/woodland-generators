@@ -217,10 +217,10 @@ jobs:
       - name: Setup Node.js + pnpm
         uses: ./.github/actions/setup-node-pnpm
 
-      - name: Install lychee
+      - name: Install lychee and Vale
         uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5.2.7
         with:
-          install_args: github:lycheeverse/lychee
+          install_args: github:lycheeverse/lychee vale
 
       # `key` and `restore-keys` have to share a prefix or every run misses the
       # cache silently, so derive it once here rather than writing it twice.
