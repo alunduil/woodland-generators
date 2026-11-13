@@ -15,12 +15,6 @@
       "groupName": "pnpm"
     },
     {
-      "description": "Bump the mise.toml and .node-version Node pins in one PR; only the mise side regenerates mise.lock",
-      "matchDepNames": ["node"],
-      "matchManagers": ["mise", "nodenv"],
-      "groupName": "Node.js"
-    },
-    {
       "description": "CI never starts Foundry, so a new build can break the module with every check green",
       "matchDepNames": ["felddy/foundryvtt"],
       "automerge": false,

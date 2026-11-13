@@ -266,7 +266,7 @@ jobs:
       contents: read
       id-token: write
     with:
-      node-version-file: .node-version
+      node-version-file: mise.toml
       hook-runner: pre-commit
 
   # Verified mode fails only on a credential TruffleHog confirms is live, so
