@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 ---
-# GitHub hosts ubuntu-26.04, but actionlint doesn't list it yet
+# actionlint doesn't list the GitHub-hosted ubuntu-26.04 label
 # (rhysd/actionlint#682). Delete this file once a release does.
 self-hosted-runner:
   labels:
