@@ -7,7 +7,7 @@ description: Install Node.js, pnpm, and the workspace's locked dependencies.
 
 inputs:
   node-version:
-    description: Node.js version passed to actions/setup-node; overrides the mise.toml pin.
+    description: Node.js version to install instead of the mise.toml pin.
     required: false
     default: ""
 
