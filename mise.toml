@@ -2,8 +2,6 @@
 # SPDX-License-Identifier: MIT
 
 [settings]
-# Node's pin lives in .node-version, which setup-node also reads.
-idiomatic_version_file_enable_tools = ["node"]
 locked = true
 lockfile_platforms = ["linux-x64"]
 
@@ -11,5 +9,6 @@ lockfile_platforms = ["linux-x64"]
 # github: for the musl build. aqua ships only the gnu build, which needs glibc
 # 2.38+, and the Debian 12 devcontainer has 2.36.
 "github:lycheeverse/lychee" = { version = "0.24.2", version_prefix = "lychee-v", matching = "musl" }
+node = "26.13.1"
 pnpm = "11.28.11"
 vale = "3.26.0"
