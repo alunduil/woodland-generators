@@ -3,7 +3,8 @@
   "extends": [
     "github>alunduil/renovate-config:application",
     "github>alunduil/renovate-config:automerge-minor",
-    ":automergeDigest"
+    ":automergeDigest",
+    "github>alunduil/renovate-config:hold-bundled-dependencies"
   ],
   "addLabels": ["automated"],
   "platformAutomerge": false,
