@@ -31,10 +31,10 @@ precedence = "aggregate"
 SPDX-FileCopyrightText = "2025-2026 Alex Brandt"
 SPDX-License-Identifier = "MIT"
 
-# Lock files managed by pnpm and mise. Annotating in-band would be churned by
-# every dependency update.
+# Tools rewrite these files. Dependency updates would churn an in-band header,
+# and Renovate drops the leading comment block of pnpm-workspace.yaml.
 [[annotations]]
-path = ["pnpm-lock.yaml", "mise.lock"]
+path = ["pnpm-lock.yaml", "mise.lock", "pnpm-workspace.yaml"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2025-2026 Alex Brandt"
 SPDX-License-Identifier = "MIT"
