@@ -8,7 +8,8 @@ blockExoticSubdeps: false
 overrides:
   # tinymce never enters shipped code: foundry-vtt-types contributes it as
   # types only, and Foundry VTT supplies it at runtime. It sits past the
-  # declared ^6.8.5 because its XSS advisories resolve only in 8.x on npm.
+  # declared ^6.8.5 because every release in that range carries XSS
+  # advisories.
   tinymce: 8.10.2
 allowBuilds:
   # Prebuilt binaries ship in per-platform optional packages. The install
