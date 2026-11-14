@@ -39,6 +39,14 @@ precedence = "aggregate"
 SPDX-FileCopyrightText = "2025-2026 Alex Brandt"
 SPDX-License-Identifier = "MIT"
 
+# Renovate rewrites pnpm-workspace.yaml on override updates and drops its
+# leading comment block, taking an in-band header with it.
+[[annotations]]
+path = "pnpm-workspace.yaml"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025-2026 Alex Brandt"
+SPDX-License-Identifier = "MIT"
+
 # Vendored Vale style packs pulled in by `vale sync`. Each pack carries
 # its upstream author and license -- add a new stanza when adding a pack
 # so additions and removals stay localised and a non-MIT pack surfaces in
