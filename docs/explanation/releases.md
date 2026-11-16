@@ -55,15 +55,10 @@ flattened to the zip root, because Foundry unpacks the archive straight into
 
 ## Built without caches
 
-No job in the `Release` workflow restores a cache. The zip bundles the module's
-dependencies, and every default-branch run, including a Renovate update that
-merged itself, can write the mise tool cache and the pnpm store cache. A release
-job that restored them would ship whatever that run left there, so release jobs
-install from the registry against the lockfile instead.
-
-The shared `setup-node-pnpm` action leaves caching off unless a job passes
-`cache: true`. A new job starts uncached, and only `CI` jobs, whose output
-nothing ships, opt in.
+Release jobs install dependencies from the registry, never from a cache. Any run
+on `main` can write the mise and pnpm caches, including a Renovate update that
+merged itself. The zip bundles the module's dependencies, so a release built
+from a cache would ship whatever that run left there.
 
 ## The tag and the payload have to agree
 

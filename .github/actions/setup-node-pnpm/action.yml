@@ -12,10 +12,9 @@ inputs:
     default: ""
   cache:
     description: >-
-      Restore and save the mise tool cache and the pnpm store cache. Off unless
-      a job asks, because any default-branch run can write these caches and a
-      job that restores one installs whatever that run left there. Set it only
-      on jobs whose output nothing ships: never in release.yml.
+      Restore and save the mise tool and pnpm store caches. Any default-branch
+      run can write them, so enable this only on jobs whose output nothing
+      ships.
     required: false
     default: "false"
 
