@@ -48,6 +48,7 @@ jobs:
       - name: Setup Node.js + pnpm
         uses: ./.github/actions/setup-node-pnpm
         with:
+          cache: true
           node-version: ${{ matrix.node.version }}
 
       - name: Run tests with coverage
@@ -152,6 +153,8 @@ jobs:
 
       - name: Setup Node.js + pnpm
         uses: ./.github/actions/setup-node-pnpm
+        with:
+          cache: true
 
       - name: Build TypeScript
         run: pnpm run build
@@ -199,6 +202,8 @@ jobs:
 
       - name: Setup Node.js + pnpm
         uses: ./.github/actions/setup-node-pnpm
+        with:
+          cache: true
 
       - name: Fail on high or critical advisories
         run: pnpm audit --prod --audit-level=high
@@ -216,6 +221,8 @@ jobs:
 
       - name: Setup Node.js + pnpm
         uses: ./.github/actions/setup-node-pnpm
+        with:
+          cache: true
 
       - name: Install hook binaries from mise
         uses: jdx/mise-action@d5574b52816a478f9d4e6529a3f6ff17a8a36785 # v5.2.8

@@ -53,6 +53,13 @@ them. The zip's contents come from the `files` array in `package.json`,
 flattened to the zip root, because Foundry unpacks the archive straight into
 `Data/modules/woodland-generators`.
 
+## Built without caches
+
+Release jobs install dependencies from the registry, never from a cache. Any run
+on `main` can write the mise and pnpm caches, including a Renovate update that
+merged itself. The zip bundles the module's dependencies, so a release built
+from a cache would ship whatever that run left there.
+
 ## The tag and the payload have to agree
 
 `package-release.ts` checks the version in `module.json` against the tag being
