@@ -62,8 +62,6 @@ jobs:
 
       - name: Setup Node.js + pnpm
         uses: ./.github/actions/setup-node-pnpm
-        with:
-          cache: false
 
       - name: Build every package
         run: pnpm run build
@@ -102,8 +100,6 @@ jobs:
 
       - name: Setup Node.js + pnpm
         uses: ./.github/actions/setup-node-pnpm
-        with:
-          cache: false
 
       - name: Install the module from its manifest URL
         run: pnpm --filter @woodland-generators/foundry-module run verify:release
