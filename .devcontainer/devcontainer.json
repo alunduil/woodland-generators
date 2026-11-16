@@ -51,6 +51,11 @@
   "postCreateCommand": ".devcontainer/post-create.sh",
   // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root
   "remoteUser": "node",
+  // pnpm otherwise puts its store at the root of the workspace bind mount,
+  // inside the checkout, because the home directory is on another filesystem.
+  "containerEnv": {
+    "pnpm_config_store_dir": "/home/node/.local/share/pnpm/store"
+  },
   // Git hooks and postCreateCommand skip the login shell that would otherwise
   // put these on PATH.
   "remoteEnv": {
