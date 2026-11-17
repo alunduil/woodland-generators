@@ -1,6 +1,7 @@
 # AI agent notes
 
-Audience: AI coding assistants. Humans use [CONTRIBUTING.md](CONTRIBUTING.md).
+Audience: AI coding assistants. Humans use [CONTRIBUTING.md](CONTRIBUTING.md),
+and so do you: read it first. This file adds only what an agent needs beyond it.
 
 This file holds the notes for every agent. A tool that reads `AGENTS.md` needs
 no file of its own. A tool that reads only its own path gets a file that imports
@@ -10,31 +11,23 @@ than one tool belongs here.
 
 ## Project overview
 
-A pnpm workspace whose package, `packages/foundry-module`
-(`@woodland-generators/foundry-module`), is the Foundry VTT module and its
-generators for Root: The Tabletop RPG. Its entry is `src/module.ts`.
+[CONTRIBUTING.md](CONTRIBUTING.md#project-layout) covers the layout and where
+new code goes. The package is `@woodland-generators/foundry-module`, and its
+entry is `src/module.ts`.
 
 `src/logging` is Node-only: it runs `pino` through a worker transport and reads
 `__dirname` at import. The character generators import it, so bundled code can't
 import them.
 
-Put new code in `foundry-module`. Extract a package only when code outside the
-module needs to import it.
-
 No CLI binary is wired up at HEAD despite the `woodland-gen` framing in the
 README: there is no `bin`, `cli.ts`, or `cli` script, so don't reach for
 `pnpm run cli`.
 
-## Common commands
+## Commands
 
-Run `corepack enable` once, then:
-
-- `pnpm run build`: build the module.
-- `pnpm --filter @woodland-generators/foundry-module build:watch`: rebuild the
-  module on change.
-- `pnpm test`: run the Jest suite.
-- `pre-commit run --all-files`: gates every PR. Authoritative hook list:
-  `.pre-commit-config.yaml`.
+[Quick start](CONTRIBUTING.md#quick-start) and [Checks](CONTRIBUTING.md#checks)
+list the build, test, and check commands. The authoritative hook list is
+`.pre-commit-config.yaml`.
 
 ## Tooling inventory
 
@@ -60,41 +53,28 @@ Configuration file shown in parentheses.
 
 ## Tests
 
-Test files mirror the module under test: tests for
-`packages/foundry-module/src/foo/bar.ts` live at
-`packages/foundry-module/test/foo/bar.test.ts`. Don't split tests by feature or
-scenario. A file under `test/` that isn't a test is named for what it holds, not
-for being shared: no `support/`, `utils/`, or `helpers/` buckets.
+[CONTRIBUTING.md](CONTRIBUTING.md#tests) sets where tests live and how they
+reach Foundry's globals. The specifics:
 
-`foundry` is installed for every test file through Jest's `setupFiles`, at
-`packages/foundry-module/test/setup/foundry.ts`. The per-test `game` and `Hooks`
-stubs live in `packages/foundry-module/test/foundry-globals.ts`; extend that
-rather than adding a stub inside a suite.
-
-Take the narrowed `game` a function needs as a parameter, the way
-`GeneratorMenu.register` takes an `InitGame`. fvtt-types gates `game` members on
-lifecycle hooks and ships `InitGame`, `I18nInitGame`, `SetupGame`, and
-`ReadyGame` to name the point reached, so naming it removes a guard the tests
-would otherwise have to cover.
-
-Behaviour needing a running Foundry goes in
-`packages/foundry-module/test/manual/` as a numbered scenario, walked by hand
-and recorded in the pull request. #657 converts these to Playwright specs.
+- A file under `test/` that isn't a test doesn't go in a `support/`, `utils/`,
+  or `helpers/` bucket.
+- The `foundry` global comes from
+  `packages/foundry-module/test/setup/foundry.ts`. The `game` and `Hooks` stubs
+  to extend live in `packages/foundry-module/test/foundry-globals.ts`.
+- To name the narrowed `game` a function takes, use the type fvtt-types ships
+  for the lifecycle point reached: `InitGame`, `I18nInitGame`, `SetupGame`, or
+  `ReadyGame`. Naming it removes a guard the tests would otherwise have to
+  cover.
+- #657 converts the manual scenarios to Playwright specs.
 
 ## Commits
 
-Subjects must follow [Conventional Commits][conventional-commits]. The
-`commit-msg` git hook (`compilerla/conventional-pre-commit`) rejects
-non-conventional subjects at `git commit` time. The hook and the `PR Title`
-workflow both read their types from `changelog-sections` in
-`release-please-config.json`. `release-please` bumps the version only for types
-`changelog-sections` doesn't mark `hidden`.
-
-Mark `!` or `BREAKING CHANGE:` only on a change a Foundry world or its GM
-notices after upgrading.
-
-Type and scope rules with examples:
-[CONTRIBUTING.md](CONTRIBUTING.md#commit-messages).
+[CONTRIBUTING.md](CONTRIBUTING.md#commit-messages) sets the types, scopes, and
+what counts as breaking. The `commit-msg` hook
+(`compilerla/conventional-pre-commit`) and the `PR Title` workflow both read
+their types from `changelog-sections` in `release-please-config.json`.
+`release-please` bumps the version only for types `changelog-sections` doesn't
+mark `hidden`.
 
 ## Scope discipline
 
@@ -108,28 +88,8 @@ When working a numbered issue:
 
 ## GitHub Actions
 
-Name a workflow for when it runs and a job for what it produces:
-
-- Workflow `name:` is the trigger or cadence (`CI`, `Daily`, `Weekly`,
-  `Release`), and the filename is that name, kebab-cased. A single-purpose
-  workflow may take its subject instead until a sibling joins it (`PR Title`).
-- Job `name:` is a verb phrase naming the outcome, read in the checks list:
-  `Check external links`, `Build every package`. Give the verb a concrete object
-  rather than an article and an abstract noun (`Run the test suite`).
-- Job `id:` is the kebab identifier `needs:` and reuse refer to
-  (`external-links`). It need not match the name.
-
-Branch protection matches the job `name:` alone as the status-check context, not
-`Workflow / Job`, so job names must be unique repo-wide and legible standing
-alone. A matrix emits one context per cell, so a matrix that must be required
-gets a stable aggregator job to target instead: `ci.yml`'s `ci-results`.
-
-Give a workflow its own file only when its `on:` differs. `permissions`,
-`concurrency`, `env`, and `defaults` all scope per job, so set them on a job
-inside an existing file.
-
-Rationale and examples:
-[CONTRIBUTING.md](CONTRIBUTING.md#workflow-and-job-names).
+Name workflows and jobs by
+[Workflow and job names](CONTRIBUTING.md#workflow-and-job-names).
 
 ## Releases
 
@@ -138,5 +98,3 @@ pipeline and what the manifest URL commits the project to.
 
 Don't hand-edit released CHANGELOG sections. Root `CHANGELOG.md` is frozen as
 historical record of the pre-workspace era; don't append to it.
-
-[conventional-commits]: https://www.conventionalcommits.org/en/v1.0.0/
