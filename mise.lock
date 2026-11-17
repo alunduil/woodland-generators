@@ -26,14 +26,14 @@ checksum = "sha256:518674de2b621728a5e4486f5fb3b7d2900bb3cc4aa97969edaa463db99f9
 url = "https://nodejs.org/dist/v26.13.1/node-v26.13.1-linux-x64.tar.gz"
 
 [[tools.pnpm]]
-version = "11.28.11"
+version = "11.28.12"
 backend = "aqua:pnpm/pnpm"
-specifiers = ["11.28.11"]
+specifiers = ["11.28.12"]
 
 [tools.pnpm."platforms.linux-x64"]
-checksum = "sha256:245b9ad9dd85b2ce876d62adf93fd2b227bd3c230deeb8a54b4d6a08f5a2d136"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.28.11/pnpm-linux-x64.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/711481965"
+checksum = "sha256:88e5266ab5f1eef45e9fc9dc803f4d53e6d6cc337604f008e1b1c38bf726f8f7"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.28.12/pnpm-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/744266925"
 provenance = "github-attestations"
 
 [[tools.vale]]
