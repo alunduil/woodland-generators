@@ -7,7 +7,8 @@
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers-extra/features/shellcheck:1": {},
     "ghcr.io/devcontainers-extra/features/mise:1": {},
-    "ghcr.io/devcontainers-extra/features/pre-commit:2": {}
+    "ghcr.io/devcontainers-extra/features/pre-commit:2": {},
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1": {}
   },
   // Configure tool-specific properties
   "customizations": {
@@ -56,9 +57,18 @@
   "containerEnv": {
     "pnpm_config_store_dir": "/home/node/.local/share/pnpm/store"
   },
-  // Git hooks and postCreateCommand skip the login shell that would otherwise
-  // put these on PATH.
+  // Each worktree's container keeps its own Claude conversations across
+  // rebuilds.
+  "mounts": [
+    "source=claude-code-config-${devcontainerId},target=/home/node/.claude,type=volume"
+  ],
   "remoteEnv": {
-    "PATH": "/home/node/.local/share/mise/shims:/usr/local/py-utils/bin:${containerEnv:PATH}"
+    // Git hooks and postCreateCommand skip the login shell that would
+    // otherwise put these on PATH.
+    "PATH": "/home/node/.local/share/mise/shims:/usr/local/py-utils/bin:${containerEnv:PATH}",
+    // Moves .claude.json from the home directory into the volume.
+    "CLAUDE_CONFIG_DIR": "/home/node/.claude",
+    // Without a host token, Claude offers its normal login.
+    "CLAUDE_CODE_OAUTH_TOKEN": "${localEnv:CLAUDE_CODE_OAUTH_TOKEN}"
   }
 }
