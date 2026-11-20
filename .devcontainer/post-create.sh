@@ -9,7 +9,7 @@ set -e
 echo "🚀 Setting up Woodland Generators development environment..."
 
 # Docker creates the named volume's mount point as root.
-echo "🤖 Giving Claude Code its config volume..."
+echo "🤖 Taking ownership of Claude Code's config volume..."
 sudo chown "$(id -u):$(id -g)" "$CLAUDE_CONFIG_DIR"
 
 # Activate pnpm via corepack (version pinned by package.json#packageManager)

@@ -57,8 +57,8 @@
   "containerEnv": {
     "pnpm_config_store_dir": "/home/node/.local/share/pnpm/store"
   },
-  // One volume per container keeps Claude's conversations across rebuilds,
-  // and keeps the host's ~/.claude, with its credentials, out of the container.
+  // Each worktree's container keeps its own Claude conversations across
+  // rebuilds.
   "mounts": [
     "source=claude-code-config-${devcontainerId},target=/home/node/.claude,type=volume"
   ],
@@ -66,9 +66,9 @@
     // Git hooks and postCreateCommand skip the login shell that would
     // otherwise put these on PATH.
     "PATH": "/home/node/.local/share/mise/shims:/usr/local/py-utils/bin:${containerEnv:PATH}",
-    // Claude signs in from the host's token, falling back to its normal login
-    // when unset, and keeps its state in the per-container volume above.
+    // Moves .claude.json from the home directory into the volume.
     "CLAUDE_CONFIG_DIR": "/home/node/.claude",
+    // Without a host token, Claude offers its normal login.
     "CLAUDE_CODE_OAUTH_TOKEN": "${localEnv:CLAUDE_CODE_OAUTH_TOKEN}"
   }
 }
