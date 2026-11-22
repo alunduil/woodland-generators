@@ -11,4 +11,4 @@ lockfile_platforms = ["linux-x64"]
 "github:lycheeverse/lychee" = { version = "0.24.2", version_prefix = "lychee-v", matching = "musl" }
 node = "26.13.1"
 pnpm = "11.28.13"
-vale = "3.27.0"
+vale = "3.28.1"
