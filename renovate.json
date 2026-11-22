@@ -16,6 +16,11 @@
       "groupName": "pnpm"
     },
     {
+      "description": "Each stylelint-config-standard major enables rules only its stylelint major knows, so neither update passes the stylelint hook alone",
+      "matchDepNames": ["stylelint", "stylelint-config-standard"],
+      "groupName": "stylelint"
+    },
+    {
       "description": "CI never starts Foundry, so a new build can break the module with every check green",
       "matchDepNames": ["felddy/foundryvtt"],
       "automerge": false,
