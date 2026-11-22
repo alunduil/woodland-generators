@@ -27,6 +27,11 @@
       ]
     },
     {
+      "description": "No required check builds the dev container, so a broken image or feature can merge with every check green",
+      "matchManagers": ["devcontainer"],
+      "automerge": false
+    },
+    {
       "matchManagers": ["npm"],
       "addLabels": ["npm"]
     },
