@@ -4,7 +4,8 @@
     "github>alunduil/renovate-config:application",
     "github>alunduil/renovate-config:automerge-minor",
     ":automergeDigest",
-    "github>alunduil/renovate-config:hold-bundled-dependencies"
+    "github>alunduil/renovate-config:hold-bundled-dependencies",
+    "group:stylelint"
   ],
   "addLabels": ["automated"],
   "platformAutomerge": false,
