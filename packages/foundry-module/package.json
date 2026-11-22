@@ -39,7 +39,7 @@
     "@types/jest": "30.0.0",
     "@types/node": "26.6.6",
     "esbuild": "0.28.2",
-    "fast-check": "4.10.2",
+    "fast-check": "4.10.3",
     "fflate": "0.8.3",
     "jest": "30.5.2",
     "jest-junit": "17.0.0",
