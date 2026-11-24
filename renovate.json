@@ -33,7 +33,7 @@
       "automerge": false
     },
     {
-      "description": "Only scheduled workflows run these, so a broken release can merge with every check green. Matching their files would also hold actions CI runs",
+      "description": "Only scheduled workflows run these actions, so a broken update can merge with every check green",
       "matchDepNames": ["actions/stale", "peter-evans/create-issue-from-file"],
       "automerge": false
     },
