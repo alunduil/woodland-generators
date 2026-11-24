@@ -33,8 +33,7 @@
       "automerge": false
     },
     {
-      "description": "Only scheduled workflows run these, so no pull request check exercises an update. Named rather than matched by file because one held upgrade holds its whole branch, shared actions included",
-      "matchManagers": ["github-actions"],
+      "description": "Only scheduled workflows run these, so a broken release can merge with every check green. Matching their files would also hold actions CI runs",
       "matchDepNames": ["actions/stale", "peter-evans/create-issue-from-file"],
       "automerge": false
     },
