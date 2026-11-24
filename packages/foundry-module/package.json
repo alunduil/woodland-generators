@@ -45,6 +45,6 @@
     "jest": "30.5.2",
     "jest-junit": "17.0.0",
     "ts-jest": "29.4.15",
-    "typescript": "npm:@typescript/typescript6@6.0.2"
+    "typescript": "catalog:"
   }
 }

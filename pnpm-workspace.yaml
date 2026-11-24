@@ -4,6 +4,10 @@
 
 packages:
   - "packages/*"
+catalog:
+  # typescript-eslint and ts-jest can't load TypeScript 7, so `typescript` names
+  # the 6.x API they import. foundry-module's @typescript/native supplies tsc.
+  typescript: npm:@typescript/typescript6@6.0.2
 blockExoticSubdeps: false
 overrides:
   # tinymce never enters shipped code: foundry-vtt-types contributes it as
