@@ -33,6 +33,11 @@
       "automerge": false
     },
     {
+      "description": "Only scheduled workflows run these actions, so a broken update can merge with every check green",
+      "matchDepNames": ["actions/stale", "peter-evans/create-issue-from-file"],
+      "automerge": false
+    },
+    {
       "matchManagers": ["npm"],
       "addLabels": ["npm"]
     },
