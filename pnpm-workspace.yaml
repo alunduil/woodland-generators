@@ -4,6 +4,10 @@
 
 packages:
   - "packages/*"
+catalog:
+  # typescript-eslint and ts-jest can't load TypeScript 7. The 6.x `typescript`
+  # package installs its own `tsc`, which collides with @typescript/native's.
+  typescript: npm:@typescript/typescript6@6.0.2
 blockExoticSubdeps: false
 overrides:
   # tinymce never enters shipped code: foundry-vtt-types contributes it as
