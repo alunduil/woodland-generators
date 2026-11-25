@@ -268,7 +268,7 @@ jobs:
   fix-renovate-hooks:
     name: Fix hooks on the Renovate branch
     # yamllint disable-line rule:line-length
-    uses: alunduil/renovate-config/.github/workflows/fix-renovate-hooks.yml@a35d4e2034256088a29e00029e01470956e0178c # main
+    uses: alunduil/renovate-config/.github/workflows/fix-renovate-hooks.yml@3b62af32029e67512437ef9c6c5ac976548f7fd2 # main
     permissions:
       contents: read
       id-token: write
