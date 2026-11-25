@@ -123,20 +123,58 @@ jobs:
           name: test-results-foundry-module-${{ matrix.node.slug }}
           fail_ci_if_error: true
 
+  # daily.yml prunes only on a schedule, so a breaking actions/stale has to fail
+  # here first. Keep every input but `debug-only` in sync with daily.yml.
+  stale-pull-requests:
+    runs-on: ubuntu-26.04
+    name: Preview stale pull request pruning
+    timeout-minutes: 10
+    # Read only: the job runs versions of the action nobody has reviewed.
+    permissions:
+      contents: read
+      issues: read
+      pull-requests: read
+
+    env:
+      DAYS_BEFORE_STALE: 30
+      DAYS_BEFORE_CLOSE: 14
+
+    steps:
+      - name: Preview stale pull request pruning
+        uses: actions/stale@4391f3da665fdf50b6810c1a66712fb9ba21aa93 # v11.0.0
+        with:
+          debug-only: true
+          days-before-issue-stale: -1
+          days-before-issue-close: -1
+          days-before-pr-stale: ${{ env.DAYS_BEFORE_STALE }}
+          days-before-pr-close: ${{ env.DAYS_BEFORE_CLOSE }}
+          exempt-pr-labels: dependencies
+          stale-pr-message: >-
+            This has been quiet for ${{ env.DAYS_BEFORE_STALE }} days, so it's
+            picked up a stale label. A comment or a push clears the label and
+            restarts the clock. Otherwise this closes in another
+            ${{ env.DAYS_BEFORE_CLOSE }} days.
+          close-pr-message: >-
+            Closing this: the stale label went on
+            ${{ env.DAYS_BEFORE_CLOSE }} days ago and it has stayed quiet
+            since. That isn't a call on the change itself, and nothing is lost:
+            the branch stays where it is, so comment here if you want to pick
+            it back up and I'll reopen it.
+
   # Per-cell contexts from `test` change with the matrix, so rulesets require
   # this job instead, under the `name:` every managed repo shares. A skipped
   # required check counts as passing, hence `always()`: under `!cancelled()` a
   # cancelled run would merge through a green gate.
   ci-results:
     runs-on: ubuntu-26.04
-    needs: test
+    needs: [test, stale-pull-requests]
     if: ${{ always() }}
     name: Check CI results
     timeout-minutes: 5
 
     steps:
-      - name: Fail unless every leg succeeded
-        if: ${{ needs.test.result != 'success' }}
+      - name: Fail unless every needed job succeeded
+        if: ${{ needs.test.result != 'success' || needs.stale-pull-requests.result != 'success' }}
         run: exit 1
 
   build:
