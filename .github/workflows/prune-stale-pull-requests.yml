@@ -12,9 +12,8 @@ on:
         type: boolean
         default: false
 
-# No `permissions:` anywhere in this file: a called workflow may only narrow its
-# caller's grant, so any it declared would fail one of the two callers. Each
-# caller grants what its mode needs.
+# Each caller sets `permissions:`. A called workflow can only narrow its
+# caller's grant, so no grant here suits both a dry run and a real sweep.
 jobs:
   stale-pull-requests:
     name: Sweep quiet pull requests
