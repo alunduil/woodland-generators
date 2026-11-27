@@ -4,6 +4,8 @@
     "github>alunduil/renovate-config:application",
     "github>alunduil/renovate-config:automerge-minor",
     ":automergeDigest",
+    "github>alunduil/renovate-config:hold-release-tool(node)",
+    "github>alunduil/renovate-config:hold-release-tool(pnpm)",
     "github>alunduil/renovate-config:hold-bundled-dependencies",
     "group:stylelint"
   ],
