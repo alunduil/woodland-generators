@@ -74,14 +74,21 @@ jobs:
         with:
           name: module-release
 
-      - name: Attach the assets and publish the release
+      # The release is still a draft here, so --clobber only lets a re-run
+      # replace what a failed run left. A published release refuses it.
+      - name: Attach the assets to the draft
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ github.ref_name }}
-        run: |
-          gh release upload "$RELEASE_TAG" module.json module.zip
-          gh release edit "$RELEASE_TAG" --draft=false
+        run: gh release upload "$RELEASE_TAG" module.json module.zip --clobber
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: gh release edit "$RELEASE_TAG" --draft=false
 
   # A world installs from the manifest URL, never from this repository, so the
   # assets are checked where Foundry reads them rather than where they were
