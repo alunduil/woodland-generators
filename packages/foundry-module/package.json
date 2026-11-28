@@ -1,6 +1,6 @@
 {
   "name": "@woodland-generators/foundry-module",
-  "version": "0.0.0",
+  "version": "0.4.0",
   "description": "Foundry VTT module generating Root: The Tabletop RPG resources in a live world",
   "author": "Alex Brandt",
   "license": "MIT",
