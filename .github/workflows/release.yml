@@ -26,8 +26,8 @@ jobs:
       issues: write
 
     steps:
-      # Tags pushed with the default GITHUB_TOKEN don't trigger workflows, and
-      # the Tag workflow publishes the module from that push.
+      # The Tag workflow publishes the module from the tag this pushes. Tags
+      # pushed with the default GITHUB_TOKEN don't trigger workflows.
       - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         with:
           token: ${{ secrets.PAT_TOKEN }}

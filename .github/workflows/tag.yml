@@ -4,8 +4,8 @@
 
 name: Tag
 
-# release-please creates these tags with PAT_TOKEN, so their push triggers
-# workflows. The `release` environment admits only these refs.
+# The `release` environment accepts only these tags. release-please pushes them
+# with PAT_TOKEN, so the push triggers workflows.
 on:
   push:
     tags: ["foundry-module@*"]
@@ -18,7 +18,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Build code runs here, away from any token that can replace Release assets.
+  # This job runs build code, so it holds no token that can replace Release
+  # assets.
   package-module:
     name: Package the module release assets
     runs-on: ubuntu-26.04
@@ -54,8 +55,9 @@ jobs:
           retention-days: 1
 
   # release-please opens the release and leaves it empty. Foundry installs from
-  # a manifest URL naming a zip, so both assets have to hang off it. Nothing
-  # from the repository runs while this job holds Contents write.
+  # a manifest URL naming a zip, so both assets have to hang off it.
+  #
+  # This job holds Contents write, so it runs no repository or dependency code.
   publish-module:
     name: Attach the module to its GitHub Release
     runs-on: ubuntu-26.04
@@ -76,8 +78,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ github.ref_name }}
-        run: |
-          gh release upload "$RELEASE_TAG" module.json module.zip --clobber
+        run: gh release upload "$RELEASE_TAG" module.json module.zip --clobber
 
   # A world installs from the manifest URL, never from this repository, so the
   # assets are checked where Foundry reads them rather than where they were

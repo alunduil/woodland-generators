@@ -38,10 +38,9 @@ Merging produces one commit. That commit:
 release-please then tags the commit `foundry-module@x.y.z` and opens a GitHub
 Release against it.
 
-The workflow gives release-please a personal access token rather than the
-default `GITHUB_TOKEN`. Tags and releases created with the default token trigger
-no further workflow runs. The tag push starts the `Tag` workflow, which fills
-the release.
+release-please pushes the tag with a personal access token, so the push starts
+the `Tag` workflow that fills the release. A tag pushed with the default
+`GITHUB_TOKEN` triggers no workflows.
 
 ## Two assets, because Foundry installs from a URL
 
@@ -54,12 +53,14 @@ contents come from the `files` array in `package.json`, flattened to the zip
 root, because Foundry unpacks the archive straight into
 `Data/modules/woodland-generators`.
 
-The `publish-module` job attaches them. It's the only job that can replace
-release assets, so it runs no repository or dependency code: it downloads what
-`package-module` built and uploads it. Build code can edit what later steps in
-its job run, so it never shares a job with that token. `publish-module` runs in
-the `release` environment, which admits only `foundry-module@*` tags and waits
-for a maintainer to approve. That approval is the last human check on a release.
+The `publish-module` job attaches them. It holds the only token that can replace
+release assets, so it runs no repository or dependency code. Any step can change
+what later steps in its job execute, so a compromised build dependency in that
+job could reach the token.
+
+`publish-module` waits for a maintainer to approve it in the `release`
+environment. That approval is the last human check on a release. The environment
+accepts only `foundry-module@*` tags, so publishing runs on the tag push.
 
 ## Built without caches
 
