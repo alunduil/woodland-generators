@@ -289,6 +289,15 @@ jobs:
       node-version-file: mise.toml
       hook-runner: pre-commit
 
+  # review.yml re-runs this when the owner approves the head.
+  check-renovate-commits:
+    name: Check Renovate branch commits
+    # yamllint disable-line rule:line-length
+    uses: alunduil/renovate-config/.github/workflows/check-renovate-commits.yml@6052341d076d02929cd58ba8a5245d4cf13955af # main
+    permissions:
+      contents: read
+      pull-requests: read
+
   # Verified mode fails only on a credential TruffleHog confirms is live, so
   # the gate needs no allowlist. It extends GitHub push protection, which
   # matches known provider patterns only.
