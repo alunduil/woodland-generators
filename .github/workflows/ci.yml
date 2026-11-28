@@ -184,7 +184,7 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-      # release.yml runs this same script during a release. Running it here too
+      # tag.yml runs this same script during a release. Running it here too
       # means a payload that won't assemble fails the pull request rather than
       # the release.
       - name: Assemble the module release assets

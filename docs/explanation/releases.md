@@ -40,7 +40,8 @@ Release against it.
 
 The workflow gives release-please a personal access token rather than the
 default `GITHUB_TOKEN`. Tags and releases created with the default token trigger
-no further workflow runs, which would leave the release with nothing to fill it.
+no further workflow runs. The tag push starts the `Tag` workflow, which fills
+the release.
 
 ## Two assets, because Foundry installs from a URL
 
@@ -48,10 +49,17 @@ release-please opens the release empty. Foundry installs from a manifest URL
 rather than from a repository: it fetches that JSON, then downloads the zip the
 JSON names. Both files have to hang off the release.
 
-The `publish-module` job assembles them with `package-release.ts` and attaches
-them. The zip's contents come from the `files` array in `package.json`,
-flattened to the zip root, because Foundry unpacks the archive straight into
+The `package-module` job assembles them with `package-release.ts`. The zip's
+contents come from the `files` array in `package.json`, flattened to the zip
+root, because Foundry unpacks the archive straight into
 `Data/modules/woodland-generators`.
+
+The `publish-module` job attaches them. It's the only job that can replace
+release assets, so it runs no repository or dependency code: it downloads what
+`package-module` built and uploads it. Build code can edit what later steps in
+its job run, so it never shares a job with that token. `publish-module` runs in
+the `release` environment, which admits only `foundry-module@*` tags and waits
+for a maintainer to approve. That approval is the last human check on a release.
 
 ## Built without caches
 
