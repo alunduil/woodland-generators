@@ -54,8 +54,9 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
-  # release-please opens the release and leaves it empty. Foundry installs from
-  # a manifest URL naming a zip, so both assets have to hang off it.
+  # release-please opens the release as an empty draft. Foundry installs from a
+  # manifest URL naming a zip, so both assets have to hang off it, and an
+  # immutable release takes assets only while it's still a draft.
   #
   # This job holds Contents write, so it runs no repository or dependency code.
   publish-module:
@@ -73,12 +74,14 @@ jobs:
         with:
           name: module-release
 
-      - name: Attach the assets to the release
+      - name: Attach the assets and publish the release
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ github.ref_name }}
-        run: gh release upload "$RELEASE_TAG" module.json module.zip --clobber
+        run: |
+          gh release upload "$RELEASE_TAG" module.json module.zip
+          gh release edit "$RELEASE_TAG" --draft=false
 
   # A world installs from the manifest URL, never from this repository, so the
   # assets are checked where Foundry reads them rather than where they were

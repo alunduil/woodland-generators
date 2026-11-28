@@ -5,6 +5,8 @@
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": false,
   "release-type": "node",
+  "draft": true,
+  "force-tag-creation": true,
   "changelog-path": "CHANGELOG.md",
   "changelog-sections": [
     { "type": "feat", "section": "Added" },
