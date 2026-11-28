@@ -55,8 +55,8 @@ jobs:
           retention-days: 1
 
   # release-please opens the release as an empty draft. Foundry installs from a
-  # manifest URL naming a zip, so both assets have to hang off it, and an
-  # immutable release takes assets only while it's still a draft.
+  # manifest URL naming a zip, so the release needs both assets. A published
+  # release refuses new assets.
   #
   # This job holds Contents write, so it runs no repository or dependency code.
   publish-module:
@@ -74,8 +74,7 @@ jobs:
         with:
           name: module-release
 
-      # The release is still a draft here, so --clobber only lets a re-run
-      # replace what a failed run left. A published release refuses it.
+      # A re-run needs --clobber to replace the assets a failed run attached.
       - name: Attach the assets to the draft
         env:
           GH_TOKEN: ${{ github.token }}
