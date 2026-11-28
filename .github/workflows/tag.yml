@@ -1,0 +1,106 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
+name: Tag
+
+# The `release` environment accepts only these tags. release-please pushes them
+# with PAT_TOKEN, so the push triggers workflows.
+on:
+  push:
+    tags: ["foundry-module@*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # This job runs build code, so it holds no token that can replace Release
+  # assets.
+  package-module:
+    name: Package the module release assets
+    runs-on: ubuntu-26.04
+    timeout-minutes: 15
+
+    # The packaging script reads this to check the tag against module.json.
+    env:
+      RELEASE_TAG: ${{ github.ref_name }}
+
+    steps:
+      - name: Checkout the release tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js + pnpm
+        uses: ./.github/actions/setup-node-pnpm
+
+      - name: Build every package
+        run: pnpm run build
+
+      - name: Assemble the release assets
+        run: pnpm --filter @woodland-generators/foundry-module run package
+
+      - name: Upload the release assets
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: module-release
+          path: |
+            packages/foundry-module/release/module.json
+            packages/foundry-module/release/module.zip
+          if-no-files-found: error
+          retention-days: 1
+
+  # release-please opens the release and leaves it empty. Foundry installs from
+  # a manifest URL naming a zip, so both assets have to hang off it.
+  #
+  # This job holds Contents write, so it runs no repository or dependency code.
+  publish-module:
+    name: Attach the module to its GitHub Release
+    runs-on: ubuntu-26.04
+    needs: package-module
+    timeout-minutes: 10
+    environment: release
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download the release assets
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: module-release
+
+      - name: Attach the assets to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: gh release upload "$RELEASE_TAG" module.json module.zip --clobber
+
+  # A world installs from the manifest URL, never from this repository, so the
+  # assets are checked where Foundry reads them rather than where they were
+  # built.
+  verify-release:
+    name: Check the published release installs
+    runs-on: ubuntu-26.04
+    needs: publish-module
+    timeout-minutes: 10
+
+    # The verifier expects this version at the latest-release pointer.
+    env:
+      RELEASE_TAG: ${{ github.ref_name }}
+
+    steps:
+      - name: Checkout the release tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js + pnpm
+        uses: ./.github/actions/setup-node-pnpm
+
+      - name: Install the module from its manifest URL
+        run: pnpm --filter @woodland-generators/foundry-module run verify:release
