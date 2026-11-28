@@ -35,8 +35,8 @@ Merging produces one commit. That commit:
 - records the version in `.release-please-manifest.json`, release-please's
   memory of what it last released
 
-release-please then tags the commit `foundry-module@x.y.z` and opens a GitHub
-Release against it.
+release-please then tags the commit `foundry-module@x.y.z` and opens a draft
+GitHub Release against it.
 
 release-please pushes the tag with a personal access token, so the push starts
 the `Tag` workflow that fills the release. A tag pushed with the default
@@ -44,19 +44,23 @@ the `Tag` workflow that fills the release. A tag pushed with the default
 
 ## Two assets, because Foundry installs from a URL
 
-release-please opens the release empty. Foundry installs from a manifest URL
-rather than from a repository: it fetches that JSON, then downloads the zip the
-JSON names. Both files have to hang off the release.
+release-please opens the release as an empty draft. Foundry installs from a
+manifest URL rather than from a repository: it fetches that JSON, then downloads
+the zip the JSON names. Both files have to hang off the release.
 
 The `package-module` job assembles them with `package-release.ts`. The zip's
 contents come from the `files` array in `package.json`, flattened to the zip
 root, because Foundry unpacks the archive straight into
 `Data/modules/woodland-generators`.
 
-The `publish-module` job attaches them. It holds the only token that can replace
-release assets, so it runs no repository or dependency code. Any step can change
-what later steps in its job execute, so a compromised build dependency in that
-job could reach the token.
+The `publish-module` job attaches them to the draft, then publishes it. The
+repository has immutable releases on, so a published release's assets can't
+change.
+
+`publish-module` holds the only token that can attach release assets, so it runs
+no repository or dependency code. Any step can change what later steps in its
+job execute, so a compromised build dependency in that job could reach the
+token.
 
 `publish-module` waits for a maintainer to approve it in the `release`
 environment. That approval is the last human check on a release. The environment
