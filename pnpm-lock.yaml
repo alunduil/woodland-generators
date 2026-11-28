@@ -11,7 +11,7 @@ catalogs:
       version: 6.0.2
 
 overrides:
-  tinymce: 8.10.2
+  tinymce: 8.11.0
 
 importers:
 
@@ -3477,8 +3477,8 @@ packages:
     resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
     engines: {node: '>=12.0.0'}
 
-  tinymce@8.10.2:
-    resolution: {integrity: sha512-Na5apA/kwb5o5HrHAZWnWssvZFZRph7gyROSXyvkAwS7E/59qEUttQx2ACfHLkM5EUyzCz2ww9PMm5/VpeZgIA==}
+  tinymce@8.11.0:
+    resolution: {integrity: sha512-HcLyNdkHf5xkYQ8aXNoazZceX6/QrTu8yBhiVw6T9cDRg6ixXWZzj7+2pbRmCwaMQId71aqzmzNoHYEQipWLFg==}
 
   to-regex-range@5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
@@ -4486,7 +4486,7 @@ snapshots:
       socket.io: 4.8.4(supports-color@10.2.2)
       socket.io-client: 4.8.4(supports-color@10.2.2)
       spark-md5: 3.0.2
-      tinymce: 8.10.2
+      tinymce: 8.11.0
     optionalDependencies:
       typescript: '@typescript/typescript6@6.0.2'
     transitivePeerDependencies:
@@ -7332,7 +7332,7 @@ snapshots:
       fdir: 6.5.0(picomatch@4.0.7)
       picomatch: 4.0.7
 
-  tinymce@8.10.2: {}
+  tinymce@8.11.0: {}
 
   to-regex-range@5.0.1:
     dependencies:

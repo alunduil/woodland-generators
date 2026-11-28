@@ -14,7 +14,7 @@ overrides:
   # types only, and Foundry VTT supplies it at runtime. It sits past the
   # declared ^6.8.5 because every release in that range carries XSS
   # advisories.
-  tinymce: 8.10.2
+  tinymce: 8.11.0
 allowBuilds:
   # Prebuilt binaries ship in per-platform optional packages. The install
   # script compiles only when npm_config_build_from_source is true.
